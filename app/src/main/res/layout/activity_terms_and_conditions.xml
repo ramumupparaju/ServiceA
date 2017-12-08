@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.incon.service.ui.termsandcondition.TermsAndConditionActivity"/>
+    </data>
+
+    <RelativeLayout
+        style="@style/BothMatch"
+        android:background="@color/white"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp">
+
+        <ImageView
+            android:id="@+id/icon_tueo"
+            style="@style/BothWrap"
+            android:layout_width="130dp"
+            android:layout_height="76dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="48dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/connect_icon"
+            />
+
+        <WebView
+            android:id="@+id/eula_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/button_register"
+            android:layout_below="@id/icon_tueo"/>
+
+
+        <!-- register button -->
+        <Button
+            android:id="@+id/button_register"
+            fontPath="fonts/OpenSans-Bold.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="18dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_blue_selector"
+            android:letterSpacing="0.07"
+            android:onClick="@{() -> activity.onRegisterClick()}"
+            android:text="@string/action_register"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="13.4sp"
+            android:visibility="gone"
+            />
+
+    </RelativeLayout>
+
+</layout>

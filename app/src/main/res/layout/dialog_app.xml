@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/BothMatch"
+    android:background="@drawable/dialog_shadow"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_10">
+
+    <TextView
+        android:id="@+id/dialog_title_textView"
+        style="@style/MatchWrap"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/text_size_13"
+        android:padding="@dimen/margin_20"
+        android:scrollbars="vertical"
+        android:text="@string/action_description"
+        android:textColor="@color/tueo_theme"
+        android:textSize="@dimen/text_size_18" />
+
+    <TextView
+        android:id="@+id/dialog_content_textView"
+        style="@style/MatchWrap"
+        android:gravity="center_horizontal"
+        android:paddingBottom="@dimen/margin_20"
+        android:text="@string/action_add_as_favorite"
+        android:textColor="@color/colorEulaMessage"
+        android:textSize="@dimen/text_size_15"
+        android:visibility="visible" />
+
+
+    <Button
+        android:id="@+id/dialog_first_button"
+        style="@style/style_submit_button"
+        fontPath="fonts/OpenSans-Bold.ttf"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_20"
+        android:text="@string/action_submit" />
+
+    <Button
+        android:id="@+id/dialog_second_button"
+        style="@style/style_submit_button"
+        fontPath="fonts/OpenSans-Bold.ttf"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_3"
+        android:text="@string/action_cancel" />
+
+</LinearLayout>
+

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="isEditable"
+            type="Boolean"/>
+
+        <variable
+            name="upDateUserProfile"
+            type="com.incon.service.dto.update.UpDateUserProfile"/>
+
+        <variable
+            name="upDateUserProfileActivity"
+            type="com.incon.service.ui.settings.update.UpDateUserProfileActivity"/>
+
+    </data>
+
+    <ScrollView
+        android:id="@+id/scrollview_user_info"
+        style="@style/BothMatch"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="4dp"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
+        android:scrollbars="vertical">
+
+        <RelativeLayout style="@style/BothMatch">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:contentInsetStart="0dp">
+
+                <RelativeLayout style="@style/BothMatch">
+
+                    <ImageView
+                        android:id="@+id/toolbar_left_iv"
+                        android:layout_width="@dimen/margin_64"
+                        android:layout_height="@dimen/margin_64"
+                        android:layout_centerVertical="true"
+                        android:paddingEnd="@dimen/margin_25"
+                        android:paddingStart="@dimen/margin_15"
+                        android:visibility="visible"
+                        app:srcCompat="@drawable/ic_back_arrow"/>
+
+                    <TextView
+                        android:id="@+id/toolbar_text_user"
+                        style="@style/BothWrap"
+                        fontPath="fonts/OpenSans-Bold.ttf"
+                        android:layout_centerInParent="true"
+                        android:text="@string/action_update_user_profile"
+                        android:textColor="@color/white"
+                        android:textSize="15.5sp"/>
+
+
+
+                    <ImageView
+                        android:id="@+id/toolbar_edit_image"
+                        android:layout_width="@dimen/margin_64"
+                        android:layout_height="@dimen/margin_64"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:paddingEnd="@dimen/margin_15"
+                        android:paddingStart="@dimen/margin_15"
+                        android:visibility="@{isEditable ? View.GONE : View.VISIBLE}"
+                        app:srcCompat="@drawable/ic_edit_profile"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+
+            <!-- Name -->
+            <com.incon.service.custom.view.CustomTextInputLayout
+                android:id="@+id/input_layout_up_date_user_name"
+                style="@style/Register_TextInputLayout"
+                android:layout_below="@id/toolbar"
+                android:layout_marginTop="@dimen/margin_10"
+                android:hint="@string/register_name_hint"
+                app:errorEnabled="true"
+                app:fontName="fonts/OpenSans-Regular.ttf"
+                app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edittext_up_date_user_name"
+                    style="@style/Register_TextInputEditText"
+                    android:enabled="@{isEditable ? true : false }"
+                    android:focusable="@{isEditable ? true : false }"
+                    android:focusableInTouchMode="@{isEditable ? true : false }"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:maxLength="@integer/character_limit_200"
+                    android:maxLines="1"
+                    android:tag="0"
+                    android:text="@={upDateUserProfile.name}"/>
+
+            </com.incon.service.custom.view.CustomTextInputLayout>
+
+            <!-- Phone -->
+            <com.incon.service.custom.view.CustomTextInputLayout
+                android:id="@+id/input_layout_up_date_phone"
+                style="@style/Register_TextInputLayout"
+                android:layout_below="@id/input_layout_up_date_user_name"
+                android:hint="@string/register_phone_hint"
+                app:errorEnabled="true"
+                app:fontName="fonts/OpenSans-Regular.ttf"
+                app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edittext_up_date_phone"
+                    style="@style/Register_TextInputEditText"
+                    android:enabled="@{isEditable ? true : false }"
+                    android:focusable="@{isEditable ? true : false }"
+                    android:focusableInTouchMode="@{isEditable ? true : false }"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="@integer/character_limit_45"
+                    android:maxLines="1"
+                    android:tag="1"
+                    android:text="@={upDateUserProfile.mobileNumber}"/>
+            </com.incon.service.custom.view.CustomTextInputLayout>
+
+            <!-- Gender -->
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/spinner_gender"
+                style="@style/spinnerItemStyle"
+                android:layout_below="@id/input_layout_up_date_phone"
+                android:layout_marginBottom="@dimen/margin_24"
+                android:hint="@string/register_gender_hint"
+                android:tag="2"
+                android:enabled="@{isEditable ? true : false }"
+                android:focusable="@{isEditable ? true : false }"
+                android:focusableInTouchMode="@{isEditable ? true : false }"
+                android:text="@={upDateUserProfile.gender}"
+                app:errorEnabled="true"
+                app:met_floatingLabel="highlight"
+                app:met_textColor="@color/colorForgotPasswordHintText"
+                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+
+            <!-- Date of Birth -->
+            <com.incon.service.custom.view.CustomTextInputLayout
+                android:id="@+id/input_layout_up_date_dob"
+                style="@style/Register_TextInputLayout"
+                android:layout_below="@id/spinner_gender"
+                android:hint="@string/register_dateofbirth_hint"
+                app:errorEnabled="true"
+                app:fontName="fonts/OpenSans-Regular.ttf"
+                app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edittext_up_date_dob"
+                    style="@style/Register_TextInputEditText"
+                    android:enabled="false"
+                    android:tag="3"
+                    android:focusable="@{isEditable ? true : false }"
+                    android:focusableInTouchMode="@{isEditable ? true : false }"
+                    android:text="@={upDateUserProfile.dateOfBirthToShow}"
+                    />
+            </com.incon.service.custom.view.CustomTextInputLayout>
+
+            <!--dummy view for dob click event -->
+            <View
+                android:id="@+id/view_dob"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@+id/input_layout_up_date_dob"
+                android:layout_alignEnd="@+id/input_layout_up_date_dob"
+                android:layout_alignStart="@+id/input_layout_up_date_dob"
+                android:layout_alignTop="@+id/input_layout_up_date_dob"
+                android:background="@null"
+                android:enabled="@{isEditable ? true : false }"
+                android:focusable="@{isEditable ? true : false }"
+                android:focusableInTouchMode="@{isEditable ? true : false }"
+                android:onClick="@{() -> upDateUserProfileActivity.onDobClick()}"
+                />
+
+            <!-- Email ID -->
+            <com.incon.service.custom.view.CustomTextInputLayout
+                android:id="@+id/input_layout_up_date_emailid"
+                style="@style/Register_TextInputLayout"
+                android:layout_below="@id/input_layout_up_date_dob"
+                android:hint="@string/register_emailid_hint"
+                app:errorEnabled="true"
+                app:fontName="fonts/OpenSans-Regular.ttf"
+                app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edittext_up_date_emailid"
+                    style="@style/Register_TextInputEditText"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="@integer/character_limit_200"
+                    android:maxLines="1"
+                    android:enabled="@{isEditable ? true : false }"
+                    android:focusable="@{isEditable ? true : false }"
+                    android:focusableInTouchMode="@{isEditable ? true : false }"
+                    android:tag="4"
+                    android:text="@={upDateUserProfile.email}"
+                    />
+            </com.incon.service.custom.view.CustomTextInputLayout>
+
+            <!-- Address -->
+            <com.incon.service.custom.view.CustomTextInputLayout
+                android:id="@+id/input_layout_up_date_address"
+                style="@style/Register_TextInputLayout"
+                android:layout_below="@id/input_layout_up_date_emailid"
+                android:hint="@string/register_address_hint"
+                app:errorEnabled="true"
+                app:fontName="fonts/OpenSans-Regular.ttf"
+                app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edittext_up_date_address"
+                    style="@style/Register_TextInputEditText"
+                    android:enabled="false"
+                    android:tag="7"
+                    android:focusable="@{isEditable ? true : false }"
+                    android:focusableInTouchMode="@{isEditable ? true : false }"
+                    android:text="@={upDateUserProfile.address}"
+                    />
+            </com.incon.service.custom.view.CustomTextInputLayout>
+
+
+            <!--Dummy view used for click action-->
+            <View
+                android:id="@+id/view_address"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@+id/input_layout_up_date_address"
+                android:layout_alignEnd="@+id/input_layout_up_date_address"
+                android:layout_alignStart="@+id/input_layout_up_date_address"
+                android:layout_alignTop="@+id/input_layout_up_date_address"
+                android:background="@null"
+                android:enabled="@{isEditable ? true : false }"
+                android:focusable="@{isEditable ? true : false }"
+                android:focusableInTouchMode="@{isEditable ? true : false }"
+                android:onClick="@{() -> upDateUserProfileActivity.onAddressClick()}"
+                />
+
+            <Button
+                android:id="@+id/button_submit"
+                style="@style/w150_wrap"
+                fontPath="fonts/OpenSans-Bold.ttf"
+                android:layout_below="@id/input_layout_up_date_address"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_marginLeft="@dimen/margin_110"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@drawable/btn_login_register_roundedcorner"
+                android:onClick="@{() -> upDateUserProfileActivity.onSubmitClick()}"
+                android:text="@string/add_new_submit"
+                android:textAllCaps="true"
+                android:textColor="@color/tueo_theme"
+                android:textSize="@dimen/text_size_13"
+                android:visibility="@{isEditable ? View.VISIBLE : View.GONE}"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</layout>

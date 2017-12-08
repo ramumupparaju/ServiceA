@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/tools"
+                style="@style/BothMatch"
+                android:background="@drawable/dialog_shadow"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_10">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map_monitor"
+        style="@style/BothMatch"
+        map:uiRotateGestures="true"
+        map:uiScrollGestures="true"
+        map:uiTiltGestures="false"
+        map:uiZoomControls="false"
+        map:uiZoomGestures="true" />
+
+    <TextView
+        android:id="@+id/view_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/dialog_second_button"
+        style="@style/style_submit_button"
+        fontPath="fonts/OpenSans-Bold.ttf"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginRight="@dimen/margin_30"
+        android:text="@string/action_cancel"/>
+
+</RelativeLayout>
+

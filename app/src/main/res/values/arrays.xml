@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Tabs when user select history in home screen -->
+    <string-array
+        name="history_tab">
+        <item>@string/tab_purchased</item>
+        <item>@string/tab_interest</item>
+        <item>@string/tab_return</item>
+    </string-array>
+
+
+
+    <string-array
+        name="status_tab">
+        <item>@string/tab_new_request</item>
+        <item>@string/tab_checkup</item>
+        <item>@string/tab_approval</item>
+        <item>@string/tab_repair</item>
+        <item>@string/tab_payment</item>
+
+    </string-array>
+
+    <!-- Gender dropdown options -->
+    <string-array
+        name="gender_options_list">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <!-- image capture options -->
+    <string-array
+        name="select_image_list">
+        <item>Take Photo</item>
+        <item>Choose From Gallery</item>
+        <item>Tap to view</item>
+    </string-array>
+
+
+    <!-- selecting by search-->
+    <string-array
+        name="select_search">
+        <item>Brand</item>
+        <item>Name</item>
+    </string-array>
+
+
+
+    <!-- Side MenuItems -->
+    <string-array
+        name="side_menu_items_list">
+        <item>@string/title_menu_change_password</item>
+        <item>@string/title_menu_bill_format</item>
+        <item>@string/title_menu_timings</item>
+        <item>@string/title_menu_contact_details</item>
+        <item>@string/title_menu_logout</item>
+
+    </string-array>
+
+</resources>

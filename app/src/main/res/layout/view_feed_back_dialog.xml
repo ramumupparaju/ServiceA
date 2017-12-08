@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        style="@style/MatchWrap"
+        android:background="@drawable/dialog_background">
+
+        <!-- dialog title -->
+        <TextView
+            android:id="@+id/text_verify_title"
+            style="@style/BothWrap"
+            fontPath="fonts/OpenSans-Semibold.ttf"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20.5dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/colorEulaMessage"
+            android:textSize="15.4sp"
+            />
+
+        <RatingBar
+            style="@style/RatingBar"
+            android:layout_below="@+id/text_verify_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rating"
+            android:id="@+id/rating"
+            android:numStars="5"
+            android:rating="1"
+            android:stepSize="1" />
+
+
+        <!--edit text to edit-->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_layout_verify"
+            style="@style/MatchWrap"
+            android:layout_below="@id/rating"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="10dp"
+            android:hint="@string/action_description"
+            android:textColorHint="@color/colorForgotPasswordHintText"
+            app:errorEnabled="true"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_username"
+                style="@style/MatchWrap"
+                android:maxLines="1"
+                android:paddingEnd="2dp"
+                android:paddingStart="2.1dp"
+                android:text=" "
+                android:textColor="@color/colorForgotPasswordHintText"
+                android:textSize="14sp"/>
+        </com.incon.service.custom.view.CustomTextInputLayout>
+
+        <!-- layout for bottom buttons -->
+        <include
+            android:id="@+id/include_register_bottom_buttons"
+            layout="@layout/view_registration_bottom_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_below="@id/input_layout_verify"/>
+
+    </RelativeLayout>
+</layout>

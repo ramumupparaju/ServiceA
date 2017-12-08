@@ -1,0 +1,26 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+
+    <RelativeLayout
+        style="@style/BothMatch"
+        android:background="@android:color/white">
+
+        <!-- View Pager -->
+        <com.incon.service.custom.view.NonSwipeableViewPager
+            android:id="@+id/viewpager_register"
+            style="@style/BothMatch"
+            android:layout_above="@+id/include_register_bottom_buttons"
+            android:background="@android:color/white" />
+
+        <!-- layout for bottom buttons -->
+        <include
+            android:id="@+id/include_register_bottom_buttons"
+            layout="@layout/view_registration_bottom_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="47.7dp"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+</layout>

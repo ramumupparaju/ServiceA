@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="notificationsResponse"
+            type="com.incon.service.apimodel.components.notifications.NotificationsResponse"/>
+    </data>
+
+    <RelativeLayout
+        style="@style/BothMatch"
+        android:gravity="center"
+        android:background="@drawable/list_ripple_effect"
+        android:minHeight="70dp"
+        android:paddingBottom="@dimen/margin_15"
+        android:paddingLeft="@dimen/margin_5"
+        android:paddingRight="@dimen/margin_5"
+        android:paddingTop="@dimen/margin_15">
+
+
+
+        <TextView
+            android:id="@+id/text_task_title"
+            style="@style/BothWrap"
+            android:layout_centerVertical="true"
+            android:text="Comming Soon"
+            android:textColor="@color/ebony_clay"
+            android:textSize="25.4sp"/>
+
+    </RelativeLayout>
+</layout>

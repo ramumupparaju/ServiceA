@@ -1,0 +1,501 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="sample_text">Text</string>
+
+    <string name="msg_check_internet">Looks like you are offline, please check internet connectivity</string>
+
+    <!-- api error messages -->
+    <string name="error_network">Api failed due to NetworkErrorException</string>
+    <string name="error_model_message">No models found, Please Add New Model by clicking on
+        the below Button
+    </string>
+
+    <string name="error_no_products_for_favorites">No products found to add favorites</string>
+    <string name="info_purchased_status">Status: %1$s</string>
+    <string name="error_socket">Unable to process your request. Please try again</string>
+    <string name="error_no_connectivity">Looks like you are offline, please check internet
+        connectivity</string>
+    <!-- bottom sheet options-->
+    <string name="sample_test">Sample test</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="bottom_option_customer">Customer</string>
+    <string name="bottom_option_product">Product</string>
+    <string name="bottom_option_service_center">Service center</string>
+    <string name="bottom_option_status_update">Status update</string>
+    <string name="bottom_option_special_instructions">Special Instructions </string>
+    <string name="bottom_option_how_to_use">How to use</string>
+    <string name="bottom_option_description">Description:</string>
+    <string name="product_specification">Product Specification:</string>
+    <string name="bottom_option_service">Service/Support</string>
+    <string name="bottom_option_satus_update">Satus Update</string>
+    <string name="bottom_option_add_as_favorite">Add as favorite</string>
+    <string name="bottom_option_return">Return</string>
+    <string name="bottom_option_Call">Call</string>
+    <string name="bottom_option_accept">Accept</string>
+    <string name="bottom_option_reject">Reject</string>
+    <string name="bottom_option_estimation">Estimation</string>
+    <string name="bottom_option_repair_done">Repair done</string>
+    <string name="bottom_option_paid">Paid</string>
+    <string name="bottom_option_hold">Hold</string>
+    <string name="bottom_option_close">Close</string>
+    <string name="bottom_option_call_customer_care">Call customer care</string>
+    <string name="bottom_option_find_service_center">Find service center</string>
+    <string name="bottom_option_service_request">Service request</string>
+    <string name="bottom_option_location">Location</string>
+    <string name="bottom_option_assign">Assign</string>
+    <string name="bottom_option_details">Details</string>
+    <string name="bottom_option_note">Note</string>
+    <string name="bottom_option_main_features">Main Features :</string>
+    <string name="bottom_option_warranty">Warranty :</string>
+    <string name="bottom_option_warranty_details">Warranty details</string>
+    <string name="bottom_option_suggestions">Suggestions</string>
+    <string name="bottom_option_bill">Bill</string>
+    <string name="bottom_option_past_history">Past History</string>
+    <string name="bottom_option_share">Share</string>
+    <string name="bottom_option_transfer">Transfer</string>
+    <string name="bottom_option_feedback">Feedback :</string>
+    <string name="bottom_option_edit">Edit Time</string>
+    <string name="bottom_option_review">Review</string>
+    <string name="bottom_option_price">Price :</string>
+    <string name="bottom_option_delete">Delete</string>
+    <string name="bottom_option_showroom">Showroom</string>
+    <string name="bottom_option_buy_request">Buy request</string>
+    <string name="dilog_delete">Are You Sure Delete Interested</string>
+    <string name="bottom_option_return_policy">Return policy</string>
+    <string name="bottom_option_request_installation">Request Installation</string>
+    <string name="bottom_option_share_customer_location">Share Customer Location</string>
+    <string name="bottom_option_share_customer_dispatches_on">Dispatches On</string>
+    <string name="bottom_option_share_customer_dispatched">Dispatched</string>
+    <string name="bottom_option_share_customer_delivered">Delivered</string>
+    <string name="bottom_option_share_customer_installed">Installed</string>
+    <string name="bottom_option_share_customer_return_product">Return Product</string>
+    <string name="status_complaint">Complaint</string>
+    <string name="status_received">Received</string>
+    <string name="status_attending">Attending</string>
+    <string name="status_checkup">Checkup</string>
+    <string name="status_approval">Approval</string>
+    <string name="status_repair_done">Repair Done</string>
+    <string name="status_payment">Payment</string>
+    <string name="status_feedback">Feedback</string>
+
+
+    <!--new request-->
+    <string name="option_product_name">Product name</string>
+    <string name="option_model_number">Model No</string>
+    <string name="option_complaint">Complaint</string>
+    <string name="option_location">Location</string>
+    <string name="option_attending_date_time">Attending date and time</string>
+    <string name="option_warranty_status">Warranty status</string>
+    <string name="option_employee_name">Employe name</string>
+
+    <!--warrantyregistration-->
+    <string name="action_add_as_favorite">Add as favorite</string>
+    <string name="action_filters">Filters</string>
+    <string name="action_brand">Brand</string>
+    <string name="action_modelno">Model No</string>
+    <string name="action_division">Division</string>
+    <string name="action_category">Category</string>
+    <string name="action_price">Price :</string>
+    <string name="action_batchno">Batch No :</string>
+    <string name="action_serialno">Serial No :</string>
+    <string name="action_submit">Submit</string>
+    <string name="action_otp">OTP</string>
+    <string name="action_qr_code">QR Code Scan</string>
+    <string name="action_manual_entry">Manual Enter</string>
+    <string name="dialog_warranty_registered_successfully">Warranty has been registered
+        successfully</string>
+    <string name="action_product_status">Is product delivered</string>
+    <string name="action_description">Description</string>
+
+    <!--product Assign-->
+    <string name="user_qr_code">User QR code</string>
+    <string name="user_uid">User UID</string>
+    <string name="title_assigned_successfully">Assigned SuccessFully</string>
+    <!--home_scanning activity-->
+    <string name="action_enter_customer_phone_number">Phone number</string>
+    <string name="action_or">OR</string>
+    <string name="action_scanuid">Scan Product UID</string>
+    <string name="action_entermobilenumber">Enter Mobile Number</string>
+    <string name="title_user_qr_code">Place user qr code to scan</string>
+    <string name="title_warranty_serial_barcode">Place user  Serial no Barcode</string>
+    <string name="title_warranty_batch_barcode">Place user Batch no Barcode</string>
+    <string name="action_enter_transfer_phone_number">Transfer Phone number</string>
+
+    <!--Assign product-->
+    <string name="hint_product_assigned_success">Assigned SuccessFully</string>
+
+    <!-- add offer -->
+    <string name="add_an_offer_brand_hint">Brand</string>
+    <string name="add_an_offer_division_hint">Division</string>
+    <string name="add_an_offer_model_hint">Model</string>
+    <string name="add_an_offer_on_mrp_hint">Add An Offer On MRP: %</string>
+    <string name="add_an_offer_date_hint">Offer Start On</string>
+    <string name="offer_expires_hint">Offer Expires On</string>
+    <string name="scan_start_date_hint">Scan Start Date</string>
+    <string name="scan_end_date_hint">Scan End Date</string>
+
+    <!-- actions -->
+    <string name="action_no_data">No data to show</string>
+    <string name="action_add_product">Add Product</string>
+    <string name="action_changepassword">CHANGE PASSWORD</string>
+    <string name="action_add_location">Add Location</string>
+    <string name="action_back">Back</string>
+    <string name="action_next">Next</string>
+    <string name="action_login">Login</string>
+    <string name="action_registration">Register</string>
+    <string name="action_ok">Ok</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
+    <string name="action_cancel_request">Cancel Request</string>
+    <string name="action_reset_password">Reset Password</string>
+    <string name="action_register">Register</string>
+    <string name="action_continue">continue</string>
+    <string name="action_register_parentof_child">I am a parent of a child with asthma</string>
+    <string name="action_register_individual">I am an individual over the age of 16\n managing my own asthma</string>
+    <string name="action_verify">verify</string>
+    <string name="action_view_full_library">View full library</string>
+    <string name="action_done">Done</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_start">Start</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_request_call">Request Call</string>
+    <string name="action_take_new_survey">take new survey</string>
+    <string name="action_save">save</string>
+    <string name="action_discard">discard</string>
+    <string name="action_upload_now">Upload Now!</string>
+    <string name="action_upload_new_plan">Upload new plan</string>
+    <string name="action_why">Why?</string>
+    <string name="action_send_verification_code">Send verification code</string>
+    <string name="action_hint"> Hint </string>
+    <string name="action_update_pwd">Update Password</string>
+    <string name="action_feedback">Feedback</string>
+    <string name="action_development">Development</string>
+
+    <!--settings screen-->
+    <string name="action_settings">Settings</string>
+    <string name="action_update_user_profile">UpDateUserProfile</string>
+    <string name="action_update_store_profile">UpDateStoreProfile</string>
+    <string name="app_version">App Version: </string>
+    <!--scan tap fragment-->
+
+    <string name="action_scan_product_details">Product details</string>
+    <string name="action_scancustomeruid">Scan Customer UID</string>
+    <string name="action_enter_mobilenumber">Enter Mobile Number</string>
+
+    <!-- input error messages -->
+    <string name="app_update">Please Update to continue using the App.</string>
+    <string name="location_permission_msg">Please go to application settings and grant location
+        permission.</string>
+    <string name="error_uuid">No data to generate qrcode</string>
+    <string name="error_email_req">Email Address is required</string>
+    <string name="error_select_location">Please select location</string>
+    <string name="error_location">Unable to fetch location</string>
+    <string name="error_name_address">Please enter Name and Address</string>
+    <string name="error_address">Please enter Address</string>
+    <string name="error_otp_req">Please enter received OTP</string>
+    <string name="error_email_notvalid">Please enter valid email address</string>
+    <string name="error_password_req">Password is required</string>
+    <string name="error_re_enter_password_req">Password is required</string>
+    <string name="error_re_enter_password_does_not_match">Re-entered Password does not match</string>
+    <string name="error_password_pattern_req">A minimum of 8 characters and must include at least one number</string>
+    <string name="error_newpwd_req">New Password is required</string>
+    <string name="error_confirmpwd_req">Confirm Password is required</string>
+    <string name="error_pwd_notmatched">New and Confirm Password must match</string>
+    <string name="error_name_req">Name is required</string>
+    <string name="error_firstname_req">First Name is required</string>
+    <string name="error_lastname_req">Last Name is required</string>
+    <string name="error_phone_req">Phone is required</string>
+    <string name="error_category_req">Store category is required</string>
+    <string name="error_phone_min_digits">Phone number should be at least 10 digits</string>
+    <string name="error_one_phone_req">Please enter a contact number</string>
+    <string name="error_timezone_req">Time Zone is required</string>
+    <string name="error_zipcode_req">Zip Code is required</string>
+    <string name="error_dob_req">Date of Birth is required</string>
+    <string name="error_gender_req">Gender is required</string>
+    <string name="error_verificationcode_req">Verification Code is required</string>
+    <string name="error_dob_patient_is_user">You must be at least 16 years old to use the
+        Connect application</string>
+    <string name="error_dob_futuredate">You cannot select a future date</string>
+    <string name="error_past_date">You cannot select a past date</string>
+    <string name="error_email_inuse">Email address already in use</string>
+    <string name="error_zipcode_notvalid">Zipcode must be 5 or 9 digits</string>
+    <string name="error_postalcode_notvalid">Postalcode must be 5 or 9 digits</string>
+    <string name="error_symptoms_future_dates">You cannot select a future date</string>
+    <string name="error_future_month">You cannot select a future month</string>
+    <string name="error_log_symptoms_selection">Please empty symptoms</string>
+    <string name="error_log_symptoms_empty">Please enter Symptoms data</string>
+    <string name="error_log_severity_empty">Please select Severity</string>
+    <string name="error_log_symptoms_empty_severity">Please select severity</string>
+    <string name="error_alert_answer_req">Please select any of the category</string>
+    <string name="error_schedule_appointment_req">Please select atleast one for appointment</string>
+    <string name="error_tools_answer_req">Please select atleast one</string>
+    <string name="error_currentpwd_req">Current Password is required</string>
+    <string name="error_new_emailid_req">New EmailId is required</string>
+    <string name="error_address_req">Address is required</string>
+    <string name="error_image_path_req">Select image to view</string>
+    <string name="error_image_path_upload">Select image to upload</string>
+    <string name="error_gstn_req">GSTN is required</string>
+    <string name="error_new_confirm_pwd_not_matched">Password mismatch</string>
+    <string name="error_city_req">City is required</string>
+    <string name="error_postal_code_req">PostalCode is required</string>
+    <string name="error_product_model">Model is required</string>
+    <string name="error_product_invalid_model">Invalid Model</string>
+    <string name="error_product_price">Price is required</string>
+    <string name="error_product_mrp_price">MRP Price is required</string>
+    <string name="error_product_description">Description is required :</string>
+    <string name="error_product_serial">Serial is required</string>
+    <string name="error_product_batch">Batch is required</string>
+    <string name="error_product_invoice_number">InvoiceNumber is required</string>
+    <string name="error_product_category">Category is required</string>
+    <string name="error_product_division">Division is required</string>
+    <string name="error_product_brand">Brand is required</string>
+    <string name="error_product_notes">Notes is required</string>
+    <string name="error_Offer_price">Offer Price is required</string>
+    <string name="error_Offer_start_on">Offer Start is required</string>
+    <string name="error_Offer_end_on">Offer End is required</string>
+    <string name="error_Scan_start_on">Scan Start is required</string>
+    <string name="error_Scan_end_on">Scan End is required</string>
+
+
+    <!-- progress messages -->
+
+    <string name="progress_addoffer_merchant_fragment">Loading AddOffer Merchant Fragment..
+        .</string>
+    <string name="hint_warranty_period">Warranty expires in %1$d</string>
+    <string name="progress_adding_to_favorites">Adding to favorites...</string>
+    <string name="progress_purchased_history">Loading Purchased History...</string>
+    <string name="progress_interest_history">Loading Interest History...</string>
+    <string name="progress_buy_request_">Loading BuyRequest...</string>
+    <string name="progress_return_history">Loading Return History...</string>
+    <string name="progress_buy_request">Loading Buy Request...</string>
+    <string name="progress_get_addresses">Loading Address...</string>
+    <string name="progress_favorites">Loading Favorites...</string>
+    <string name="progress_add_offer_merchant">Loading Add Offer Merchant...</string>
+    <string name="progress_user_details">Fetching User Details...</string>
+    <string name="progress_qr_code_validity">Validating qrcode...</string>
+    <string name="progress_qr_code_product">Asign QR Code To Product...</string>
+    <string name="progress_warranty_registering">Registering warranty...</string>
+    <string name="progress_categories">Fetching categories...</string>
+    <string name="progress_add_new_model">Adding new model...</string>
+    <string name="progress_product_details">Fetching product details...</string>
+    <string name="progress_defaults">Fetching details...</string>
+    <string name="progress_location">Loading location details...</string>
+    <string name="progress_login">Logging in...</string>
+    <string name="progress_resend">Resending OTP...</string>
+    <string name="progress_sendotp">Sending otp...</string>
+    <string name="progress_verifycode">Verifying code...</string>
+    <string name="progress_verifyemail">Verifying phoneNumber...</string>
+    <string name="progress_defaults_registering">Defaults Registering...</string>
+    <string name="progress_registering">Registering...</string>
+    <string name="progress_updateuserprofile">UpDateingUserProfile...</string>
+    <string name="progress_updatestoreprofile">UpDateingStoreProfile...</string>
+    <string name="progress_changepassword">Changing Password...</string>
+    <string name="progress_changeemail">Changing Email...</string>
+    <string name="progress_forgotpassword">Forgot Password...</string>
+    <string name="progress_alerts">Loading alerts info...</string>
+    <string name="progress_alert_message">Loading alert message...</string>
+    <string name="progress_alert_summary">Loading alert summary...</string>
+    <string name="progress_loading">Loading...</string>
+    <string name="progress_learningstatus">Loading recommendations...</string>
+    <string name="progress_library">Loading library data...</string>
+    <string name="progress_read_topic">Updating read topic...</string>
+    <string name="progress_dashboard_tasks">Loading tasks...</string>
+    <string name="progress_complete_tasks">Updating task status...</string>
+    <string name="progress_get_appointments">Getting Appointment...</string>
+    <string name="progress_get_coach_defaults">Loading Coach defaults...</string>
+    <string name="progress_schedule_appointment">Scheduling appointment...</string>
+    <string name="progress_cancel_appointment">Cancelling appointment...</string>
+    <string name="progress_get_module_by_id">Getting module...</string>
+    <string name="progress_new_survey_of_patient">Taking new survey...</string>
+    <string name="progress_get_survey_of_patients">Getting survey of persons with asthma...</string>
+    <string name="progress_calculate_tueo_score">Calculating score...</string>
+    <string name="progress_post_survey">Posting survey score...</string>
+    <string name="progress_delete_survey">Deleting survey...</string>
+    <string name="progress_get_module_info">Getting Module info...</string>
+    <string name="progress_uploading_aap_image">Uploading image...</string>
+    <string name="progress_get_aap_image">Getting AAP Image...</string>
+    <string name="progress_downloading_aap">Downloading AAP...</string>
+    <string name="progress_updating_profile">Updating profile...</string>
+    <string name="progress_get_doctor_profile">Getting Doctor profile...</string>
+    <string name="progress_send_summary_report">Sending summary report...</string>
+
+    <!-- Dialog -->
+    <string name="dialog_profile_creation_completed">Registration and profile creation\n completed successfully.</string>
+    <string name="dialog_warning_title">Warning</string>
+    <string name="dialog_warning_message">Sensor Calibration with ocpied bed not successfully completed. It is highly recomended that you complete calibration. Calibration can be automatically performaed during notmal sleep but data collection will be delayed.</string>
+    <string name="dialog_verify_title">Please enter the verification code which\n was sent to %1$s.</string>
+    <string name="dialog_notes_buyRequest">Please Enter The Notes</string>
+    <string name="dialog_logout">Are you sure you want to logout?</string>
+    <string name="dialog_delete">Are you sure you want to delete?</string>
+
+    <!-- Forgot password -->
+    <string name="login_username_hint">Phone number</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_forgotpassword_title">Forgot Password?</string>
+    <string name="login_password_confirm_msg">You will receive an OTP with a temporary password
+        .</string>
+    <string name="login_forgotpassword_enter_phone_number">Enter your phoneNumber and we will send
+        you a one-time password to use in resetting it.</string>
+    <string name="forgot_password_phone_number_hint">Registered Phone number</string>
+
+    <!-- change password -->
+    <string name="changepassword_title">Change Password</string>
+    <string name="changepassword_subtitle">You must change your password for future use.</string>
+    <string name="changepassword_confirmpassword_hint">Confirm Password</string>
+    <string name="changepassword_new_password_hint">Enter new Password</string>
+    <string name="eula_title">End User License Agreement</string>
+
+    <!--Add new Model-->
+    <string name="add_new_submit">SUBMIT</string>
+    <string name="add_new__model_no">Model No</string>
+    <string name="add_new__price">Price </string>
+    <string name="add_new__mrp_price">MRP Price </string>
+    <string name="add_new__batch_no">Batch No</string>
+    <string name="add_new__serial_no">Serial No</string>
+    <string name="add_new__category">Category</string>
+    <string name="add_new__division">Division</string>
+    <string name="add_new__invoiceNumber">InvoiceNumber</string>
+    <string name="add_new__type">Type</string>
+    <string name="add_new_notes">Notes</string>
+
+    <!-- Registration -->
+    <string name="register_userinfo_title">User Information</string>
+    <string name="register_userinfo_subtitle">Please enter information for the person who will be using the app.</string>
+    <string name="register_store_info_title">Store Information</string>
+    <string name="register_store_info_subtitle">Please enter store information</string>
+    <string name="register_name_hint">Name</string>
+    <string name="register_firstname_hint">First Name</string>
+    <string name="register_lastname_hint">Last Name</string>
+    <string name="register_phone_hint">Phone</string>
+    <string name="register_type_hint">Type</string>
+    <string name="register_emailid_hint">Email Address</string>
+    <string name="register_password_hint">Password</string>
+    <string name="register_reenter_password_hint">Re-enter Password</string>
+    <string name="register_patientinfo_title">Person with asthma</string>
+    <string name="register_patientinfo_subtitle">Please enter information for the person with asthma\n who will be monitored.</string>
+    <string name="register_phone_type">Type</string>
+    <string name="register_timezone_hint">Time Zone</string>
+    <string name="register_zipcode_hint">Zip Code</string>
+    <string name="register_dateofbirth_hint">Date of Birth</string>
+    <string name="register_gender_hint">Gender</string>
+    <string name="register_category_hint">Category</string>
+    <string name="register_gstn_hint">GSTN</string>
+    <string name="register_address_hint">Address</string>
+    <string name="register_address1_hint">Address1</string>
+    <string name="register_address2_hint">Address2</string>
+    <string name="register_street_hint">Street</string>
+    <string name="register_state_hint">State</string>
+    <string name="register_country_hint">Country</string>
+    <string name="register_city_hint">City</string>
+    <string name="user_name_hint">Name</string>
+    <string name="user__hint">Name</string>
+    <string name="user_contact_hint">Contact</string>
+    <string name="user_address_hint">Address</string>
+    <string name="register_postalcode_hint">Postal Code</string>
+    <string name="register_verify_email_hint">Verification Code</string>
+    <string name="enter_note">Enter Note</string>
+    <string name="register_hint_password">Minimum 8 characters with least one number</string>
+    <string name="register_why_timezone">Knowing your time zone is important so we can send notifications and schedule phone calls at the right times of day.</string>
+    <string name="register_why_zip_code">The zip code and timezone of the person with asthma and
+        sensor are
+        important for the Tueo Health analytics to function optimally</string>
+    <string name="register_password_hint_unicode">&#9432;</string>
+    <string name="register_timezone_why_unicode">\u003F</string>
+    <string name="validating_code">validating code..</string>
+
+
+    <!--google maps-->
+    <string name="google_map_key">AIzaSyBeSVzykSGfWxZDtPRZoODVFTAFlT73OWE</string>
+
+    <!--History-->
+    <string name="tab_purchased">Purchased</string>
+    <string name="tab_interest">Interest</string>
+    <string name="tab_return">Return</string>
+
+
+    <!--Status-->
+    <string name="tab_new_request">New Request</string>
+    <string name="tab_checkup">Check Up</string>
+    <string name="tab_approval">Approval</string>
+    <string name="tab_repair">Repair</string>
+    <string name="tab_payment">Payment</string>
+    <string name="title_product_name">Product name</string>
+    <string name="title_model_no">Model No</string>
+    <string name="title_complaint">Complaint</string>
+    <string name="title_location">Location</string>
+    <string name="title_attending_date_and_time">Attending date and time</string>
+    <string name="title_warranty_status">Warranty status</string>
+    <string name="title_employee_name">Employee name</string>
+
+
+
+    <string name="hint_warranty_date">Warranty ends on \n %1$s</string>
+
+    <!--Settings -->
+    <string name="title_menu_change_password">Change Password</string>
+    <string name="title_menu_profile">Profile</string>
+    <string name="title_menu_store_settings">Store Settings</string>
+    <string name="title_menu_bill_format">Bill Format</string>
+    <string name="title_menu_store_location_on_map">Store Location On Map</string>
+    <string name="title_menu_contact_details">Contact Details</string>
+    <string name="title_menu_timings">Timings</string>
+    <string name="title_menu_account_settings">Account Settings</string>
+    <string name="title_menu_logout">Logout</string>
+
+
+    <!--Buy Request Screen-->
+    <string name="buy_request_brand">Brand</string>
+    <string name="buy_request_product_image">Product Image</string>
+    <string name="buy_request_product_info">Product Info</string>
+
+    <!--Purchased Screen-->
+    <string name="purchased_brand">Brand</string>
+    <string name="purchased_product_image">Product Image</string>
+    <string name="purchased_product_info">Product Info</string>
+    <string name="purchased_warranty_status_now">Warranty Status Now : </string>
+    <string name="purchased_purchased_date">Purchased Date :</string>
+    <string name="purchased_warranty_covers_date">Warranty Covers :</string>
+    <string name="purchased_warranty_ends_on">"Warranty Ends on :"</string>
+
+    <!--add offers-->
+    <string name="add_offer_brand">Brand</string>
+    <string name="add_offer_price">Price</string>
+    <!-- screen titles -->
+    <string name="title_history">History</string>
+    <string name="title_reports">Reports</string>
+    <string name="title_feedback">FeedBack</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="title_scan">Scan</string>
+    <string name="title_warranty_register">Warranty Registration</string>
+    <string name="title_add_new_model">New Model</string>
+    <string name="title_status">Status</string>
+    <string name="title_report">Report</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_qr_code_scanner">QR Code Scanner</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This phoneNumber address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing phoneNumber
+        completions."
+    </string>
+
+
+    <!-- Change phoneNumber -->
+    <string name="current_password_hint">Current Password</string>
+    <string name="new_emailid_hint">New Email ID</string>
+
+    <!-- Change current password-->
+    <string name="new_password_hint">New Password</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="notification_id_channel">Notification</string>
+
+
+</resources>
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <android.support.design.widget.CoordinatorLayout
+        style="@style/MatchWrap">
+
+        <RelativeLayout
+            android:id="@+id/relative_verify_email"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:background="@drawable/dialog_background"
+            >
+
+            <!-- verify title -->
+            <TextView
+                android:id="@+id/text_checkbox_title"
+                style="@style/BothWrap"
+                fontPath="fonts/OpenSans-Semibold.ttf"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20.5dp"
+                android:gravity="center_horizontal"
+                android:text="@string/register_category_hint"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15.4sp"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_recyclerview"
+                style="@style/MatchWrap"
+                android:layout_above="@+id/include_register_bottom_buttons"
+                android:layout_below="@id/text_checkbox_title"
+                android:layout_marginTop="@dimen/margin_10"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="4dp"
+                android:scrollbarThumbVertical="@drawable/scrollbar"
+                android:scrollbars="vertical"/>
+
+            <!-- layout for bottom buttons -->
+            <include
+                android:id="@+id/include_register_bottom_buttons"
+                layout="@layout/view_registration_bottom_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_alignParentBottom="true"/>
+
+        </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

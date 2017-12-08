@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap"
+    android:background="@drawable/list_ripple_effect"
+    android:padding="20dp">
+    <!-- Icon Right Arrow -->
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/image_right_arrow"
+        style="@style/BothWrap"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/ic_right_arrow_svg"/>
+
+    <TextView
+        android:id="@+id/text_menu_title"
+        style="@style/MatchWrap"
+        android:layout_marginEnd="15dp"
+        android:layout_toLeftOf="@+id/image_right_arrow"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        />
+
+</RelativeLayout>
+

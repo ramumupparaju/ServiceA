@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@android:id/background">
+        <shape>
+            <corners
+                android:radius="90dip" />
+            <gradient
+                android:startColor="@color/topics_completed_progress_background"
+                android:centerColor="@color/topics_completed_progress_background"
+                android:endColor="@color/topics_completed_progress_background" />
+        </shape>
+    </item>
+    <item
+        android:id="@android:id/progress">
+        <scale
+            android:drawable="@drawable/topics_completed_progress_primary"
+            android:scaleWidth="98%" />
+    </item>
+</layer-list>
+

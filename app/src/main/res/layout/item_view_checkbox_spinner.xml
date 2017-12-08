@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.incon.service.dto.dialog.CheckedModelSpinner"/>
+    </data>
+
+    <RelativeLayout
+        style="@style/MatchWrap"
+        android:clickable="true">
+
+        <CheckBox
+            android:id="@+id/checkbox_spinner_format"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin_10"
+            android:checked="@={model.checked}"
+            android:clickable="false"/>
+
+        <TextView
+            android:id="@+id/standard_spinner_format"
+            style="@style/spinnerDropDownItemStyle"
+            android:layout_toLeftOf="@id/checkbox_spinner_format"
+            android:text="@={model.name}"
+            android:textColor="@color/black"
+            />
+
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout style="@style/BothWrap">
+
+        <TextView
+            android:id="@+id/tab_tv"
+            style="@style/style_tab_text" />
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_status"
+        android:icon="@drawable/ic_tab_history"
+        android:title="@string/title_status" />
+
+    <item
+        android:id="@+id/action_reports"
+        android:checked="true"
+        android:icon="@drawable/ic_tab_favorites"
+        android:title="@string/title_reports" />
+
+    <item
+        android:id="@+id/action_feedback"
+        android:icon="@drawable/scan_text_icon"
+        android:title="@string/title_feedback" />
+    <item
+        android:id="@+id/action_notifications"
+        android:icon="@drawable/ic_tab_notifications"
+        android:title="@string/title_notifications" />
+
+</menu>

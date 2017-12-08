@@ -1,0 +1,55 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <data>
+        <variable
+            name="requests"
+            type="com.incon.service.ui.status.fragment.NewRequestsFragment"/>
+    </data>
+
+    <LinearLayout
+        style="@style/BothMatch"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/view_layout"
+            style="@style/BothWrap"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/view_logo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/ic_tab_notifications" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="35dp"
+                android:layout_height="5dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/red" />
+
+        </LinearLayout>
+
+      <!--  <LinearLayout
+
+            style="@style/BothWrap"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/view_tv"
+                style="@style/BothWrap"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/margin_5"
+                android:text="ramu mupparju"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_10" />
+
+        </LinearLayout>-->
+
+
+    </LinearLayout>
+</layout>

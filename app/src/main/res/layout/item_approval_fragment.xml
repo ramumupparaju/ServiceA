@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="productinforesponse"
+            type="com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_return_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_selector"
+        android:padding="@dimen/margin_5">
+
+
+        <RelativeLayout
+            android:id="@+id/views_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/warrenty_icon"
+                style="@style/warranty_status_icon" />
+
+            <ImageView
+                android:id="@+id/brand_imageview"
+                style="@style/image_product_icon" />
+
+            <ImageView
+                android:id="@+id/product_imageview"
+                style="@style/image_product_icon"
+                android:layout_toRightOf="@id/brand_imageview" />
+
+            <LinearLayout
+                android:id="@+id/product_info_layout"
+                style="@style/linear_layout_product_details"
+                android:layout_toRightOf="@id/product_imageview">
+
+                <TextView
+                    style="@style/BothWrap"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:text="@{productinforesponse.productName}"
+                    android:textColor="@color/ebony_clay"
+                    android:textSize="12.4sp" />
+
+
+                <TextView
+                    android:id="@+id/return_date"
+                    style="@style/BothWrap"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:textColor="@color/ebony_clay"
+                    android:textSize="12.4sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>

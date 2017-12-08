@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@color/colorPrimary"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    android:visibility="gone">
+
+    <TextView
+        style="@style/item_list_header_textview"
+        android:text="@string/buy_request_brand" />
+
+    <TextView
+        style="@style/item_list_header_textview"
+        android:text="@string/buy_request_product_image" />
+
+    <TextView
+        style="@style/item_list_header_textview"
+        android:text="@string/buy_request_product_info" />
+
+
+</LinearLayout>

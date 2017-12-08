@@ -1,0 +1,630 @@
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Base application theme. Theme.AppCompat.Light.DarkActionBar -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="textColorError">@color/design_textinput_error_color_light</item>
+
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:splitMotionEvents">false</item>
+    </style>
+
+    <style name="dialog_theme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Custom dialog animation -->
+    <style name="DialogTheme">
+        <item name="android:windowEnterAnimation">@anim/frag_enter</item>
+        <item name="android:windowExitAnimation">@anim/frag_exit</item>
+    </style>
+
+
+    <style name="RatingBar" parent="android:style/Widget.Material.RatingBar">
+        <item name="colorControlNormal">@color/tueo_theme</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+    </style>
+    <!--homescanning activity-->
+
+    <!--text_or-->
+
+
+    <style name="text_or" parent="BothWrap">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">55dp</item>
+        <item name="android:text">@string/action_or</item>
+        <item name="android:layout_alignStart">@+id/text_scanuid</item>
+    </style>
+
+
+    <!--scan_uidtext-->
+
+    <style name="scan_uidtext" parent="BothWrap">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">@dimen/margin_30</item>
+        <item name="android:text">@string/action_scanuid</item>
+    </style>
+
+    <!--ScannerView-->
+
+    <style name="scanner_view">
+        <item name="android:layout_width">@dimen/margin_300</item>
+        <item name="android:layout_height">@dimen/margin_250</item>
+        <item name="android:layout_marginTop">@dimen/margin_150</item>
+        <item name="android:layout_marginLeft">@dimen/margin_32</item>
+    </style>
+
+    <!--Scanner titel-->
+
+    <style name="scanner_titel" parent="BothWrap">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">@dimen/margin_48</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:text">@string/title_qr_code_scanner</item>
+    </style>
+
+
+    <!--scan_image-->
+
+    <style name="scan_image">
+        <item name="android:layout_width">@dimen/margin_150</item>
+        <item name="android:layout_height">@dimen/margin_150</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">@dimen/margin_30</item>
+    </style>
+
+
+    <!--enter_mobilenumber-->
+    <style name="enter_mobilenumber">
+        <item name="android:background">@drawable/bg_edittext</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginTop">@dimen/margin_45</item>
+        <item name="android:textColor">@color/river_bed</item>
+        <item name="android:hint">@string/action_entermobilenumber</item>
+        <item name="android:layout_width">@dimen/margin_250</item>
+        <item name="android:layout_height">@dimen/margin_70</item>
+
+    </style>
+
+    <!--warrenty registation-->
+
+    <!-- cardview_warrenty-->
+
+    <style name="qrcode_warrenty" parent="BothWrap">
+
+    </style>
+
+    <style name="cardview_warrenty" parent="BothMatch">
+        <item name="cardCornerRadius">@dimen/margin_10</item>
+        <item name="cardElevation">@dimen/margin_25</item>
+        <item name="android:layout_marginLeft">@dimen/margin_50</item>
+        <item name="android:layout_marginRight">@dimen/margin_45</item>
+        <item name="android:layout_marginBottom">@dimen/margin_190</item>
+        <item name="android:layout_marginTop">@dimen/margin_180</item>
+    </style>
+
+    <!--text_field-->
+    <style name="text_field" parent="zerowrap">
+        <item name="android:layout_marginLeft">@dimen/margin_10</item>
+        <item name="android:layout_weight">0.5</item>
+
+    </style>
+
+    <!-- edit_field-->
+    <style name="edit_field" parent="zerowrap">
+
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@drawable/bg_edittext</item>
+        <item name="android:layout_marginRight">@dimen/margin_20</item>
+        <item name="android:layout_weight">0.5</item>
+
+    </style>
+
+    <!--model number-->
+
+    <style name="model_number" parent="BothWrap">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/margin_10</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:paddingLeft">@dimen/margin_10</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingStart">@dimen/margin_10</item>
+
+    </style>
+
+    <!-- datepicker dialog theme -->
+    <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <!--warpzero-->
+
+    <!--style wrap_zero-->
+    <style name="Wrapzero">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+    <!--style wrap_wrap-->
+    <style name="zerowrap">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!--style otp_button-->
+    <style name="otp_button">
+        <item name="android:layout_width">@dimen/margin_80</item>
+        <item name="android:layout_height">@dimen/margin_30</item>
+        <item name="android:layout_marginTop">@dimen/margin_20</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@drawable/bg_edittext</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <!--style submit_buttonwh-->
+    <style name="submit_buttonwh">
+        <item name="android:layout_width">@dimen/margin_100</item>
+        <item name="android:layout_height">@dimen/margin_40</item>
+    </style>
+
+    <!--style submit_button-->
+    <style name="submit_button" parent="submit_buttonwh">
+        <item name="android:background">@drawable/submit_button_bg</item>
+        <item name="android:layout_marginTop">@dimen/margin_35</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:text">@string/action_submit</item>
+    </style>
+
+    <!--style match_match-->
+    <style name="BothMatch" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+
+    <!--style Zero_wrap-->
+    <style name="Zero_wrap" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!--style match_match-->
+    <style name="Match_50" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <!--style wrap_wrap-->
+    <style name="BothWrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <!--style 35- 35-->
+    <style name="m35w35">
+        <item name="android:layout_width">@dimen/margin_35</item>
+        <item name="android:layout_height">@dimen/margin_35</item>
+    </style>
+
+    <style name="m50w50">
+        <item name="android:layout_width">@dimen/margin_50</item>
+        <item name="android:layout_height">@dimen/margin_50</item>
+    </style>
+
+    <style name="m75w75">
+        <item name="android:layout_width">@dimen/margin_75</item>
+        <item name="android:layout_height">@dimen/margin_75</item>
+    </style>
+
+    <style name="m100_w100">
+        <item name="android:layout_width">@dimen/margin_100</item>
+        <item name="android:layout_height">@dimen/margin_100</item>
+    </style>
+
+    <style name="Match_w75">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/margin_75</item>
+    </style>
+
+    <style name="Match_w100">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/margin_100</item>
+    </style>
+
+
+    <style name="Match_w150">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/margin_150</item>
+    </style>
+    <!--style match_wrap-->
+    <style name="MatchWrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Match200">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">200dp</item>
+    </style>
+
+    <style name="w150_wrap">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="View_Match">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:paddingLeft">2dp</item>
+    </style>
+
+    <style name="item_list_header_textview">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--style view-->
+    <style name="view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.20005dp</item>
+    </style>
+
+    <!--style wrap_match-->
+    <style name="WrapMatch">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!--style zero_match-->
+    <style name="ZeroMatch">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!--style match_zero-->
+    <style name="MatchZero">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+
+    <style name="TextInputLayout_FloatingTextColor" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!--tool bar styles-->
+    <!--toolbar title-->
+    <style name="style_toolbar_title" parent="@style/BothWrap">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textSize">15.5sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="fontPath">fonts/OpenSans-Bold.ttf</item>
+    </style>
+
+    <!--toolbar back arrow-->
+    <style name="style_toolbar_back_arrow" parent="@style/WrapMatch">
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">25dp</item>
+    </style>
+
+    <!--toolbar schedule call radio buttons-->
+    <style name="style_tools_radio">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/btn_schedule_call_selector</item>
+        <item name="android:button">@android:color/transparent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:paddingTop">@dimen/margin_30</item>
+        <item name="android:paddingBottom">@dimen/margin_30</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/text_schedule_call_selector</item>
+        <item name="android:textSize">13.4sp</item>
+    </style>
+
+    <!-- Add new model -->
+    <style name="Add_new_model_TextInputLayout" parent="@style/MatchWrap">
+        <!--<item name="android:layout_marginTop">5dp</item>-->
+        <item name="android:layout_marginStart">38dp</item>
+        <!-- <item name="android:layout_marginEnd">10dp</item>-->
+        <item name="android:textColorHint">@color/colorForgotPasswordHintText</item>
+    </style>
+
+    <style name="Add_new_model_TextInputEditText" parent="@style/MatchWrap">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorForgotPasswordHintText</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <!--warrenty -->
+
+    <style name="Warrenty_TextInputLayout" parent="@style/MatchWrap">
+        <!--<item name="android:layout_marginTop">5dp</item>-->
+        <item name="android:layout_marginStart">38dp</item>
+        <item name="android:layout_marginEnd">39dp</item>
+        <item name="android:textColorHint">@color/colorForgotPasswordHintText</item>
+    </style>
+
+
+    <!-- barcode-->
+
+
+    <style name="Warrenty_barcode" parent="@style/m50w50">
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_marginEnd">@dimen/margin_10</item>
+        <item name="android:layout_marginTop">@dimen/margin_6</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:paddingTop">@dimen/margin_20</item>
+    </style>
+
+    <!-- Register -->
+    <style name="Register_TextInputLayout" parent="@style/MatchWrap">
+        <!--<item name="android:layout_marginTop">5dp</item>-->
+        <item name="android:layout_marginStart">38dp</item>
+        <item name="android:layout_marginEnd">39dp</item>
+        <item name="android:textColorHint">@color/colorForgotPasswordHintText</item>
+    </style>
+
+    <style name="Register_TextInputEditText" parent="@style/MatchWrap">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorForgotPasswordHintText</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="spinnerDropDownItemStyle" parent="@style/MatchWrap">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorForgotPasswordHintText</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
+    <style name="spinnerItemStyle" parent="@style/Register_TextInputLayout">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorForgotPasswordHintText</item>
+        <item name="android:layout_marginStart">42dp</item>
+        <item name="android:layout_marginEnd">42dp</item>
+    </style>
+
+    <style name="style_card_view" parent="BothMatch">
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">@dimen/margin_3</item>
+        <item name="cardElevation">@dimen/margin_3</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="contentPadding">@dimen/margin_10</item>
+    </style>
+
+    <style name="style_notes_edit_buttons" parent="BothWrap">
+        <item name="android:textColor">@color/scorpion</item>
+        <item name="android:textSize">@dimen/text_size_17</item>
+        <item name="android:padding">@dimen/margin_20</item>
+        <item name="fontPath">fonts/OpenSans-Regular.ttf</item>
+    </style>
+
+    <style name="style_both_wrap_eula_13" parent="BothWrap">
+        <item name="android:textColor">@color/colorEulaMessage</item>
+        <item name="android:textSize">@dimen/text_size_13</item>
+    </style>
+
+    <style name="style_tab_text" parent="BothWrap">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textColor">@color/wild_sand</item>
+        <item name="android:textSize">@dimen/text_size_15</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="style_calendar_events_item_symptom_buttons">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="android:background">@drawable/btn_nevada</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:minWidth">10dp</item>
+        <item name="fontPath">fonts/OpenSans-Medium.ttf</item>
+    </style>
+
+    <style name="style_calendar_events_symptom_delete_buttons" parent="style_calendar_events_item_symptom_buttons">
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+
+    <style name="log_symptoms_severity_buttons">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">38dp</item>
+        <item name="android:textColor">@color/text_river_bed_white_selected</item>
+        <item name="android:textSize">@dimen/text_size_13</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:minWidth">10dp</item>
+        <item name="android:minHeight">10dp</item>
+        <item name="android:button">@android:color/transparent</item>
+        <item name="fontPath">fonts/OpenSans-Regular.ttf</item>
+    </style>
+
+    <style name="log_symptoms_symptom_buttons">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/text_rolling_stone_white_selected</item>
+        <item name="android:textSize">@dimen/text_size_13</item>
+        <item name="android:background">@drawable/btn_nevada_selector</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:minWidth">10dp</item>
+        <item name="android:minHeight">10dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="fontPath">fonts/OpenSans-Medium.ttf</item>
+    </style>
+
+    <style name="style_submit_button" parent="MatchWrap">
+        <item name="android:textSize">@dimen/text_size_18</item>
+        <item name="android:layout_marginTop">@dimen/margin_20</item>
+        <item name="android:layout_marginBottom">@dimen/margin_20</item>
+        <item name="android:background">@drawable/btn_blue_selector</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:padding">@dimen/margin_5</item>
+    </style>
+
+    <style name="AlertsTerminalCardView" parent="MatchWrap">
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">2dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
+    <style name="AlertsCalendarCardView" parent="MatchWrap">
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">2dp</item>
+        <item name="cardElevation">10dp</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
+    <style name="TopicsCompletedProgressBar" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/topics_completed_progress_bar</item>
+        <item name="android:minHeight">10dp</item>
+        <item name="android:maxHeight">20dp</item>
+    </style>
+
+    <style name="LearningRecommendationCardView" parent="BothWrap">
+        <item name="android:layout_width">112dp</item>
+        <item name="android:layout_height">158dp</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">2dp</item>
+        <item name="cardElevation">5dp</item>
+        <item name="cardUseCompatPadding">false</item>
+    </style>
+
+
+    <style name="WindowTitleBackground">
+        <item name="android:background">#FF3FB3C4</item>
+    </style>
+
+    <style name="SwitchText">
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">17dp</item>
+    </style>
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <!-- Menu TextInputLayout-->
+    <style name="Menu_TextInputLayout" parent="@style/MatchWrap">
+        <!--<item name="android:layout_marginTop">5dp</item>-->
+        <item name="android:textColorHint">@color/colorForgotPasswordHintText</item>
+    </style>
+
+    <style name="Menu_TextInputEditText" parent="@style/MatchWrap">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="menuSpinnerItemStyle" parent="@style/Menu_TextInputLayout">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorForgotPasswordHintText</item>
+        <item name="android:layout_marginStart">42dp</item>
+        <item name="android:layout_marginEnd">42dp</item>
+    </style>
+
+    <style name="ViewSensorInfoStype" parent="@style/BothWrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/wild_sand</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="bill_header_text_view" parent="@style/MatchWrap">
+        <item name="android:background">@color/text_color</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_15</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="bill_header_right_text_view" parent="@style/BothWrap">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_13</item>
+        <item name="android:layout_marginTop">@dimen/margin_9</item>
+        <item name="android:layout_marginLeft">@dimen/margin_10</item>
+    </style>
+
+    <style name="bill_header_linear_layout" parent="@style/BothWrap">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="bill_header_left_text_view" parent="@style/bill_header_right_text_view">
+        <item name="android:layout_marginLeft">@dimen/margin_0</item>
+    </style>
+
+    <style name="hint_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="warranty_status_icon">
+        <item name="android:layout_width">4dp</item>
+        <item name="android:layout_height">4dp</item>
+    </style>
+
+    <style name="image_product_icon">
+
+        <item name="android:layout_width">75dp</item>
+        <item name="android:layout_height">75dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <style name="linear_layout_product_details" parent="BothWrap">
+        <item name="android:layout_gravity">left</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
+</resources>

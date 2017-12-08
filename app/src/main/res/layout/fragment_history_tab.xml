@@ -1,0 +1,81 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/search_layout"
+        layout="@layout/search_ui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_container"
+        style="@style/MatchWrap"
+        android:layout_below="@id/search_layout">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            style="@style/MatchWrap"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                style="@style/MatchWrap"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/appbar"
+                    app:layout_collapseMode="parallax">
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tab_layout"
+                        style="@style/MatchWrap"
+                        android:layout_gravity="fill"
+                        android:background="@color/colorPrimaryDark"
+                        android:fillViewport="true"
+                        android:minHeight="?attr/actionBarSize"
+                        app:tabIndicatorHeight="@dimen/margin_5"
+                        android:theme="@style/AppTheme"
+                        app:tabIndicatorColor="@color/white"
+                        app:tabMode="fixed"
+                        app:tabSelectedTextColor="@color/white"
+                        app:tabTextColor="@color/white"/>
+
+                    <include
+                        layout="@layout/item_list_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tab_layout"/>
+                </RelativeLayout>
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/appbar"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <com.incon.service.custom.view.CustomViewPager
+                android:id="@+id/view_pager"
+                style="@style/BothMatch"
+                app:swipeable="false"
+                app:tabGravity="fill"
+                app:tabMode="fixed">
+
+            </com.incon.service.custom.view.CustomViewPager>
+
+        </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+    </RelativeLayout>
+</layout>

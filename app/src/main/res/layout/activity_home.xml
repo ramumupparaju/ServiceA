@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="activity"
+            type="com.incon.service.ui.home.HomeActivity"/>
+    </data>
+    <RelativeLayout
+        style="@style/BothMatch">
+       <!-- <RelativeLayout
+            android:id="@+id/relative_scanactivity"
+            android:layout_above="@+id/bottom_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/activity_home_scan"/>
+
+        </RelativeLayout>-->
+
+        <RelativeLayout
+            android:id="@+id/relative_toolbarandcontainer"
+            android:layout_above="@+id/bottom_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!-- Tool bar Container-->
+            <FrameLayout
+                android:id="@+id/container_toolbar"
+                style="@style/MatchWrap"
+                android:layout_height="?attr/actionBarSize"
+                >
+            </FrameLayout>
+            <!-- Content Container -->
+            <FrameLayout
+                android:id="@+id/container"
+                style="@style/BothMatch"
+                android:background="@color/colorAccent"
+                android:layout_below="@id/container_toolbar">
+            </FrameLayout>
+
+
+        </RelativeLayout>
+
+
+        <!-- Bottom Navigation view -->
+        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+            android:id="@+id/bottom_navigation_view"
+            style="@style/MatchWrap"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            app:itemIconTint="@color/nav_item_selector_color"
+            app:itemTextColor="@color/nav_item_selector_color"
+            app:menu="@menu/menu_bottom_navigation" />
+
+
+
+    </RelativeLayout>
+
+</layout>

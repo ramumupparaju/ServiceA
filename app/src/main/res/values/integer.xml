@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="splash_delay">3000</integer>
+    <integer name="frag_transition_time">200</integer>
+
+    <integer name="character_limit_1">1</integer>
+    <integer name="character_limit_11">11</integer>
+    <integer name="character_limit_45">45</integer>
+    <integer name="character_limit_100">100</integer>
+    <integer name="character_limit_200">200</integer>
+    <integer name="character_limit_500">500</integer>
+    <integer name="character_limit_600">600</integer>
+    <integer name="phone_number_length">10</integer>
+</resources>

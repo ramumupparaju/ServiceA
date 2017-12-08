@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/relative_forgot_buttons_root"
+        style="@style/MatchWrap">
+
+        <!-- layout for bottom buttons -->
+        <LinearLayout
+            android:id="@+id/linear_forgot_buttons"
+            style="@style/MatchWrap"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/button_left"
+                style="@style/BothMatch"
+                fontPath="fonts/OpenSans-Bold.ttf"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/btn_ripple_effect"
+                android:letterSpacing="0.07"
+                android:text=""
+                android:textAllCaps="false"
+                android:textColor="@color/colorForgotPasswordButtonText"
+                android:textSize="13.4sp"/>
+
+            <!-- line center to buttons -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="44.2dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/colorLine">
+            </View>
+
+            <Button
+                android:id="@+id/button_right"
+                style="@style/BothMatch"
+                fontPath="fonts/OpenSans-Bold.ttf"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/btn_ripple_effect"
+                android:letterSpacing="0.07"
+                android:text=""
+                android:textAllCaps="false"
+                android:textColor="@color/colorForgotPasswordButtonText"
+                android:textSize="13.4sp"/>
+
+        </LinearLayout>
+
+        <!-- line above bottom buttons -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/linear_forgot_buttons"
+            android:background="@color/colorLine">
+        </View>
+
+    </RelativeLayout>
+
+</layout>
+

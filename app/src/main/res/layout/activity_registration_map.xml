@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="address"
+            type="android.location.Address"/>
+
+        <variable
+            name="addressActivity"
+            type="com.incon.service.ui.RegistrationMapActivity"/>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/map_view"
+        style="@style/BothMatch"
+        android:layout_marginTop="@dimen/margin_10">
+        <!-- Pincode -->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_pincode_layout"
+            style="@style/MatchWrap"
+            android:hint="@string/register_postalcode_hint"
+            android:textColorHint="@color/colorForgotPasswordHintText"
+            app:errorEnabled="true"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_pincode"
+                style="@style/MatchWrap"
+                fontPath="fonts/OpenSans-Regular.ttf"
+                android:imeOptions="actionNext"
+                android:inputType="numberSigned"
+                android:maxLines="1"
+                android:text="@{address.getPostalCode()}"
+                android:textColor="@color/colorForgotPasswordHintText"
+                android:textSize="14sp"/>
+        </com.incon.service.custom.view.CustomTextInputLayout>
+
+        <!-- city -->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_city_layout"
+            style="@style/MatchWrap"
+            android:layout_below="@id/input_pincode_layout"
+            android:hint="@string/register_city_hint"
+            android:textColorHint="@color/colorForgotPasswordHintText"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_city"
+                style="@style/MatchWrap"
+                fontPath="fonts/OpenSans-Regular.ttf"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:text="@{address.getLocality()}"
+                android:textColor="@color/colorForgotPasswordHintText"
+                android:textSize="14sp"/>
+        </com.incon.service.custom.view.CustomTextInputLayout>
+
+        <!-- State -->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_state_layout"
+            style="@style/MatchWrap"
+            android:layout_below="@id/input_city_layout"
+            android:hint="@string/register_state_hint"
+            android:textColorHint="@color/colorForgotPasswordHintText"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_state"
+                style="@style/MatchWrap"
+                fontPath="fonts/OpenSans-Regular.ttf"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:text="@{address.getAdminArea()}"
+                android:textColor="@color/colorForgotPasswordHintText"
+                android:textSize="14sp"/>
+        </com.incon.service.custom.view.CustomTextInputLayout>
+
+        <!-- Country -->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_country_layout"
+            style="@style/MatchWrap"
+            android:layout_below="@id/input_state_layout"
+            android:hint="@string/register_country_hint"
+            android:textColorHint="@color/colorForgotPasswordHintText"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_country"
+                style="@style/MatchWrap"
+                fontPath="fonts/OpenSans-Regular.ttf"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:text="@{address.getCountryName()}"
+                android:textColor="@color/colorForgotPasswordHintText"
+                android:textSize="14sp"/>
+        </com.incon.service.custom.view.CustomTextInputLayout>
+
+        <fragment
+            android:id="@+id/map_monitor"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            style="@style/BothMatch"
+            android:layout_below="@+id/input_country_layout"/>
+
+        <!-- Register button -->
+        <Button
+            android:id="@+id/button_ok"
+            style="@style/MatchWrap"
+            fontPath="fonts/OpenSans-Bold.ttf"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/margin_24"
+            android:background="@drawable/btn_login_register_roundedcorner"
+            android:text="@string/action_registration"
+            android:onClick="@{() -> addressActivity.onOkClick()}"
+            android:textAllCaps="true"
+            android:textColor="@color/tueo_theme"
+            android:textSize="@dimen/text_size_13"/>
+    </RelativeLayout>
+</layout>
