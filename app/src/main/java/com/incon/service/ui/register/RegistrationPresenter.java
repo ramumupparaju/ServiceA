@@ -32,6 +32,7 @@ public class RegistrationPresenter extends BasePresenter<RegistrationContract.Vi
     /**
      * Uploading defaults data for registration
      */
+    //default api implemenatation
     @Override
     public void defaultsApi() {
         getView().showProgress(appContext.getString(R.string.progress_defaults));

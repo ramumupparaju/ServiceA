@@ -7,9 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-import com.android.databinding.library.baseAdapters.BR;
 import com.incon.service.AppConstants;
+import com.incon.service.BR;
 import com.incon.service.R;
 import com.incon.service.databinding.ItemViewCheckboxSpinnerBinding;
 import com.incon.service.dto.dialog.CheckedModelSpinner;

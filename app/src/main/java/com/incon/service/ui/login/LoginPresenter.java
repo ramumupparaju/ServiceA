@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Pair;
 
-
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
@@ -13,8 +12,8 @@ import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResp
 import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.login.LoginDataManagerImpl;
 import com.incon.service.ui.BasePresenter;
-import com.incon.service.ui.register.fragment.RegistrationUserFragmentContract;
-import com.incon.service.ui.register.fragment.RegistrationUserFragmentPresenter;
+import com.incon.service.ui.register.fragment.RegistrationStoreFragmentContract;
+import com.incon.service.ui.register.fragment.RegistrationStoreFragmentPresenter;
 import com.incon.service.ui.validateotp.ValidateOtpContract;
 import com.incon.service.ui.validateotp.ValidateOtpPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
@@ -37,7 +36,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         loginDataManagerImpl = new LoginDataManagerImpl();
     }
 
-    // login implemenatation
+    // login api implemenatation
     @Override
     public void doLogin(LoginUserData loginUserData) {
         getView().showProgress(appContext.getString(R.string.progress_login));
@@ -65,7 +64,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         addDisposable(observer);
     }
 
-    // validate otp implemenatation
+    //validate otp implemenatation
     @Override
     public void validateOTP(HashMap<String, String> verify) {
         getView().showProgress(appContext.getString(R.string.validating_code));
@@ -75,55 +74,59 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         otpPresenter.validateOTP(verify);
     }
 
+    //registration request Otp implemenatation
     @Override
     public void registerRequestOtp(String phoneNumber) {
-        RegistrationUserFragmentPresenter registrationUserFragmentPresenter =
-                new RegistrationUserFragmentPresenter();
-        registrationUserFragmentPresenter.initialize(null);
-        registrationUserFragmentPresenter.setView(registrationView);
-        registrationUserFragmentPresenter.registerRequestOtp(phoneNumber);
+        RegistrationStoreFragmentPresenter registrationStoreFragmentPresenter =
+                new RegistrationStoreFragmentPresenter();
+        registrationStoreFragmentPresenter.initialize(null);
+        registrationStoreFragmentPresenter.setView(registrationView);
+        registrationStoreFragmentPresenter.registerRequestOtp(phoneNumber);
     }
 
-    RegistrationUserFragmentContract.View registrationView = new RegistrationUserFragmentContract
-            .View() {
+    RegistrationStoreFragmentContract.View registrationView =
+            new RegistrationStoreFragmentContract.View() {
 
-        @Override
-        public void navigateToRegistrationActivityNext() {
-            //DO nothing
-        }
+                @Override
+                public void navigateToRegistrationActivityNext() {
+                    //DO nothing
+                }
 
-        @Override
-        public void navigateToHomeScreen() {
-            //DO nothing
-        }
+                @Override
+                public void navigateToHomeScreen() {
+                    //DO nothing
+                }
 
-        @Override
-        public void validateOTP() {
-            //DO nothing
-        }
+                @Override
+                public void uploadStoreLogo(int storeId) {
+                    //DO nothing
+                }
 
-        @Override
-        public void showProgress(String message) {
+                @Override
+                public void validateOTP() {
+                    //DO nothing
+                }
 
-        }
+                @Override
+                public void showProgress(String message) {
+                    getView().showProgress(message);
+                }
 
-        @Override
-        public void hideProgress() {
+                @Override
+                public void hideProgress() {
+                    getView().hideProgress();
+                }
 
-        }
+                @Override
+                public void showErrorMessage(String errorMessage) {
+                    getView().showErrorMessage(errorMessage);
+                }
 
-        @Override
-        public void showErrorMessage(String errorMessage) {
-            getView().showErrorMessage(errorMessage);
-
-        }
-
-        @Override
-        public void handleException(Pair<Integer, String> error) {
-            getView().handleException(error);
-
-        }
-    };
+                @Override
+                public void handleException(Pair<Integer, String> error) {
+                    getView().handleException(error);
+                }
+            };
 
     ValidateOtpContract.View otpView = new ValidateOtpContract.View() {
         @Override

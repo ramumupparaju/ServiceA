@@ -196,6 +196,18 @@ public interface AppConstants {
         String USER_PASSWORD = "userPassword";
         String USER_CONFIRM_PASSWORD = "userConfirmPassword";
         String USER_UUID = "uuid";
+        String STORE_ID = "storeId";
+        String STORE_NAME = "storeName";
+        String STORE_EMAIL_ID = "storeEmailId";
+        String STORE_PHONE_NUMBER = "storePhoneNumber";
+        String STORE_LOGO = "storeLogo";
+        String STORE_GSTN = "storeGstn";
+        String STORE_ADDRESS = "storeAddress";
+        String STORE_LOCATION = "storeLocation";
+        String STORE_CITY = "storeCity";
+        String STORE_STATE = "storeState";
+        String STORE_POSTAL_CODE = "storePostalCode";
+        String STORE_CATEGORY_NAME = "StoreCategoryName";
 
 
         String IS_REGISTERED = "isRegistered";
@@ -299,8 +311,8 @@ public interface AppConstants {
 
     interface MenuConstants {
         int PROFILE = 0;
-        int CHANGE_PWD = 1;
-        int BILLFORMAT = 2;
+        int STORESETTINGS = 1;
+        int CHANGE_PWD = 2;
         int TIMEINGS = 3;
         int CONTACTDETAILS = 4;
         int LOGOUT = 5;

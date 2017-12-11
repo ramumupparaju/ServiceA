@@ -20,77 +20,51 @@ import static com.incon.service.AppConstants.VALIDATION_SUCCESS;
 
 public class Registration extends BaseObservable {
 
-    @SerializedName("address")
+
+    private String name;
+    @SerializedName("mobileNumber")
     @Expose
-    private String address;
-    @SerializedName("country")
+    private String phoneNumber;
+    @SerializedName("userEmail")
     @Expose
-    private String country;
-    @SerializedName("dob")
-    @Expose
-    private String dob;
-    @SerializedName("email")
-    @Expose
-    private String email;
+    private String emailId;
+    private String password;
+    private transient String confirmPassword;
     @SerializedName("gender")
     @Expose
     private String genderType;
+    private String dob;
+    private transient String dateOfBirthToShow;
+    @SerializedName("address")
+    @Expose
+    private String userAddress;
     @SerializedName("location")
     @Expose
-    private String location;
-    @SerializedName("mobileNumber")
+    private String userLocation;
+
+    //Store details
+    private String storeName;
+    private String storeEmail;
+    private String storeCategoryNames;
+    @SerializedName("storeCategory")
     @Expose
-    private String mobileNumber;
-    @SerializedName("name")
+    private String storeCategoryIds;
+    private String storeLocation;
+    private String storeLogo;
+    private String storeAddress;
+    @SerializedName("gstn")
     @Expose
-    private String name;
-    @SerializedName("password")
+    private String storeGSTN;
+    @SerializedName("contactNumber")
     @Expose
-    private String password;
+    private String storePhoneNumber;
 
-    private String confirmPassword;
-
-    private transient String dateOfBirthToShow;
-
-    public String getConfirmPassword() {
-        return confirmPassword;
+    public String getUserLocation() {
+        return userLocation;
     }
 
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserLocation(String userLocation) {
+        this.userLocation = userLocation;
     }
 
     @Bindable
@@ -103,38 +77,73 @@ public class Registration extends BaseObservable {
         notifyChange();
     }
 
-    public String getLocation() {
-        return location;
+    @Bindable
+    public String getConfirmPassword() {
+        return confirmPassword;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+        notifyChange();
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
+    @Bindable
+    public String getUserAddress() {
+        return userAddress;
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+        notifyChange();
     }
 
+    @Bindable
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+        notifyChange();
     }
 
+    @Bindable
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        notifyChange();
+    }
+
+    @Bindable
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+        notifyChange();
+    }
+
+    @Bindable
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+        notifyChange();
     }
 
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
 
     @Bindable
     public String getDateOfBirthToShow() {
@@ -177,10 +186,10 @@ public class Registration extends BaseObservable {
                 break;
 
             case 1:
-                boolean phoneEmpty = TextUtils.isEmpty(getMobileNumber());
+                boolean phoneEmpty = TextUtils.isEmpty(getPhoneNumber());
                 if (emptyValidation && phoneEmpty) {
                     return AppConstants.RegistrationValidation.PHONE_REQ;
-                } else if (!phoneEmpty && !ValidationUtils.isPhoneNumberValid(getMobileNumber())) {
+                } else if (!phoneEmpty && !ValidationUtils.isPhoneNumberValid(getPhoneNumber())) {
                     return AppConstants.RegistrationValidation.PHONE_MIN_DIGITS;
                 }
                 break;
@@ -202,10 +211,10 @@ public class Registration extends BaseObservable {
                 break;
 
             case 4:
-                boolean emailEmpty = TextUtils.isEmpty(getEmail());
+                boolean emailEmpty = TextUtils.isEmpty(getEmailId());
                 if (emptyValidation && emailEmpty) {
                     return AppConstants.RegistrationValidation.EMAIL_REQ;
-                } else if (!emailEmpty && !ValidationUtils.isValidEmail(getEmail())) {
+                } else if (!emailEmpty && !ValidationUtils.isValidEmail(getEmailId())) {
                     return AppConstants.RegistrationValidation.EMAIL_NOTVALID;
                 }
                 break;
@@ -236,7 +245,7 @@ public class Registration extends BaseObservable {
                 break;
 
             case 7:
-                boolean userAddress = TextUtils.isEmpty(getAddress());
+                boolean userAddress = TextUtils.isEmpty(getUserAddress());
                 if (emptyValidation && userAddress) {
                     return AppConstants.RegistrationValidation.ADDRESS_REQ;
                 }
@@ -261,6 +270,161 @@ public class Registration extends BaseObservable {
         int returnedYear = ValidationUtils.calculateAge(dobDate);
         if (returnedYear < AppConstants.AgeConstants.USER_DOB) {
             return DOB_PERSON_LIMIT;
+        }
+        return VALIDATION_SUCCESS;
+    }
+
+    // store details
+    @Bindable
+    public String getStoreEmail() {
+        return storeEmail;
+    }
+
+    public void setStoreEmail(String storeEmail) {
+        this.storeEmail = storeEmail;
+        notifyChange();
+    }
+
+    @Bindable
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    @Bindable
+    public String getStoreCategoryNames() {
+        return storeCategoryNames;
+    }
+
+    public void setStoreCategoryNames(String storeCategoryNames) {
+        this.storeCategoryNames = storeCategoryNames;
+    }
+
+    public String getStoreCategoryIds() {
+        return storeCategoryIds;
+    }
+
+    public void setStoreCategoryIds(String storeCategoryIds) {
+        this.storeCategoryIds = storeCategoryIds;
+    }
+
+    public String getStoreLocation() {
+        return storeLocation;
+    }
+
+    public void setStoreLocation(String storeLocation) {
+        this.storeLocation = storeLocation;
+    }
+
+    @Bindable
+    public String getStoreLogo() {
+        return storeLogo;
+    }
+
+    public void setStoreLogo(String storeLogo) {
+        this.storeLogo = storeLogo;
+    }
+
+    @Bindable
+    public String getStoreAddress() {
+        return storeAddress;
+    }
+
+    public void setStoreAddress(String storeAddress) {
+        this.storeAddress = storeAddress;
+        notifyChange();
+    }
+
+    @Bindable
+    public String getStoreGSTN() {
+        return storeGSTN;
+    }
+
+    public void setStoreGSTN(String storeGSTN) {
+        this.storeGSTN = storeGSTN;
+    }
+
+    @Bindable
+    public String getStorePhoneNumber() {
+        return storePhoneNumber;
+    }
+
+    public void setStorePhoneNumber(String storePhoneNumber) {
+        this.storePhoneNumber = storePhoneNumber;
+    }
+
+
+    public Pair<String, Integer> validateStoreInfo(String tag) {
+
+        int fieldId = AppConstants.VALIDATION_FAILURE;
+        if (tag == null) {
+            for (int i = 0; i <= 5; i++) {
+                fieldId = validateStoreFields(i, true);
+                if (fieldId != VALIDATION_SUCCESS) {
+                    tag = i + "";
+                    break;
+                }
+            }
+        } else {
+            fieldId = validateStoreFields(Integer.parseInt(tag), false);
+        }
+
+        return new Pair<>(tag, fieldId);
+    }
+
+    private int validateStoreFields(int id, boolean emptyValidation) {
+        switch (id) {
+            case 0:
+                if (emptyValidation && TextUtils.isEmpty(getStoreName())) {
+                    return AppConstants.RegistrationValidation.NAME_REQ;
+                }
+                break;
+
+            case 1:
+                boolean phoneEmpty = TextUtils.isEmpty(getStorePhoneNumber());
+                if (emptyValidation && phoneEmpty) {
+                    return AppConstants.RegistrationValidation.PHONE_REQ;
+                } else if (!phoneEmpty && !ValidationUtils.isPhoneNumberValid(
+                        getStorePhoneNumber())) {
+                    return AppConstants.RegistrationValidation.PHONE_MIN_DIGITS;
+                }
+                break;
+
+            case 2:
+                boolean storeCategory = TextUtils.isEmpty(getStoreCategoryNames());
+                if (emptyValidation && storeCategory) {
+                    return AppConstants.RegistrationValidation.CATEGORY_REQ;
+                }
+                break;
+
+            case 3:
+                boolean storeAddress = TextUtils.isEmpty(getStoreAddress());
+                if (emptyValidation && storeAddress) {
+                    return AppConstants.RegistrationValidation.ADDRESS_REQ;
+                }
+                break;
+
+            case 4:
+                boolean emailEmpty = TextUtils.isEmpty(getStoreEmail());
+                if (emptyValidation && emailEmpty) {
+                    return AppConstants.RegistrationValidation.EMAIL_REQ;
+                } else if (!emailEmpty && !ValidationUtils.isValidEmail(getStoreEmail())) {
+                    return AppConstants.RegistrationValidation.EMAIL_NOTVALID;
+                }
+                break;
+
+            case 5:
+                boolean storeGstn = TextUtils.isEmpty(getStoreGSTN());
+                if (emptyValidation && storeGstn) {
+                    return AppConstants.RegistrationValidation.GSTN_REQ;
+                }
+                break;
+
+            default:
+                return VALIDATION_SUCCESS;
         }
         return VALIDATION_SUCCESS;
     }

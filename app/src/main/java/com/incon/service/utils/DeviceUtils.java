@@ -4,16 +4,14 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-
 import com.incon.service.ConnectApplication;
 
 import java.util.UUID;
 
 public class DeviceUtils {
 
-    public static float convertDpToPx(float valueInDp) {
-        DisplayMetrics metrics = ConnectApplication.getAppContext().
-                getResources().getDisplayMetrics();
+    public static float dpToPx(Context context, float valueInDp) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
     }
 

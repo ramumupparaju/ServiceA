@@ -102,7 +102,7 @@
                         android:maxLength="@integer/character_limit_45"
                         android:maxLines="1"
                         android:tag="1"
-                        android:text="@={register.mobileNumber}" />
+                        android:text="@={register.phoneNumber}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!-- Gender -->
@@ -169,7 +169,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="4"
-                        android:text="@={register.email}" />
+                        android:text="@={register.emailId}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!-- Password -->
@@ -234,7 +234,7 @@
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
                         android:tag="7"
-                        android:text="@={register.address}" />
+                        android:text="@={register.userAddress}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
 
@@ -248,6 +248,7 @@
                     android:layout_alignStart="@+id/input_layout_register_address"
                     android:layout_alignTop="@+id/input_layout_register_address"
                     android:background="@null"
+                    android:onClick="@{() -> userFragment.onAddressClick()}"
                     />
 
             </RelativeLayout>

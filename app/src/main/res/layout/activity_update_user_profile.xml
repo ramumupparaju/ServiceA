@@ -123,7 +123,7 @@
                     android:maxLength="@integer/character_limit_45"
                     android:maxLines="1"
                     android:tag="1"
-                    android:text="@={upDateUserProfile.mobileNumber}"/>
+                    android:text="@={upDateUserProfile.phoneNumber}"/>
             </com.incon.service.custom.view.CustomTextInputLayout>
 
             <!-- Gender -->
@@ -201,7 +201,7 @@
                     android:focusable="@{isEditable ? true : false }"
                     android:focusableInTouchMode="@{isEditable ? true : false }"
                     android:tag="4"
-                    android:text="@={upDateUserProfile.email}"
+                    android:text="@={upDateUserProfile.userEmail}"
                     />
             </com.incon.service.custom.view.CustomTextInputLayout>
 
