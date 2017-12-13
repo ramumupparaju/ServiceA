@@ -19,7 +19,6 @@ import com.incon.service.databinding.ToolBarBinding;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.feedback.FeedbackFragment;
-import com.incon.service.ui.notifications.fragment.NotificationsFragment;
 import com.incon.service.ui.reports.ReportsFragment;
 import com.incon.service.ui.settings.SettingsActivity;
 import com.incon.service.ui.status.StatusTabFragment;
@@ -34,7 +33,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     private static final int TAB_Status = 0;
     private static final int TAB_Reports = 1;
     private static final int TAB_FeedBack = 2;
-    private static final int TAB_NOTIFICATIONS = 3;
 
     private View rootView;
     private HomePresenter homePresenter;
@@ -161,10 +159,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                 aClass = FeedbackFragment.class;
                 break;
 
-            case R.id.action_notifications:
-                aClass = NotificationsFragment.class;
-                break;
-
             default:
                 break;
         }
@@ -185,7 +179,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                     public void onGlobalLayout() {
                         int heightDiff = rootView.getRootView().getHeight() - rootView.getHeight();
                         binding.bottomNavigationView.setVisibility(View.VISIBLE);
-                        if (heightDiff > DeviceUtils.convertDpToPx(200)) {
+                        if (heightDiff > DeviceUtils.dpToPx(HomeActivity.this, 200)) {
                             // if more than 200 dp, it's probably a keyboard...
                             binding.bottomNavigationView.setVisibility(View.GONE);
                         }

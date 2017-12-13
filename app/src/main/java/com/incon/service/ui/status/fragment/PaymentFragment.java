@@ -17,13 +17,10 @@ import android.widget.TextView;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.databinding.BottomSheetCheckupFragmentBinding;
 import com.incon.service.databinding.BottomSheetNewPaymentFragmentBinding;
 import com.incon.service.databinding.CustomBottomViewBinding;
-import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.databinding.FragmentPaymentBinding;
 import com.incon.service.ui.BaseFragment;
-import com.incon.service.ui.status.adapter.CheckUpAdapter;
 import com.incon.service.ui.status.adapter.PaymentAdapter;
 import com.incon.service.utils.SharedPrefsUtils;
 

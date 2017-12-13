@@ -149,7 +149,7 @@ public class UpDateUserProfileActivity extends BaseActivity implements
 
         upDateUserProfile.setName(sharedPrefsUtils.getStringPreference(USER_NAME));
 
-        upDateUserProfile.setMobileNumber(sharedPrefsUtils.getStringPreference(
+        upDateUserProfile.setPhoneNumber(sharedPrefsUtils.getStringPreference(
                 USER_PHONE_NUMBER));
 
         upDateUserProfile.setGender(sharedPrefsUtils.getStringPreference(

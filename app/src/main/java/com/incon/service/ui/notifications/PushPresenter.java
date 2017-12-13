@@ -29,7 +29,6 @@ public class PushPresenter extends BasePresenter<PushContract.View> implements
 
     @Override
     public void pushRegisterApi() {
-
         int userId = SharedPrefsUtils.loginProvider()
                 .getIntegerPreference(AppConstants.LoginPrefs.USER_ID, AppConstants.DEFAULT_VALUE);
         if (userId == AppConstants.DEFAULT_VALUE) {
@@ -63,7 +62,7 @@ public class PushPresenter extends BasePresenter<PushContract.View> implements
                     }
                 };
 
-        AppApiService.getInstance().pushTokenApi(userId, pushRegistrarBody).subscribe(observer);
+        AppApiService.getInstance().pushTokenApi(pushRegistrarBody).subscribe(observer);
         addDisposable(observer);
     }
 

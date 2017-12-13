@@ -5,7 +5,6 @@ import com.incon.service.AppConstants;
 import com.incon.service.BuildConfig;
 import com.incon.service.apimodel.base.ApiBaseResponse;
 import com.incon.service.apimodel.components.defaults.DefaultsResponse;
-import com.incon.service.apimodel.components.favorites.AddUserAddressResponse;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
@@ -14,11 +13,11 @@ import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
-import com.incon.service.dto.addfavorites.AddUserAddress;
 import com.incon.service.dto.asignqrcode.AssignQrCode;
 import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
 import com.incon.service.dto.registration.Registration;
+import com.incon.service.dto.update.UpDateStoreProfile;
 import com.incon.service.dto.update.UpDateUserProfile;
 import com.incon.service.utils.NetworkUtil;
 
@@ -28,6 +27,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MultipartBody;
 
 public class AppApiService implements AppConstants {
 
@@ -92,8 +92,14 @@ public class AppApiService implements AppConstants {
 
     // user profile update api
     public Observable<LoginResponse> upDateUserProfile(
-            int userId, UpDateUserProfile upDateUserProfile) {
-        return addNetworkCheck(serviceInstance.upDateUserProfile(userId, upDateUserProfile));
+            int merchantId, UpDateUserProfile upDateUserProfile) {
+        return addNetworkCheck(serviceInstance.upDateUserProfile(merchantId, upDateUserProfile));
+    }
+
+    // store profile update api
+    public Observable<LoginResponse> upDateStoreProfile(
+            int merchantId, UpDateStoreProfile upDateStoreProfile) {
+        return addNetworkCheck(serviceInstance.upDateStoreProfile(merchantId, upDateStoreProfile));
     }
 
     //registration request otp
@@ -104,6 +110,11 @@ public class AppApiService implements AppConstants {
     //registration request password otp
     public Observable<Object> registerRequestPasswordOtp(String phoneNumber) {
         return addNetworkCheck(serviceInstance.registerRequestPasswordOtp(phoneNumber));
+    }
+
+    // store id  api
+    public Observable<Object> uploadStoreLogo(int storeId, MultipartBody.Part storeLogo) {
+        return addNetworkCheck(serviceInstance.uploadStoreLogo(String.valueOf(storeId), storeLogo));
     }
 
     public Observable<SendOtpResponse> sendOtp(HashMap<String, String> email) {
@@ -130,58 +141,41 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.purchasedApi(userId));
     }
 
-    // add favourites  api
-    public Observable<Object> addToFavotites(HashMap<String, String> favoriteMap) {
-        return addNetworkCheck(serviceInstance.addToFavotites(favoriteMap));
+    //return product api
+    public Observable<Object> returnProductApi(int userId, int customerId) {
+        return addNetworkCheck(serviceInstance.returnProductApi(userId, customerId));
     }
 
-    // add favourites  api
-    public Observable<Object> deleteProduct(int warrantyId) {
-        return addNetworkCheck(serviceInstance.deleteProduct(warrantyId));
-    }
-    //add product to interest api
+    //interested history  api
     public Observable<List<ProductInfoResponse>> interestApi(int userId) {
         return addNetworkCheck(serviceInstance.interestApi(userId));
     }
 
-    //product delete api
-    public Observable<Object> deleteApi(int interestId) {
-        return addNetworkCheck(serviceInstance.deleteApi(interestId));
-    }
-
-    //buy requests api
-    public Observable<Object> buyRequestApi(HashMap<String, String> buyRequestBody) {
-        return addNetworkCheck(serviceInstance.buyRequestApi(buyRequestBody));
-    }
-
-    // product return api
+    //return history  api
     public Observable<List<ProductInfoResponse>> returnApi(int userId) {
         return addNetworkCheck(serviceInstance.returnApi(userId));
     }
 
-    //  user addresses api
-    public Observable<Object> addProductAddress(AddUserAddress addUserAddress) {
-        return addNetworkCheck(serviceInstance.addProductAddress(addUserAddress));
+    //buy requests api
+    public Observable<List<ProductInfoResponse>> buyRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.buyRequestApi(userId));
     }
 
-    //  favourites addresse api
-    public Observable<List<ProductInfoResponse>> favouritesProductApi(int userId, int customerId) {
-        return addNetworkCheck(serviceInstance.favouritesProductApi(userId, customerId));
+    // update buy requests api
+    public Observable<ProductInfoResponse> updateBuyRequestApi(
+            int requestId, HashMap<String, String> requestParams) {
+        return addNetworkCheck(serviceInstance.updateBuyRequestApi(requestId, requestParams));
     }
 
-    // getting user addresses api
-    public Observable<List<AddUserAddressResponse>> getAddressesApi(int userId) {
-        return addNetworkCheck(serviceInstance.getAddressesApi(userId));
-    }
 
+    // getting user details from qr code
     public Observable<UserInfoResponse> userInfoUsingQrCode(String qrCode) {
         return addNetworkCheck(serviceInstance.userInfoUsingQrCode(qrCode));
     }
 
-    // user intereste api
-    public Observable<ProductInfoResponse> userInterestedUsingQrCode(int customerId,
-                                                        HashMap<String, String> qrCode) {
-        return addNetworkCheck(serviceInstance.userInterestedUsingQrCode(customerId, qrCode));
+    // getting user details from phone number
+    public Observable<UserInfoResponse> userInfoUsingPhoneNumber(String phoneNumber) {
+        return addNetworkCheck(serviceInstance.userInfoUsingPhoneNumber(phoneNumber));
     }
 
     // new user registation  api
@@ -204,6 +198,7 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.getCategories(merchantId));
     }
 
+
     //warranty registration validate otp api
     public Observable<ValidateWarrantyOtpResponse> validateWarrantyOtp(HashMap<String, String>
                                                                                verify) {
@@ -215,18 +210,11 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.warrantyRequestOtp(phoneNumber));
     }
 
-    //transfer request otp api
-    public Observable<Object> transferRequest(String phoneNumber , int userId) {
-        return addNetworkCheck(serviceInstance.transferRequest(phoneNumber, userId));
-    }
-    //add new model api
-
     /* public Observable<Object> assignQrCodeToProduct(AssignQrCode qrCode) {
         return addNetworkCheck(serviceInstance.assignQrCodeToProduct(qrCode));
     }*/
-// push token  api
-    public Observable<Object> pushTokenApi(int userId, PushRegistrarBody pushRegistrarBody) {
-        return addNetworkCheck(serviceInstance.pushTokenApi(userId, pushRegistrarBody));
+    // push token  api
+    public Observable<Object> pushTokenApi(PushRegistrarBody pushRegistrarBody) {
+        return addNetworkCheck(serviceInstance.pushTokenApi(pushRegistrarBody));
     }
-
 }
