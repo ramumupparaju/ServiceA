@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -114,7 +114,7 @@
                     android:focusable="true"
                     android:hint="@string/register_gender_hint"
                     android:tag="2"
-                    android:text="@={register.genderType}"
+                    android:text="@={register.gender}"
                     app:errorEnabled="true"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
@@ -169,7 +169,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="4"
-                        android:text="@={register.email}" />
+                        android:text="@={register.emailId}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!-- Password -->
@@ -248,6 +248,7 @@
                     android:layout_alignStart="@+id/input_layout_register_address"
                     android:layout_alignTop="@+id/input_layout_register_address"
                     android:background="@null"
+                    android:onClick="@{() -> userFragment.onAddressClick()}"
                     />
 
             </RelativeLayout>

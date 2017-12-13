@@ -10,9 +10,11 @@ import com.incon.service.ui.BaseView;
 public interface SettingsContract {
 
     interface View extends BaseView {
+        void loadDefaultsData();
     }
 
     interface Presenter {
+        void getDefaultsApi();
     }
 
 }

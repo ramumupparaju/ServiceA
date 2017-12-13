@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 
-
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.login.LoginResponse;
@@ -159,7 +158,7 @@ public class UpDateUserProfileActivity extends BaseActivity implements
         upDateUserProfile.setDob(sharedPrefsUtils.getStringPreference(
                 USER_DOB));
 
-        upDateUserProfile.setEmail(sharedPrefsUtils.getStringPreference(
+        upDateUserProfile.setUserEmail(sharedPrefsUtils.getStringPreference(
                 USER_EMAIL_ID));
 
         upDateUserProfile.setAddress(sharedPrefsUtils.getStringPreference(

@@ -81,7 +81,6 @@ public class RegistrationUserFragment extends BaseFragment implements
         register = ((RegistrationActivity) getActivity()).getRegistration();
         binding.setRegister(register);
         View rootView = binding.getRoot();
-
         loadData();
         setTitle();
         return rootView;
@@ -99,18 +98,18 @@ public class RegistrationUserFragment extends BaseFragment implements
                     break;
                 case RequestCodes.ADDRESS_LOCATION:
                     register.setAddress(data.getStringExtra(IntentConstants.ADDRESS_COMMA));
-                    register.setLocation(data.getStringExtra(IntentConstants.LOCATION_COMMA));
+                    register.setUserLocation(data.getStringExtra(IntentConstants.LOCATION_COMMA));
                     binding.setRegister(register);
                     break;
                 default:
                     break;
             }
         }
+
     }
 
     private void callRegisterApi() {
-
-        register.setGenderType(String.valueOf(register.getGenderType().charAt(0)));
+        register.setGender(String.valueOf(register.getGender().charAt(0)));
         registrationUserInfoFragPresenter.register(register);
     }
 
@@ -130,6 +129,7 @@ public class RegistrationUserFragment extends BaseFragment implements
         showDatePicker();
     }
 
+    //date picker dialog
     private void showDatePicker() {
         AppUtils.hideSoftKeyboard(getActivity(), getView());
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
@@ -152,7 +152,7 @@ public class RegistrationUserFragment extends BaseFragment implements
         datePicker.show();
     }
 
-    // Date Listener
+    // date Listener
     private DatePickerDialog.OnDateSetListener datePickerListener =
             new DatePickerDialog.OnDateSetListener() {
                 // when dialog box is closed, below method will be called.
@@ -226,9 +226,9 @@ public class RegistrationUserFragment extends BaseFragment implements
                 getString(R.string.error_re_enter_password_does_not_match));
 
         errorMap.put(RegistrationValidation.ADDRESS_REQ, getString(R.string.error_address_req));
+
     }
 
-    // focus listener
     private void setFocusListenersForEditText() {
 
         TextView.OnEditorActionListener onEditorActionListener =
@@ -285,6 +285,7 @@ public class RegistrationUserFragment extends BaseFragment implements
 
         View viewByTag = binding.getRoot().findViewWithTag(tag);
         setFieldError(viewByTag, validationId);
+
     }
 
     private void setFieldError(View view, int validationId) {
@@ -311,7 +312,9 @@ public class RegistrationUserFragment extends BaseFragment implements
     public void onClickNext() {
         if (validateFields()) {
             navigateToRegistrationActivityNext();
-        }
+        } /*else {
+            navigateToRegistrationActivityNext(); // TODO have to comment
+        }*/
     }
 
     private boolean validateFields() {
@@ -350,6 +353,7 @@ public class RegistrationUserFragment extends BaseFragment implements
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent
                 .FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+
     }
 
     @Override
@@ -357,12 +361,13 @@ public class RegistrationUserFragment extends BaseFragment implements
         SharedPrefsUtils.loginProvider().setBooleanPreference(LoginPrefs.IS_REGISTERED, true);
         SharedPrefsUtils.loginProvider().setStringPreference(LoginPrefs.USER_PHONE_NUMBER,
                 register.getMobileNumber());
+
         showOtpDialog();
+
     }
 
-    // otp dialog
     private void showOtpDialog() {
-        final String mobileNumber = register.getMobileNumber();
+        final String phoneNumber = register.getMobileNumber();
         dialog = new AppOtpDialog.AlertDialogBuilder(getActivity(), new
                 TextAlertDialogCallback() {
                     @Override
@@ -380,7 +385,7 @@ public class RegistrationUserFragment extends BaseFragment implements
                                 }
                                 HashMap<String, String> verifyOTP = new HashMap<>();
                                 verifyOTP.put(ApiRequestKeyConstants.BODY_MOBILE_NUMBER,
-                                        mobileNumber);
+                                        phoneNumber);
                                 verifyOTP.put(ApiRequestKeyConstants.BODY_OTP, enteredOtp);
                                 registrationUserInfoFragPresenter.validateOTP(verifyOTP);
                                 break;
@@ -388,23 +393,23 @@ public class RegistrationUserFragment extends BaseFragment implements
                                 dialog.dismiss();
                                 break;
                             case TextAlertDialogCallback.RESEND_OTP:
-                                registrationUserInfoFragPresenter.registerRequestOtp(mobileNumber);
+                                registrationUserInfoFragPresenter.registerRequestOtp(phoneNumber);
                                 break;
                             default:
                                 break;
                         }
                     }
-                }).title(getString(R.string.dialog_verify_title, mobileNumber))
+                }).title(getString(R.string.dialog_verify_title, phoneNumber))
                 .build();
         dialog.showDialog();
 
+
     }
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         registrationUserInfoFragPresenter.disposeAll();
     }
-
 }

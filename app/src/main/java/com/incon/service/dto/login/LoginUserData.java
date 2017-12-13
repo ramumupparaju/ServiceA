@@ -11,9 +11,13 @@ import com.incon.service.AppConstants;
 public class LoginUserData extends BaseObservable implements AppConstants {
 
 
+
     @SerializedName("userId")
     @Expose
     private String phoneNumber;
+
+    @SerializedName("password")
+    @Expose
     private String password;
 
     public LoginUserData(String email, String password) {

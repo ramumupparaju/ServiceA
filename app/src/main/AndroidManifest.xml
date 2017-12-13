@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.incon.service">
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+
+    <!--Writing files into sd card for capturing images-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <!--
+     The following two permissions are not required to use
+     Google Maps Android API v2, but are recommended.
+    -->
+    <permission
+        android:name="com.incon.connect.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature"/>
+
+    <uses-permission android:name="com.incon.connect.permission.MAPS_RECEIVE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!-- for showing current location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name="com.incon.service.ConnectApplication"
@@ -26,14 +50,10 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
 
-
         <activity
-            android:name="com.incon.service.ui.settings.SettingsActivity"
+            android:name="com.incon.service.ui.forgotpassword.ForgotPasswordActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait">
-
-        </activity>
-
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.incon.service.ui.resetpassword.ResetPasswordPromptActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -54,14 +74,12 @@
             android:name="com.incon.service.ui.fullscreenimageview.FullScreenImageViewActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-
         </activity>
 
         <activity
             android:name="com.incon.service.ui.termsandcondition.TermsAndConditionActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name="com.incon.service.ui.home.HomeActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -77,6 +95,14 @@
 
         </activity>
 
+
+        <activity
+            android:name="com.incon.service.ui.settings.SettingsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait">
+
+        </activity>
+
         <activity
             android:name="com.incon.service.ui.changepassword.ChangePasswordActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -88,6 +114,14 @@
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.settings.update.UpDateUserProfileActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

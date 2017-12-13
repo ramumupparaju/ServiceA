@@ -201,7 +201,7 @@
                     android:focusable="@{isEditable ? true : false }"
                     android:focusableInTouchMode="@{isEditable ? true : false }"
                     android:tag="4"
-                    android:text="@={upDateUserProfile.email}"
+                    android:text="@={upDateUserProfile.userEmail}"
                     />
             </com.incon.service.custom.view.CustomTextInputLayout>
 

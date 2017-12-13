@@ -9,8 +9,6 @@ import android.text.TextUtils;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-
-import com.incon.service.AppConstants;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
@@ -58,32 +56,36 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
         binding.setActivity(this);
 
-//        LoginUserData loginUserData = new LoginUserData();
-        LoginUserData loginUserData = new LoginUserData("9494437172", "qwerty123");
+        LoginUserData loginUserData = new LoginUserData();
+        //     LoginUserData loginUserData = new LoginUserData("9966038949", "qwerty123");
         String phoneNumberPreference = SharedPrefsUtils.loginProvider().
-                getStringPreference(AppConstants.LoginPrefs.USER_PHONE_NUMBER);
+                getStringPreference(LoginPrefs.USER_PHONE_NUMBER);
         if (!TextUtils.isEmpty(phoneNumberPreference)) {
             loginUserData.setPhoneNumber(phoneNumberPreference);
             binding.edittextPassword.requestFocus();
         }
         binding.setUser(loginUserData);
+
         boolean isOtpVerifiedFailed = SharedPrefsUtils.loginProvider().getBooleanPreference(
-                AppConstants.LoginPrefs.IS_REGISTERED, false);
+                LoginPrefs.IS_REGISTERED, false);
         boolean isForgotOtpVerifiedFailed = SharedPrefsUtils.loginProvider().getBooleanPreference(
-                AppConstants.LoginPrefs.IS_FORGOT_PASSWORD, false);
+                LoginPrefs.IS_FORGOT_PASSWORD, false);
         if (isOtpVerifiedFailed) {
             showOtpDialog();
         } else if (isForgotOtpVerifiedFailed) {
             final String phoneNumber = SharedPrefsUtils.loginProvider().getStringPreference(
-                    AppConstants.LoginPrefs.USER_PHONE_NUMBER);
+                    LoginPrefs.USER_PHONE_NUMBER);
             Intent registrationIntent = new Intent(this, ResetPasswordPromptActivity.class);
-            registrationIntent.putExtra(AppConstants.IntentConstants.USER_PHONE_NUMBER, phoneNumber);
+            registrationIntent.putExtra(IntentConstants.USER_PHONE_NUMBER, phoneNumber);
             startActivity(registrationIntent);
         }
+
     }
+
+    // show otp dialog
     private void showOtpDialog() {
         final String phoneNumber = SharedPrefsUtils.loginProvider().getStringPreference(
-                AppConstants.LoginPrefs.USER_PHONE_NUMBER);
+                LoginPrefs.USER_PHONE_NUMBER);
         dialog = new AppOtpDialog.AlertDialogBuilder(LoginActivity.this, new
                 TextAlertDialogCallback() {
                     @Override
@@ -100,9 +102,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                                     return;
                                 }
                                 HashMap<String, String> verifyOTP = new HashMap<>();
-                                verifyOTP.put(AppConstants.ApiRequestKeyConstants.BODY_MOBILE_NUMBER,
+                                verifyOTP.put(ApiRequestKeyConstants.BODY_MOBILE_NUMBER,
                                         phoneNumber);
-                                verifyOTP.put(AppConstants.ApiRequestKeyConstants.BODY_OTP, enteredOtp);
+                                verifyOTP.put(ApiRequestKeyConstants.BODY_OTP, enteredOtp);
                                 loginPresenter.validateOTP(verifyOTP);
                                 break;
                             case AlertDialogCallback.CANCEL:
@@ -120,11 +122,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         dialog.showDialog();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        loginPresenter.disposeAll();
-    }
 
     @Override
     public void navigateToHomePage(LoginResponse loginResponse) {
@@ -132,16 +129,15 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
             clearData();
             return;
         }
-
         PushPresenter pushPresenter = new PushPresenter();
         pushPresenter.pushRegisterApi();
-
         Intent homeIntent = new Intent(this, HomeActivity.class);
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(homeIntent);
         finish();
     }
 
+    // login click event
     public void onLoginClick() {
         LoginUserData loginUserData = binding.getUser();
         int validationRes = loginUserData.validateLogin();
@@ -168,6 +164,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         }
     }
 
+    // register click event
     public void onRegisterClick() {
         PermissionUtils.getInstance().grantPermission(LoginActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
@@ -206,7 +203,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     }
 
-
+    //forgot password click event
     public void onForgotPasswordClick() {
         Intent forgotPasswordIntent = new Intent(this, ForgotPasswordActivity.class);
         String phoneNumber = binding.edittextUsername.getText().toString();
@@ -230,5 +227,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        loginPresenter.disposeAll();
     }
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import com.incon.service.AppUtils;
 import com.incon.service.BuildConfig;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.defaults.DefaultsResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
@@ -21,6 +22,7 @@ import com.incon.service.ui.changepassword.ChangePasswordActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.settings.adapters.SettingsAdapter;
 import com.incon.service.ui.settings.update.UpDateUserProfileActivity;
+import com.incon.service.utils.OfflineDataManager;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     private SettingsAdapter menuAdapter;
     private ArrayList<SettingsItem> menuItems;
     private AppAlertVerticalTwoButtonsDialog dialog;
+    private int position = -1;
 
     @Override
     protected int getLayoutId() {
@@ -89,11 +92,10 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
 
     private void prepareMenuData() {
 
-        int[] icons = {R.drawable.ic_menu_change_password,
-                R.drawable.ic_menu_bill_format,
+        int[] icons = { R.drawable.ic_menu_change_password,
                 R.drawable.ic_menu_timings,
                 R.drawable.ic_menu_contact_details,
-                R.drawable.ic_menu_logout_svg };
+                R.drawable.ic_menu_logout_svg};
         String[] menuTitles = getResources().getStringArray(R.array.side_menu_items_list);
 
         menuItems = new ArrayList<>();
@@ -123,24 +125,24 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     }
 
 
-
     @Override
     public void onClickPosition(int position) {
+        this.position = position;
         switch (position) {
             case MenuConstants.PROFILE:
                 Intent userProfileIntent = new Intent(this, UpDateUserProfileActivity.class);
                 startActivity(userProfileIntent);
                 break;
+
             case MenuConstants.CHANGE_PWD:
                 Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
                 startActivity(changePasswordIntent);
                 break;
 
-            case MenuConstants.BILLFORMAT:
+          /*  case MenuConstants.BILLFORMAT:
                 AppUtils.shortToast(SettingsActivity.this, getString(
                         R.string.title_menu_timings));
-
-                break;
+                break;*/
             case MenuConstants.TIMEINGS:
                 AppUtils.shortToast(SettingsActivity.this, getString(
                         R.string.title_menu_timings));
@@ -160,7 +162,7 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
         }
     }
 
-
+    //  logout dialog
     private void showLogoutDialog() {
         dialog = new AppAlertVerticalTwoButtonsDialog.AlertDialogBuilder(this, new
                 AlertDialogCallback() {
@@ -191,5 +193,13 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     protected void onDestroy() {
         super.onDestroy();
         menuPresenter.disposeAll();
+    }
+
+    @Override
+    public void loadDefaultsData() {
+        if (position != -1) {
+            onClickPosition(position);
+        }
+
     }
 }

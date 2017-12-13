@@ -33,11 +33,11 @@ public interface AppServiceObservable {
     Observable<DefaultsResponse> defaultsApi();
 
     //login api
-    @POST("user/login")
+    @POST("service/login")
     Observable<LoginResponse> login(@Body LoginUserData loginUserData);
 
     //registration api
-    @POST("user/register")
+    @POST("service/register")
     Observable<LoginResponse> register(@Body Registration registrationBody);
 
     //registration request otp

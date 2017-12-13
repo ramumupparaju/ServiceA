@@ -25,27 +25,37 @@ public class UpDateUserProfile  extends BaseObservable {
     @SerializedName("dob")
     @Expose
     private String dob;
-    @SerializedName("email")
-    @Expose
-    private String email;
     @SerializedName("gender")
     @Expose
     private String gender;
     @SerializedName("location")
     @Expose
     private String location;
-    @SerializedName("mobileNumber")
-    @Expose
-    private String mobileNumber;
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("userEmail")
+    @Expose
+    private String userEmail;
 
-    public  UpDateUserProfile() {
-    }
+    @SerializedName("mobileNumber")
+    @Expose
+    private String mobileNumber;
 
     private transient String dateOfBirthToShow;
 
+    public UpDateUserProfile() {
+    }
+    @Bindable
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+        notifyChange();
+    }
+    @Bindable
     public String getAddress() {
         return address;
     }
@@ -71,13 +81,7 @@ public class UpDateUserProfile  extends BaseObservable {
         this.dob = dob;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
     @Bindable
     public String getGender() {
         return gender;
@@ -87,6 +91,7 @@ public class UpDateUserProfile  extends BaseObservable {
         this.gender = gender;
         notifyChange();
     }
+
     @Bindable
     public String getLocation() {
         return location;
@@ -97,13 +102,6 @@ public class UpDateUserProfile  extends BaseObservable {
         notifyChange();
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
     @Bindable
     public String getName() {
         return name;
@@ -113,6 +111,15 @@ public class UpDateUserProfile  extends BaseObservable {
         this.name = name;
         notifyChange();
     }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
     @Bindable
     public String getDateOfBirthToShow() {
         return dateOfBirthToShow;
@@ -174,7 +181,7 @@ public class UpDateUserProfile  extends BaseObservable {
                 }
                 break;
             case 4:
-                boolean userEmailEmpty = TextUtils.isEmpty(email);
+                boolean userEmailEmpty = TextUtils.isEmpty(userEmail);
                 if (emptyValidation && userEmailEmpty) {
                     return AppConstants.RegistrationValidation.EMAIL_REQ;
                 }
@@ -193,5 +200,4 @@ public class UpDateUserProfile  extends BaseObservable {
         }
         return AppConstants.VALIDATION_SUCCESS;
     }
-
 }

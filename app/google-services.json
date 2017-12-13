@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "588645254743",
+    "firebase_url": "https://connectapp-1507024966996.firebaseio.com",
+    "project_id": "connectapp-1507024966996",
+    "storage_bucket": "connectapp-1507024966996.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588645254743:android:99bb4b291136deab",
+        "android_client_info": {
+          "package_name": "com.incon.service"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "588645254743-empf4q3icrakp71spokcpfmkmtv94e19.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-c-E8xK7xxYXjDROPFgW6al27DiOOX68"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

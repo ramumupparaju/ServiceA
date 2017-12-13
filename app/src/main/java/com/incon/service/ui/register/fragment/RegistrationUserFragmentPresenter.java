@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Pair;
 
-
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
@@ -26,8 +25,9 @@ public class RegistrationUserFragmentPresenter extends
         BasePresenter<RegistrationUserFragmentContract.View> implements
         RegistrationUserFragmentContract.Presenter {
 
-    private static final String TAG = RegistrationUserFragmentPresenter.class.getName();
+
     private Context appContext;
+    private static final String TAG = RegistrationUserFragmentPresenter.class.getName();
     private LoginDataManagerImpl loginDataManagerImpl;
 
     @Override
@@ -37,7 +37,8 @@ public class RegistrationUserFragmentPresenter extends
         loginDataManagerImpl = new LoginDataManagerImpl();
     }
 
-    // register api implemenatation
+
+    @Override
     public void register(Registration registrationBody) {
         getView().showProgress(appContext.getString(R.string.progress_registering));
         DisposableObserver<LoginResponse> observer = new DisposableObserver<LoginResponse>() {
@@ -59,8 +60,8 @@ public class RegistrationUserFragmentPresenter extends
         };
         AppApiService.getInstance().register(registrationBody).subscribe(observer);
         addDisposable(observer);
-    }
 
+    }
 
     @Override
     public void validateOTP(HashMap<String, String> verify) {
@@ -69,8 +70,8 @@ public class RegistrationUserFragmentPresenter extends
         otpPresenter.initialize(null);
         otpPresenter.setView(otpView);
         otpPresenter.validateOTP(verify);
-    }
 
+    }
 
     ValidateOtpContract.View otpView = new ValidateOtpContract.View() {
         @Override
@@ -107,9 +108,9 @@ public class RegistrationUserFragmentPresenter extends
         }
     };
 
-    // register request otp api implemenatation
     @Override
     public void registerRequestOtp(String phoneNumber) {
+
         getView().showProgress(appContext.getString(R.string.progress_resend));
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
@@ -133,10 +134,8 @@ public class RegistrationUserFragmentPresenter extends
 
     }
 
-    // register request password otp api implemenatation
     @Override
     public void registerRequestPasswordOtp(String phoneNumber) {
-
         getView().showProgress(appContext.getString(R.string.progress_resend));
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override

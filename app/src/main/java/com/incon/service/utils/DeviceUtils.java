@@ -11,6 +11,11 @@ import java.util.UUID;
 
 public class DeviceUtils {
 
+    public static float dpToPx(Context context, float valueInDp) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
+    }
+
     public static float convertDpToPx(float valueInDp) {
         DisplayMetrics metrics = ConnectApplication.getAppContext().
                 getResources().getDisplayMetrics();

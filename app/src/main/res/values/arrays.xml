@@ -50,11 +50,9 @@
     <string-array
         name="side_menu_items_list">
         <item>@string/title_menu_change_password</item>
-        <item>@string/title_menu_bill_format</item>
         <item>@string/title_menu_timings</item>
         <item>@string/title_menu_contact_details</item>
         <item>@string/title_menu_logout</item>
-
     </string-array>
 
 </resources>

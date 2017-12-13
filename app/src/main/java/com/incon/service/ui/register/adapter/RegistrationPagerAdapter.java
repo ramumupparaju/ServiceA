@@ -21,7 +21,7 @@ public class RegistrationPagerAdapter extends FragmentStatePagerAdapter {
 
     public RegistrationPagerAdapter(FragmentManager fm) {
         super(fm);
-            initFragments();
+        initFragments();
     }
 
     @Override
@@ -34,7 +34,6 @@ public class RegistrationPagerAdapter extends FragmentStatePagerAdapter {
 
     private void initFragments() {
         fragmentHashMap.put(0, new RegistrationUserFragment());
-      //  fragmentHashMap.put(1, new RegistrationStoreFragment());
     }
 
 

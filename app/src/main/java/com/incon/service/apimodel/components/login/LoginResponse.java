@@ -6,6 +6,7 @@ import com.incon.service.apimodel.base.ApiBaseResponse;
 
 public class LoginResponse extends ApiBaseResponse {
 
+
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -15,19 +16,15 @@ public class LoginResponse extends ApiBaseResponse {
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("address")
+    @Expose
+    private String address;
     @SerializedName("location")
     @Expose
     private String location;
-    @SerializedName("msisdn")
-    @Expose
-    private String msisdn;
     @SerializedName("usertype")
     @Expose
     private Integer usertype;
-
-    @SerializedName("uuid")
-    @Expose
-    private String uuid;
     @SerializedName("country")
     @Expose
     private String country;
@@ -37,14 +34,31 @@ public class LoginResponse extends ApiBaseResponse {
     @SerializedName("gender")
     @Expose
     private String gender;
+    @SerializedName("serviceCenterUserType")
+    @Expose
+    private String serviceCenterUserType;
     @SerializedName("mobileNumber")
     @Expose
     private String mobileNumber;
-    @SerializedName("address")
+
+
+    @SerializedName("msisdn")
     @Expose
-    private String address;
+    private String msisdn;
+
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
     private String password;
     private transient String confirmPassword;
+
+    public String getServiceCenterUserType() {
+        return serviceCenterUserType;
+    }
+
+    public void setServiceCenterUserType(String serviceCenterUserType) {
+        this.serviceCenterUserType = serviceCenterUserType;
+    }
 
     public String getMobileNumber() {
         return mobileNumber;
