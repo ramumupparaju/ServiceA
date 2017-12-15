@@ -16,7 +16,6 @@ import com.incon.service.databinding.ViewRegistrationBottomButtonsBinding;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.register.adapter.RegistrationPagerAdapter;
-import com.incon.service.ui.register.fragment.RegistrationStoreFragment;
 import com.incon.service.ui.register.fragment.RegistrationUserFragment;
 import com.incon.service.utils.DeviceUtils;
 

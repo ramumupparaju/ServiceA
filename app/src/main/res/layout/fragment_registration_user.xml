@@ -102,7 +102,7 @@
                         android:maxLength="@integer/character_limit_45"
                         android:maxLines="1"
                         android:tag="1"
-                        android:text="@={register.phoneNumber}" />
+                        android:text="@={register.mobileNumber}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!-- Gender -->
@@ -234,7 +234,7 @@
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
                         android:tag="7"
-                        android:text="@={register.userAddress}" />
+                        android:text="@={register.address}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
 

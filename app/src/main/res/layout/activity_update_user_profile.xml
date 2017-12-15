@@ -123,7 +123,7 @@
                     android:maxLength="@integer/character_limit_45"
                     android:maxLines="1"
                     android:tag="1"
-                    android:text="@={upDateUserProfile.phoneNumber}"/>
+                    android:text="@={upDateUserProfile.mobileNumber}"/>
             </com.incon.service.custom.view.CustomTextInputLayout>
 
             <!-- Gender -->

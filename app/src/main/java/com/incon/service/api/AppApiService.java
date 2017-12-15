@@ -17,7 +17,6 @@ import com.incon.service.dto.asignqrcode.AssignQrCode;
 import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
 import com.incon.service.dto.registration.Registration;
-import com.incon.service.dto.update.UpDateStoreProfile;
 import com.incon.service.dto.update.UpDateUserProfile;
 import com.incon.service.utils.NetworkUtil;
 
@@ -96,12 +95,6 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.upDateUserProfile(merchantId, upDateUserProfile));
     }
 
-    // store profile update api
-    public Observable<LoginResponse> upDateStoreProfile(
-            int merchantId, UpDateStoreProfile upDateStoreProfile) {
-        return addNetworkCheck(serviceInstance.upDateStoreProfile(merchantId, upDateStoreProfile));
-    }
-
     //registration request otp
     public Observable<Object> registerRequestOtp(String phoneNumber) {
         return addNetworkCheck(serviceInstance.registerRequestOtp(phoneNumber));
@@ -112,10 +105,6 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.registerRequestPasswordOtp(phoneNumber));
     }
 
-    // store id  api
-    public Observable<Object> uploadStoreLogo(int storeId, MultipartBody.Part storeLogo) {
-        return addNetworkCheck(serviceInstance.uploadStoreLogo(String.valueOf(storeId), storeLogo));
-    }
 
     public Observable<SendOtpResponse> sendOtp(HashMap<String, String> email) {
         return addNetworkCheck(serviceInstance.sendOtp(email));
@@ -141,10 +130,7 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.purchasedApi(userId));
     }
 
-    //return product api
-    public Observable<Object> returnProductApi(int userId, int customerId) {
-        return addNetworkCheck(serviceInstance.returnProductApi(userId, customerId));
-    }
+
 
     //interested history  api
     public Observable<List<ProductInfoResponse>> interestApi(int userId) {
@@ -156,16 +142,8 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.returnApi(userId));
     }
 
-    //buy requests api
-    public Observable<List<ProductInfoResponse>> buyRequestApi(int userId) {
-        return addNetworkCheck(serviceInstance.buyRequestApi(userId));
-    }
 
-    // update buy requests api
-    public Observable<ProductInfoResponse> updateBuyRequestApi(
-            int requestId, HashMap<String, String> requestParams) {
-        return addNetworkCheck(serviceInstance.updateBuyRequestApi(requestId, requestParams));
-    }
+
 
 
     // getting user details from qr code
@@ -173,10 +151,7 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.userInfoUsingQrCode(qrCode));
     }
 
-    // getting user details from phone number
-    public Observable<UserInfoResponse> userInfoUsingPhoneNumber(String phoneNumber) {
-        return addNetworkCheck(serviceInstance.userInfoUsingPhoneNumber(phoneNumber));
-    }
+
 
     // new user registation  api
     public Observable<UserInfoResponse> newUserRegistation(String phoneNumber) {
@@ -214,7 +189,7 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.assignQrCodeToProduct(qrCode));
     }*/
     // push token  api
-    public Observable<Object> pushTokenApi(PushRegistrarBody pushRegistrarBody) {
-        return addNetworkCheck(serviceInstance.pushTokenApi(pushRegistrarBody));
+    public Observable<Object> pushTokenApi(int userId, PushRegistrarBody pushRegistrarBody) {
+        return addNetworkCheck(serviceInstance.pushTokenApi(userId, pushRegistrarBody));
     }
 }

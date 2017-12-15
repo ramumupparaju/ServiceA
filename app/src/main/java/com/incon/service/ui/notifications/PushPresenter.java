@@ -62,7 +62,7 @@ public class PushPresenter extends BasePresenter<PushContract.View> implements
                     }
                 };
 
-        AppApiService.getInstance().pushTokenApi(pushRegistrarBody).subscribe(observer);
+        AppApiService.getInstance().pushTokenApi(userId,pushRegistrarBody).subscribe(observer);
         addDisposable(observer);
     }
 
