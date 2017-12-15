@@ -19,6 +19,7 @@ import com.incon.service.databinding.ToolBarBinding;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.feedback.FeedbackFragment;
+import com.incon.service.ui.notifications.fragment.NotificationsFragment;
 import com.incon.service.ui.reports.ReportsFragment;
 import com.incon.service.ui.settings.SettingsActivity;
 import com.incon.service.ui.status.StatusTabFragment;
@@ -157,6 +158,9 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                 break;
             case R.id.action_feedback:
                 aClass = FeedbackFragment.class;
+                break;
+            case R.id.action_notifications:
+                aClass = NotificationsFragment.class;
                 break;
 
             default:
