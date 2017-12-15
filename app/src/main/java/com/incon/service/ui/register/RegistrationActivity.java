@@ -41,8 +41,6 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
                             binding.viewpagerRegister.getCurrentItem());
                     if (currentRegistionFragment instanceof RegistrationUserFragment) {
                         ((RegistrationUserFragment) currentRegistionFragment).onClickNext();
-                    } else if (currentRegistionFragment instanceof RegistrationStoreFragment) {
-                        ((RegistrationStoreFragment) currentRegistionFragment).onClickNext();
                     }
                     break;
                 default:
