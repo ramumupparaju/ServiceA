@@ -1,7 +1,13 @@
 package com.incon.service.api;
 
+import android.text.TextUtils;
+
 import com.google.gson.GsonBuilder;
+import com.incon.service.AppConstants;
 import com.incon.service.BuildConfig;
+import com.incon.service.ConnectApplication;
+import com.incon.service.R;
+import com.incon.service.utils.SharedPrefsUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -64,20 +70,25 @@ public class ServiceGenerator {
 
     }
 
-
     private Interceptor headerInterceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
 
             Request original = chain.request();
 
+            String authorizationToken = SharedPrefsUtils.loginProvider().getStringPreference(AppConstants.LoginPrefs.ACCESS_TOKEN);
+            if (TextUtils.isEmpty(authorizationToken)) {
+                authorizationToken = ConnectApplication.getAppContext().getString(R.string.default_key);
+            }
             Request request = original.newBuilder()
                     .header(CONTENT_TYPE, CONTENT_TYPE_VALUE)
+                    .header(AppConstants.ApiRequestKeyConstants.HEADER_AUTHORIZATION, authorizationToken)
                     .method(original.method(), original.body())
                     .build();
 
             return chain.proceed(request);
         }
     };
+
 
 }

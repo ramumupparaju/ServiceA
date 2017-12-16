@@ -218,6 +218,7 @@ public interface AppConstants {
     }
 
     interface ApiRequestKeyConstants {
+        String HEADER_AUTHORIZATION = "Authorization";
         String BODY_EMAIL = "email";
         String BODY_CUSTOMER_ID = "customerId";
         String BODY_MERCHANT_ID = "merchantId";
@@ -311,11 +312,10 @@ public interface AppConstants {
 
     interface MenuConstants {
         int PROFILE = 0;
-        int STORESETTINGS = 1;
-        int CHANGE_PWD = 2;
-        int TIMEINGS = 3;
-        int CONTACTDETAILS = 4;
-        int LOGOUT = 5;
+        int CHANGE_PWD = 1;
+        int TIMEINGS = 2;
+        int CONTACTDETAILS = 3;
+        int LOGOUT = 4;
 
 
     }
