@@ -169,7 +169,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="4"
-                        android:text="@={register.emailId}" />
+                        android:text="@={register.email}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!-- Password -->

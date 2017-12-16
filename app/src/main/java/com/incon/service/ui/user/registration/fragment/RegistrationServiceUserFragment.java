@@ -99,7 +99,7 @@ public class RegistrationServiceUserFragment extends BaseFragment implements
                     break;
                 case RequestCodes.ADDRESS_LOCATION:
                     register.setAddress(data.getStringExtra(IntentConstants.ADDRESS_COMMA));
-                    register.setUserLocation(data.getStringExtra(IntentConstants.LOCATION_COMMA));
+                    register.setLocation(data.getStringExtra(IntentConstants.LOCATION_COMMA));
                     binding.setRegister(register);
                     break;
                 default:
