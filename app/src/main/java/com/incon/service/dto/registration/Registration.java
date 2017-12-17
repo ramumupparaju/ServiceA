@@ -55,6 +55,7 @@ public class Registration extends BaseObservable {
     @SerializedName("serviceCenter")
     @Expose
     private ServiceCenter serviceCenter;
+
     private transient String confirmPassword;
     private transient String dateOfBirthToShow;
 
@@ -144,8 +145,6 @@ public class Registration extends BaseObservable {
         this.name = name;
         notifyChange();
     }
-
-
 
     @Bindable
     public String getPassword() {

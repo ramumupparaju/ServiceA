@@ -41,7 +41,6 @@ public class LoginResponse extends ApiBaseResponse {
     @Expose
     private String mobileNumber;
 
-
     @SerializedName("msisdn")
     @Expose
     private String msisdn;

@@ -13,6 +13,8 @@ import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.asignqrcode.AssignQrCode;
 import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
@@ -26,7 +28,6 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MultipartBody;
 
 public class AppApiService implements AppConstants {
 
@@ -87,6 +88,18 @@ public class AppApiService implements AppConstants {
     //registration api
     public Observable<LoginResponse> register(Registration registrationBody) {
         return addNetworkCheck(serviceInstance.register(registrationBody));
+    }
+
+    // add service center api
+    public Observable<LoginResponse> addServiceCenter(
+            int userId, AddServiceCenter addServiceCenter) {
+        return addNetworkCheck(serviceInstance.addServiceCenter(userId, addServiceCenter));
+    }
+
+    // add user api
+    public Observable<LoginResponse> addUser(
+            int userId, AddUser addUser) {
+        return addNetworkCheck(serviceInstance.addUser(userId, addUser));
     }
 
     // user profile update api

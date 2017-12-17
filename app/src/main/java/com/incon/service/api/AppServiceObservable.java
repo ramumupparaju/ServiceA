@@ -12,6 +12,8 @@ import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.addfavorites.AddUserAddress;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.asignqrcode.AssignQrCode;
 import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
@@ -40,6 +42,14 @@ public interface AppServiceObservable {
     @POST("service/register")
     Observable<LoginResponse> register(@Body Registration registrationBody);
 
+    // add service center  api
+    @POST("service/addcenter/{userId}")
+    Observable<LoginResponse> addServiceCenter(@Path(
+            "userId") int userId, @Body AddServiceCenter addServiceCenter);
+// add user api
+    @POST("service/adduser/{userId}")
+    Observable<LoginResponse> addUser(@Path(
+            "userId") int userId, @Body AddUser addUser);
     //registration request otp
     @GET("user/requestotp/{phoneNumber}/register")
     Observable<Object> registerRequestOtp(@Path("phoneNumber") String phoneNumber);
