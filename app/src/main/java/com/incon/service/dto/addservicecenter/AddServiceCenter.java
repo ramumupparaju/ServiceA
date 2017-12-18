@@ -1,13 +1,19 @@
 package com.incon.service.dto.addservicecenter;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.text.TextUtils;
+import android.util.Pair;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.incon.service.AppConstants;
 
 /**
  * Created by MY HOME on 16-Dec-17.
  */
 
-public class AddServiceCenter {
+public class AddServiceCenter extends BaseObservable {
     @SerializedName("address")
     @Expose
     private String address;
@@ -38,6 +44,37 @@ public class AddServiceCenter {
     @SerializedName("gstn")
     @Expose
     private String gstn;
+
+    private transient String categoryName;
+    private transient String divisionName;
+    private transient String brandName;
+    @Bindable
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+        notifyChange();
+    }
+    @Bindable
+    public String getDivisionName() {
+        return divisionName;
+    }
+
+    public void setDivisionName(String divisionName) {
+        this.divisionName = divisionName;
+        notifyChange();
+    }
+    @Bindable
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+        notifyChange();
+    }
 
     public String getAddress() {
         return address;
@@ -117,6 +154,83 @@ public class AddServiceCenter {
 
     public void setGstn(String gstn) {
         this.gstn = gstn;
+    }
+
+
+    public Pair<String, Integer> validateAddServiceCenter(String tag) {
+
+        int fieldId = AppConstants.VALIDATION_FAILURE;
+        if (tag == null) {
+            for (int i = 0; i <= 6; i++) {
+                fieldId = validateFields(i, true);
+                if (fieldId != AppConstants.VALIDATION_SUCCESS) {
+                    tag = i + "";
+                    break;
+                }
+            }
+        } else {
+            fieldId = validateFields(Integer.parseInt(tag), false);
+        }
+
+        return new Pair<>(tag, fieldId);
+    }
+
+    private int validateFields(int id, boolean emptyValidation) {
+        switch (id) {
+            case 0:
+                boolean nameEmpty = TextUtils.isEmpty(name);
+                if (emptyValidation && nameEmpty) {
+                    return AppConstants.RegistrationValidation.NAME_REQ;
+                }
+                break;
+
+            case 1:
+                boolean numberEmpty = TextUtils.isEmpty(contactNo);
+                if (emptyValidation && numberEmpty) {
+                    return AppConstants.RegistrationValidation.PHONE_REQ;
+                }
+                break;
+
+            case 2:
+                boolean emailEmpty = TextUtils.isEmpty(email);
+                if (emptyValidation && emailEmpty) {
+                    return AppConstants.RegistrationValidation.EMAIL_REQ;
+                }
+                break;
+
+            case 3:
+                boolean addressEmpty = TextUtils.isEmpty(address);
+                if (emptyValidation && addressEmpty) {
+                    return AppConstants.RegistrationValidation.ADDRESS_REQ;
+                }
+                break;
+
+
+            case 4:
+                boolean createdDateEmpty = TextUtils.isEmpty(createdDate);
+                if (emptyValidation && createdDateEmpty) {
+                    return AppConstants.RegistrationValidation.CREATED_DATE_REQ;
+                }
+                break;
+
+            case 5:
+                boolean categoryEmpty = TextUtils.isEmpty(categoryName);
+                if (emptyValidation && categoryEmpty) {
+                    return AppConstants.RegistrationValidation.CATEGORY_REQ;
+                }
+                break;
+
+            case 6:
+                boolean divisionEmpty = TextUtils.isEmpty(divisionName);
+                if (emptyValidation && divisionEmpty) {
+                    return AppConstants.RegistrationValidation.DIVISION_REQ;
+                }
+                break;
+
+            default:
+                return AppConstants.VALIDATION_SUCCESS;
+        }
+        return AppConstants.VALIDATION_SUCCESS;
     }
 
 }

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="serviceCenter"
+            type="com.incon.service.dto.registration.ServiceCenter"/>
+
+        <variable
+            name="serviceFragment"
+            type="com.incon.service.ui.register.fragment.RegistrationServiceFragment"/>
+    </data>
+
+    <ScrollView
+        android:id="@+id/scrollview_service_info"
+        style="@style/BothMatch"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="4dp"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
+        android:scrollbars="vertical">
+
+        <RelativeLayout style="@style/BothMatch">
+
+            <TextView
+                android:id="@+id/text_userinfo_title"
+                style="@style/BothWrap"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="@string/register_store_info_title"
+                android:textColor="@color/colorForgotPasswordText"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/text_userinfo_subtitle"
+                style="@style/BothWrap"
+                android:layout_below="@id/text_userinfo_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:gravity="center"
+                android:text="@string/register_store_info_subtitle"
+                android:textColor="@color/colorForgotPasswordText"
+                android:textSize="12sp"/>
+
+            <!-- Store logo -->
+            <ImageView
+                android:id="@+id/store_logo_iv"
+                style="@style/BothWrap"
+                android:layout_below="@id/text_userinfo_subtitle"
+                android:layout_width="130dp"
+                android:layout_height="76dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"
+                app:srcCompat="@drawable/ic_showroom"/>
+
+            <RelativeLayout
+                style="@style/BothMatch"
+                android:layout_below="@id/store_logo_iv"
+                android:layout_marginTop="30dp">
+
+                <!-- Name -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_service_name"
+                    style="@style/Register_TextInputLayout"
+                    android:hint="@string/register_name_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_service_name"
+                        style="@style/Register_TextInputEditText"
+                        android:focusable="true"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:maxLength="@integer/character_limit_200"
+                        android:maxLines="1"
+                        android:tag="0"
+                        android:text="@={serviceCenter.name}"/>
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!-- Phone -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_phone"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_service_name"
+                    android:hint="@string/register_phone_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_phone"
+                        style="@style/Register_TextInputEditText"
+                        android:focusable="true"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="@integer/character_limit_45"
+                        android:maxLines="1"
+                        android:tag="1"
+                        android:text="@={serviceCenter.contactNo}"/>
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!-- Category -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_category"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_phone"
+                    android:hint="@string/register_category_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_category"
+                        style="@style/Register_TextInputEditText"
+                        android:enabled="false"
+                        android:tag="2"
+                        android:text="@={serviceCenter.categoryId}"/>
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!--Dummy view used for category click action-->
+                <View
+                    android:id="@+id/view_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_alignBottom="@+id/input_layout_register_category"
+                    android:layout_alignEnd="@+id/input_layout_register_category"
+                    android:layout_alignStart="@+id/input_layout_register_category"
+                    android:layout_alignTop="@+id/input_layout_register_category"
+                    android:background="@null"
+                    android:onClick="@{() -> serviceFragment.onCategoryClick()}"/>
+
+
+
+                <!-- Division -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_division"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_category"
+                    android:hint="@string/register_division_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_division"
+                        style="@style/Register_TextInputEditText"
+                        android:enabled="false"
+                        android:tag="2"
+                        android:text="@={serviceCenter.divisionId}"/>
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!--Dummy view used for category click action-->
+                <View
+                    android:id="@+id/view_division"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_alignBottom="@+id/input_layout_register_division"
+                    android:layout_alignEnd="@+id/input_layout_register_division"
+                    android:layout_alignStart="@+id/input_layout_register_division"
+                    android:layout_alignTop="@+id/input_layout_register_division"
+                    android:background="@null"
+                    android:onClick="@{() -> serviceFragment.onCategoryClick()}"/>
+                <!-- Brand -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_brand"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_division"
+                    android:hint="@string/register_brand_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_brand"
+                        style="@style/Register_TextInputEditText"
+                        android:enabled="false"
+                        android:tag="2"
+                        android:text="@={serviceCenter.brandId}"/>
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!--Dummy view used for category click action-->
+                <View
+                    android:id="@+id/view_brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_alignBottom="@+id/input_layout_register_brand"
+                    android:layout_alignEnd="@+id/input_layout_register_brand"
+                    android:layout_alignStart="@+id/input_layout_register_brand"
+                    android:layout_alignTop="@+id/input_layout_register_brand"
+                    android:background="@null"
+                    android:onClick="@{() -> serviceFragment.onCategoryClick()}"/>
+
+
+                <!-- Address -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_address"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_brand"
+                    android:hint="@string/register_address_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_address"
+                        style="@style/Register_TextInputEditText"
+                        android:enabled="false"
+                        android:tag="3"
+                        android:text="@={serviceCenter.address}"/>
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!--Dummy view used for click action-->
+                <View
+                    android:id="@+id/view_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_alignBottom="@+id/input_layout_register_address"
+                    android:layout_alignEnd="@+id/input_layout_register_address"
+                    android:layout_alignStart="@+id/input_layout_register_address"
+                    android:layout_alignTop="@+id/input_layout_register_address"
+                    android:background="@null"
+                    android:onClick="@{() -> serviceFragment.onAddressClick()}"/>
+
+                <!-- Email ID -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_emailid"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_address"
+                    android:hint="@string/register_emailid_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_emailid"
+                        style="@style/Register_TextInputEditText"
+                        android:focusable="true"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="@integer/character_limit_200"
+                        android:maxLines="1"
+                        android:tag="4"
+                        android:text="@={serviceCenter.email}"/>
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!-- GSTN -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_gstn"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_emailid"
+                    android:hint="@string/register_gstn_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_gstn"
+                        style="@style/Register_TextInputEditText"
+                        android:focusable="true"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="@integer/character_limit_200"
+                        android:maxLines="1"
+                        android:tag="5"
+                        android:text="@={serviceCenter.gstn}"/>
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</layout>

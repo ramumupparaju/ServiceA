@@ -24,9 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface AppServiceObservable {
@@ -50,6 +53,15 @@ public interface AppServiceObservable {
     @POST("service/adduser/{userId}")
     Observable<LoginResponse> addUser(@Path(
             "userId") int userId, @Body AddUser addUser);
+
+
+    // store id  api
+    @Multipart
+    @POST("merchant/logoupdate/{storeId}")
+    Observable<Object> uploadStoreLogo(@Path("storeId") String storeId,
+                                       @Part MultipartBody.Part storeLogo);
+
+
     //registration request otp
     @GET("user/requestotp/{phoneNumber}/register")
     Observable<Object> registerRequestOtp(@Path("phoneNumber") String phoneNumber);

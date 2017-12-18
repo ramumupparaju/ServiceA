@@ -55,8 +55,6 @@ public class RegistrationUserFragment extends BaseFragment implements
     private Animation shakeAnim;
     private HashMap<Integer, String> errorMap;
     private MaterialBetterSpinner genderSpinner;
-    private AppOtpDialog dialog;
-    private String enteredOtp;
 
     @Override
     protected void initializePresenter() {
@@ -93,9 +91,6 @@ public class RegistrationUserFragment extends BaseFragment implements
 
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case RequestCodes.TERMS_AND_CONDITIONS:
-                    callRegisterApi();
-                    break;
                 case RequestCodes.ADDRESS_LOCATION:
                     register.setAddress(data.getStringExtra(IntentConstants.ADDRESS_COMMA));
                     register.setLocation(data.getStringExtra(IntentConstants.LOCATION_COMMA));
@@ -108,10 +103,7 @@ public class RegistrationUserFragment extends BaseFragment implements
 
     }
 
-    private void callRegisterApi() {
-        register.setGender(String.valueOf(register.getGender().charAt(0)));
-        registrationUserInfoFragPresenter.register(register);
-    }
+
 
     private void loadData() {
         shakeAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
@@ -335,77 +327,9 @@ public class RegistrationUserFragment extends BaseFragment implements
 
     @Override
     public void navigateToRegistrationActivityNext() {
-        // ((RegistrationActivity) getActivity()).navigateToNext();
-        Intent eulaIntent = new Intent(getActivity(), TermsAndConditionActivity.class);
-        startActivityForResult(eulaIntent, RequestCodes.TERMS_AND_CONDITIONS);
-    }
-
-    @Override
-    public void navigateToHomeScreen() {
-        PushPresenter pushPresenter = new PushPresenter();
-        pushPresenter.pushRegisterApi();
-
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
-        Intent intent = new Intent(getActivity(),
-                HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent
-                .FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        ((RegistrationActivity) getActivity()).navigateToNext();
 
     }
-
-    @Override
-    public void validateOTP() {
-        SharedPrefsUtils.loginProvider().setBooleanPreference(LoginPrefs.IS_REGISTERED, true);
-        SharedPrefsUtils.loginProvider().setStringPreference(LoginPrefs.USER_PHONE_NUMBER,
-                register.getMobileNumber());
-
-        showOtpDialog();
-
-    }
-
-    private void showOtpDialog() {
-        final String phoneNumber = register.getMobileNumber();
-        dialog = new AppOtpDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String otpString) {
-                        enteredOtp = otpString;
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                if (TextUtils.isEmpty(enteredOtp)) {
-                                    showErrorMessage(getString(R.string.error_otp_req));
-                                    return;
-                                }
-                                HashMap<String, String> verifyOTP = new HashMap<>();
-                                verifyOTP.put(ApiRequestKeyConstants.BODY_MOBILE_NUMBER,
-                                        phoneNumber);
-                                verifyOTP.put(ApiRequestKeyConstants.BODY_OTP, enteredOtp);
-                                registrationUserInfoFragPresenter.validateOTP(verifyOTP);
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                dialog.dismiss();
-                                break;
-                            case TextAlertDialogCallback.RESEND_OTP:
-                                registrationUserInfoFragPresenter.registerRequestOtp(phoneNumber);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.dialog_verify_title, phoneNumber))
-                .build();
-        dialog.showDialog();
-
-
-    }
-
 
     @Override
     public void onDestroy() {

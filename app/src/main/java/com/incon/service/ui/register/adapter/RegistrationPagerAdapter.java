@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 
+import com.incon.service.ui.register.fragment.RegistrationServiceFragment;
 import com.incon.service.ui.register.fragment.RegistrationUserFragment;
 
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class RegistrationPagerAdapter extends FragmentStatePagerAdapter {
 
     private void initFragments() {
         fragmentHashMap.put(0, new RegistrationUserFragment());
+        fragmentHashMap.put(1, new RegistrationServiceFragment());
     }
 
 

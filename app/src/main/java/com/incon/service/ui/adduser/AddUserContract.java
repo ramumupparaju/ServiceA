@@ -11,5 +11,6 @@ public interface AddUserContract {
 
     }
     interface Presenter {
+
     }
 }

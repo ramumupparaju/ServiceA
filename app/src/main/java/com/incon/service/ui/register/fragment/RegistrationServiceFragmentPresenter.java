@@ -1,4 +1,4 @@
-package com.incon.service.ui.user.registration.fragment;
+package com.incon.service.ui.register.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,15 +19,15 @@ import com.incon.service.utils.ErrorMsgUtil;
 import java.util.HashMap;
 
 import io.reactivex.observers.DisposableObserver;
+import okhttp3.MultipartBody;
 
 
-public class RegistrationServiceUserFragmentPresenter extends
-        BasePresenter<RegistrationServiceUserFragmentContract.View> implements
-        RegistrationServiceUserFragmentContract.Presenter {
+public class RegistrationServiceFragmentPresenter  extends
+        BasePresenter<RegistrationServiceFragmentContract.View> implements
+        RegistrationServiceFragmentContract.Presenter {
 
-
+    private static final String TAG = RegistrationServiceFragmentPresenter.class.getName();
     private Context appContext;
-    private static final String TAG = RegistrationServiceUserFragmentPresenter.class.getName();
     private LoginDataManagerImpl loginDataManagerImpl;
 
     @Override
@@ -37,7 +37,11 @@ public class RegistrationServiceUserFragmentPresenter extends
         loginDataManagerImpl = new LoginDataManagerImpl();
     }
 
-
+    /**
+     * Uploading user and store details to server
+     *
+     * @param registrationBody
+     */
     @Override
     public void register(Registration registrationBody) {
         getView().showProgress(appContext.getString(R.string.progress_registering));
@@ -60,9 +64,15 @@ public class RegistrationServiceUserFragmentPresenter extends
         };
         AppApiService.getInstance().register(registrationBody).subscribe(observer);
         addDisposable(observer);
-
     }
 
+    /**
+     * Uploading store logo to server
+     */
+    // upload store logo implemenatation
+
+
+    //validate otp implemenatation
     @Override
     public void validateOTP(HashMap<String, String> verify) {
         getView().showProgress(appContext.getString(R.string.validating_code));
@@ -70,13 +80,12 @@ public class RegistrationServiceUserFragmentPresenter extends
         otpPresenter.initialize(null);
         otpPresenter.setView(otpView);
         otpPresenter.validateOTP(verify);
-
     }
 
     ValidateOtpContract.View otpView = new ValidateOtpContract.View() {
         @Override
         public void validateOTP(LoginResponse loginResponse) {
-            // save login data to shared preferences
+// save login data to shared preferences
             loginDataManagerImpl.saveLoginDataToPrefs(loginResponse);
             getView().hideProgress();
             getView().navigateToHomeScreen();
@@ -108,9 +117,9 @@ public class RegistrationServiceUserFragmentPresenter extends
         }
     };
 
+    // register request otp implemenatation
     @Override
     public void registerRequestOtp(String phoneNumber) {
-
         getView().showProgress(appContext.getString(R.string.progress_resend));
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
@@ -131,9 +140,9 @@ public class RegistrationServiceUserFragmentPresenter extends
         };
         AppApiService.getInstance().registerRequestOtp(phoneNumber).subscribe(observer);
         addDisposable(observer);
-
     }
 
+    //register request password otp implemenatation
     @Override
     public void registerRequestPasswordOtp(String phoneNumber) {
         getView().showProgress(appContext.getString(R.string.progress_resend));
@@ -156,6 +165,12 @@ public class RegistrationServiceUserFragmentPresenter extends
         };
         AppApiService.getInstance().registerRequestPasswordOtp(phoneNumber).subscribe(observer);
         addDisposable(observer);
-
     }
+
+
+    public void saveMerchantInfo(LoginResponse loginResponse) {
+        // save login data to shared preferences
+        loginDataManagerImpl.saveLoginDataToPrefs(loginResponse);
+    }
+
 }

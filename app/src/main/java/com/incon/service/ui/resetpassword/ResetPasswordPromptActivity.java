@@ -12,6 +12,8 @@ import com.incon.service.custom.view.AppOtpDialog;
 import com.incon.service.databinding.ActivityResetPasswordPromptBinding;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.changepassword.ChangePasswordActivity;
+import com.incon.service.ui.register.fragment.RegistrationServiceFragmentContract;
+import com.incon.service.ui.register.fragment.RegistrationServiceFragmentPresenter;
 import com.incon.service.ui.register.fragment.RegistrationUserFragmentContract;
 import com.incon.service.ui.register.fragment.RegistrationUserFragmentPresenter;
 import com.incon.service.utils.SharedPrefsUtils;
@@ -19,11 +21,11 @@ import com.incon.service.utils.SharedPrefsUtils;
 import java.util.HashMap;
 
 public class ResetPasswordPromptActivity extends BaseActivity implements
-        RegistrationUserFragmentContract.View {
+        RegistrationServiceFragmentContract.View {
 
     private static final String TAG = ResetPasswordPromptActivity.class.getName();
     private ActivityResetPasswordPromptBinding binding;
-    private RegistrationUserFragmentPresenter registrationUserFragmentPresenter;
+    private RegistrationServiceFragmentPresenter registrationServiceFragmentPresenter;
     private AppOtpDialog dialog;
     private String enteredOtp;
     private String phoneNumber;
@@ -36,9 +38,9 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
 
     @Override
     protected void initializePresenter() {
-        registrationUserFragmentPresenter = new RegistrationUserFragmentPresenter();
-        registrationUserFragmentPresenter.setView(this);
-        setBasePresenter(registrationUserFragmentPresenter);
+        registrationServiceFragmentPresenter = new RegistrationServiceFragmentPresenter();
+        registrationServiceFragmentPresenter.setView(this);
+        setBasePresenter(registrationServiceFragmentPresenter);
     }
 
     @Override
@@ -77,7 +79,7 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
                                 verifyOTP.put(ApiRequestKeyConstants.BODY_MOBILE_NUMBER,
                                         phoneNumber);
                                 verifyOTP.put(ApiRequestKeyConstants.BODY_OTP, enteredOtp);
-                                registrationUserFragmentPresenter.validateOTP(verifyOTP);
+                                registrationServiceFragmentPresenter.validateOTP(verifyOTP);
 
                                 break;
                             case AlertDialogCallback.CANCEL:
@@ -85,7 +87,7 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
                                 ResetPasswordPromptActivity.this.finish();
                                 break;
                             case TextAlertDialogCallback.RESEND_OTP:
-                                registrationUserFragmentPresenter.registerRequestPasswordOtp(
+                                registrationServiceFragmentPresenter.registerRequestPasswordOtp(
                                         phoneNumber);
                                 break;
                             default:
@@ -145,6 +147,6 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-        registrationUserFragmentPresenter.disposeAll();
+        registrationServiceFragmentPresenter.disposeAll();
     }
 }

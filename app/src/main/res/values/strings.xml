@@ -129,6 +129,7 @@
     <string name="add_an_offer_model_hint">Model</string>
     <string name="add_an_offer_on_mrp_hint">Add An Offer On MRP: %</string>
     <string name="add_an_offer_date_hint">Offer Start On</string>
+    <string name="created_date_hint">Created Date</string>
     <string name="offer_expires_hint">Offer Expires On</string>
     <string name="scan_start_date_hint">Scan Start Date</string>
     <string name="scan_end_date_hint">Scan End Date</string>
@@ -188,6 +189,7 @@
         permission.</string>
     <string name="error_uuid">No data to generate qrcode</string>
     <string name="error_email_req">Email Address is required</string>
+    <string name="error_created_date">Created Date is required</string>
     <string name="error_select_location">Please select location</string>
     <string name="error_location">Unable to fetch location</string>
     <string name="error_name_address">Please enter Name and Address</string>
@@ -205,7 +207,9 @@
     <string name="error_firstname_req">First Name is required</string>
     <string name="error_lastname_req">Last Name is required</string>
     <string name="error_phone_req">Phone is required</string>
-    <string name="error_category_req">Store category is required</string>
+    <string name="error_category_req"> Category is required</string>
+    <string name="error_division_req"> Division is required</string>
+    <string name="error_brand_req"> Brand is required</string>
     <string name="error_phone_min_digits">Phone number should be at least 10 digits</string>
     <string name="error_one_phone_req">Please enter a contact number</string>
     <string name="error_timezone_req">Time Zone is required</string>
@@ -379,6 +383,8 @@
     <string name="register_dateofbirth_hint">Date of Birth</string>
     <string name="register_gender_hint">Gender</string>
     <string name="register_category_hint">Category</string>
+    <string name="register_division_hint">Division</string>
+    <string name="register_brand_hint">Brand</string>
     <string name="register_gstn_hint">GSTN</string>
     <string name="register_address_hint">Address</string>
     <string name="register_address1_hint">Address1</string>

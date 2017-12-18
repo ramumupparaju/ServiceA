@@ -12,6 +12,8 @@ import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResp
 import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.login.LoginDataManagerImpl;
 import com.incon.service.ui.BasePresenter;
+import com.incon.service.ui.register.fragment.RegistrationServiceFragmentContract;
+import com.incon.service.ui.register.fragment.RegistrationServiceFragmentPresenter;
 import com.incon.service.ui.register.fragment.RegistrationUserFragmentContract;
 import com.incon.service.ui.register.fragment.RegistrationUserFragmentPresenter;
 import com.incon.service.ui.validateotp.ValidateOtpContract;
@@ -77,15 +79,15 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     //registration request Otp implemenatation
     @Override
     public void registerRequestOtp(String phoneNumber) {
-        RegistrationUserFragmentPresenter registrationUserFragmentPresenter =
-                new RegistrationUserFragmentPresenter();
-        registrationUserFragmentPresenter.initialize(null);
-        registrationUserFragmentPresenter.setView(registrationView);
-        registrationUserFragmentPresenter.registerRequestOtp(phoneNumber);
+        RegistrationServiceFragmentPresenter registrationServiceFragmentPresenter =
+                new RegistrationServiceFragmentPresenter();
+        registrationServiceFragmentPresenter.initialize(null);
+        registrationServiceFragmentPresenter.setView(registrationView);
+        registrationServiceFragmentPresenter.registerRequestOtp(phoneNumber);
     }
 
-    RegistrationUserFragmentContract.View registrationView =
-            new RegistrationUserFragmentContract.View() {
+    RegistrationServiceFragmentContract.View registrationView =
+            new RegistrationServiceFragmentContract.View() {
 
                 @Override
                 public void navigateToRegistrationActivityNext() {

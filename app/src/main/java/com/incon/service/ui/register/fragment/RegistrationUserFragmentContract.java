@@ -15,16 +15,11 @@ public class RegistrationUserFragmentContract {
 
     public interface View extends BaseView {
         void navigateToRegistrationActivityNext();
-        void navigateToHomeScreen();
-        void validateOTP();
 
     }
 
     interface Presenter {
-        void register(Registration registrationBody);
-        void validateOTP(HashMap<String, String> verify);
-        void registerRequestOtp(String phoneNumber);
-        void registerRequestPasswordOtp(String phoneNumber);
+
     }
 
 }
