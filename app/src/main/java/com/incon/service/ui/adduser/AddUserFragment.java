@@ -45,9 +45,6 @@ public class AddUserFragment extends BaseFragment implements
     private View rootView;
     private AddUserPresenter addUserPresenter;
     private AddUser addUser;
-    private List<FetchCategories> fetchCategorieList;
-    private int categorySelectedPos = -1;
-    private int divisionSelectedPos = -1;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
 

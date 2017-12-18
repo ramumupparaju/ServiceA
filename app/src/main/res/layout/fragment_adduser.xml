@@ -111,7 +111,7 @@
                 android:layout_alignStart="@+id/input_layout_register_dob"
                 android:layout_alignTop="@+id/input_layout_register_dob"
                 android:background="@null"
-                android:onClick="@{() -> userFragment.onDobClick()}"/>
+                android:onClick="@{() -> addUserFragment.onDobClick()}"/>
 
 
             <!-- Email ID -->
@@ -211,10 +211,10 @@
                 android:layout_alignStart="@+id/input_layout_register_address"
                 android:layout_alignTop="@+id/input_layout_register_address"
                 android:background="@null"
-                android:onClick="@{() -> addServiceCenterFragment.onAddressClick()}"/>
+                android:onClick="@{() -> addUserFragment.onAddressClick()}"/>
 
 
-            <!-- GSTN -->
+
             <com.incon.service.custom.view.CustomTextInputLayout
                 android:id="@+id/input_layout_register_service_CenterId"
                 style="@style/Register_TextInputLayout"
@@ -266,7 +266,7 @@
                 android:layout_marginLeft="@dimen/margin_110"
                 android:layout_marginTop="@dimen/margin_10"
                 android:background="@drawable/btn_login_register_roundedcorner"
-                android:onClick="@{() -> addServiceCenterFragment.onSubmitClick()}"
+                android:onClick="@{() -> addUserFragment.onSubmitClick()}"
                 android:text="@string/add_new_submit"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"

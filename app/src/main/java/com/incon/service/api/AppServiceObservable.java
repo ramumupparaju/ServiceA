@@ -54,7 +54,6 @@ public interface AppServiceObservable {
     Observable<LoginResponse> addUser(@Path(
             "userId") int userId, @Body AddUser addUser);
 
-
     // store id  api
     @Multipart
     @POST("merchant/logoupdate/{storeId}")

@@ -1,5 +1,7 @@
 package com.incon.service.ui.adduser;
 
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseView;
 
 /**
@@ -11,6 +13,7 @@ public interface AddUserContract {
 
     }
     interface Presenter {
+        void addingUser(int userId, AddUser addUser);
 
     }
 }
