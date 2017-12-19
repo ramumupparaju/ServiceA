@@ -49,6 +49,8 @@
     <!-- Side MenuItems -->
     <string-array
         name="side_menu_items_list">
+        <item>@string/title_menu_add_user</item>
+        <item>@string/title_menu_add_service_center</item>
         <item>@string/title_menu_change_password</item>
         <item>@string/title_menu_timings</item>
         <item>@string/title_menu_contact_details</item>

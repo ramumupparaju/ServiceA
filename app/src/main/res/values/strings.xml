@@ -259,6 +259,8 @@
     <string name="error_Offer_end_on">Offer End is required</string>
     <string name="error_Scan_start_on">Scan Start is required</string>
     <string name="error_Scan_end_on">Scan End is required</string>
+    <string name="error_Service_Center_id">Service Center Id is required</string>
+    <string name="error_service_center_role_id">Service Center Role Id is required</string>
 
 
     <!-- progress messages -->
@@ -386,6 +388,8 @@
     <string name="register_division_hint">Division</string>
     <string name="register_brand_hint">Brand</string>
     <string name="register_gstn_hint">GSTN</string>
+    <string name="service_center_id_hint">Service Center Id</string>
+    <string name="service_cente_role_id_hint">Service Center Role Id</string>
     <string name="register_address_hint">Address</string>
     <string name="register_address1_hint">Address1</string>
     <string name="register_address2_hint">Address2</string>
@@ -438,6 +442,9 @@
     <string name="hint_warranty_date">Warranty ends on \n %1$s</string>
 
     <!--Settings -->
+    <string name="title_menu_add_user">Add User</string>
+    <string name="title_menu_add_service_center">Add Service Center</string>
+
     <string name="title_menu_change_password">Change Password</string>
     <string name="title_menu_profile">Profile</string>
     <string name="title_menu_store_settings">Store Settings</string>

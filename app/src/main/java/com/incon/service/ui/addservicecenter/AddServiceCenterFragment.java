@@ -88,9 +88,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
         shakeAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
         loadValidationErrors();
         setFocusForViews();
-
     }
-
 
     public void onDateClick() {
         showDatePicker();

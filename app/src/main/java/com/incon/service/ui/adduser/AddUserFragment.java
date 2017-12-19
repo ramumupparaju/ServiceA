@@ -16,12 +16,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.custom.view.CustomAutoCompleteView;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.FragmentAdduserBinding;
@@ -29,11 +29,10 @@ import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
-import com.incon.service.utils.SharedPrefsUtils;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -47,8 +46,8 @@ public class AddUserFragment extends BaseFragment implements
     private AddUser addUser;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
-
     private FragmentAdduserBinding binding;
+    private MaterialBetterSpinner genderSpinner;
 
     @Override
     protected void initializePresenter() {
@@ -80,8 +79,19 @@ public class AddUserFragment extends BaseFragment implements
 
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+        loadGenderSpinnerData();
         loadValidationErrors();
         setFocusListenersForEditText();
+    }
+
+    private void loadGenderSpinnerData() {
+        String[] genderTypeList = getResources().getStringArray(R.array.gender_options_list);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.view_spinner, genderTypeList);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        genderSpinner = binding.spinnerGender;
+        genderSpinner.setAdapter(arrayAdapter);
 
     }
 
@@ -201,8 +211,6 @@ public class AddUserFragment extends BaseFragment implements
         }
     };
 
-
-
     private boolean validateFields() {
         binding.inputLayoutName.setError(null);
         binding.inputLayoutNumber.setError(null);
@@ -248,24 +256,52 @@ public class AddUserFragment extends BaseFragment implements
 
     private void loadValidationErrors() {
         errorMap = new HashMap<>();
-        errorMap.put(AddServiceCenterValidation.NAME, getString(R.string.error_name_req));
-        errorMap.put(AddServiceCenterValidation.MOBILE_NUMBER, getString(R.string.error_phone_req));
-        errorMap.put(AddServiceCenterValidation.EMAIL, getString(R.string.error_email_req));
-        errorMap.put(AddServiceCenterValidation.ADDRESS, getString(R.string.error_address_req));
-        errorMap.put(AddServiceCenterValidation.CREATED_Date, getString(R.string.error_created_date));
-        errorMap.put(AddServiceCenterValidation.CATEGORY, getString(R.string.error_product_category));
-        errorMap.put(AddServiceCenterValidation.DIVISION, getString(R.string.error_product_division));
-        errorMap.put(AddServiceCenterValidation.BRAND, getString(R.string.error_product_brand));
-        errorMap.put(AddServiceCenterValidation.GSTN, getString(R.string.error_gstn_req));
+        errorMap.put(RegistrationValidation.NAME_REQ,
+                getString(R.string.error_name_req));
+
+        errorMap.put(RegistrationValidation.PHONE_REQ,
+                getString(R.string.error_phone_req));
+
+        errorMap.put(RegistrationValidation.PHONE_MIN_DIGITS,
+                getString(R.string.error_phone_min_digits));
+
+        errorMap.put(RegistrationValidation.GENDER_REQ,
+                getString(R.string.error_gender_req));
+
+        errorMap.put(RegistrationValidation.DOB_REQ,
+                getString(R.string.error_dob_req));
+
+        errorMap.put(RegistrationValidation.DOB_FUTURE_DATE,
+                getString(R.string.error_dob_futuredate));
+
+        errorMap.put(RegistrationValidation.DOB_PERSON_LIMIT,
+                getString(R.string.error_dob_patient_is_user));
+
+        errorMap.put(RegistrationValidation.EMAIL_REQ,
+                getString(R.string.error_email_req));
+
+        errorMap.put(RegistrationValidation.EMAIL_NOTVALID,
+                getString(R.string.error_email_notvalid));
+
+        errorMap.put(RegistrationValidation.PASSWORD_REQ,
+                getString(R.string.error_password_req));
+
+        errorMap.put(RegistrationValidation.PASSWORD_PATTERN_REQ,
+                getString(R.string.error_password_pattern_req));
+
+        errorMap.put(RegistrationValidation.RE_ENTER_PASSWORD_REQ,
+                getString(R.string.error_re_enter_password_req));
+
+        errorMap.put(RegistrationValidation.RE_ENTER_PASSWORD_DOES_NOT_MATCH,
+                getString(R.string.error_re_enter_password_does_not_match));
+
+        errorMap.put(RegistrationValidation.ADDRESS_REQ, getString(R.string.error_address_req));
+        errorMap.put(RegistrationValidation.SERVICE_CENTER_ID, getString(R.string.error_Service_Center_id));
+        errorMap.put(RegistrationValidation.SERVICE_CENTER_ROLE_ID, getString(R.string.error_service_center_role_id));
 
     }
-
     public void onSubmitClick() {
-
+        if (validateFields()) {
+        }
     }
-
-
-
-
-
 }

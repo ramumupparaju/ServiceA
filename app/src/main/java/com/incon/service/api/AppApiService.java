@@ -151,7 +151,6 @@ public class AppApiService implements AppConstants {
     }
 
 
-
     //interested history  api
     public Observable<List<ProductInfoResponse>> interestApi(int userId) {
         return addNetworkCheck(serviceInstance.interestApi(userId));
@@ -163,14 +162,10 @@ public class AppApiService implements AppConstants {
     }
 
 
-
-
-
     // getting user details from qr code
     public Observable<UserInfoResponse> userInfoUsingQrCode(String qrCode) {
         return addNetworkCheck(serviceInstance.userInfoUsingQrCode(qrCode));
     }
-
 
 
     // new user registation  api

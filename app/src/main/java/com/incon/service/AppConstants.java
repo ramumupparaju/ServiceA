@@ -172,6 +172,17 @@ public interface AppConstants {
     }
 
 
+
+
+    interface AddUserValidation {
+        int NAME = 1;
+        int MOBILE_NUMBER = 2;
+        int EMAIL = 3;
+        int ADDRESS = 4;
+    }
+
+
+
     interface BundleConstants {
         String QRCODE_DATA = "qrcodeData";
         String SCANNED_QRCODE = "scannedQrcode";

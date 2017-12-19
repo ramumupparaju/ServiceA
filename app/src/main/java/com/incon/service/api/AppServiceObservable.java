@@ -49,10 +49,10 @@ public interface AppServiceObservable {
     @POST("service/addcenter/{userId}")
     Observable<LoginResponse> addServiceCenter(@Path(
             "userId") int userId, @Body AddServiceCenter addServiceCenter);
-// add user api
+
+    // add user api
     @POST("service/adduser/{userId}")
-    Observable<LoginResponse> addUser(@Path(
-            "userId") int userId, @Body AddUser addUser);
+    Observable<LoginResponse> addUser(@Path("userId") int userId, @Body AddUser addUser);
 
     // store id  api
     @Multipart

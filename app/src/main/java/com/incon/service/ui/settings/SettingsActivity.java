@@ -92,7 +92,12 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
 
     private void prepareMenuData() {
 
-        int[] icons = { R.drawable.ic_menu_change_password,
+        int[] icons = {
+                R.drawable.ic_menu_change_password,
+                R.drawable.ic_menu_change_password,
+
+
+                R.drawable.ic_menu_change_password,
                 R.drawable.ic_menu_timings,
                 R.drawable.ic_menu_contact_details,
                 R.drawable.ic_menu_logout_svg};

@@ -150,7 +150,7 @@
                 android:layout_alignStart="@+id/input_layout_created_date"
                 android:layout_alignTop="@+id/input_layout_created_date"
                 android:background="@null"
-                android:onClick="@{(v) -> addServiceCenterFragment.onDateClick(v)}" />
+                android:onClick="@{() -> addServiceCenterFragment.onDateClick()}" />
 
 
             <!-- category-->
@@ -238,11 +238,8 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_size_13"/>
 
-
         </RelativeLayout>
 
-
     </ScrollView>
-
 
 </layout>

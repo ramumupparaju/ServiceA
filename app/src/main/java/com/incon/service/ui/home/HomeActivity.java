@@ -161,7 +161,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                 aClass = FeedbackFragment.class;
                 break;
             case R.id.action_notifications:
-                aClass = AddServiceCenterFragment.class;
+                aClass = NotificationsFragment.class;
                 break;
 
             default:
