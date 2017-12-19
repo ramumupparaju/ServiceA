@@ -138,11 +138,11 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
 
     @Override
     public void startRegistration(boolean startRegistration) {
-        if (!startRegistration) {
+        if (startRegistration) {
+            initializePagerAdapter();
+        } else {
             AppUtils.shortToast(this, getString(R.string.error_network));
             finish();
-        } else {
-            initializePagerAdapter();
         }
     }
 

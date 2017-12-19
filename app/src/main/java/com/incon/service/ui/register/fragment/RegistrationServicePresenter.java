@@ -7,6 +7,7 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
+import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.registration.Registration;
@@ -17,16 +18,16 @@ import com.incon.service.ui.validateotp.ValidateOtpPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
-import okhttp3.MultipartBody;
 
 
-public class RegistrationServiceFragmentPresenter  extends
-        BasePresenter<RegistrationServiceFragmentContract.View> implements
-        RegistrationServiceFragmentContract.Presenter {
+public class RegistrationServicePresenter extends
+        BasePresenter<RegistrationServiceContract.View> implements
+        RegistrationServiceContract.Presenter {
 
-    private static final String TAG = RegistrationServiceFragmentPresenter.class.getName();
+    private static final String TAG = RegistrationServicePresenter.class.getName();
     private Context appContext;
     private LoginDataManagerImpl loginDataManagerImpl;
 
@@ -164,6 +165,31 @@ public class RegistrationServiceFragmentPresenter  extends
             }
         };
         AppApiService.getInstance().registerRequestPasswordOtp(phoneNumber).subscribe(observer);
+        addDisposable(observer);
+    }
+
+    @Override
+    public void getCategories(int merchantId) {
+        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
+            @Override
+            public void onNext(Object categoriesList) {
+                getView().loadCategoriesList((List<FetchCategories>) categoriesList);
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+        AppApiService.getInstance().getCategories(merchantId).subscribe(observer);
         addDisposable(observer);
     }
 

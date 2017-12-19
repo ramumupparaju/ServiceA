@@ -7,20 +7,20 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
+import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.login.LoginDataManagerImpl;
 import com.incon.service.ui.BasePresenter;
-import com.incon.service.ui.register.fragment.RegistrationServiceFragmentContract;
-import com.incon.service.ui.register.fragment.RegistrationServiceFragmentPresenter;
-import com.incon.service.ui.register.fragment.RegistrationUserFragmentContract;
-import com.incon.service.ui.register.fragment.RegistrationUserFragmentPresenter;
+import com.incon.service.ui.register.fragment.RegistrationServiceContract;
+import com.incon.service.ui.register.fragment.RegistrationServicePresenter;
 import com.incon.service.ui.validateotp.ValidateOtpContract;
 import com.incon.service.ui.validateotp.ValidateOtpPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -79,15 +79,15 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     //registration request Otp implemenatation
     @Override
     public void registerRequestOtp(String phoneNumber) {
-        RegistrationServiceFragmentPresenter registrationServiceFragmentPresenter =
-                new RegistrationServiceFragmentPresenter();
+        RegistrationServicePresenter registrationServiceFragmentPresenter =
+                new RegistrationServicePresenter();
         registrationServiceFragmentPresenter.initialize(null);
         registrationServiceFragmentPresenter.setView(registrationView);
         registrationServiceFragmentPresenter.registerRequestOtp(phoneNumber);
     }
 
-    RegistrationServiceFragmentContract.View registrationView =
-            new RegistrationServiceFragmentContract.View() {
+    RegistrationServiceContract.View registrationView =
+            new RegistrationServiceContract.View() {
 
                 @Override
                 public void navigateToRegistrationActivityNext() {
@@ -104,6 +104,11 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 @Override
                 public void validateOTP() {
                     //DO nothing
+                }
+
+                @Override
+                public void loadCategoriesList(List<FetchCategories> categoriesList) {
+
                 }
 
                 @Override

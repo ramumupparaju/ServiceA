@@ -259,7 +259,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
                     android:checked="true"
-                    android:text="@string/action_service_center_type"
+                    android:text="@string/action_is_group"
                     />
 
             </RelativeLayout>

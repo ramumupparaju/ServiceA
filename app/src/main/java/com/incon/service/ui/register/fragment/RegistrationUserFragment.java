@@ -300,10 +300,11 @@ public class RegistrationUserFragment extends BaseFragment implements
      * validate user , if all fields ok then call next screen
      */
     public void onClickNext() {
-        if (validateFields()) {
+        navigateToRegistrationActivityNext();
+
+        /*if (validateFields()) {
+            register.setServiceCenterUserType(binding.serviceCenterType.isChecked() ? RegistrationConstants.SERVICE_GROUP : RegistrationConstants.SERVICE_INDIVIDUAL);
             navigateToRegistrationActivityNext();
-        } /*else {
-            navigateToRegistrationActivityNext(); // TODO have to comment
         }*/
     }
 

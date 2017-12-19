@@ -6,26 +6,26 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.incon.service.R;
+import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppOtpDialog;
 import com.incon.service.databinding.ActivityResetPasswordPromptBinding;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.changepassword.ChangePasswordActivity;
-import com.incon.service.ui.register.fragment.RegistrationServiceFragmentContract;
-import com.incon.service.ui.register.fragment.RegistrationServiceFragmentPresenter;
-import com.incon.service.ui.register.fragment.RegistrationUserFragmentContract;
-import com.incon.service.ui.register.fragment.RegistrationUserFragmentPresenter;
+import com.incon.service.ui.register.fragment.RegistrationServiceContract;
+import com.incon.service.ui.register.fragment.RegistrationServicePresenter;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ResetPasswordPromptActivity extends BaseActivity implements
-        RegistrationServiceFragmentContract.View {
+        RegistrationServiceContract.View {
 
     private static final String TAG = ResetPasswordPromptActivity.class.getName();
     private ActivityResetPasswordPromptBinding binding;
-    private RegistrationServiceFragmentPresenter registrationServiceFragmentPresenter;
+    private RegistrationServicePresenter registrationServiceFragmentPresenter;
     private AppOtpDialog dialog;
     private String enteredOtp;
     private String phoneNumber;
@@ -38,7 +38,7 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
 
     @Override
     protected void initializePresenter() {
-        registrationServiceFragmentPresenter = new RegistrationServiceFragmentPresenter();
+        registrationServiceFragmentPresenter = new RegistrationServicePresenter();
         registrationServiceFragmentPresenter.setView(this);
         setBasePresenter(registrationServiceFragmentPresenter);
     }
@@ -139,6 +139,11 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
     @Override
     public void validateOTP() {
         //DO nothing
+    }
+
+    @Override
+    public void loadCategoriesList(List<FetchCategories> categoriesList) {
+
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.incon.service.ui.register.fragment;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -15,12 +14,17 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.incon.service.AppConstants;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.defaults.CategoryResponse;
 import com.incon.service.apimodel.components.defaults.DefaultsResponse;
+import com.incon.service.apimodel.components.fetchcategorie.Brand;
+import com.incon.service.apimodel.components.fetchcategorie.Division;
+import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppCheckBoxListDialog;
@@ -37,9 +41,7 @@ import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.notifications.PushPresenter;
 import com.incon.service.ui.register.RegistrationActivity;
 import com.incon.service.ui.termsandcondition.TermsAndConditionActivity;
-import com.incon.service.utils.Logger;
 import com.incon.service.utils.OfflineDataManager;
-import com.incon.service.utils.PermissionUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -47,17 +49,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.google.android.gms.internal.zzs.TAG;
-
 
 /**
  * Created on 13 Jun 2017 4:01 PM.
  */
 public class RegistrationServiceFragment extends BaseFragment implements
-        RegistrationServiceFragmentContract.View {
+        RegistrationServiceContract.View {
     private static final String TAG = RegistrationServiceFragment.class.getSimpleName();
     private FragmentRegistrationServiceBinding binding;
-    private RegistrationServiceFragmentPresenter registrationServiceFragmentPresenter;
+    private RegistrationServicePresenter registrationServiceFragmentPresenter;
     private List<CategoryResponse> categoryResponseList; //fetched from defaults api call in
     // registration
     private Registration register; // initialized from registration acticity
@@ -70,11 +70,14 @@ public class RegistrationServiceFragment extends BaseFragment implements
     private AppCheckBoxListDialog categoryDialog;
     private List<CheckedModelSpinner> categorySpinnerList;
     private String enteredOtp;
+    private List<FetchCategories> fetchCategorieList;
+    private int categorySelectedPos = -1;
+    private int divisionSelectedPos = -1;
 
     @Override
     protected void initializePresenter() {
 
-        registrationServiceFragmentPresenter = new RegistrationServiceFragmentPresenter();
+        registrationServiceFragmentPresenter = new RegistrationServicePresenter();
         registrationServiceFragmentPresenter.setView(this);
         setBasePresenter(registrationServiceFragmentPresenter);
     }
@@ -104,7 +107,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
         shakeAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
         loadValidationErrors();
         setFocusListenersForEditText();
-
 
         categorySpinnerList = new ArrayList<>();
         DefaultsResponse defaultsResponse = new OfflineDataManager().loadData(
@@ -162,8 +164,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
                         if (actionId == EditorInfo.IME_ACTION_NEXT) {
                             switch (textView.getId()) {
                                 case R.id.edittext_register_phone:
-                                    binding.edittextRegisterCategory.requestFocus();
-                                    showCategorySelectionDialog();
                                     break;
 
                                 default:
@@ -282,21 +282,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
     }
 
     private void callRegisterApi() {
-        //sets category ids as per api requirement
-        String[] categoryNames = serviceCenter.getName().split(
-                COMMA_SEPARATOR);
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String categoryName : categoryNames) {
-            CategoryResponse categoryResponse = new CategoryResponse();
-            categoryResponse.setName(categoryName);
-            int indexOf = categoryResponseList.indexOf(categoryResponse);
-            stringBuilder.append(categoryResponseList.get(indexOf).getId());
-            stringBuilder.append(AppConstants.COMMA_SEPARATOR);
-        }
-        int start = stringBuilder.length() - 1;
-        serviceCenter.setCategoryId(stringBuilder.toString().substring(0, start));
-
-        //sets gender type as single char as per api requirement
 
         registrationServiceFragmentPresenter.register(register);
     }
@@ -325,6 +310,109 @@ public class RegistrationServiceFragment extends BaseFragment implements
                 serviceCenter.getContactNo());
 
         showOtpDialog();
+    }
+
+    @Override
+    public void loadCategoriesList(List<FetchCategories> categoriesList) {
+        fetchCategorieList = categoriesList;
+        loadCategorySpinnerData();
+    }
+
+
+    private void loadCategorySpinnerData() {
+
+        String[] stringCategoryList = new String[fetchCategorieList.size()];
+        for (int i = 0; i < fetchCategorieList.size(); i++) {
+            stringCategoryList[i] = fetchCategorieList.get(i).getName();
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.view_spinner, stringCategoryList);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        binding.spinnerCategory.setAdapter(arrayAdapter);
+        binding.spinnerCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (categorySelectedPos != position) {
+                    FetchCategories fetchCategories = fetchCategorieList.get(position);
+                    serviceCenter.setCategoryId(fetchCategories.getId());
+                    serviceCenter.setCategoryName(fetchCategories.getName());
+                    loadDivisionSpinnerData(fetchCategories.getDivisions());
+                    binding.spinnerDivision.setText("");
+                    categorySelectedPos = position;
+                    binding.spinnerBrand.setVisibility(View.GONE);
+                }
+
+                //For avoiding double tapping issue
+                if (binding.spinnerCategory.getOnItemClickListener() != null) {
+                    binding.spinnerCategory.onItemClick(parent, view, position, id);
+                }
+            }
+        });
+
+    }
+
+    private void loadDivisionSpinnerData(List<Division> divisions) {
+
+        if (divisions.size() == 0) {
+            binding.spinnerDivision.setVisibility(View.GONE);
+            return;
+        }
+
+        binding.spinnerDivision.setVisibility(View.VISIBLE);
+        String[] stringDivisionList = new String[divisions.size()];
+        for (int i = 0; i < divisions.size(); i++) {
+            stringDivisionList[i] = divisions.get(i).getName();
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.view_spinner, stringDivisionList);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        binding.spinnerDivision.setAdapter(arrayAdapter);
+        binding.spinnerDivision.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (divisionSelectedPos != position) {
+                    divisionSelectedPos = position;
+                    FetchCategories fetchCategories = fetchCategorieList.get(categorySelectedPos);
+                    Division divisions1 = fetchCategories.getDivisions().get(divisionSelectedPos);
+                    serviceCenter.setDivisionId(divisions1.getId());
+                    serviceCenter.setDivisionName(divisions1.getName());
+                    loadBrandSpinnerData(divisions1.getBrands());
+                    binding.spinnerBrand.setText("");
+                }
+
+                //For avoiding double tapping issue
+                if (binding.spinnerDivision.getOnItemClickListener() != null) {
+                    binding.spinnerDivision.onItemClick(parent, view, position, id);
+                }
+            }
+        });
+    }
+
+    private void loadBrandSpinnerData(final List<Brand> brandList) {
+        if (brandList.size() == 0) {
+            binding.spinnerBrand.setVisibility(View.GONE);
+            return;
+        }
+        binding.spinnerBrand.setVisibility(View.VISIBLE);
+        String[] stringDivisionList = new String[brandList.size()];
+        for (int i = 0; i < brandList.size(); i++) {
+            stringDivisionList[i] = brandList.get(i).getName();
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.view_spinner, stringDivisionList);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        binding.spinnerBrand.setAdapter(arrayAdapter);
+        binding.spinnerBrand.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                serviceCenter.setBrandId(brandList.get(position).getId());
+                serviceCenter.setBrandName(brandList.get(position).getName());
+                //For avoiding double tapping issue
+                if (binding.spinnerBrand.getOnItemClickListener() != null) {
+                    binding.spinnerBrand.onItemClick(parent, view, position, id);
+                }
+            }
+        });
     }
 
     // otp dialog
@@ -365,53 +453,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
                 .build();
         dialog.showDialog();
     }
-
-    public void onCategoryClick() {
-        showCategorySelectionDialog();
-    }
-
-    //  category selection dialog
-    private void showCategorySelectionDialog() {
-        //set previous selected categories as checked
-        String selectedCategories = binding.edittextRegisterCategory.getText().toString();
-        if (!TextUtils.isEmpty(selectedCategories)) {
-            String[] split = selectedCategories.split(COMMA_SEPARATOR);
-            for (String categoryString : split) {
-                CheckedModelSpinner checkedModelSpinner = new CheckedModelSpinner();
-                checkedModelSpinner.setName(categoryString);
-                int indexOf = categorySpinnerList.indexOf(checkedModelSpinner);
-                categorySpinnerList.get(indexOf).setChecked(true);
-            }
-
-        }
-        categoryDialog = new AppCheckBoxListDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String caetogories) {
-                        binding.edittextRegisterCategory.setText(caetogories);
-                        binding.edittextRegisterDivision.setText(caetogories);
-                        binding.edittextRegisterBrand.setText(caetogories);
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                categoryDialog.dismiss();
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                categoryDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.register_category_hint))
-                .spinnerItems(categorySpinnerList)
-                .build();
-        categoryDialog.showDialog();
-    }
-
 
     @Override
     public void onDestroy() {

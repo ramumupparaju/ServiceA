@@ -77,7 +77,6 @@ public class AddServiceCenterActivity extends BaseActivity implements
         addServiceCenterPresenter.getCategories(SharedPrefsUtils.loginProvider().
                 getIntegerPreference(LoginPrefs.STORE_ID, DEFAULT_VALUE));
 
-
     }
 
     private void initViews() {
@@ -276,32 +275,6 @@ public class AddServiceCenterActivity extends BaseActivity implements
         errorMap.put(AddServiceCenterValidation.CATEGORY_REQ, getString(R.string.error_category_req));
 
         errorMap.put(AddServiceCenterValidation.GSTN_REQ, getString(R.string.error_gstn_req));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 

@@ -302,6 +302,7 @@ public class AddUserActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
+            //addUserPresenter.addingUser();
         }
     }
 }

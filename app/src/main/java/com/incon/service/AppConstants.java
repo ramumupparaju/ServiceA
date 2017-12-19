@@ -19,6 +19,11 @@ public interface AppConstants {
     int DEAULT_VALUE = Integer.MAX_VALUE;
 
 
+    interface RegistrationConstants {
+        String SERVICE_INDIVIDUAL = "I";
+        String SERVICE_GROUP = "G";
+    }
+
     interface StatusConstants {
         String BUY_REQUEST_ACCEPT = "A";
         String BUY_REQUEST_REJECT = "R";
@@ -96,8 +101,6 @@ public interface AppConstants {
     }
 
 
-
-
     interface AddUserValidations {
         int NAME_REQ = 1;
         int PHONE_REQ = 3;
@@ -117,7 +120,6 @@ public interface AppConstants {
         int SERVICE_CENTER_ID = 28;
         int SERVICE_CENTER_ROLE_ID = 29;
     }
-
 
 
     interface AddServiceCenterValidation {
@@ -149,11 +151,6 @@ public interface AppConstants {
         int ZIPCODE_INVALID = 12;
         int TIMEZONE_REQ = 8;
     }
-
-
-
-
-
 
 
     interface PasswordValidation {
@@ -330,8 +327,8 @@ public interface AppConstants {
     interface DateFormatterConstants {
         String FROM_API_MILLIS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         String FROM_API = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-       /* String LOCAL_DATE_DD_MM_YYYY_HH_MM_SS =
-                "dd-MM-yyyy HH:mm:ss"; //14-08-1987 18:30:00*/
+        /* String LOCAL_DATE_DD_MM_YYYY_HH_MM_SS =
+                 "dd-MM-yyyy HH:mm:ss"; //14-08-1987 18:30:00*/
         String LOCAL_DATE_DD_MM_YYYY_HH_MM =
                 "dd-MM-yyyy HH:mm"; //14-08-1987 18:30
         String MMMM_YYYY = "MMMM - yyyy"; //June - 2017

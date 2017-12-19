@@ -64,7 +64,6 @@ public class RegistrationPresenter extends BasePresenter<RegistrationContract.Vi
 
             @Override
             public void onComplete() {
-                getView().hideProgress();
             }
         };
         AppApiService.getInstance().defaultsApi().subscribe(observer);

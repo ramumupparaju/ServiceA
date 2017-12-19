@@ -26,16 +26,16 @@ public class ServiceCenter extends BaseObservable {
     private AddressInfo addressInfo;
     @SerializedName("brandId")
     @Expose
-    private String brandId;
+    private Integer brandId;
     @SerializedName("categoryId")
     @Expose
-    private String categoryId;
+    private Integer categoryId;
     @SerializedName("contactNo")
     @Expose
     private String contactNo;
     @SerializedName("divisionId")
     @Expose
-    private String divisionId;
+    private Integer divisionId;
     @SerializedName("email")
     @Expose
     private String email;
@@ -48,6 +48,34 @@ public class ServiceCenter extends BaseObservable {
     @SerializedName("name")
     @Expose
     private String name;
+
+    private transient String categoryName;
+    private transient String divisionName;
+    private transient String brandName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getDivisionName() {
+        return divisionName;
+    }
+
+    public void setDivisionName(String divisionName) {
+        this.divisionName = divisionName;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
 
     public ServiceCenter() {
     }
@@ -69,19 +97,19 @@ public class ServiceCenter extends BaseObservable {
         this.addressInfo = addressInfo;
     }
 
-    public String getBrandId() {
+    public Integer getBrandId() {
         return brandId;
     }
 
-    public void setBrandId(String brandId) {
+    public void setBrandId(Integer brandId) {
         this.brandId = brandId;
     }
 
-    public String getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -93,11 +121,11 @@ public class ServiceCenter extends BaseObservable {
         this.contactNo = contactNo;
     }
 
-    public String getDivisionId() {
+    public Integer getDivisionId() {
         return divisionId;
     }
 
-    public void setDivisionId(String divisionId) {
+    public void setDivisionId(Integer divisionId) {
         this.divisionId = divisionId;
     }
 
@@ -173,21 +201,21 @@ public class ServiceCenter extends BaseObservable {
                 break;
 
             case 2:
-                boolean serviceCategory = TextUtils.isEmpty(getCategoryId());
+                boolean serviceCategory = TextUtils.isEmpty(getCategoryName());
                 if (emptyValidation && serviceCategory) {
                     return AppConstants.RegistrationValidation.CATEGORY_REQ;
                 }
                 break;
 
             case 3:
-                boolean serviceDivision = TextUtils.isEmpty(getDivisionId());
+                boolean serviceDivision = TextUtils.isEmpty(getDivisionName());
                 if (emptyValidation && serviceDivision) {
                     return AppConstants.RegistrationValidation.DIVISION_REQ;
                 }
                 break;
 
             case 4:
-                boolean serviceBrand = TextUtils.isEmpty(getBrandId());
+                boolean serviceBrand = TextUtils.isEmpty(getBrandName());
                 if (emptyValidation && serviceBrand) {
                     return AppConstants.RegistrationValidation.BRAND_REQ;
                 }

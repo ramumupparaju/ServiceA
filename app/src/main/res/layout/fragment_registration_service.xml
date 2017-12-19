@@ -31,22 +31,12 @@
                 android:textColor="@color/colorForgotPasswordText"
                 android:textSize="18sp"/>
 
-            <TextView
-                android:id="@+id/text_userinfo_subtitle"
-                style="@style/BothWrap"
-                android:layout_below="@id/text_userinfo_title"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="@string/register_store_info_subtitle"
-                android:textColor="@color/colorForgotPasswordText"
-                android:textSize="12sp"/>
 
             <!-- Store logo -->
             <ImageView
                 android:id="@+id/store_logo_iv"
                 style="@style/BothWrap"
-                android:layout_below="@id/text_userinfo_subtitle"
+                android:layout_below="@id/text_userinfo_title"
                 android:layout_width="130dp"
                 android:layout_height="76dp"
                 android:layout_centerHorizontal="true"
@@ -101,103 +91,57 @@
                         android:text="@={serviceCenter.contactNo}"/>
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
-                <!-- Category -->
-                <com.incon.service.custom.view.CustomTextInputLayout
-                    android:id="@+id/input_layout_register_category"
-                    style="@style/Register_TextInputLayout"
+                <!-- category-->
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinner_category"
+                    style="@style/spinnerItemStyle"
                     android:layout_below="@id/input_layout_register_phone"
-                    android:hint="@string/register_category_hint"
+                    android:layout_marginBottom="@dimen/margin_24"
+                    android:focusable="true"
+                    android:hint="@string/add_new__category"
+                    android:tag="2"
+                    android:text="@{serviceCenter.categoryName}"
+                    android:visibility="visible"
+                    app:met_floatingLabel="highlight"
+                    app:met_textColor="@color/colorForgotPasswordHintText"
+                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+
+                <!-- division no -->
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinner_division"
+                    style="@style/spinnerItemStyle"
+                    android:layout_below="@id/spinner_category"
+                    android:layout_marginBottom="@dimen/margin_24"
+                    android:focusable="true"
+                    android:hint="@string/add_new__division"
+                    android:tag="3"
+                    android:text="@{serviceCenter.divisionName}"
+                    android:visibility="gone"
+                    app:met_floatingLabel="highlight"
+                    app:met_textColor="@color/colorForgotPasswordHintText"
+                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+
+                <!--brand-->
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinner_brand"
+                    style="@style/spinnerItemStyle"
+                    android:layout_below="@id/spinner_division"
+                    android:layout_marginBottom="@dimen/margin_24"
+                    android:focusable="true"
+                    android:hint="@string/action_brand"
+                    android:tag="4"
+                    android:text="@{serviceCenter.brandName}"
+                    android:visibility="gone"
                     app:errorEnabled="true"
-                    app:fontName="fonts/OpenSans-Regular.ttf"
-                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edittext_register_category"
-                        style="@style/Register_TextInputEditText"
-                        android:enabled="false"
-                        android:tag="2"
-                        android:text="@={serviceCenter.categoryId}"/>
-                </com.incon.service.custom.view.CustomTextInputLayout>
-
-                <!--Dummy view used for category click action-->
-                <View
-                    android:id="@+id/view_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_alignBottom="@+id/input_layout_register_category"
-                    android:layout_alignEnd="@+id/input_layout_register_category"
-                    android:layout_alignStart="@+id/input_layout_register_category"
-                    android:layout_alignTop="@+id/input_layout_register_category"
-                    android:background="@null"
-                    android:onClick="@{() -> serviceFragment.onCategoryClick()}"/>
-
-
-
-                <!-- Division -->
-                <com.incon.service.custom.view.CustomTextInputLayout
-                    android:id="@+id/input_layout_register_division"
-                    style="@style/Register_TextInputLayout"
-                    android:layout_below="@id/input_layout_register_category"
-                    android:hint="@string/register_division_hint"
-                    app:errorEnabled="true"
-                    app:fontName="fonts/OpenSans-Regular.ttf"
-                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edittext_register_division"
-                        style="@style/Register_TextInputEditText"
-                        android:enabled="false"
-                        android:tag="2"
-                        android:text="@={serviceCenter.divisionId}"/>
-                </com.incon.service.custom.view.CustomTextInputLayout>
-
-                <!--Dummy view used for category click action-->
-                <View
-                    android:id="@+id/view_division"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_alignBottom="@+id/input_layout_register_division"
-                    android:layout_alignEnd="@+id/input_layout_register_division"
-                    android:layout_alignStart="@+id/input_layout_register_division"
-                    android:layout_alignTop="@+id/input_layout_register_division"
-                    android:background="@null"
-                    android:onClick="@{() -> serviceFragment.onCategoryClick()}"/>
-                <!-- Brand -->
-                <com.incon.service.custom.view.CustomTextInputLayout
-                    android:id="@+id/input_layout_register_brand"
-                    style="@style/Register_TextInputLayout"
-                    android:layout_below="@id/input_layout_register_division"
-                    android:hint="@string/register_brand_hint"
-                    app:errorEnabled="true"
-                    app:fontName="fonts/OpenSans-Regular.ttf"
-                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edittext_register_brand"
-                        style="@style/Register_TextInputEditText"
-                        android:enabled="false"
-                        android:tag="2"
-                        android:text="@={serviceCenter.brandId}"/>
-                </com.incon.service.custom.view.CustomTextInputLayout>
-
-                <!--Dummy view used for category click action-->
-                <View
-                    android:id="@+id/view_brand"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_alignBottom="@+id/input_layout_register_brand"
-                    android:layout_alignEnd="@+id/input_layout_register_brand"
-                    android:layout_alignStart="@+id/input_layout_register_brand"
-                    android:layout_alignTop="@+id/input_layout_register_brand"
-                    android:background="@null"
-                    android:onClick="@{() -> serviceFragment.onCategoryClick()}"/>
-
+                    app:met_floatingLabel="highlight"
+                    app:met_textColor="@color/colorForgotPasswordHintText"
+                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
                 <!-- Address -->
                 <com.incon.service.custom.view.CustomTextInputLayout
                     android:id="@+id/input_layout_register_address"
                     style="@style/Register_TextInputLayout"
-                    android:layout_below="@id/input_layout_register_brand"
+                    android:layout_below="@id/spinner_brand"
                     android:hint="@string/register_address_hint"
                     app:errorEnabled="true"
                     app:fontName="fonts/OpenSans-Regular.ttf"
@@ -207,7 +151,7 @@
                         android:id="@+id/edittext_register_address"
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
-                        android:tag="3"
+                        android:tag="5"
                         android:text="@={serviceCenter.address}"/>
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -241,7 +185,7 @@
                         android:inputType="textEmailAddress"
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
-                        android:tag="4"
+                        android:tag="6"
                         android:text="@={serviceCenter.email}"/>
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -263,7 +207,7 @@
                         android:inputType="textEmailAddress"
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
-                        android:tag="5"
+                        android:tag="7"
                         android:text="@={serviceCenter.gstn}"/>
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
