@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <data>
-
         <variable
             name="addServiceCenter"
             type="com.incon.service.dto.addservicecenter.AddServiceCenter"/>
-
         <variable
-            name="addServiceCenterFragment"
-            type="com.incon.service.ui.addservicecenter.AddServiceCenterFragment"/>
+            name="addServiceCenterActivity"
+            type="com.incon.service.ui.addservicecenter.AddServiceCenterActivity"/>
 
     </data>
+    <RelativeLayout style="@style/BothMatch">
 
     <ScrollView
         android:id="@+id/scrollview_user_info"
@@ -24,6 +22,7 @@
         android:scrollbars="vertical">
 
         <RelativeLayout
+            android:layout_marginTop="@dimen/margin_30"
             style="@style/BothMatch"
             android:background="@color/white">
 
@@ -42,7 +41,7 @@
                         android:focusable="true"
                         android:imeOptions="actionNext"
                         android:inputType="textCapWords"
-                        android:maxLength="@integer/character_limit_45"
+                        android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="0"
                         android:text="@{addServiceCenter.name}"/>
@@ -64,8 +63,9 @@
                         style="@style/Add_new_model_TextInputEditText"
                         android:focusable="true"
                         android:imeOptions="actionNext"
-                        android:inputType="textMultiLine"
-                        android:scrollHorizontally="false"
+                        android:inputType="number"
+                        android:maxLength="@integer/character_limit_45"
+                        android:maxLines="1"
                         android:tag="1"
                         android:text="@{addServiceCenter.contactNo}"/>
 
@@ -122,7 +122,7 @@
                     android:layout_alignStart="@+id/input_layout_register_address"
                     android:layout_alignTop="@+id/input_layout_register_address"
                     android:background="@null"
-                    android:onClick="@{() -> addServiceCenterFragment.onAddressClick()}"/>
+                    android:onClick="@{() -> addServiceCenterActivity.onAddressClick()}"/>
 
             <com.incon.service.custom.view.CustomTextInputLayout
                 android:id="@+id/input_layout_created_date"
@@ -150,7 +150,7 @@
                 android:layout_alignStart="@+id/input_layout_created_date"
                 android:layout_alignTop="@+id/input_layout_created_date"
                 android:background="@null"
-                android:onClick="@{() -> addServiceCenterFragment.onDateClick()}" />
+                android:onClick="@{() -> addServiceCenterActivity.onDateClick()}" />
 
 
             <!-- category-->
@@ -162,9 +162,8 @@
                     android:focusable="true"
                     android:hint="@string/add_new__category"
                     android:tag="5"
-                    android:text="@{addServiceCenter.categoryId}"
+                    android:text="@{addServiceCenter.categoryName}"
                     android:visibility="visible"
-                    app:errorEnabled="true"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
                     app:met_textColorHint="@color/colorForgotPasswordHintText"/>
@@ -178,9 +177,8 @@
                     android:focusable="true"
                     android:hint="@string/add_new__division"
                     android:tag="6"
-                    android:text="@{addServiceCenter.divisionId}"
+                    android:text="@{addServiceCenter.divisionName}"
                     android:visibility="gone"
-                    app:errorEnabled="true"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
                     app:met_textColorHint="@color/colorForgotPasswordHintText"/>
@@ -194,7 +192,7 @@
                     android:focusable="true"
                     android:hint="@string/action_brand"
                     android:tag="7"
-                    android:text="@{addServiceCenter.brandId}"
+                    android:text="@{addServiceCenter.brandName}"
                     android:visibility="gone"
                     app:errorEnabled="true"
                     app:met_floatingLabel="highlight"
@@ -223,23 +221,24 @@
                     android:text="@={addServiceCenter.gstn}"/>
             </com.incon.service.custom.view.CustomTextInputLayout>
 
-            <Button
-                android:id="@+id/button_submit"
-                style="@style/w150_wrap"
-                fontPath="fonts/OpenSans-Bold.ttf"
-                android:layout_below="@id/input_layout_register_gstn"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:layout_marginLeft="@dimen/margin_110"
-                android:layout_marginTop="@dimen/margin_10"
-                android:background="@drawable/btn_login_register_roundedcorner"
-                android:onClick="@{() -> addServiceCenterFragment.onSubmitClick()}"
-                android:text="@string/add_new_submit"
-                android:textAllCaps="true"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_13"/>
-
         </RelativeLayout>
 
     </ScrollView>
 
+        <Button
+            android:id="@+id/button_submit"
+            style="@style/w150_wrap"
+            fontPath="fonts/OpenSans-Bold.ttf"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_110"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@drawable/btn_login_register_roundedcorner"
+            android:onClick="@{() -> addServiceCenterActivity.onSubmitClick()}"
+            android:text="@string/add_new_submit"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_13"/>
+
+</RelativeLayout>
 </layout>

@@ -10,9 +10,7 @@ import android.support.design.widget.TextInputEditText;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
@@ -24,9 +22,9 @@ import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.custom.view.CustomAutoCompleteView;
 import com.incon.service.custom.view.CustomTextInputLayout;
-import com.incon.service.databinding.FragmentAdduserBinding;
+import com.incon.service.databinding.ActivityAdduserBinding;
 import com.incon.service.dto.adduser.AddUser;
-import com.incon.service.ui.BaseFragment;
+import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -39,15 +37,15 @@ import java.util.TimeZone;
  * Created by MY HOME on 17-Dec-17.
  */
 
-public class AddUserFragment extends BaseFragment implements
+public class AddUserActivity extends BaseActivity implements
         AddUserContract.View {
     private View rootView;
     private AddUserPresenter addUserPresenter;
     private AddUser addUser;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
-    private FragmentAdduserBinding binding;
     private MaterialBetterSpinner genderSpinner;
+    private ActivityAdduserBinding binding;
 
     @Override
     protected void initializePresenter() {
@@ -58,27 +56,28 @@ public class AddUserFragment extends BaseFragment implements
     }
 
     @Override
-    public void setTitle() {
-
+    protected int getLayoutId() {
+        return R.layout.activity_adduser;
     }
 
+
+   /* @Override
+    public void setTitle() {
+
+    }*/
+
     @Override
-    protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (rootView == null) {
-            binding = DataBindingUtil.inflate(
-                    inflater, R.layout.fragment_adduser, container, false);
-            addUser = new AddUser();
-            binding.setAddUser(addUser);
-            binding.setAddUserFragment(this);
-            rootView = binding.getRoot();
-            initViews();
-        }
-        setTitle();
-        return rootView;
+    protected void onCreateView(Bundle saveInstanceState) {
+        binding = DataBindingUtil.setContentView(this, getLayoutId());
+        addUser = new AddUser();
+        binding.setAddUser(addUser);
+        binding.setAddUserActivity(this);
+        rootView = binding.getRoot();
+        initViews();
     }
 
     private void initViews() {
-        shakeAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+        shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadGenderSpinnerData();
         loadValidationErrors();
         setFocusListenersForEditText();
@@ -87,7 +86,7 @@ public class AddUserFragment extends BaseFragment implements
     private void loadGenderSpinnerData() {
         String[] genderTypeList = getResources().getStringArray(R.array.gender_options_list);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 R.layout.view_spinner, genderTypeList);
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
         genderSpinner = binding.spinnerGender;
@@ -100,7 +99,7 @@ public class AddUserFragment extends BaseFragment implements
     }
 
     private void showDatePicker() {
-        AppUtils.hideSoftKeyboard(getActivity(), getView());
+        AppUtils.hideSoftKeyboard(this, binding.viewDob);
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
 
         String dateOfBirth = addUser.getDateOfBirthToShow();
@@ -111,7 +110,7 @@ public class AddUserFragment extends BaseFragment implements
 
         int customStyle = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                 ? R.style.DatePickerDialogTheme : android.R.style.Theme_DeviceDefault_Light_Dialog;
-        DatePickerDialog datePicker = new DatePickerDialog(getActivity(),
+        DatePickerDialog datePicker = new DatePickerDialog(this,
                 customStyle,
                 datePickerListener,
                 cal.get(Calendar.YEAR),
@@ -141,7 +140,7 @@ public class AddUserFragment extends BaseFragment implements
             };
 
     public void onAddressClick() {
-        Intent addressIntent = new Intent(getActivity(), RegistrationMapActivity.class);
+        Intent addressIntent = new Intent(this, RegistrationMapActivity.class);
         startActivityForResult(addressIntent, RequestCodes.ADDRESS_LOCATION);
     }
 
@@ -181,11 +180,11 @@ public class AddUserFragment extends BaseFragment implements
                         return true;
                     }
                 };
+        binding.edittextNumber.setOnEditorActionListener(onEditorActionListener);
         binding.edittextName.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextNumber.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextRegisterEmailid.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextRegisterAddress.setOnFocusChangeListener(onFocusChangeListener);
-        binding.edittextRegisterDob.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextRegisterPassword.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextRegisterReenterPassword.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextRegisterServiceCenterId.setOnFocusChangeListener(onFocusChangeListener);
@@ -198,7 +197,7 @@ public class AddUserFragment extends BaseFragment implements
         public void onFocusChange(View view, boolean hasFocus) {
             Object fieldId = view.getTag();
             if (fieldId != null) {
-                Pair<String, Integer> validation = binding.getAddUser().
+                Pair<String, Integer> validation = addUser.
                         validateAddUser((String) fieldId);
                 if (!hasFocus) {
                     if (view instanceof TextInputEditText) {
@@ -210,24 +209,6 @@ public class AddUserFragment extends BaseFragment implements
             }
         }
     };
-
-    private boolean validateFields() {
-        binding.inputLayoutName.setError(null);
-        binding.inputLayoutNumber.setError(null);
-        binding.inputLayoutRegisterEmailid.setError(null);
-        binding.inputLayoutRegisterAddress.setError(null);
-        binding.inputLayoutRegisterDob.setError(null);
-        binding.spinnerGender.setError(null);
-        binding.inputLayoutRegisterPassword.setError(null);
-        binding.inputLayoutRegisterConfirmPassword.setError(null);
-        binding.inputLayoutRegisterServiceCenterId.setError(null);
-        binding.inputLayoutRegisterServiceCenterRoleId.setError(null);
-
-        Pair<String, Integer> validation = binding.getAddUser().validateAddUser(null);
-        updateUiAfterValidation(validation.first, validation.second);
-
-        return validation.second == VALIDATION_SUCCESS;
-    }
 
     private void updateUiAfterValidation(String tag, int validationId) {
         if (tag == null) {
@@ -248,7 +229,6 @@ public class AddUserFragment extends BaseFragment implements
                     .setError(validationId == VALIDATION_SUCCESS ? null
                             : errorMap.get(validationId));
         }
-
         if (validationId != VALIDATION_SUCCESS) {
             view.startAnimation(shakeAnim);
         }
@@ -256,50 +236,70 @@ public class AddUserFragment extends BaseFragment implements
 
     private void loadValidationErrors() {
         errorMap = new HashMap<>();
-        errorMap.put(RegistrationValidation.NAME_REQ,
+        errorMap.put(AddUserValidations.NAME_REQ,
                 getString(R.string.error_name_req));
 
-        errorMap.put(RegistrationValidation.PHONE_REQ,
+        errorMap.put(AddUserValidations.PHONE_REQ,
                 getString(R.string.error_phone_req));
 
-        errorMap.put(RegistrationValidation.PHONE_MIN_DIGITS,
+        errorMap.put(AddUserValidations.PHONE_MIN_DIGITS,
                 getString(R.string.error_phone_min_digits));
 
-        errorMap.put(RegistrationValidation.GENDER_REQ,
+        errorMap.put(AddUserValidations.GENDER_REQ,
                 getString(R.string.error_gender_req));
 
-        errorMap.put(RegistrationValidation.DOB_REQ,
+        errorMap.put(AddUserValidations.CREATED_DATE_REQ,
                 getString(R.string.error_dob_req));
 
-        errorMap.put(RegistrationValidation.DOB_FUTURE_DATE,
+        errorMap.put(AddUserValidations.DOB_FUTURE_DATE,
                 getString(R.string.error_dob_futuredate));
 
-        errorMap.put(RegistrationValidation.DOB_PERSON_LIMIT,
+        errorMap.put(AddUserValidations.DOB_PERSON_LIMIT,
                 getString(R.string.error_dob_patient_is_user));
 
-        errorMap.put(RegistrationValidation.EMAIL_REQ,
+        errorMap.put(AddUserValidations.EMAIL_REQ,
                 getString(R.string.error_email_req));
 
-        errorMap.put(RegistrationValidation.EMAIL_NOTVALID,
+        errorMap.put(AddUserValidations.EMAIL_NOTVALID,
                 getString(R.string.error_email_notvalid));
 
-        errorMap.put(RegistrationValidation.PASSWORD_REQ,
+        errorMap.put(AddUserValidations.PASSWORD_REQ,
                 getString(R.string.error_password_req));
 
-        errorMap.put(RegistrationValidation.PASSWORD_PATTERN_REQ,
+        errorMap.put(AddUserValidations.PASSWORD_PATTERN_REQ,
                 getString(R.string.error_password_pattern_req));
 
-        errorMap.put(RegistrationValidation.RE_ENTER_PASSWORD_REQ,
+        errorMap.put(AddUserValidations.RE_ENTER_PASSWORD_REQ,
                 getString(R.string.error_re_enter_password_req));
 
-        errorMap.put(RegistrationValidation.RE_ENTER_PASSWORD_DOES_NOT_MATCH,
+        errorMap.put(AddUserValidations.RE_ENTER_PASSWORD_DOES_NOT_MATCH,
                 getString(R.string.error_re_enter_password_does_not_match));
 
-        errorMap.put(RegistrationValidation.ADDRESS_REQ, getString(R.string.error_address_req));
-        errorMap.put(RegistrationValidation.SERVICE_CENTER_ID, getString(R.string.error_Service_Center_id));
-        errorMap.put(RegistrationValidation.SERVICE_CENTER_ROLE_ID, getString(R.string.error_service_center_role_id));
+        errorMap.put(AddUserValidations.ADDRESS_REQ, getString(R.string.error_address_req));
+        errorMap.put(AddUserValidations.SERVICE_CENTER_ID, getString(R.string.error_Service_Center_id));
+        errorMap.put(AddUserValidations.SERVICE_CENTER_ROLE_ID, getString(R.string.error_service_center_role_id));
 
     }
+
+
+    private boolean validateFields() {
+        binding.inputLayoutName.setError(null);
+        binding.inputLayoutNumber.setError(null);
+        binding.inputLayoutRegisterEmailid.setError(null);
+        binding.inputLayoutRegisterAddress.setError(null);
+        binding.inputLayoutRegisterDob.setError(null);
+        binding.spinnerGender.setError(null);
+        binding.inputLayoutRegisterPassword.setError(null);
+        binding.inputLayoutRegisterConfirmPassword.setError(null);
+        binding.inputLayoutRegisterServiceCenterId.setError(null);
+        binding.inputLayoutRegisterServiceCenterRoleId.setError(null);
+
+        Pair<String, Integer> validation = binding.getAddUser().validateAddUser(null);
+        updateUiAfterValidation(validation.first, validation.second);
+
+        return validation.second == VALIDATION_SUCCESS;
+    }
+
     public void onSubmitClick() {
         if (validateFields()) {
         }

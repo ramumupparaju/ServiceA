@@ -105,6 +105,7 @@
         successfully</string>
     <string name="action_product_status">Is product delivered</string>
     <string name="action_description">Description</string>
+    <string name="action_service_center_type">Service Center Type</string>
 
     <!--product Assign-->
     <string name="user_qr_code">User QR code</string>
@@ -368,6 +369,7 @@
     <string name="register_userinfo_title">User Information</string>
     <string name="register_userinfo_subtitle">Please enter information for the person who will be using the app.</string>
     <string name="register_store_info_title">Store Information</string>
+    <string name="register_service_center_info_title">Service Center Information</string>
     <string name="register_store_info_subtitle">Please enter store information</string>
     <string name="register_name_hint">Name</string>
     <string name="register_firstname_hint">First Name</string>

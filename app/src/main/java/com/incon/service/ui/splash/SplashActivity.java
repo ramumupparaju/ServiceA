@@ -59,7 +59,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
                 if (isLoggedIn) {
                     intent = new Intent(SplashActivity.this, HomeActivity.class);
                 } else {
-                    intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    intent = new Intent(SplashActivity.this, com.incon.service.ui.login.LoginActivity.class);
                 }
                 startActivity(intent);
                 finish();

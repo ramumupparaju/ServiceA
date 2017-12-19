@@ -8,6 +8,7 @@ import android.util.Pair;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.incon.service.AppConstants;
+import com.incon.service.utils.ValidationUtils;
 
 /**
  * Created by MY HOME on 16-Dec-17.
@@ -76,12 +77,14 @@ public class AddServiceCenter extends BaseObservable {
         notifyChange();
     }
 
+    @Bindable
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+        notifyChange();
     }
 
     public Integer getBrandId() {
@@ -99,21 +102,23 @@ public class AddServiceCenter extends BaseObservable {
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
-
+    @Bindable
     public String getContactNo() {
         return contactNo;
     }
 
     public void setContactNo(String contactNo) {
         this.contactNo = contactNo;
+        notifyChange();
     }
-
+    @Bindable
     public String getCreatedDate() {
         return createdDate;
     }
 
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
+        notifyChange();
     }
 
     public Integer getDivisionId() {
@@ -123,13 +128,14 @@ public class AddServiceCenter extends BaseObservable {
     public void setDivisionId(Integer divisionId) {
         this.divisionId = divisionId;
     }
-
+    @Bindable
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+        notifyChange();
     }
 
     public String getLocation() {
@@ -139,21 +145,23 @@ public class AddServiceCenter extends BaseObservable {
     public void setLocation(String location) {
         this.location = location;
     }
-
+    @Bindable
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+        notifyChange();
     }
-
+    @Bindable
     public String getGstn() {
         return gstn;
     }
 
     public void setGstn(String gstn) {
         this.gstn = gstn;
+        notifyChange();
     }
 
 
@@ -161,7 +169,7 @@ public class AddServiceCenter extends BaseObservable {
 
         int fieldId = AppConstants.VALIDATION_FAILURE;
         if (tag == null) {
-            for (int i = 0; i <= 6; i++) {
+            for (int i = 0; i <= 7; i++) {
                 fieldId = validateFields(i, true);
                 if (fieldId != AppConstants.VALIDATION_SUCCESS) {
                     tag = i + "";
@@ -178,52 +186,64 @@ public class AddServiceCenter extends BaseObservable {
     private int validateFields(int id, boolean emptyValidation) {
         switch (id) {
             case 0:
-                boolean nameEmpty = TextUtils.isEmpty(name);
-                if (emptyValidation && nameEmpty) {
-                    return AppConstants.RegistrationValidation.NAME_REQ;
+                if (emptyValidation && TextUtils.isEmpty(getName())) {
+                    return AppConstants.AddServiceCenterValidation.NAME_REQ;
                 }
                 break;
 
             case 1:
-                boolean numberEmpty = TextUtils.isEmpty(contactNo);
-                if (emptyValidation && numberEmpty) {
-                    return AppConstants.RegistrationValidation.PHONE_REQ;
+                boolean phoneEmpty = TextUtils.isEmpty(getContactNo());
+                if (emptyValidation && phoneEmpty) {
+                    return AppConstants.AddServiceCenterValidation.PHONE_REQ;
+                } else if (!phoneEmpty && !ValidationUtils.isPhoneNumberValid(getContactNo())) {
+                    return AppConstants.AddServiceCenterValidation.PHONE_MIN_DIGITS;
                 }
                 break;
+
 
             case 2:
-                boolean emailEmpty = TextUtils.isEmpty(email);
+                boolean emailEmpty = TextUtils.isEmpty(getEmail());
                 if (emptyValidation && emailEmpty) {
-                    return AppConstants.RegistrationValidation.EMAIL_REQ;
+                    return AppConstants.AddServiceCenterValidation.EMAIL_REQ;
+                } else if (!emailEmpty && !ValidationUtils.isValidEmail(getEmail())) {
+                    return AppConstants.AddServiceCenterValidation.EMAIL_NOTVALID;
                 }
                 break;
 
+
             case 3:
-                boolean addressEmpty = TextUtils.isEmpty(address);
-                if (emptyValidation && addressEmpty) {
-                    return AppConstants.RegistrationValidation.ADDRESS_REQ;
+                boolean userAddress = TextUtils.isEmpty(getAddress());
+                if (emptyValidation && userAddress) {
+                    return AppConstants.AddServiceCenterValidation.ADDRESS_REQ;
                 }
                 break;
 
 
             case 4:
-                boolean createdDateEmpty = TextUtils.isEmpty(createdDate);
+                boolean createdDateEmpty = TextUtils.isEmpty(getCreatedDate());
                 if (emptyValidation && createdDateEmpty) {
-                    return AppConstants.RegistrationValidation.CREATED_DATE_REQ;
+                    return AppConstants.AddServiceCenterValidation.CREATED_DATE_REQ;
                 }
                 break;
 
             case 5:
-                boolean categoryEmpty = TextUtils.isEmpty(categoryName);
+                boolean categoryEmpty = TextUtils.isEmpty(getCategoryName());
                 if (emptyValidation && categoryEmpty) {
-                    return AppConstants.RegistrationValidation.CATEGORY_REQ;
+                    return AppConstants.AddServiceCenterValidation.CATEGORY_REQ;
                 }
                 break;
 
             case 6:
-                boolean divisionEmpty = TextUtils.isEmpty(divisionName);
+                boolean divisionEmpty = TextUtils.isEmpty(getDivisionName());
                 if (emptyValidation && divisionEmpty) {
-                    return AppConstants.RegistrationValidation.DIVISION_REQ;
+                    return AppConstants.AddServiceCenterValidation.DIVISION_REQ;
+                }
+                break;
+
+            case 7:
+                boolean gstnEmpty = TextUtils.isEmpty(getGstn());
+                if (emptyValidation && gstnEmpty) {
+                    return AppConstants.AddServiceCenterValidation.GSTN_REQ;
                 }
                 break;
 

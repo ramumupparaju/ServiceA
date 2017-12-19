@@ -9,14 +9,15 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.text.TextUtils;
 import android.util.Pair;
-import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
@@ -25,9 +26,9 @@ import com.incon.service.apimodel.components.fetchcategorie.Division;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.custom.view.CustomAutoCompleteView;
 import com.incon.service.custom.view.CustomTextInputLayout;
-import com.incon.service.databinding.FragmentAddservicecenterBinding;
+import com.incon.service.databinding.ActivityAddservicecenterBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
-import com.incon.service.ui.BaseFragment;
+import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
@@ -41,7 +42,7 @@ import java.util.TimeZone;
  * Created by MY HOME on 17-Dec-17.
  */
 
-public class AddServiceCenterFragment extends BaseFragment implements
+public class AddServiceCenterActivity extends BaseActivity implements
         AddServiceCenterContract.View {
     private View rootView;
     private AddServiceCenterPresenter addServiceCenterPresenter;
@@ -51,8 +52,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
     private int divisionSelectedPos = -1;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
-    FragmentAddservicecenterBinding binding;
-
+    private ActivityAddservicecenterBinding binding;
 
     @Override
     protected void initializePresenter() {
@@ -61,31 +61,27 @@ public class AddServiceCenterFragment extends BaseFragment implements
         addServiceCenterPresenter.setView(this);
         setBasePresenter(addServiceCenterPresenter);
     }
-
     @Override
-    public void setTitle() {
-
+    protected int getLayoutId() {
+        return R.layout.activity_addservicecenter;
     }
 
     @Override
-    protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         if (rootView == null) {
-            binding = DataBindingUtil.inflate(
-                    inflater, R.layout.fragment_addservicecenter, container, false);
-             addServiceCenter = new AddServiceCenter();
-            binding.setAddServiceCenter(addServiceCenter);
-            binding.setAddServiceCenterFragment(this);
-            rootView = binding.getRoot();
-             initViews();
-             addServiceCenterPresenter.getCategories(SharedPrefsUtils.loginProvider().
-                    getIntegerPreference(LoginPrefs.STORE_ID, DEFAULT_VALUE));
-        }
-        setTitle();
-        return rootView;
+    protected void onCreateView(Bundle saveInstanceState) {
+        binding = DataBindingUtil.setContentView(this, getLayoutId());
+        addServiceCenter = new AddServiceCenter();
+        binding.setAddServiceCenter(addServiceCenter);
+        binding.setAddServiceCenterActivity(this);
+        rootView = binding.getRoot();
+        initViews();
+        addServiceCenterPresenter.getCategories(SharedPrefsUtils.loginProvider().
+                getIntegerPreference(LoginPrefs.STORE_ID, DEFAULT_VALUE));
+
+
     }
 
     private void initViews() {
-        shakeAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+        shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadValidationErrors();
         setFocusForViews();
     }
@@ -95,7 +91,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
     }
 
     private void showDatePicker() {
-        AppUtils.hideSoftKeyboard(getActivity(), getView());
+        AppUtils.hideSoftKeyboard(this, binding.edittextCreatedDate);
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
 
         String createdDate = addServiceCenter.getCreatedDate();
@@ -106,7 +102,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
 
         int customStyle = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                 ? R.style.DatePickerDialogTheme : android.R.style.Theme_DeviceDefault_Light_Dialog;
-        DatePickerDialog datePicker = new DatePickerDialog(getActivity(),
+        DatePickerDialog datePicker = new DatePickerDialog(this,
                 customStyle,
                 datePickerListener,
                 cal.get(Calendar.YEAR),
@@ -136,7 +132,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
             };
 
     public void onAddressClick() {
-        Intent addressIntent = new Intent(getActivity(), RegistrationMapActivity.class);
+        Intent addressIntent = new Intent(this, RegistrationMapActivity.class);
         startActivityForResult(addressIntent, RequestCodes.ADDRESS_LOCATION);
     }
 
@@ -159,6 +155,22 @@ public class AddServiceCenterFragment extends BaseFragment implements
     }
 
     private void setFocusForViews() {
+        TextView.OnEditorActionListener onEditorActionListener =
+                new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                            switch (textView.getId()) {
+                                case R.id.edittext_register_phone:
+                                    break;
+
+                                default:
+                            }
+                        }
+                        return true;
+                    }
+                };
+        binding.edittextNumber.setOnEditorActionListener(onEditorActionListener);
         binding.edittextName.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextNumber.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextRegisterEmailid.setOnFocusChangeListener(onFocusChangeListener);
@@ -173,7 +185,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
         public void onFocusChange(View view, boolean hasFocus) {
             Object fieldId = view.getTag();
             if (fieldId != null) {
-                Pair<String, Integer> validation = binding.getAddServiceCenter().
+                Pair<String, Integer> validation = addServiceCenter.
                         validateAddServiceCenter((String) fieldId);
                 if (!hasFocus) {
                     if (view instanceof TextInputEditText) {
@@ -230,15 +242,66 @@ public class AddServiceCenterFragment extends BaseFragment implements
 
     private void loadValidationErrors() {
         errorMap = new HashMap<>();
-        errorMap.put(AddServiceCenterValidation.NAME, getString(R.string.error_name_req));
-        errorMap.put(AddServiceCenterValidation.MOBILE_NUMBER, getString(R.string.error_phone_req));
-        errorMap.put(AddServiceCenterValidation.EMAIL, getString(R.string.error_email_req));
-        errorMap.put(AddServiceCenterValidation.ADDRESS, getString(R.string.error_address_req));
-        errorMap.put(AddServiceCenterValidation.CREATED_Date, getString(R.string.error_created_date));
-        errorMap.put(AddServiceCenterValidation.CATEGORY, getString(R.string.error_product_category));
-        errorMap.put(AddServiceCenterValidation.DIVISION, getString(R.string.error_product_division));
-        errorMap.put(AddServiceCenterValidation.BRAND, getString(R.string.error_product_brand));
-        errorMap.put(AddServiceCenterValidation.GSTN, getString(R.string.error_gstn_req));
+        errorMap.put(AddServiceCenterValidation.NAME_REQ,
+                getString(R.string.error_name_req));
+
+        errorMap.put(AddServiceCenterValidation.PHONE_REQ,
+                getString(R.string.error_phone_req));
+
+        errorMap.put(AddServiceCenterValidation.PHONE_MIN_DIGITS,
+                getString(R.string.error_phone_min_digits));
+
+        errorMap.put(AddServiceCenterValidation.GENDER_REQ,
+                getString(R.string.error_gender_req));
+
+        errorMap.put(AddServiceCenterValidation.CREATED_DATE_REQ,
+                getString(R.string.error_dob_req));
+
+        errorMap.put(AddServiceCenterValidation.CREATED_FUTURE_DATE,
+                getString(R.string.error_dob_futuredate));
+
+
+        errorMap.put(AddServiceCenterValidation.EMAIL_REQ,
+                getString(R.string.error_email_req));
+
+        errorMap.put(AddServiceCenterValidation.EMAIL_NOTVALID,
+                getString(R.string.error_email_notvalid));
+
+        errorMap.put(AddServiceCenterValidation.ADDRESS_REQ, getString(R.string.error_address_req));
+
+        errorMap.put(AddServiceCenterValidation.DIVISION_REQ, getString(R.string.error_division_req));
+
+        errorMap.put(AddServiceCenterValidation.BRAND_REQ, getString(R.string.error_brand_req));
+
+        errorMap.put(AddServiceCenterValidation.CATEGORY_REQ, getString(R.string.error_category_req));
+
+        errorMap.put(AddServiceCenterValidation.GSTN_REQ, getString(R.string.error_gstn_req));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -262,7 +325,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
         for (int i = 0; i < fetchCategorieList.size(); i++) {
             stringCategoryList[i] = fetchCategorieList.get(i).getName();
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 R.layout.view_spinner, stringCategoryList);
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
         binding.spinnerCategory.setAdapter(arrayAdapter);
@@ -272,6 +335,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
                 if (categorySelectedPos != position) {
                     FetchCategories fetchCategories = fetchCategorieList.get(position);
                     addServiceCenter.setCategoryId(fetchCategories.getId());
+                    addServiceCenter.setCategoryName(fetchCategories.getName());
                     loadDivisionSpinnerData(fetchCategories.getDivisions());
                     binding.spinnerDivision.setText("");
                     categorySelectedPos = position;
@@ -299,7 +363,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
         for (int i = 0; i < divisions.size(); i++) {
             stringDivisionList[i] = divisions.get(i).getName();
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 R.layout.view_spinner, stringDivisionList);
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
         binding.spinnerDivision.setAdapter(arrayAdapter);
@@ -311,6 +375,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
                     FetchCategories fetchCategories = fetchCategorieList.get(categorySelectedPos);
                     Division divisions1 = fetchCategories.getDivisions().get(divisionSelectedPos);
                     addServiceCenter.setDivisionId(divisions1.getId());
+                    addServiceCenter.setDivisionName(divisions1.getName());
                     loadBrandSpinnerData(divisions1.getBrands());
                     binding.spinnerBrand.setText("");
                 }
@@ -333,7 +398,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
         for (int i = 0; i < brandList.size(); i++) {
             stringDivisionList[i] = brandList.get(i).getName();
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
                 R.layout.view_spinner, stringDivisionList);
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
         binding.spinnerBrand.setAdapter(arrayAdapter);
@@ -341,6 +406,7 @@ public class AddServiceCenterFragment extends BaseFragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 addServiceCenter.setBrandId(brandList.get(position).getId());
+                addServiceCenter.setBrandName(brandList.get(position).getName());
                 //For avoiding double tapping issue
                 if (binding.spinnerBrand.getOnItemClickListener() != null) {
                     binding.spinnerBrand.onItemClick(parent, view, position, id);

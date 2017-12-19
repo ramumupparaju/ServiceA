@@ -16,8 +16,11 @@ import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
 import com.incon.service.databinding.ActivitySettingsBinding;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.settings.SettingsItem;
 import com.incon.service.ui.BaseActivity;
+import com.incon.service.ui.addservicecenter.AddServiceCenterActivity;
+import com.incon.service.ui.adduser.AddUserActivity;
 import com.incon.service.ui.changepassword.ChangePasswordActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.settings.adapters.SettingsAdapter;
@@ -134,20 +137,26 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     public void onClickPosition(int position) {
         this.position = position;
         switch (position) {
+
             case MenuConstants.PROFILE:
                 Intent userProfileIntent = new Intent(this, UpDateUserProfileActivity.class);
                 startActivity(userProfileIntent);
                 break;
 
+            case MenuConstants.ADD_USER:
+                Intent addUserIntent = new Intent(this,AddUserActivity.class);
+                startActivity(addUserIntent);
+                break;
+
+            case MenuConstants.ADD_SERVICE_CENTER:
+                Intent addServiceCenterIntent = new Intent(this, AddServiceCenterActivity.class);
+                startActivity(addServiceCenterIntent);
+                break;
             case MenuConstants.CHANGE_PWD:
                 Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
                 startActivity(changePasswordIntent);
                 break;
 
-          /*  case MenuConstants.BILLFORMAT:
-                AppUtils.shortToast(SettingsActivity.this, getString(
-                        R.string.title_menu_timings));
-                break;*/
             case MenuConstants.TIMEINGS:
                 AppUtils.shortToast(SettingsActivity.this, getString(
                         R.string.title_menu_timings));

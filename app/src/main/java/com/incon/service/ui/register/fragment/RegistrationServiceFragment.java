@@ -28,6 +28,7 @@ import com.incon.service.custom.view.AppOtpDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.FragmentRegistrationServiceBinding;
 import com.incon.service.dto.dialog.CheckedModelSpinner;
+import com.incon.service.dto.registration.AddressInfo;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.dto.registration.ServiceCenter;
 import com.incon.service.ui.BaseFragment;
@@ -271,6 +272,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
                 case RequestCodes.ADDRESS_LOCATION:
                     serviceCenter.setAddress(data.getStringExtra(IntentConstants.ADDRESS_COMMA));
                     serviceCenter.setLocation(data.getStringExtra(IntentConstants.LOCATION_COMMA));
+                    serviceCenter.setAddressInfo((AddressInfo) data.getParcelableExtra(IntentConstants.ADDRESS_INFO));
                     break;
                 default:
                     break;

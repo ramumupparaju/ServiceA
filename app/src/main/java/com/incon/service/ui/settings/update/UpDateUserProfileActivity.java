@@ -213,7 +213,6 @@ public class UpDateUserProfileActivity extends BaseActivity implements
         binding.spinnerGender.setAdapter(arrayAdapter);
     }
 
-
     private boolean validateFields() {
         binding.inputLayoutUpDateUserName.setError(null);
         binding.inputLayoutUpDatePhone.setError(null);

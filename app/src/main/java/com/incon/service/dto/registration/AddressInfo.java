@@ -1,6 +1,8 @@
 package com.incon.service.dto.registration;
 
 import android.databinding.BaseObservable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by PC on 12/18/2017.
  */
 
-public class AddressInfo {
+public class AddressInfo implements Parcelable {
 
     @SerializedName("city")
     @Expose
@@ -89,4 +91,55 @@ public class AddressInfo {
         this.zipCode = zipCode;
     }
 
+    public AddressInfo() {
+    }
+
+    protected AddressInfo(Parcel in) {
+        city = in.readString();
+        coordinates = in.readString();
+        country = in.readString();
+        latitude = in.readByte() == 0x00 ? null : in.readDouble();
+        longitude = in.readByte() == 0x00 ? null : in.readDouble();
+        state = in.readString();
+        zipCode = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(city);
+        dest.writeString(coordinates);
+        dest.writeString(country);
+        if (latitude == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(latitude);
+        }
+        if (longitude == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(longitude);
+        }
+        dest.writeString(state);
+        dest.writeString(zipCode);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<AddressInfo> CREATOR = new Parcelable.Creator<AddressInfo>() {
+        @Override
+        public AddressInfo createFromParcel(Parcel in) {
+            return new AddressInfo(in);
+        }
+
+        @Override
+        public AddressInfo[] newArray(int size) {
+            return new AddressInfo[size];
+        }
+    };
 }

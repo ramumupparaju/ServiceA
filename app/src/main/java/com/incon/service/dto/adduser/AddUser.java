@@ -81,13 +81,14 @@ public class AddUser extends BaseObservable {
                 .MM_DD_YYYY);
         notifyChange();
     }
-
+    @Bindable
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+        notifyChange();
     }
 
     public String getCountry() {
@@ -97,29 +98,32 @@ public class AddUser extends BaseObservable {
     public void setCountry(String country) {
         this.country = country;
     }
-
+    @Bindable
     public String getDob() {
         return dob;
     }
 
     public void setDob(String dob) {
         this.dob = dob;
+        notifyChange();
     }
-
+    @Bindable
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+        notifyChange();
     }
-
+    @Bindable
     public String getGender() {
         return gender;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
+        notifyChange();
     }
 
     public String getLocation() {
@@ -129,21 +133,24 @@ public class AddUser extends BaseObservable {
     public void setLocation(String location) {
         this.location = location;
     }
-
+    @Bindable
     public String getMobileNumber() {
         return mobileNumber;
     }
 
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
+        notifyChange();
     }
 
+    @Bindable
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+        notifyChange();
     }
 
     @Bindable
@@ -189,13 +196,11 @@ public class AddUser extends BaseObservable {
         return VALIDATION_SUCCESS;
     }
 
-
-
     public Pair<String, Integer> validateAddUser(String tag) {
 
         int fieldId = AppConstants.VALIDATION_FAILURE;
         if (tag == null) {
-            for (int i = 0; i <= 7; i++) {
+            for (int i = 0; i <= 9; i++) {
                 fieldId = validateFields(i, true);
                 if (fieldId != VALIDATION_SUCCESS) {
                     tag = i + "";
@@ -212,65 +217,69 @@ public class AddUser extends BaseObservable {
     private int validateFields(int id, boolean emptyValidation) {
         switch (id) {
             case 0:
-                boolean nameEmpty = TextUtils.isEmpty(name);
-                if (emptyValidation && nameEmpty) {
-                    return AppConstants.RegistrationValidation.NAME_REQ;
+                if (emptyValidation && TextUtils.isEmpty(getName())) {
+                    return AppConstants.AddUserValidations.NAME_REQ;
                 }
                 break;
 
             case 1:
-                boolean numberEmpty = TextUtils.isEmpty(mobileNumber);
+                boolean numberEmpty = TextUtils.isEmpty(getMobileNumber());
                 if (emptyValidation && numberEmpty) {
-                    return AppConstants.RegistrationValidation.PHONE_REQ;
+                    return AppConstants.AddUserValidations.PHONE_REQ;
+                }
+                else if (!numberEmpty && !ValidationUtils.isPhoneNumberValid(getMobileNumber())) {
+                    return AppConstants.AddUserValidations.PHONE_MIN_DIGITS;
                 }
                 break;
 
 
             case 2:
-                boolean genderEmpty = TextUtils.isEmpty(gender);
+                boolean genderEmpty = TextUtils.isEmpty(getGender());
                 if (emptyValidation && genderEmpty) {
-                    return AppConstants.RegistrationValidation.GENDER_REQ;
+                    return AppConstants.AddUserValidations.GENDER_REQ;
                 }
                 break;
 
             case 3:
                 boolean dobEmpty = TextUtils.isEmpty(getDob());
                 if (emptyValidation && dobEmpty) {
-                    return AppConstants.RegistrationValidation.DOB_REQ;
+                    return AppConstants.AddUserValidations.DOB_REQ;
                 } else if (!dobEmpty) {
                     return validateDob();
                 }
                 break;
 
-
             case 4:
-                boolean emailEmpty = TextUtils.isEmpty(email);
+                boolean emailEmpty = TextUtils.isEmpty(getEmail());
                 if (emptyValidation && emailEmpty) {
-                    return AppConstants.RegistrationValidation.EMAIL_REQ;
+                    return AppConstants.AddUserValidations.EMAIL_REQ;
                 }
-                break;
+                else if (!emailEmpty && !ValidationUtils.isValidEmail(getEmail())) {
+                    return AppConstants.AddUserValidations.EMAIL_NOTVALID;
+                }
 
+                break;
 
 
             case 5:
                 boolean passwordEmpty = TextUtils.isEmpty(getPassword());
                 if (emptyValidation && passwordEmpty) {
-                    return AppConstants.RegistrationValidation.PASSWORD_REQ;
+                    return AppConstants.AddUserValidations.PASSWORD_REQ;
                 } else if (!passwordEmpty && !ValidationUtils
                         .isPasswordValid(getPassword())) {
-                    return AppConstants.RegistrationValidation.PASSWORD_PATTERN_REQ;
+                    return AppConstants.AddUserValidations.PASSWORD_PATTERN_REQ;
                 }
                 break;
 
             case 6:
                 boolean reEnterPasswordEmpty = TextUtils.isEmpty(getConfirmPassword());
                 if (emptyValidation && reEnterPasswordEmpty) {
-                    return AppConstants.RegistrationValidation.RE_ENTER_PASSWORD_REQ;
+                    return AppConstants.AddUserValidations.RE_ENTER_PASSWORD_REQ;
                 } else if (!reEnterPasswordEmpty) {
                     boolean passwordEmpty1 = TextUtils.isEmpty(getPassword());
                     if (passwordEmpty1 || (!getPassword()
                             .equals(getConfirmPassword()))) {
-                        return AppConstants.RegistrationValidation
+                        return AppConstants.AddUserValidations
                                 .RE_ENTER_PASSWORD_DOES_NOT_MATCH;
                     }
 
@@ -278,23 +287,23 @@ public class AddUser extends BaseObservable {
                 break;
 
             case 7:
-                boolean addressEmpty = TextUtils.isEmpty(address);
+                boolean addressEmpty = TextUtils.isEmpty(getAddress());
                 if (emptyValidation && addressEmpty) {
-                    return AppConstants.RegistrationValidation.ADDRESS_REQ;
+                    return AppConstants.AddUserValidations.ADDRESS_REQ;
                 }
                 break;
 
             case 8:
-                boolean serviceIdEmpty = TextUtils.isEmpty(serviceCenterId);
+                boolean serviceIdEmpty = TextUtils.isEmpty(getServiceCenterId());
                 if (emptyValidation && serviceIdEmpty) {
-                    return AppConstants.RegistrationValidation.SERVICE_CENTER_ID;
+                    return AppConstants.AddUserValidations.SERVICE_CENTER_ID;
                 }
                 break;
 
             case 9:
-                boolean serviceCenterRoldeIdEmpty = TextUtils.isEmpty(address);
+                boolean serviceCenterRoldeIdEmpty = TextUtils.isEmpty(getServiceCenterRoleId());
                 if (emptyValidation && serviceCenterRoldeIdEmpty) {
-                    return AppConstants.RegistrationValidation.SERVICE_CENTER_ROLE_ID;
+                    return AppConstants.AddUserValidations.SERVICE_CENTER_ROLE_ID;
                 }
                 break;
 

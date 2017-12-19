@@ -27,7 +27,7 @@
                 style="@style/BothWrap"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:text="@string/register_store_info_title"
+                android:text="@string/register_service_center_info_title"
                 android:textColor="@color/colorForgotPasswordText"
                 android:textSize="18sp"/>
 

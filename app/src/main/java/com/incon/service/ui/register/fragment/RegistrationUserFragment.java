@@ -103,8 +103,6 @@ public class RegistrationUserFragment extends BaseFragment implements
 
     }
 
-
-
     private void loadData() {
         shakeAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
         loadGenderSpinnerData();

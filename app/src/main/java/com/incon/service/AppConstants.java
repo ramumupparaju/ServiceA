@@ -88,12 +88,72 @@ public interface AppConstants {
         int CREATED_DATE_REQ = 27;
         int SERVICE_CENTER_ID = 28;
         int SERVICE_CENTER_ROLE_ID = 29;
-
+        int CREATED_FUTURE_DATE = 30;
 
         int ZIPCODE_REQ = 9;
         int ZIPCODE_INVALID = 12;
         int TIMEZONE_REQ = 8;
     }
+
+
+
+
+    interface AddUserValidations {
+        int NAME_REQ = 1;
+        int PHONE_REQ = 3;
+        int PHONE_MIN_DIGITS = 10;
+        int GENDER_REQ = 17;
+        int DOB_REQ = 13;
+        int EMAIL_REQ = 5;
+        int EMAIL_NOTVALID = 6;
+        int PASSWORD_REQ = 7;
+        int PASSWORD_PATTERN_REQ = 11;
+        int RE_ENTER_PASSWORD_REQ = 18;
+        int RE_ENTER_PASSWORD_DOES_NOT_MATCH = 19;
+        int DOB_FUTURE_DATE = 14;
+        int DOB_PERSON_LIMIT = 15;
+        int ADDRESS_REQ = 22;
+        int CREATED_DATE_REQ = 27;
+        int SERVICE_CENTER_ID = 28;
+        int SERVICE_CENTER_ROLE_ID = 29;
+    }
+
+
+
+    interface AddServiceCenterValidation {
+        int NAME_REQ = 1;
+        int PHONE_REQ = 3;
+        int PHONE_MIN_DIGITS = 10;
+        int GENDER_REQ = 17;
+        int DOB_REQ = 13;
+        int EMAIL_REQ = 5;
+        int EMAIL_NOTVALID = 6;
+        int PASSWORD_REQ = 7;
+        int PASSWORD_PATTERN_REQ = 11;
+        int RE_ENTER_PASSWORD_REQ = 18;
+        int RE_ENTER_PASSWORD_DOES_NOT_MATCH = 19;
+        int DOB_FUTURE_DATE = 14;
+        int DOB_PERSON_LIMIT = 15;
+        int CATEGORY_REQ = 21;
+        int ADDRESS_REQ = 22;
+        int GSTN_REQ = 23;
+        int STORE_LOGO = 24;
+        int DIVISION_REQ = 25;
+        int BRAND_REQ = 26;
+        int CREATED_DATE_REQ = 27;
+        int SERVICE_CENTER_ID = 28;
+        int SERVICE_CENTER_ROLE_ID = 29;
+        int CREATED_FUTURE_DATE = 30;
+
+        int ZIPCODE_REQ = 9;
+        int ZIPCODE_INVALID = 12;
+        int TIMEZONE_REQ = 8;
+    }
+
+
+
+
+
 
 
     interface PasswordValidation {
@@ -129,6 +189,7 @@ public interface AppConstants {
         String ADDRESS_COMMA = "addressDetails";
         String LOCATION_COMMA = "locationDetails";
         String FROM_FORGOT_PASSWORD_SCREEN = "fromForgotPasswordScreen";
+        String ADDRESS_INFO = "addressInfo";
     }
 
 
@@ -157,30 +218,6 @@ public interface AppConstants {
         int TIMEZONE_REQ = 8;
         int MIN_DAYS = 7;
     }
-
-
-    interface AddServiceCenterValidation {
-        int NAME = 1;
-        int MOBILE_NUMBER = 2;
-        int EMAIL = 3;
-        int ADDRESS = 4;
-        int CREATED_Date = 5;
-        int CATEGORY = 6;
-        int DIVISION = 7;
-        int BRAND = 8;
-        int GSTN = 9;
-    }
-
-
-
-
-    interface AddUserValidation {
-        int NAME = 1;
-        int MOBILE_NUMBER = 2;
-        int EMAIL = 3;
-        int ADDRESS = 4;
-    }
-
 
 
     interface BundleConstants {
@@ -340,10 +377,12 @@ public interface AppConstants {
 
     interface MenuConstants {
         int PROFILE = 0;
-        int CHANGE_PWD = 1;
-        int TIMEINGS = 2;
-        int CONTACTDETAILS = 3;
-        int LOGOUT = 4;
+        int ADD_USER = 1;
+        int ADD_SERVICE_CENTER = 2;
+        int CHANGE_PWD = 3;
+        int TIMEINGS = 4;
+        int CONTACTDETAILS = 5;
+        int LOGOUT = 6;
 
 
     }
