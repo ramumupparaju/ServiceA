@@ -37,14 +37,14 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edittext_name"
-                        style="@style/Add_new_model_TextInputEditText"
+                        style="@style/Register_TextInputEditText"
                         android:focusable="true"
                         android:imeOptions="actionNext"
                         android:inputType="textCapWords"
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="0"
-                        android:text="@{addServiceCenter.name}"/>
+                        android:text="@={addServiceCenter.name}"/>
 
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -67,7 +67,7 @@
                         android:maxLength="@integer/character_limit_45"
                         android:maxLines="1"
                         android:tag="1"
-                        android:text="@{addServiceCenter.contactNo}"/>
+                        android:text="@={addServiceCenter.contactNo}"/>
 
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -91,7 +91,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="2"
-                        android:text="@{addServiceCenter.email}"/>
+                        android:text="@={addServiceCenter.email}"/>
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!-- Address -->
@@ -109,7 +109,7 @@
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
                         android:tag="3"
-                        android:text="@{addServiceCenter.address}"/>
+                        android:text="@={addServiceCenter.address}"/>
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!--Dummy view used for click action-->

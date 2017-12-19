@@ -60,12 +60,6 @@ public class AddUserActivity extends BaseActivity implements
         return R.layout.activity_adduser;
     }
 
-
-   /* @Override
-    public void setTitle() {
-
-    }*/
-
     @Override
     protected void onCreateView(Bundle saveInstanceState) {
         binding = DataBindingUtil.setContentView(this, getLayoutId());

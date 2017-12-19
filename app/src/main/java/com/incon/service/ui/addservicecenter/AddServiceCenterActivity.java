@@ -26,6 +26,7 @@ import com.incon.service.apimodel.components.fetchcategorie.Division;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.custom.view.CustomAutoCompleteView;
 import com.incon.service.custom.view.CustomTextInputLayout;
+import com.incon.service.databinding.ActivityAddserviceCenterBinding;
 import com.incon.service.databinding.ActivityAddservicecenterBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BaseActivity;
@@ -52,18 +53,16 @@ public class AddServiceCenterActivity extends BaseActivity implements
     private int divisionSelectedPos = -1;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
-    private ActivityAddservicecenterBinding binding;
-
+    private ActivityAddserviceCenterBinding binding
     @Override
     protected void initializePresenter() {
-
         addServiceCenterPresenter = new AddServiceCenterPresenter();
         addServiceCenterPresenter.setView(this);
         setBasePresenter(addServiceCenterPresenter);
     }
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_addservicecenter;
+        return R.layout.activity_addservice_center;
     }
 
     @Override
@@ -76,19 +75,15 @@ public class AddServiceCenterActivity extends BaseActivity implements
         initViews();
         addServiceCenterPresenter.getCategories(SharedPrefsUtils.loginProvider().
                 getIntegerPreference(LoginPrefs.STORE_ID, DEFAULT_VALUE));
-
     }
-
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadValidationErrors();
         setFocusForViews();
     }
-
     public void onDateClick() {
         showDatePicker();
     }
-
     private void showDatePicker() {
         AppUtils.hideSoftKeyboard(this, binding.edittextCreatedDate);
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());

@@ -68,7 +68,7 @@
                         android:inputType="number"
                         android:imeOptions="actionNext"
                         android:tag="1"
-                        android:text="@{addUser.mobileNumber}"/>
+                        android:text="@={addUser.mobileNumber}"/>
 
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -138,7 +138,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="4"
-                        android:text="@{addUser.email}"/>
+                        android:text="@={addUser.email}"/>
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
 
@@ -203,7 +203,7 @@
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
                         android:tag="7"
-                        android:text="@{addUser.address}"/>
+                        android:text="@={addUser.address}"/>
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!--Dummy view used for click action-->

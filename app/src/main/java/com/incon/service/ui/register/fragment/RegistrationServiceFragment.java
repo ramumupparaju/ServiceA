@@ -111,12 +111,14 @@ public class RegistrationServiceFragment extends BaseFragment implements
         categorySpinnerList = new ArrayList<>();
         DefaultsResponse defaultsResponse = new OfflineDataManager().loadData(
                 DefaultsResponse.class, DefaultsResponse.class.getName());
+        //defaultsResponse.getCategories()
         categoryResponseList = defaultsResponse.getCategories();
         for (int i = 0; i < categoryResponseList.size(); i++) {
             CheckedModelSpinner checkedModelSpinner = new CheckedModelSpinner();
             checkedModelSpinner.setName(categoryResponseList.get(i).getName());
             categorySpinnerList.add(checkedModelSpinner);
         }
+       // loadCategoriesList(categorySpinnerList);
     }
 
     // validations
