@@ -300,6 +300,7 @@ public class RegistrationUserFragment extends BaseFragment implements
     public void onClickNext() {
         navigateToRegistrationActivityNext();
 
+
         /*if (validateFields()) {
             register.setServiceCenterUserType(binding.serviceCenterType.isChecked() ? RegistrationConstants.SERVICE_GROUP : RegistrationConstants.SERVICE_INDIVIDUAL);
             navigateToRegistrationActivityNext();

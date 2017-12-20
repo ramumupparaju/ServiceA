@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
 import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
 import com.incon.service.custom.view.CustomAutoCompleteView;
 import com.incon.service.custom.view.CustomTextInputLayout;
@@ -52,6 +53,7 @@ public class AddUserActivity extends BaseActivity implements
     private MaterialBetterSpinner genderSpinner;
     private ActivityAdduserBinding binding;
     public List<ServiceCenterResponse> serviceCenterResponseList;
+    public List<FetchDesignationsResponse> fetchDesignationsResponseList;
     private int serviceCenterSelectedPos = -1;
 
     @Override
@@ -75,12 +77,22 @@ public class AddUserActivity extends BaseActivity implements
         rootView = binding.getRoot();
         initViews();
     }
+
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadGenderSpinnerData();
         loadValidationErrors();
         setFocusListenersForEditText();
         loadServiceCenterSpinnerData();
+        loadDesignationsSpinnerData();
+    }
+
+    private void loadDesignationsSpinnerData() {
+       // addUserPresenter.fetchDesignations();
+        fetchDesignationsResponseList = new ArrayList<>();
+        FetchDesignationsResponse fetchDesignationsResponse = new FetchDesignationsResponse();
+        fetchDesignationsResponse.setId(fetchDesignationsResponse.getId());
+
     }
 
     private void loadServiceCenterSpinnerData() {
@@ -175,6 +187,7 @@ public class AddUserActivity extends BaseActivity implements
         Intent addressIntent = new Intent(this, RegistrationMapActivity.class);
         startActivityForResult(addressIntent, RequestCodes.ADDRESS_LOCATION);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -190,6 +203,7 @@ public class AddUserActivity extends BaseActivity implements
             }
         }
     }
+
     private void setFocusListenersForEditText() {
         TextView.OnEditorActionListener onEditorActionListener =
                 new TextView.OnEditorActionListener() {
@@ -305,6 +319,7 @@ public class AddUserActivity extends BaseActivity implements
         errorMap.put(AddUserValidations.SERVICE_CENTER_ROLE_ID, getString(R.string.error_service_center_role_id));
 
     }
+
     private boolean validateFields() {
         binding.inputLayoutName.setError(null);
         binding.inputLayoutNumber.setError(null);
@@ -321,10 +336,16 @@ public class AddUserActivity extends BaseActivity implements
         updateUiAfterValidation(validation.first, validation.second);
         return validation.second == VALIDATION_SUCCESS;
     }
+
     public void onSubmitClick() {
         if (validateFields()) {
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
         }
+    }
+
+    @Override
+    public void loadFetchDesignations(FetchDesignationsResponse fetchDesignationsResponse) {
+
     }
 }

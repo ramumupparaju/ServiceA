@@ -6,6 +6,7 @@ import com.incon.service.BuildConfig;
 import com.incon.service.apimodel.base.ApiBaseResponse;
 import com.incon.service.apimodel.components.defaults.DefaultsResponse;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
+import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
 import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
@@ -111,7 +112,11 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.addDesignation(userId, addDesignation));
     }
 
-
+    // add user api
+    public Observable<FetchDesignationsResponse> fetchDesignations(
+            int serviceCenterId,  int userId) {
+        return addNetworkCheck(serviceInstance.fetchDesignations(serviceCenterId,userId));
+    }
 
 
     // store id  api
