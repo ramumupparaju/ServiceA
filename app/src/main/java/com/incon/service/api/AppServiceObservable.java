@@ -5,6 +5,7 @@ import com.incon.service.apimodel.base.ApiBaseResponse;
 import com.incon.service.apimodel.components.defaults.DefaultsResponse;
 import com.incon.service.apimodel.components.favorites.AddUserAddressResponse;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
+import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
 import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
@@ -61,11 +62,17 @@ public interface AppServiceObservable {
     Observable<LoginResponse> addDesignation(@Path("userId") int userId,
                                              @Body AddDesignation addDesignation);
 
+    //fetch designation api
+    @GET("service/getdesignations/{serviceCenterId}/{userId}")
+    Observable<FetchDesignationsResponse> fetchDesignations(@Path("serviceCenterId") int serviceCenterId
+            ,@Path("userId") int userId);
+
     // store id  api
     @Multipart
     @POST("merchant/logoupdate/{storeId}")
     Observable<Object> uploadStoreLogo(@Path("storeId") String storeId,
                                        @Part MultipartBody.Part storeLogo);
+
 
 
     //registration request otp

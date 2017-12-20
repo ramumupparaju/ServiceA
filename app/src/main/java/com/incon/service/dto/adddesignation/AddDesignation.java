@@ -87,7 +87,7 @@ public class AddDesignation extends BaseObservable {
         switch (id) {
             case 0:
                 if (emptyValidation && TextUtils.isEmpty(getDescription())) {
-                    return AppConstants.AddDesignationsValidation.NAME_REQ;
+                    return AppConstants.AddDesignationsValidation.DESCRIPTION;
                 }
                 break;
 

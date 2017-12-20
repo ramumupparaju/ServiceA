@@ -56,8 +56,30 @@ public class AddUser extends BaseObservable {
     @Expose
     private String serviceCenterRoleId;
 
+    private transient String  serviceCenterName;
+    private transient String serviceCenterDesignation;
+
     private transient String confirmPassword;
     private transient String dateOfBirthToShow;
+
+    @Bindable
+    public String getServiceCenterName() {
+        return serviceCenterName;
+    }
+
+    public void setServiceCenterName(String serviceCenterName) {
+        this.serviceCenterName = serviceCenterName;
+        notifyChange();
+    }
+    @Bindable
+    public String getServiceCenterDesignation() {
+        return serviceCenterDesignation;
+    }
+
+    public void setServiceCenterDesignation(String serviceCenterDesignation) {
+        this.serviceCenterDesignation = serviceCenterDesignation;
+        notifyChange();
+    }
 
     @Bindable
     public String getConfirmPassword() {
