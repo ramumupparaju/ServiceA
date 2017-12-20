@@ -286,6 +286,7 @@
     <string name="progress_qr_code_product">Asign QR Code To Product...</string>
     <string name="progress_warranty_registering">Registering warranty...</string>
     <string name="progress_categories">Fetching categories...</string>
+    <string name="progress_designations">Fetching designations...</string>
     <string name="progress_add_new_model">Adding new model...</string>
     <string name="progress_product_details">Fetching product details...</string>
     <string name="progress_defaults">Fetching details...</string>

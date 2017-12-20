@@ -1,8 +1,11 @@
 package com.incon.service.ui.adddesignations;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Pair;
 
+import com.incon.service.ConnectApplication;
+import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.ui.BasePresenter;
@@ -19,14 +22,19 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
         implements AddDesignationsContract.Presenter {
     private static final String TAG = AddDesignationsPresenter.class.getName();
     private Context appContext;
+    @Override
+    public void initialize(Bundle extras) {
+        super.initialize(extras);
+        appContext = ConnectApplication.getAppContext();
+    }
 
     @Override
     public void addDesignations(int userId, AddDesignation addDesignation) {
-
-
+        getView().showProgress(appContext.getString(R.string.progress_designations));
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
             public void onNext(Object categoriesList) {
+                getView().hideProgress();
 
             }
 

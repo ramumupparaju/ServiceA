@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
 import com.incon.service.custom.view.CustomAutoCompleteView;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAdduserBinding;
@@ -30,8 +32,10 @@ import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -47,10 +51,11 @@ public class AddUserActivity extends BaseActivity implements
     private Animation shakeAnim;
     private MaterialBetterSpinner genderSpinner;
     private ActivityAdduserBinding binding;
+    public List<ServiceCenterResponse> serviceCenterResponseList;
+    private int serviceCenterSelectedPos = -1;
 
     @Override
     protected void initializePresenter() {
-
         addUserPresenter = new AddUserPresenter();
         addUserPresenter.setView(this);
         setBasePresenter(addUserPresenter);
@@ -70,12 +75,44 @@ public class AddUserActivity extends BaseActivity implements
         rootView = binding.getRoot();
         initViews();
     }
-
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadGenderSpinnerData();
         loadValidationErrors();
         setFocusListenersForEditText();
+        loadServiceCenterSpinnerData();
+    }
+
+    private void loadServiceCenterSpinnerData() {
+
+        serviceCenterResponseList = new ArrayList<>();
+        ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
+        serviceCenterResponse.setId(Integer.valueOf("1"));
+        serviceCenterResponse.setName("moonzdream");
+        serviceCenterResponseList.add(serviceCenterResponse);
+        serviceCenterResponse = new ServiceCenterResponse();
+        serviceCenterResponse.setId(Integer.valueOf("2"));
+        serviceCenterResponse.setName("incon");
+        serviceCenterResponseList.add(serviceCenterResponse);
+
+        List<String> serviceCenterNamesList = new ArrayList<>();
+        for (ServiceCenterResponse centerResponse : serviceCenterResponseList) {
+            serviceCenterNamesList.add(centerResponse.getName());
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                R.layout.view_spinner, serviceCenterNamesList);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        binding.spinnerServiceCenterName.setAdapter(arrayAdapter);
+        binding.spinnerServiceCenterName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (serviceCenterSelectedPos != position) {
+                    serviceCenterSelectedPos = position;
+                }
+            }
+        });
+
     }
 
     private void loadGenderSpinnerData() {
@@ -138,8 +175,6 @@ public class AddUserActivity extends BaseActivity implements
         Intent addressIntent = new Intent(this, RegistrationMapActivity.class);
         startActivityForResult(addressIntent, RequestCodes.ADDRESS_LOCATION);
     }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -154,9 +189,7 @@ public class AddUserActivity extends BaseActivity implements
                     break;
             }
         }
-
     }
-
     private void setFocusListenersForEditText() {
         TextView.OnEditorActionListener onEditorActionListener =
                 new TextView.OnEditorActionListener() {
@@ -182,8 +215,6 @@ public class AddUserActivity extends BaseActivity implements
         binding.edittextRegisterAddress.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextRegisterPassword.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextRegisterReenterPassword.setOnFocusChangeListener(onFocusChangeListener);
-        binding.edittextRegisterServiceCenterId.setOnFocusChangeListener(onFocusChangeListener);
-        binding.edittextRegisterServiceCenterRoleId.setOnFocusChangeListener(onFocusChangeListener);
     }
 
 
@@ -219,10 +250,9 @@ public class AddUserActivity extends BaseActivity implements
             ((CustomTextInputLayout) view.getParent().getParent())
                     .setError(validationId == VALIDATION_SUCCESS ? null
                             : errorMap.get(validationId));
-        } else if (view instanceof CustomAutoCompleteView) {
-            ((CustomTextInputLayout) view.getParent().getParent())
-                    .setError(validationId == VALIDATION_SUCCESS ? null
-                            : errorMap.get(validationId));
+        } else {
+            ((MaterialBetterSpinner) view).setError(validationId == VALIDATION_SUCCESS ? null
+                    : errorMap.get(validationId));
         }
         if (validationId != VALIDATION_SUCCESS) {
             view.startAnimation(shakeAnim);
@@ -284,8 +314,8 @@ public class AddUserActivity extends BaseActivity implements
         binding.spinnerGender.setError(null);
         binding.inputLayoutRegisterPassword.setError(null);
         binding.inputLayoutRegisterConfirmPassword.setError(null);
-        binding.inputLayoutRegisterServiceCenterId.setError(null);
-        binding.inputLayoutRegisterServiceCenterRoleId.setError(null);
+        binding.spinnerServiceCenterDesignation.setError(null);
+        binding.spinnerServiceCenterName.setError(null);
 
         Pair<String, Integer> validation = binding.getAddUser().validateAddUser(null);
         updateUiAfterValidation(validation.first, validation.second);
