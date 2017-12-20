@@ -27,6 +27,8 @@ import com.incon.service.custom.view.CustomAutoCompleteView;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAdduserBinding;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.registration.AddressInfo;
+import com.incon.service.dto.registration.ServiceCenter;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
@@ -212,6 +214,8 @@ public class AddUserActivity extends BaseActivity implements
                 case RequestCodes.ADDRESS_LOCATION:
                     addUser.setAddress(data.getStringExtra(IntentConstants.ADDRESS_COMMA));
                     addUser.setLocation(data.getStringExtra(IntentConstants.LOCATION_COMMA));
+                    AddressInfo addressInfo = data.getParcelableExtra(IntentConstants.ADDRESS_INFO);
+                    addUser.setCountry(addressInfo.getCountry());
                     break;
                 default:
                     break;
@@ -351,11 +355,13 @@ public class AddUserActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
+            addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
+            addUser.setServiceCenterId(String.valueOf(serviceCenterResponseList.get(serviceCenterSelectedPos).getId()));
+            addUser.setServiceCenterRoleId(String.valueOf(fetchDesignationsResponseList.get(designationSelectedPos).getId()));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
         }
     }
-
 
     @Override
     public void loadFetchDesignations(List<FetchDesignationsResponse> fetchDesignationsResponse) {

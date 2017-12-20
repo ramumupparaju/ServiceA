@@ -81,7 +81,7 @@
                     android:focusable="true"
                     android:hint="@string/register_gender_hint"
                     android:tag="2"
-                    android:text="@={addUser.gender}"
+                    android:text="@={addUser.genderType}"
                     app:errorEnabled="true"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
@@ -250,23 +250,26 @@
                     app:met_textColor="@color/colorForgotPasswordHintText"
                     app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
+
+                <Button
+                    android:id="@+id/button_submit"
+                    style="@style/w150_wrap"
+                    fontPath="fonts/OpenSans-Bold.ttf"
+                    android:layout_below="@id/spinner_service_center_designation"
+                    android:layout_marginBottom="@dimen/margin_30"
+                    android:layout_marginLeft="@dimen/margin_110"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:background="@drawable/btn_login_register_roundedcorner"
+                    android:onClick="@{() -> addUserActivity.onSubmitClick()}"
+                    android:text="@string/add_new_submit"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_13"/>
+
+
             </RelativeLayout>
         </ScrollView>
 
-        <Button
-            android:id="@+id/button_submit"
-            style="@style/w150_wrap"
-            fontPath="fonts/OpenSans-Bold.ttf"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:layout_marginLeft="@dimen/margin_110"
-            android:layout_marginTop="@dimen/margin_10"
-            android:background="@drawable/btn_login_register_roundedcorner"
-            android:onClick="@{() -> addUserActivity.onSubmitClick()}"
-            android:text="@string/add_new_submit"
-            android:textAllCaps="true"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_13"/>
 
     </RelativeLayout>
 

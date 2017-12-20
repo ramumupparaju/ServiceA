@@ -34,8 +34,6 @@ public class AddUser extends BaseObservable {
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("gender")
-    @Expose
     private String gender;
     @SerializedName("location")
     @Expose
@@ -58,6 +56,8 @@ public class AddUser extends BaseObservable {
 
     private transient String  serviceCenterName;
     private transient String serviceCenterDesignation;
+
+    private transient String genderType;
 
     private transient String confirmPassword;
     private transient String dateOfBirthToShow;
@@ -113,6 +113,7 @@ public class AddUser extends BaseObservable {
         notifyChange();
     }
 
+
     public String getCountry() {
         return country;
     }
@@ -138,13 +139,22 @@ public class AddUser extends BaseObservable {
         this.email = email;
         notifyChange();
     }
-    @Bindable
+
     public String getGender() {
         return gender;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    @Bindable
+    public String getGenderType() {
+        return genderType;
+    }
+
+    public void setGenderType(String genderType) {
+        this.genderType = genderType;
         notifyChange();
     }
 
@@ -256,7 +266,7 @@ public class AddUser extends BaseObservable {
 
 
             case 2:
-                boolean genderEmpty = TextUtils.isEmpty(getGender());
+                boolean genderEmpty = TextUtils.isEmpty(getGenderType());
                 if (emptyValidation && genderEmpty) {
                     return AppConstants.AddUserValidations.GENDER_REQ;
                 }

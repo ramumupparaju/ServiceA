@@ -99,6 +99,10 @@ public class AddDesignationsActivity extends BaseActivity implements
                 if (serviceCenterSelectedPos != position) {
                     serviceCenterSelectedPos = position;
                 }
+                //For avoiding double tapping issue
+                if (binding.spinnerServiceCenter.getOnItemClickListener() != null) {
+                    binding.spinnerServiceCenter.onItemClick(parent, view, position, id);
+                }
             }
         });
 

@@ -131,9 +131,7 @@ public class RegistrationMapActivity extends BaseActivity implements OnMapReadyC
         addressFromLatLngAddress.getLocationFromAddress(RegistrationMapActivity.this,
                 binding.edittextPincode.getText().toString(),
                 RequestCodes.LOCATION_LATLNG_FROM_ADDRESS, new LocationHandler());
-
     }
-
     private class LocationHandler extends Handler {
         @Override
         public void handleMessage(Message message) {
@@ -168,6 +166,17 @@ public class RegistrationMapActivity extends BaseActivity implements OnMapReadyC
 
             try {
                 addressInfo.setState(locationAddress.getAdminArea());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                addressInfo.setLatitude(locationAddress.getLatitude());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                addressInfo.setLongitude(locationAddress.getLongitude());
             } catch (Exception e) {
                 e.printStackTrace();
             }
