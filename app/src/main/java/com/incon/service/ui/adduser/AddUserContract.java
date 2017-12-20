@@ -10,10 +10,8 @@ import com.incon.service.ui.BaseView;
 
 public interface AddUserContract {
     interface View extends BaseView {
-
     }
     interface Presenter {
         void addingUser(int userId, AddUser addUser);
-
     }
 }

@@ -27,6 +27,7 @@ import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
+import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.Calendar;
@@ -274,8 +275,6 @@ public class AddUserActivity extends BaseActivity implements
         errorMap.put(AddUserValidations.SERVICE_CENTER_ROLE_ID, getString(R.string.error_service_center_role_id));
 
     }
-
-
     private boolean validateFields() {
         binding.inputLayoutName.setError(null);
         binding.inputLayoutNumber.setError(null);
@@ -290,13 +289,12 @@ public class AddUserActivity extends BaseActivity implements
 
         Pair<String, Integer> validation = binding.getAddUser().validateAddUser(null);
         updateUiAfterValidation(validation.first, validation.second);
-
         return validation.second == VALIDATION_SUCCESS;
     }
-
     public void onSubmitClick() {
         if (validateFields()) {
-            //addUserPresenter.addingUser();
+            addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
+                    getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
         }
     }
 }

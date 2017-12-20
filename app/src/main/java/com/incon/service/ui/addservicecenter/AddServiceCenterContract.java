@@ -12,10 +12,9 @@ import java.util.List;
 
 public interface AddServiceCenterContract {
     interface View extends BaseView {
-
     }
     interface Presenter {
-        void getCategories(int merchantId);
         void addingServiceCenter(int userId, AddServiceCenter addServiceCenter);
+
         }
 }

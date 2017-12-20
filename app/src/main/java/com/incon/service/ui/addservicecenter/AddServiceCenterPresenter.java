@@ -22,31 +22,6 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
     private static final String TAG = AddServiceCenterPresenter.class.getName();
     private Context appContext;
 
-    @Override
-    public void getCategories(int merchantId) {
-        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
-            @Override
-            public void onNext(Object categoriesList) {
-                getView().loadCategoriesList((List<FetchCategories>) categoriesList);
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getView().hideProgress();
-                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
-                getView().handleException(errorDetails);
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-        AppApiService.getInstance().getCategories(merchantId).subscribe(observer);
-        addDisposable(observer);
-
-    }
 
     @Override
     public void addingServiceCenter(int userId, AddServiceCenter addServiceCenter)

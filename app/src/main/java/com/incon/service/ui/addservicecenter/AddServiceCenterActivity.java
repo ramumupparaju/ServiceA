@@ -72,8 +72,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
         binding.setAddServiceCenterActivity(this);
         rootView = binding.getRoot();
         initViews();
-        addServiceCenterPresenter.getCategories(SharedPrefsUtils.loginProvider().
-                getIntegerPreference(LoginPrefs.STORE_ID, DEFAULT_VALUE));
+
     }
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
@@ -279,12 +278,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public void loadCategoriesList(List<FetchCategories> categoriesList) {
-        fetchCategorieList = categoriesList;
-        loadCategorySpinnerData();
 
-    }
 
     private void loadCategorySpinnerData() {
 
