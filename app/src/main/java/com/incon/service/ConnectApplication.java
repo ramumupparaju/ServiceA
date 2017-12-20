@@ -5,13 +5,26 @@ import android.content.Context;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
+import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
+
 import net.hockeyapp.android.CrashManager;
+
+import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class ConnectApplication extends Application {
 
+    private List<FetchCategories> fetchCategoriesList;
     private static Context context;
+
+    public List<FetchCategories> getFetchCategoriesList() {
+        return fetchCategoriesList;
+    }
+
+    public void setFetchCategoriesList(List<FetchCategories> fetchCategoriesList) {
+        this.fetchCategoriesList = fetchCategoriesList;
+    }
 
     @Override
     public void onCreate() {

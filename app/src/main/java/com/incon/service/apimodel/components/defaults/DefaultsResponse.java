@@ -2,32 +2,21 @@ package com.incon.service.apimodel.components.defaults;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 
 import java.util.List;
 
 public class DefaultsResponse {
 
-    @SerializedName("types")
-    @Expose
-    private List<CategoryTypeResponse> types = null;
     @SerializedName("categories")
     @Expose
-    private List<CategoryResponse> categories = null;
+    private List<FetchCategories> categoryTypeResponseList = null;
 
-    public List<CategoryTypeResponse> getTypes() {
-        return types;
+    public List<FetchCategories> getCategoryTypeResponseList() {
+        return categoryTypeResponseList;
     }
 
-    public void setTypes(List<CategoryTypeResponse> types) {
-        this.types = types;
+    public void setCategoryTypeResponseList(List<FetchCategories> categoryTypeResponseList) {
+        this.categoryTypeResponseList = categoryTypeResponseList;
     }
-
-    public List<CategoryResponse> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<CategoryResponse> categories) {
-        this.categories = categories;
-    }
-
 }
