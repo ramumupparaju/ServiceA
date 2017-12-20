@@ -33,6 +33,13 @@ public interface AppConstants {
         String DELIVERED = "DLD";
         String INSTALLED = "INS";
     }
+    interface BooleanConstants {
+        int IS_TRUE = 1;
+        int IS_FALSE = 0;
+    }
+
+
+
 
     interface FilterConstants {
         String NONE = "none";
@@ -117,10 +124,9 @@ public interface AppConstants {
         int DOB_PERSON_LIMIT = 15;
         int ADDRESS_REQ = 22;
         int CREATED_DATE_REQ = 27;
-        int SERVICE_CENTER_ID = 28;
-        int SERVICE_CENTER_ROLE_ID = 29;
+        int SERVICE_CENTER_NAME = 28;
+        int SERVICE_DISIGNATION = 29;
     }
-
 
     interface AddServiceCenterValidation {
         int NAME_REQ = 1;

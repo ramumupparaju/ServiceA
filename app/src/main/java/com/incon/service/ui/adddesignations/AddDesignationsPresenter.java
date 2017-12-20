@@ -30,7 +30,7 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
 
     @Override
     public void addDesignations(int userId, AddDesignation addDesignation) {
-        getView().showProgress(appContext.getString(R.string.progress_designations));
+        getView().showProgress(appContext.getString(R.string.progress_adding_designation));
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
             public void onNext(Object categoriesList) {
@@ -50,7 +50,7 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
 
             }
         };
-        AppApiService.getInstance().addDesignation(userId,addDesignation);
+        AppApiService.getInstance().addDesignation(userId,addDesignation).subscribe(observer);;
         addDisposable(observer);
     }
 }

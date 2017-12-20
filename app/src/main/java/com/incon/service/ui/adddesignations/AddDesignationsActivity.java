@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.incon.service.AppConstants;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
 import com.incon.service.custom.view.CustomTextInputLayout;
@@ -190,6 +191,9 @@ public class AddDesignationsActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
+            int isAdmin = binding.checkboxAdmin.isChecked() ? BooleanConstants.IS_TRUE : BooleanConstants
+                    .IS_FALSE;
+            addDesignation.setIsAdmin(isAdmin);
             addDesignation.setServiceCenterId(serviceCenterResponseList.get
                     (serviceCenterSelectedPos).getId());
             addDesignationsPresenter.addDesignations(SharedPrefsUtils.loginProvider().

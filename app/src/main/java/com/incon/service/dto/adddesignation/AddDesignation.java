@@ -25,8 +25,10 @@ public class AddDesignation extends BaseObservable {
     @SerializedName("serviceCenterId")
     @Expose
     private Integer serviceCenterId;
+    private int isAdmin;
 
     private transient String serviceCenterName;
+
     @Bindable
     public String getServiceCenterName() {
         return serviceCenterName;
@@ -34,6 +36,16 @@ public class AddDesignation extends BaseObservable {
 
     public void setServiceCenterName(String serviceCenterName) {
         this.serviceCenterName = serviceCenterName;
+        notifyChange();
+    }
+
+    @Bindable
+    public int getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(int isAdmin) {
+        this.isAdmin = isAdmin;
         notifyChange();
     }
 
@@ -46,6 +58,7 @@ public class AddDesignation extends BaseObservable {
         this.description = description;
         notifyChange();
     }
+
     @Bindable
     public String getName() {
         return name;

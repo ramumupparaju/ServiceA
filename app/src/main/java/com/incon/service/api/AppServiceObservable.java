@@ -2,6 +2,7 @@ package com.incon.service.api;
 
 
 import com.incon.service.apimodel.base.ApiBaseResponse;
+import com.incon.service.apimodel.components.adddesignationresponse.DesignationResponse;
 import com.incon.service.apimodel.components.defaults.DefaultsResponse;
 import com.incon.service.apimodel.components.favorites.AddUserAddressResponse;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
@@ -59,12 +60,13 @@ public interface AppServiceObservable {
 
     // add adddesignation api
     @POST("service/adddesignation/{userId}")
-    Observable<LoginResponse> addDesignation(@Path("userId") int userId,
-                                             @Body AddDesignation addDesignation);
+    Observable<DesignationResponse> addDesignation(@Path("userId") int userId,
+                                                   @Body AddDesignation addDesignation);
 
     //fetch designation api
     @GET("service/getdesignations/{serviceCenterId}/{userId}")
-    Observable<FetchDesignationsResponse> fetchDesignations(@Path("serviceCenterId") int serviceCenterId
+    Observable<List<FetchDesignationsResponse>> fetchDesignations(@Path("serviceCenterId") int
+                                                                          serviceCenterId
             ,@Path("userId") int userId);
 
     // store id  api

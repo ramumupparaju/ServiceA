@@ -80,12 +80,22 @@
             app:met_textColor="@color/colorForgotPasswordHintText"
             app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
+        <CheckBox
+            android:id="@+id/checkbox_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinner_service_center"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:checked="true"
+            android:text="@string/action_is_admin"
+            />
 
         <Button
             android:id="@+id/button_submit"
             style="@style/w150_wrap"
             fontPath="fonts/OpenSans-Bold.ttf"
-            android:layout_below="@+id/spinner_service_center"
+            android:layout_below="@+id/checkbox_admin"
             android:layout_marginBottom="@dimen/margin_10"
             android:layout_marginLeft="@dimen/margin_110"
             android:layout_marginTop="@dimen/margin_10"

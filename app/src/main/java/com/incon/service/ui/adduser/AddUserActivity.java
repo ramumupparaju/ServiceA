@@ -55,6 +55,7 @@ public class AddUserActivity extends BaseActivity implements
     public List<ServiceCenterResponse> serviceCenterResponseList;
     public List<FetchDesignationsResponse> fetchDesignationsResponseList;
     private int serviceCenterSelectedPos = -1;
+    private int designationSelectedPos = -1;
 
     @Override
     protected void initializePresenter() {
@@ -76,6 +77,9 @@ public class AddUserActivity extends BaseActivity implements
         binding.setAddUserActivity(this);
         rootView = binding.getRoot();
         initViews();
+        //TODO have to remove hard code
+        addUserPresenter.fetchDesignations(1,SharedPrefsUtils.loginProvider().
+                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
     }
 
     private void initViews() {
@@ -84,15 +88,26 @@ public class AddUserActivity extends BaseActivity implements
         loadValidationErrors();
         setFocusListenersForEditText();
         loadServiceCenterSpinnerData();
-        loadDesignationsSpinnerData();
     }
 
     private void loadDesignationsSpinnerData() {
-       // addUserPresenter.fetchDesignations();
-        fetchDesignationsResponseList = new ArrayList<>();
-        FetchDesignationsResponse fetchDesignationsResponse = new FetchDesignationsResponse();
-        fetchDesignationsResponse.setId(fetchDesignationsResponse.getId());
+        List<String> fetchDesignationList = new ArrayList<>();
+        for (FetchDesignationsResponse fetchDesignationsResponse : fetchDesignationsResponseList) {
+            fetchDesignationList.add(fetchDesignationsResponse.getName());
+        }
 
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                R.layout.view_spinner, fetchDesignationList);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        binding.spinnerServiceCenterDesignation.setAdapter(arrayAdapter);
+        binding.spinnerServiceCenterDesignation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (designationSelectedPos != position) {
+                    designationSelectedPos = position;
+                }
+            }
+        });
     }
 
     private void loadServiceCenterSpinnerData() {
@@ -211,9 +226,7 @@ public class AddUserActivity extends BaseActivity implements
                     public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_NEXT) {
                             switch (textView.getId()) {
-                                case R.id.edittext_register_phone:
-                                    binding.spinnerGender.requestFocus();
-                                    binding.spinnerGender.showDropDown();
+                                case R.id.edittext_number:
                                     break;
 
                                 default:
@@ -287,7 +300,7 @@ public class AddUserActivity extends BaseActivity implements
         errorMap.put(AddUserValidations.GENDER_REQ,
                 getString(R.string.error_gender_req));
 
-        errorMap.put(AddUserValidations.CREATED_DATE_REQ,
+        errorMap.put(AddUserValidations.DOB_REQ,
                 getString(R.string.error_dob_req));
 
         errorMap.put(AddUserValidations.DOB_FUTURE_DATE,
@@ -315,22 +328,21 @@ public class AddUserActivity extends BaseActivity implements
                 getString(R.string.error_re_enter_password_does_not_match));
 
         errorMap.put(AddUserValidations.ADDRESS_REQ, getString(R.string.error_address_req));
-        errorMap.put(AddUserValidations.SERVICE_CENTER_ID, getString(R.string.error_Service_Center_id));
-        errorMap.put(AddUserValidations.SERVICE_CENTER_ROLE_ID, getString(R.string.error_service_center_role_id));
-
+        errorMap.put(AddUserValidations.SERVICE_CENTER_NAME, getString(R.string.error_Service_Center_name));
+        errorMap.put(AddUserValidations.SERVICE_DISIGNATION, getString(R.string.error_service_center_desiganation));
     }
 
     private boolean validateFields() {
         binding.inputLayoutName.setError(null);
         binding.inputLayoutNumber.setError(null);
-        binding.inputLayoutRegisterEmailid.setError(null);
-        binding.inputLayoutRegisterAddress.setError(null);
-        binding.inputLayoutRegisterDob.setError(null);
         binding.spinnerGender.setError(null);
+        binding.inputLayoutRegisterDob.setError(null);
+        binding.inputLayoutRegisterEmailid.setError(null);
         binding.inputLayoutRegisterPassword.setError(null);
         binding.inputLayoutRegisterConfirmPassword.setError(null);
-        binding.spinnerServiceCenterDesignation.setError(null);
+        binding.inputLayoutRegisterAddress.setError(null);
         binding.spinnerServiceCenterName.setError(null);
+        binding.spinnerServiceCenterDesignation.setError(null);
 
         Pair<String, Integer> validation = binding.getAddUser().validateAddUser(null);
         updateUiAfterValidation(validation.first, validation.second);
@@ -344,8 +356,11 @@ public class AddUserActivity extends BaseActivity implements
         }
     }
 
+
     @Override
-    public void loadFetchDesignations(FetchDesignationsResponse fetchDesignationsResponse) {
+    public void loadFetchDesignations(List<FetchDesignationsResponse> fetchDesignationsResponse) {
+        this.fetchDesignationsResponseList = fetchDesignationsResponse;
+       loadDesignationsSpinnerData();
 
     }
 }

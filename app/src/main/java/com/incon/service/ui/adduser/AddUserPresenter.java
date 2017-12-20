@@ -1,14 +1,18 @@
 package com.incon.service.ui.adduser;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Pair;
 
+import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
+
+import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -20,14 +24,19 @@ public class AddUserPresenter  extends BasePresenter<AddUserContract.View>
         implements AddUserContract.Presenter {
     private static final String TAG = AddUserPresenter.class.getName();
     private Context appContext;
-
+    @Override
+    public void initialize(Bundle extras) {
+        super.initialize(extras);
+        appContext = ConnectApplication.getAppContext();
+    }
 
     @Override
     public void addingUser(int userId, AddUser addUser) {
+        getView().showProgress(appContext.getString(R.string.progress_adding_user));
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
             public void onNext(Object categoriesList) {
-
+                getView().hideProgress();
             }
 
             @Override
@@ -42,18 +51,18 @@ public class AddUserPresenter  extends BasePresenter<AddUserContract.View>
 
             }
         };
-        AppApiService.getInstance().addUser(userId,addUser);
+        AppApiService.getInstance().addUser(userId,addUser).subscribe(observer);
         addDisposable(observer);
 
     }
 
     @Override
     public void fetchDesignations(int serviceCenterId, int userId) {
-
         getView().showProgress(appContext.getString(R.string.progress_designations));
-        DisposableObserver<FetchDesignationsResponse> observer = new DisposableObserver<FetchDesignationsResponse>() {
+        DisposableObserver<List<FetchDesignationsResponse>> observer = new
+                DisposableObserver<List<FetchDesignationsResponse>>() {
             @Override
-            public void onNext(FetchDesignationsResponse fetchDesignationsResponse) {
+            public void onNext(List<FetchDesignationsResponse> fetchDesignationsResponse) {
                getView().loadFetchDesignations(fetchDesignationsResponse);
                 getView().hideProgress();
             }
@@ -67,7 +76,7 @@ public class AddUserPresenter  extends BasePresenter<AddUserContract.View>
             public void onComplete() {
             }
         };
-        AppApiService.getInstance().fetchDesignations(serviceCenterId,userId);
+        AppApiService.getInstance().fetchDesignations(serviceCenterId,userId).subscribe(observer);
         addDisposable(observer);
 
     }

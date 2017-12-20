@@ -4,6 +4,7 @@ package com.incon.service.api;
 import com.incon.service.AppConstants;
 import com.incon.service.BuildConfig;
 import com.incon.service.apimodel.base.ApiBaseResponse;
+import com.incon.service.apimodel.components.adddesignationresponse.DesignationResponse;
 import com.incon.service.apimodel.components.defaults.DefaultsResponse;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
@@ -106,14 +107,14 @@ public class AppApiService implements AppConstants {
     }
 
 
-    // add user api
-    public Observable<LoginResponse> addDesignation(
+    // add add designation api
+    public Observable<DesignationResponse> addDesignation(
             int userId, AddDesignation addDesignation) {
         return addNetworkCheck(serviceInstance.addDesignation(userId, addDesignation));
     }
 
-    // add user api
-    public Observable<FetchDesignationsResponse> fetchDesignations(
+    // fetch designations api
+    public Observable<List<FetchDesignationsResponse>> fetchDesignations(
             int serviceCenterId,  int userId) {
         return addNetworkCheck(serviceInstance.fetchDesignations(serviceCenterId,userId));
     }

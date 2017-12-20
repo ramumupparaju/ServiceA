@@ -242,14 +242,13 @@
                     android:layout_below="@id/spinner_service_center_name"
                     android:layout_marginBottom="@dimen/margin_24"
                     android:focusable="true"
-                    android:hint="@string/register__service_center_hint"
-                    android:tag="8"
+                    android:hint="@string/register__service_center_designation_hint"
+                    android:tag="9"
                     android:text="@={addUser.serviceCenterDesignation}"
                     android:visibility="visible"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
                     app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-
 
             </RelativeLayout>
         </ScrollView>

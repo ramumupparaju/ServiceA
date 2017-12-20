@@ -282,7 +282,6 @@ public class AddUser extends BaseObservable {
 
                 break;
 
-
             case 5:
                 boolean passwordEmpty = TextUtils.isEmpty(getPassword());
                 if (emptyValidation && passwordEmpty) {
@@ -304,7 +303,6 @@ public class AddUser extends BaseObservable {
                         return AppConstants.AddUserValidations
                                 .RE_ENTER_PASSWORD_DOES_NOT_MATCH;
                     }
-
                 }
                 break;
 
@@ -316,16 +314,16 @@ public class AddUser extends BaseObservable {
                 break;
 
             case 8:
-                boolean serviceIdEmpty = TextUtils.isEmpty(getServiceCenterId());
-                if (emptyValidation && serviceIdEmpty) {
-                    return AppConstants.AddUserValidations.SERVICE_CENTER_ID;
+                boolean serviceCenterNameEmpty = TextUtils.isEmpty(getServiceCenterName());
+                if (emptyValidation && serviceCenterNameEmpty) {
+                    return AppConstants.AddUserValidations.SERVICE_CENTER_NAME;
                 }
                 break;
 
             case 9:
-                boolean serviceCenterRoldeIdEmpty = TextUtils.isEmpty(getServiceCenterRoleId());
-                if (emptyValidation && serviceCenterRoldeIdEmpty) {
-                    return AppConstants.AddUserValidations.SERVICE_CENTER_ROLE_ID;
+                boolean serviceCenterDesignationEmpty = TextUtils.isEmpty(getServiceCenterDesignation());
+                if (emptyValidation && serviceCenterDesignationEmpty) {
+                    return AppConstants.AddUserValidations.SERVICE_DISIGNATION;
                 }
                 break;
 
