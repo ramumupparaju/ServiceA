@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -114,7 +114,7 @@
                     android:focusable="true"
                     android:hint="@string/register_gender_hint"
                     android:tag="2"
-                    android:text="@={register.gender}"
+                    android:text="@={register.genderType}"
                     app:errorEnabled="true"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
@@ -248,8 +248,7 @@
                     android:layout_alignStart="@+id/input_layout_register_address"
                     android:layout_alignTop="@+id/input_layout_register_address"
                     android:background="@null"
-                    android:onClick="@{() -> userFragment.onAddressClick()}"
-                    />
+                    android:onClick="@{() -> userFragment.onAddressClick()}" />
 
                 <CheckBox
                     android:id="@+id/service_center_type"
@@ -259,8 +258,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
                     android:checked="true"
-                    android:text="@string/action_is_group"
-                    />
+                    android:text="@string/action_is_group" />
 
             </RelativeLayout>
 

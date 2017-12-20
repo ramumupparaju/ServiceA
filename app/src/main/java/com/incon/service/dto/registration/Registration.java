@@ -56,6 +56,7 @@ public class Registration extends BaseObservable {
     @Expose
     private ServiceCenter serviceCenter;
 
+    private transient String genderType;
     private transient String confirmPassword;
     private transient String dateOfBirthToShow;
 
@@ -66,6 +67,7 @@ public class Registration extends BaseObservable {
     public void setServiceCenter(ServiceCenter serviceCenter) {
         this.serviceCenter = serviceCenter;
     }
+
     @Bindable
     public String getAddress() {
         return address;
@@ -73,6 +75,16 @@ public class Registration extends BaseObservable {
 
     public void setAddress(String address) {
         this.address = address;
+        notifyChange();
+    }
+
+    @Bindable
+    public String getGenderType() {
+        return genderType;
+    }
+
+    public void setGenderType(String genderType) {
+        this.genderType = genderType;
         notifyChange();
     }
 
@@ -91,14 +103,13 @@ public class Registration extends BaseObservable {
     public void setEmail(String email) {
         this.email = email;
     }
-    @Bindable
+
     public String getGender() {
         return gender;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
-        notifyChange();
     }
 
     public String getLocation() {
@@ -108,6 +119,7 @@ public class Registration extends BaseObservable {
     public void setLocation(String location) {
         this.location = location;
     }
+
     @Bindable
     public String getMobileNumber() {
         return mobileNumber;
@@ -214,7 +226,7 @@ public class Registration extends BaseObservable {
                 break;
 
             case 2:
-                boolean genderTypeEmpty = TextUtils.isEmpty(getGender());
+                boolean genderTypeEmpty = TextUtils.isEmpty(getGenderType());
                 if (emptyValidation && genderTypeEmpty) {
                     return AppConstants.RegistrationValidation.GENDER_REQ;
                 }
@@ -264,7 +276,7 @@ public class Registration extends BaseObservable {
                 break;
 
             case 7:
-                boolean userAddress = TextUtils.isEmpty(getGender());
+                boolean userAddress = TextUtils.isEmpty(getAddress());
                 if (emptyValidation && userAddress) {
                     return AppConstants.RegistrationValidation.ADDRESS_REQ;
                 }
@@ -292,8 +304,6 @@ public class Registration extends BaseObservable {
         }
         return VALIDATION_SUCCESS;
     }
-
-
 
 
 }

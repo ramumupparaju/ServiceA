@@ -79,6 +79,7 @@ public class ServiceCenter extends BaseObservable {
 
     public ServiceCenter() {
     }
+
     @Bindable
     public String getAddress() {
         return address;
@@ -162,8 +163,6 @@ public class ServiceCenter extends BaseObservable {
     }
 
 
-
-
     public Pair<String, Integer> validateServiceInfo(String tag) {
 
         int fieldId = AppConstants.VALIDATION_FAILURE;
@@ -214,13 +213,15 @@ public class ServiceCenter extends BaseObservable {
                 }
                 break;
 
-            case 4:
+
+//                no nned to validate because for some divisions there are no brands
+            /*case 4:
                 boolean serviceBrand = TextUtils.isEmpty(getBrandName());
                 if (emptyValidation && serviceBrand) {
                     return AppConstants.RegistrationValidation.BRAND_REQ;
                 }
                 break;
-
+*/
             case 5:
                 boolean serviceAddress = TextUtils.isEmpty(getAddress());
                 if (emptyValidation && serviceAddress) {
@@ -233,7 +234,7 @@ public class ServiceCenter extends BaseObservable {
                 boolean serviceEmail = TextUtils.isEmpty(getEmail());
                 if (emptyValidation && serviceEmail) {
                     return AppConstants.RegistrationValidation.EMAIL_REQ;
-                }else if (!serviceEmail && !ValidationUtils.isValidEmail(getEmail())) {
+                } else if (!serviceEmail && !ValidationUtils.isValidEmail(getEmail())) {
                     return AppConstants.RegistrationValidation.EMAIL_NOTVALID;
                 }
                 break;
