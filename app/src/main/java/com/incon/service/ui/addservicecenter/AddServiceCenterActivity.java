@@ -27,7 +27,6 @@ import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.custom.view.CustomAutoCompleteView;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddserviceCenterBinding;
-import com.incon.service.databinding.ActivityAddservicecenterBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
@@ -53,7 +52,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
     private int divisionSelectedPos = -1;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
-    private ActivityAddserviceCenterBinding binding
+    private ActivityAddserviceCenterBinding binding;
     @Override
     protected void initializePresenter() {
         addServiceCenterPresenter = new AddServiceCenterPresenter();
@@ -275,7 +274,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
-            addServiceCenterPresenter.addingserviceCenter(SharedPrefsUtils.loginProvider().
+            addServiceCenterPresenter.addingServiceCenter(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addServiceCenter);
         }
     }

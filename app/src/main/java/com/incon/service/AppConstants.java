@@ -153,6 +153,15 @@ public interface AppConstants {
     }
 
 
+    interface AddDesignationsValidation {
+        int DESCRIPTION = 1;
+        int NAME_REQ = 2;
+        int SERVICE_CENTER_NAME = 3;
+
+
+    }
+
+
     interface PasswordValidation {
         int NEWPWD_REQ = 1;
         int NEWPWD_PATTERN_REQ = 11;
@@ -376,10 +385,11 @@ public interface AppConstants {
         int PROFILE = 0;
         int ADD_USER = 1;
         int ADD_SERVICE_CENTER = 2;
-        int CHANGE_PWD = 3;
-        int TIMEINGS = 4;
-        int CONTACTDETAILS = 5;
-        int LOGOUT = 6;
+        int ADD_DESIGNATIONS = 3;
+        int CHANGE_PWD = 4;
+        int TIMEINGS = 5;
+        int CONTACTDETAILS = 6;
+        int LOGOUT = 7;
 
 
     }

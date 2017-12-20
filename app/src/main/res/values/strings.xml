@@ -206,6 +206,8 @@
     <string name="error_confirmpwd_req">Confirm Password is required</string>
     <string name="error_pwd_notmatched">New and Confirm Password must match</string>
     <string name="error_name_req">Name is required</string>
+    <string name="error_service_center_name_req">Service Center Name  is required</string>
+    <string name="error_desc_req">Description is required</string>
     <string name="error_firstname_req">First Name is required</string>
     <string name="error_lastname_req">Last Name is required</string>
     <string name="error_phone_req">Phone is required</string>
@@ -373,6 +375,7 @@
     <string name="register_service_center_info_title">Service Center Information</string>
     <string name="register_store_info_subtitle">Please enter store information</string>
     <string name="register_name_hint">Name</string>
+    <string name="register_description_hint">Description</string>
     <string name="register_firstname_hint">First Name</string>
     <string name="register_lastname_hint">Last Name</string>
     <string name="register_phone_hint">Phone</string>
@@ -400,6 +403,7 @@
     <string name="register_state_hint">State</string>
     <string name="register_country_hint">Country</string>
     <string name="register_city_hint">City</string>
+    <string name="register__service_center_hint">Service Center Name</string>
     <string name="user_name_hint">Name</string>
     <string name="user__hint">Name</string>
     <string name="user_contact_hint">Contact</string>
@@ -447,6 +451,7 @@
     <!--Settings -->
     <string name="title_menu_add_user">Add User</string>
     <string name="title_menu_add_service_center">Add Service Center</string>
+    <string name="title_menu_add_designations">Add Designations</string>
 
     <string name="title_menu_change_password">Change Password</string>
     <string name="title_menu_profile">Profile</string>

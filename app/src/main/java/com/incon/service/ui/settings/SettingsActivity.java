@@ -19,6 +19,7 @@ import com.incon.service.databinding.ActivitySettingsBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.settings.SettingsItem;
 import com.incon.service.ui.BaseActivity;
+import com.incon.service.ui.adddesignations.AddDesignationsActivity;
 import com.incon.service.ui.addservicecenter.AddServiceCenterActivity;
 import com.incon.service.ui.adduser.AddUserActivity;
 import com.incon.service.ui.changepassword.ChangePasswordActivity;
@@ -98,7 +99,7 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
         int[] icons = {
                 R.drawable.ic_menu_change_password,
                 R.drawable.ic_menu_change_password,
-
+                R.drawable.ic_menu_change_password,
 
                 R.drawable.ic_menu_change_password,
                 R.drawable.ic_menu_timings,
@@ -152,6 +153,13 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
                 Intent addServiceCenterIntent = new Intent(this, AddServiceCenterActivity.class);
                 startActivity(addServiceCenterIntent);
                 break;
+
+            case MenuConstants.ADD_DESIGNATIONS:
+                Intent addDesignationsIntent = new Intent(this, AddDesignationsActivity.class);
+                startActivity(addDesignationsIntent);
+                break;
+
+
             case MenuConstants.CHANGE_PWD:
                 Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
                 startActivity(changePasswordIntent);

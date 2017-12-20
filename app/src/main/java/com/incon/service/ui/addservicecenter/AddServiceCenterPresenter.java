@@ -49,7 +49,7 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
     }
 
     @Override
-    public void addingserviceCenter(int userId, AddServiceCenter addServiceCenter)
+    public void addingServiceCenter(int userId, AddServiceCenter addServiceCenter)
     {
 
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {

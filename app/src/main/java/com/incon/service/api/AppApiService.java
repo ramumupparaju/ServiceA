@@ -13,6 +13,7 @@ import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
+import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.asignqrcode.AssignQrCode;
@@ -102,6 +103,16 @@ public class AppApiService implements AppConstants {
             int userId, AddUser addUser) {
         return addNetworkCheck(serviceInstance.addUser(userId, addUser));
     }
+
+
+    // add user api
+    public Observable<LoginResponse> addDesignation(
+            int userId, AddDesignation addDesignation) {
+        return addNetworkCheck(serviceInstance.addDesignation(userId, addDesignation));
+    }
+
+
+
 
     // store id  api
     public Observable<Object> uploadStoreLogo(int storeId, MultipartBody.Part storeLogo) {

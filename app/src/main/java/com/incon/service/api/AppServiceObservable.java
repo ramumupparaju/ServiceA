@@ -11,6 +11,7 @@ import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
+import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.dto.addfavorites.AddUserAddress;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
@@ -53,6 +54,12 @@ public interface AppServiceObservable {
     // add user api
     @POST("service/adduser/{userId}")
     Observable<LoginResponse> addUser(@Path("userId") int userId, @Body AddUser addUser);
+
+
+    // add adddesignation api
+    @POST("service/adddesignation/{userId}")
+    Observable<LoginResponse> addDesignation(@Path("userId") int userId,
+                                             @Body AddDesignation addDesignation);
 
     // store id  api
     @Multipart

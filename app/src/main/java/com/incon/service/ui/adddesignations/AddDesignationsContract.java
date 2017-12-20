@@ -1,6 +1,7 @@
 package com.incon.service.ui.adddesignations;
 
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
+import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BaseView;
 
@@ -16,6 +17,7 @@ public interface AddDesignationsContract {
 
     }
     interface Presenter {
+        void addDesignations(int userId, AddDesignation addDesignation);
 
     }
 }

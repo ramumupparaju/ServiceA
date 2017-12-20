@@ -1,105 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
-            name="addServiceCenter"
-            type="com.incon.service.dto.addservicecenter.AddServiceCenter"/>
+            name="addDesignation"
+            type="com.incon.service.dto.adddesignation.AddDesignation"/>
+
         <variable
-            name="addServiceCenterActivity"
-            type="com.incon.service.ui.addservicecenter.AddServiceCenterActivity"/>
+            name="addDesignationsActivity"
+            type="com.incon.service.ui.adddesignations.AddDesignationsActivity"/>
 
     </data>
 
-            <RelativeLayout
-                android:layout_marginTop="@dimen/margin_30"
-                style="@style/BothMatch"
-                android:background="@color/white">
+    <RelativeLayout
+        style="@style/BothMatch"
+        android:layout_marginTop="@dimen/margin_30"
+        android:background="@color/white">
 
-                <!-- description -->
-                <com.incon.service.custom.view.CustomTextInputLayout
-                    android:id="@+id/input_layout_description"
-                    style="@style/Register_TextInputLayout"
-                    android:hint="@string/register_name_hint"
-                    app:errorEnabled="true"
-                    app:fontName="fonts/OpenSans-Regular.ttf"
-                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+        <!-- description -->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_layout_description"
+            style="@style/Register_TextInputLayout"
+            android:hint="@string/register_description_hint"
+            app:errorEnabled="true"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edittext_description"
-                        style="@style/Register_TextInputEditText"
-                        android:focusable="true"
-                        android:imeOptions="actionNext"
-                        android:inputType="textCapWords"
-                        android:maxLength="@integer/character_limit_200"
-                        android:maxLines="1"
-                        android:tag="0"
-                        android:text="@={addServiceCenter.name}"/>
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_description"
+                style="@style/Register_TextInputEditText"
+                android:focusable="true"
+                android:imeOptions="actionNext"
+                android:inputType="textCapWords"
+                android:maxLength="@integer/character_limit_200"
+                android:maxLines="1"
+                android:tag="0"
+                android:text="@={addDesignation.description}"
+                />
 
-                </com.incon.service.custom.view.CustomTextInputLayout>
+        </com.incon.service.custom.view.CustomTextInputLayout>
 
+        <!-- name -->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_layout_name"
+            style="@style/Register_TextInputLayout"
+            android:layout_below="@+id/input_layout_description"
+            android:hint="@string/register_name_hint"
+            app:errorEnabled="true"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
 
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_name"
+                style="@style/Register_TextInputEditText"
+                android:focusable="true"
+                android:imeOptions="actionNext"
+                android:inputType="textCapWords"
+                android:maxLength="@integer/character_limit_200"
+                android:maxLines="1"
+                android:tag="1"
+                android:text="@={addDesignation.name}"
 
-                <!-- name -->
-                <com.incon.service.custom.view.CustomTextInputLayout
-                    android:id="@+id/input_layout_name"
-                    android:layout_below="@+id/input_layout_description"
-                    style="@style/Register_TextInputLayout"
-                    android:hint="@string/register_name_hint"
-                    app:errorEnabled="true"
-                    app:fontName="fonts/OpenSans-Regular.ttf"
-                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+                />
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edittext_name"
-                        style="@style/Register_TextInputEditText"
-                        android:focusable="true"
-                        android:imeOptions="actionNext"
-                        android:inputType="textCapWords"
-                        android:maxLength="@integer/character_limit_200"
-                        android:maxLines="1"
-                        android:tag="0"
-                        android:text="@={addServiceCenter.name}"/>
+        </com.incon.service.custom.view.CustomTextInputLayout>
 
-                </com.incon.service.custom.view.CustomTextInputLayout>
-
-
-                <!-- serviceCenterId -->
-                <com.incon.service.custom.view.CustomTextInputLayout
-                    android:id="@+id/input_layout_service_center_id"
-                    android:layout_below="@+id/input_layout_description"
-                    style="@style/Register_TextInputLayout"
-                    android:hint="@string/register_name_hint"
-                    app:errorEnabled="true"
-                    app:fontName="fonts/OpenSans-Regular.ttf"
-                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edittext_service_center_id"
-                        style="@style/Register_TextInputEditText"
-                        android:focusable="true"
-                        android:imeOptions="actionNext"
-                        android:inputType="textCapWords"
-                        android:maxLength="@integer/character_limit_200"
-                        android:maxLines="1"
-                        android:tag="0"
-                        android:text="@={addServiceCenter.name}"/>
-
-                </com.incon.service.custom.view.CustomTextInputLayout>
-
-
-
+        <!-- service_center-->
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/spinner_service_center"
+            style="@style/spinnerItemStyle"
+            android:layout_below="@id/input_layout_name"
+            android:layout_marginBottom="@dimen/margin_24"
+            android:focusable="true"
+            android:hint="@string/register__service_center_hint"
+            android:tag="2"
+            android:text="@{addDesignation.serviceCenterName}"
+            android:visibility="visible"
+            app:met_floatingLabel="highlight"
+            app:met_textColor="@color/colorForgotPasswordHintText"
+            app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
 
         <Button
             android:id="@+id/button_submit"
             style="@style/w150_wrap"
             fontPath="fonts/OpenSans-Bold.ttf"
+            android:layout_below="@+id/spinner_service_center"
             android:layout_marginBottom="@dimen/margin_10"
             android:layout_marginLeft="@dimen/margin_110"
             android:layout_marginTop="@dimen/margin_10"
             android:background="@drawable/btn_login_register_roundedcorner"
-            android:onClick="@{() -> addServiceCenterActivity.onSubmitClick()}"
+            android:onClick="@{() -> addDesignationsActivity.onSubmitClick()}"
             android:text="@string/add_new_submit"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"

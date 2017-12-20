@@ -113,6 +113,13 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".ui.adddesignations.AddDesignationsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity
             android:name="com.incon.service.ui.changepassword.ChangePasswordActivity"
             android:configChanges="orientation|keyboardHidden"
