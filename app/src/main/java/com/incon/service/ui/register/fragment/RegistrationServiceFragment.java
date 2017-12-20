@@ -19,8 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.incon.service.AppConstants;
+import com.incon.service.ConnectApplication;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.defaults.CategoryResponse;
 import com.incon.service.apimodel.components.defaults.DefaultsResponse;
 import com.incon.service.apimodel.components.fetchcategorie.Brand;
 import com.incon.service.apimodel.components.fetchcategorie.Division;
@@ -31,7 +31,6 @@ import com.incon.service.custom.view.AppCheckBoxListDialog;
 import com.incon.service.custom.view.AppOtpDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.FragmentRegistrationServiceBinding;
-import com.incon.service.dto.dialog.CheckedModelSpinner;
 import com.incon.service.dto.registration.AddressInfo;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.dto.registration.ServiceCenter;
@@ -58,7 +57,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
     private static final String TAG = RegistrationServiceFragment.class.getSimpleName();
     private FragmentRegistrationServiceBinding binding;
     private RegistrationServicePresenter registrationServiceFragmentPresenter;
-    private List<CategoryResponse> categoryResponseList; //fetched from defaults api call in
     // registration
     private Registration register; // initialized from registration acticity
     private ServiceCenter serviceCenter;
@@ -67,12 +65,11 @@ public class RegistrationServiceFragment extends BaseFragment implements
     private HashMap<Integer, String> errorMap;
     private String selectedFilePath = "";
     private AppOtpDialog dialog;
-    private AppCheckBoxListDialog categoryDialog;
-    private List<CheckedModelSpinner> categorySpinnerList;
     private String enteredOtp;
-    private List<FetchCategories> fetchCategorieList;
+    private List<FetchCategories> fetchCategoryList;
     private int categorySelectedPos = -1;
     private int divisionSelectedPos = -1;
+    private int brandSelectedPos = -1;
 
     @Override
     protected void initializePresenter() {
@@ -108,17 +105,8 @@ public class RegistrationServiceFragment extends BaseFragment implements
         loadValidationErrors();
         setFocusListenersForEditText();
 
-        categorySpinnerList = new ArrayList<>();
-        DefaultsResponse defaultsResponse = new OfflineDataManager().loadData(
-                DefaultsResponse.class, DefaultsResponse.class.getName());
-        //defaultsResponse.getCategories()
-        categoryResponseList = defaultsResponse.getCategories();
-        for (int i = 0; i < categoryResponseList.size(); i++) {
-            CheckedModelSpinner checkedModelSpinner = new CheckedModelSpinner();
-            checkedModelSpinner.setName(categoryResponseList.get(i).getName());
-            categorySpinnerList.add(checkedModelSpinner);
-        }
-       // loadCategoriesList(categorySpinnerList);
+        fetchCategoryList = new ArrayList<>(ConnectApplication.getAppContext().getFetchCategoriesList());
+        loadCategoriesList(fetchCategoryList);
     }
 
     // validations
@@ -316,16 +304,16 @@ public class RegistrationServiceFragment extends BaseFragment implements
 
     @Override
     public void loadCategoriesList(List<FetchCategories> categoriesList) {
-        fetchCategorieList = categoriesList;
+        fetchCategoryList = categoriesList;
         loadCategorySpinnerData();
     }
 
 
     private void loadCategorySpinnerData() {
 
-        String[] stringCategoryList = new String[fetchCategorieList.size()];
-        for (int i = 0; i < fetchCategorieList.size(); i++) {
-            stringCategoryList[i] = fetchCategorieList.get(i).getName();
+        String[] stringCategoryList = new String[fetchCategoryList.size()];
+        for (int i = 0; i < fetchCategoryList.size(); i++) {
+            stringCategoryList[i] = fetchCategoryList.get(i).getName();
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.view_spinner, stringCategoryList);
@@ -335,7 +323,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (categorySelectedPos != position) {
-                    FetchCategories fetchCategories = fetchCategorieList.get(position);
+                    FetchCategories fetchCategories = fetchCategoryList.get(position);
                     serviceCenter.setCategoryId(fetchCategories.getId());
                     serviceCenter.setCategoryName(fetchCategories.getName());
                     loadDivisionSpinnerData(fetchCategories.getDivisions());
@@ -374,7 +362,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (divisionSelectedPos != position) {
                     divisionSelectedPos = position;
-                    FetchCategories fetchCategories = fetchCategorieList.get(categorySelectedPos);
+                    FetchCategories fetchCategories = fetchCategoryList.get(categorySelectedPos);
                     Division divisions1 = fetchCategories.getDivisions().get(divisionSelectedPos);
                     serviceCenter.setDivisionId(divisions1.getId());
                     serviceCenter.setDivisionName(divisions1.getName());
@@ -407,8 +395,10 @@ public class RegistrationServiceFragment extends BaseFragment implements
         binding.spinnerBrand.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                serviceCenter.setBrandId(brandList.get(position).getId());
-                serviceCenter.setBrandName(brandList.get(position).getName());
+                if (brandSelectedPos != position) {
+                    serviceCenter.setBrandId(brandList.get(position).getId());
+                    serviceCenter.setBrandName(brandList.get(position).getName());
+                }
                 //For avoiding double tapping issue
                 if (binding.spinnerBrand.getOnItemClickListener() != null) {
                     binding.spinnerBrand.onItemClick(parent, view, position, id);

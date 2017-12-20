@@ -19,6 +19,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
     private static final int SPLASH_DELAY = 2000;
     private static final String TAG = SplashActivity.class.getName();
     private Handler handler;
+    private Runnable splashRunnable;
 
     @Override
     protected int getLayoutId() {
@@ -49,7 +50,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
 
     private void splashTimeout() {
         handler = new Handler();
-        Runnable splashRunnable = new Runnable() {
+        splashRunnable = new Runnable() {
             @Override
             public void run() {
 
@@ -59,7 +60,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
                 if (isLoggedIn) {
                     intent = new Intent(SplashActivity.this, HomeActivity.class);
                 } else {
-                    intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    intent = new Intent(SplashActivity.this, com.incon.service.ui.login.LoginActivity.class);
                 }
                 startActivity(intent);
                 finish();
@@ -71,6 +72,6 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacksAndMessages(null);
+        handler.removeCallbacksAndMessages(splashRunnable);
     }
 }
