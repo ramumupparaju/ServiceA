@@ -227,13 +227,15 @@ public class ServiceCenter extends BaseObservable {
                 }
                 break;
 
-            case 4:
+
+//                no nned to validate because for some divisions there are no brands
+            /*case 4:
                 boolean serviceBrand = TextUtils.isEmpty(getBrandName());
                 if (emptyValidation && serviceBrand) {
                     return AppConstants.RegistrationValidation.BRAND_REQ;
                 }
                 break;
-
+*/
             case 5:
                 boolean serviceAddress = TextUtils.isEmpty(getAddress());
                 if (emptyValidation && serviceAddress) {

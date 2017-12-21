@@ -70,6 +70,14 @@ public class RegistrationUserFragment extends BaseFragment implements
         binding.setUserFragment(this);
         //here data must be an instance of the registration class
         register = ((RegistrationActivity) getActivity()).getRegistration();
+        register.setName("shiva");
+        register.setMobileNumber("1234567890");
+        register.setGenderType("Male");
+        register.setDateOfBirthToShow("12/20/1988");
+        register.setEmail("sdfsjdf@g.com");
+        register.setPassword("qwerty123");
+        register.setConfirmPassword("qwerty123");
+
         binding.setRegister(register);
         View rootView = binding.getRoot();
         loadData();
@@ -293,8 +301,8 @@ public class RegistrationUserFragment extends BaseFragment implements
      */
     public void onClickNext() {
         if (validateFields()) {
-                register.setGender(String.valueOf(register.getGenderType().charAt(0)));
             register.setServiceCenterUserType(binding.serviceCenterType.isChecked() ? RegistrationConstants.SERVICE_GROUP : RegistrationConstants.SERVICE_INDIVIDUAL);
+            register.setGender(String.valueOf(register.getGenderType().charAt(0)));
             navigateToRegistrationActivityNext();
         }
     }

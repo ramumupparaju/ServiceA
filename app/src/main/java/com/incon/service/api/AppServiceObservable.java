@@ -91,7 +91,7 @@ public interface AppServiceObservable {
     @POST("account/sendOtp")
     Observable<SendOtpResponse> sendOtp(@Body HashMap<String, String> email);
 
-    @POST("user/validateotp")
+    @POST("service/validateotp")
     Observable<LoginResponse> validateOtp(@Body HashMap<String, String> verify);
 
     @POST("merchant/forgotpassword")

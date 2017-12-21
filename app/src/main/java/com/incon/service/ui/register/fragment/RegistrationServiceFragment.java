@@ -25,6 +25,8 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchcategorie.Brand;
 import com.incon.service.apimodel.components.fetchcategorie.Division;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
+import com.incon.service.callbacks.AlertDialogCallback;
+import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppOtpDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.custom.view.PickImageDialog;
@@ -39,8 +41,7 @@ import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.notifications.PushPresenter;
 import com.incon.service.ui.register.RegistrationActivity;
 import com.incon.service.ui.termsandcondition.TermsAndConditionActivity;
-import com.incon.service.utils.Logger;
-import com.incon.service.utils.PermissionUtils;
+import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import net.hockeyapp.android.LoginActivity;
@@ -98,7 +99,14 @@ public class RegistrationServiceFragment extends BaseFragment implements
                 inflater, R.layout.fragment_registration_service, container, false);
         binding.setServiceFragment(this);
         //here data must be an instance of the registration class
+        register = ((RegistrationActivity) getActivity()).getRegistration();
         serviceCenter = new ServiceCenter();
+        serviceCenter.setName("shiva");
+        serviceCenter.setContactNo("1234567890");
+        serviceCenter.setEmail("asdj@g.com");
+        serviceCenter.setGstn("12345sdv");
+
+
         binding.setServiceCenter(serviceCenter);
         View rootView = binding.getRoot();
 
@@ -298,6 +306,17 @@ public class RegistrationServiceFragment extends BaseFragment implements
                 showErrorMessage(getString(R.string.error_image_path_upload));
                 return;
             }
+            //setting category id
+            FetchCategories fetchCategories = fetchCategoryList.get(categorySelectedPos);
+            serviceCenter.setCategoryId(fetchCategories.getId());
+
+            //setting division id
+            Division divisions = fetchCategories.getDivisions().get(divisionSelectedPos);
+            serviceCenter.setDivisionId(divisions.getId());
+
+            //setting brand id it it is not equal to -1
+            serviceCenter.setBrandId(brandSelectedPos == -1 ? brandSelectedPos : divisions.getBrands().get(brandSelectedPos).getId());
+
             navigateToRegistrationActivityNext();
         }
     }
@@ -305,8 +324,11 @@ public class RegistrationServiceFragment extends BaseFragment implements
     private boolean validateFields() {
         binding.inputLayoutRegisterServiceName.setError(null);
         binding.inputLayoutRegisterPhone.setError(null);
+        binding.spinnerCategory.setError(null);
+        binding.spinnerDivision.setError(null);
+        binding.inputLayoutRegisterAddress.setError(null);
         binding.inputLayoutRegisterEmailid.setError(null);
-//        binding.spinnerCategory.setError(null);
+        binding.inputLayoutRegisterGstn.setError(null);
 
         Pair<String, Integer> validation = serviceCenter.validateServiceInfo(null);
         updateUiAfterValidation(validation.first, validation.second);
@@ -327,6 +349,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case RequestCodes.TERMS_AND_CONDITIONS:
+                    register.setServiceCenter(serviceCenter);
                     callRegisterApi();
                     break;
                 case RequestCodes.ADDRESS_LOCATION:
