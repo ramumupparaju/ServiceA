@@ -16,13 +16,46 @@
 
     <RelativeLayout
         style="@style/BothMatch"
-        android:layout_marginTop="@dimen/margin_30"
         android:background="@color/white">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:contentInsetStart="0dp">
+
+            <RelativeLayout style="@style/BothMatch">
+
+                <ImageView
+                    android:id="@+id/toolbar_left_iv"
+                    android:layout_width="@dimen/margin_64"
+                    android:layout_height="@dimen/margin_64"
+                    android:layout_centerVertical="true"
+                    android:paddingEnd="@dimen/margin_25"
+                    android:paddingStart="@dimen/margin_15"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/ic_back_arrow"/>
+
+                <TextView
+                    android:id="@+id/toolbar_text_user"
+                    style="@style/BothWrap"
+                    fontPath="fonts/OpenSans-Bold.ttf"
+                    android:layout_centerInParent="true"
+                    android:text="@string/action_add_designation"
+                    android:textColor="@color/white"
+                    android:textSize="15.5sp"/>
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
 
         <!-- name -->
         <com.incon.service.custom.view.CustomTextInputLayout
             android:id="@+id/input_layout_name"
             style="@style/Register_TextInputLayout"
+            android:layout_below="@+id/toolbar"
+            android:layout_marginTop="@dimen/margin_10"
             android:hint="@string/register_name_hint"
             app:errorEnabled="true"
             app:fontName="fonts/OpenSans-Regular.ttf"

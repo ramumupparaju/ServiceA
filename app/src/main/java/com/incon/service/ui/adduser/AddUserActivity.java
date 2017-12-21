@@ -31,6 +31,7 @@ import com.incon.service.dto.registration.AddressInfo;
 import com.incon.service.dto.registration.ServiceCenter;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
+import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -66,6 +67,7 @@ public class AddUserActivity extends BaseActivity implements
         setBasePresenter(addUserPresenter);
     }
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_adduser;
@@ -79,9 +81,20 @@ public class AddUserActivity extends BaseActivity implements
         binding.setAddUserActivity(this);
         rootView = binding.getRoot();
         initViews();
+        initializeToolbar();
         //TODO have to remove hard code
         addUserPresenter.fetchDesignations(1,SharedPrefsUtils.loginProvider().
                 getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
+
+    }
+
+    private void initializeToolbar() {
+        binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void initViews() {
@@ -113,7 +126,7 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     private void loadServiceCenterSpinnerData() {
-
+// TODO have to remove hard coding
         serviceCenterResponseList = new ArrayList<>();
         ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
         serviceCenterResponse.setId(Integer.valueOf("1"));

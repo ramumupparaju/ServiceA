@@ -37,8 +37,8 @@ import retrofit2.http.Path;
 
 public interface AppServiceObservable {
     //default data api
-    @GET("defaults")
-    Observable<DefaultsResponse> defaultsApi();
+    @GET("defaults/service")
+    Observable<List<FetchCategories>> defaultsApi();
 
     //login api
     @POST("service/login")

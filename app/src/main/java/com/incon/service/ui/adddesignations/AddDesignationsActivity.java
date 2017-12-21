@@ -62,6 +62,16 @@ public class AddDesignationsActivity extends BaseActivity implements
         binding.setAddDesignationsActivity(this);
         rootView = binding.getRoot();
         initViews();
+        initializeToolbar();
+    }
+
+    private void initializeToolbar() {
+        binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void initViews() {
@@ -73,7 +83,7 @@ public class AddDesignationsActivity extends BaseActivity implements
     }
 
     private void loadServiceCenterSpinnerData() {
-
+        //TODO have to remove hardcoding
         serviceCenterResponseList = new ArrayList<>();
         ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
         serviceCenterResponse.setId(Integer.valueOf("1"));
@@ -202,7 +212,6 @@ public class AddDesignationsActivity extends BaseActivity implements
                     (serviceCenterSelectedPos).getId());
             addDesignationsPresenter.addDesignations(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addDesignation);
-
         }
 
     }

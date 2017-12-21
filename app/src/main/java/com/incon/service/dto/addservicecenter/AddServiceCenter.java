@@ -169,7 +169,7 @@ public class AddServiceCenter extends BaseObservable {
 
         int fieldId = AppConstants.VALIDATION_FAILURE;
         if (tag == null) {
-            for (int i = 0; i <= 7; i++) {
+            for (int i = 0; i <= 5; i++) {
                 fieldId = validateFields(i, true);
                 if (fieldId != AppConstants.VALIDATION_SUCCESS) {
                     tag = i + "";
@@ -226,21 +226,8 @@ public class AddServiceCenter extends BaseObservable {
                 }
                 break;
 
+
             case 5:
-                boolean categoryEmpty = TextUtils.isEmpty(getCategoryName());
-                if (emptyValidation && categoryEmpty) {
-                    return AppConstants.AddServiceCenterValidation.CATEGORY_REQ;
-                }
-                break;
-
-            case 6:
-                boolean divisionEmpty = TextUtils.isEmpty(getDivisionName());
-                if (emptyValidation && divisionEmpty) {
-                    return AppConstants.AddServiceCenterValidation.DIVISION_REQ;
-                }
-                break;
-
-            case 7:
                 boolean gstnEmpty = TextUtils.isEmpty(getGstn());
                 if (emptyValidation && gstnEmpty) {
                     return AppConstants.AddServiceCenterValidation.GSTN_REQ;

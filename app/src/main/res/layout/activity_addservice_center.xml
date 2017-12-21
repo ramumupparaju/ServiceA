@@ -26,15 +26,49 @@
             android:scrollbars="vertical">
 
             <RelativeLayout
-                style="@style/BothMatch"
-                android:layout_marginTop="@dimen/margin_30"
-                android:background="@color/white">
+
+                style="@style/BothMatch">
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:contentInsetStart="0dp">
+
+                    <RelativeLayout style="@style/BothMatch">
+
+                        <ImageView
+                            android:id="@+id/toolbar_left_iv"
+                            android:layout_width="@dimen/margin_64"
+                            android:layout_height="@dimen/margin_64"
+                            android:layout_centerVertical="true"
+                            android:paddingEnd="@dimen/margin_25"
+                            android:paddingStart="@dimen/margin_15"
+                            android:visibility="visible"
+                            app:srcCompat="@drawable/ic_back_arrow"/>
+
+                        <TextView
+                            android:id="@+id/toolbar_text_user"
+                            style="@style/BothWrap"
+                            fontPath="fonts/OpenSans-Bold.ttf"
+                            android:layout_centerInParent="true"
+                            android:text="@string/action_add_service_center"
+                            android:textColor="@color/white"
+                            android:textSize="15.5sp"/>
+
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.Toolbar>
+
 
                 <!-- name -->
                 <com.incon.service.custom.view.CustomTextInputLayout
                     android:id="@+id/input_layout_name"
                     style="@style/Register_TextInputLayout"
                     android:hint="@string/register_name_hint"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_below="@+id/toolbar"
                     app:errorEnabled="true"
                     app:fontName="fonts/OpenSans-Regular.ttf"
                     app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
@@ -156,58 +190,11 @@
                     android:background="@null"
                     android:onClick="@{() -> addServiceCenterActivity.onDateClick()}"/>
 
-
-                <!-- category-->
-                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/spinner_category"
-                    style="@style/spinnerItemStyle"
-                    android:layout_below="@id/input_layout_created_date"
-                    android:layout_marginBottom="@dimen/margin_24"
-                    android:focusable="true"
-                    android:hint="@string/add_new__category"
-                    android:tag="5"
-                    android:text="@={addServiceCenter.categoryName}"
-                    android:visibility="visible"
-                    app:met_floatingLabel="highlight"
-                    app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-
-                <!-- division no -->
-                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/spinner_division"
-                    style="@style/spinnerItemStyle"
-                    android:layout_below="@id/spinner_category"
-                    android:layout_marginBottom="@dimen/margin_24"
-                    android:focusable="true"
-                    android:hint="@string/add_new__division"
-                    android:tag="6"
-                    android:text="@={addServiceCenter.divisionName}"
-                    android:visibility="gone"
-                    app:met_floatingLabel="highlight"
-                    app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-
-                <!--brand-->
-                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/spinner_brand"
-                    style="@style/spinnerItemStyle"
-                    android:layout_below="@id/spinner_division"
-                    android:layout_marginBottom="@dimen/margin_24"
-                    android:focusable="true"
-                    android:hint="@string/action_brand"
-                    android:tag="7"
-                    android:text="@={addServiceCenter.brandName}"
-                    android:visibility="gone"
-                    app:errorEnabled="true"
-                    app:met_floatingLabel="highlight"
-                    app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-
                 <!-- GSTN -->
                 <com.incon.service.custom.view.CustomTextInputLayout
                     android:id="@+id/input_layout_register_gstn"
                     style="@style/Register_TextInputLayout"
-                    android:layout_below="@id/spinner_brand"
+                    android:layout_below="@id/input_layout_created_date"
                     android:hint="@string/register_gstn_hint"
                     app:errorEnabled="true"
                     app:fontName="fonts/OpenSans-Regular.ttf"
@@ -221,7 +208,7 @@
                         android:inputType="textEmailAddress"
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
-                        android:tag="8"
+                        android:tag="5"
                         android:text="@={addServiceCenter.gstn}"/>
                 </com.incon.service.custom.view.CustomTextInputLayout>
 

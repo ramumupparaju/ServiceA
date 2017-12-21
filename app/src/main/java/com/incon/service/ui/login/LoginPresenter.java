@@ -103,6 +103,11 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     //DO nothing
                 }
 
+                @Override
+                public void navigateToLoginScreen() {
+                    //DO nothing
+                }
+
 
                 @Override
                 public void showProgress(String message) {

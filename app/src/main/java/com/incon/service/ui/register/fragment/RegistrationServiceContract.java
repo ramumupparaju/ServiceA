@@ -21,6 +21,7 @@ public class RegistrationServiceContract {
         void navigateToRegistrationActivityNext();
         void navigateToHomeScreen();
         void uploadStoreLogo(int storeId);
+        void navigateToLoginScreen();
     }
 
     interface Presenter {

@@ -2,6 +2,7 @@ package com.incon.service.utils;
 
 import android.accounts.NetworkErrorException;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 
@@ -57,7 +58,15 @@ public class ErrorMsgUtil {
         } else {
             errMsg = e.getMessage();
         }
+
+
+        if (TextUtils.isEmpty(errMsg)) {
+            errMsg = e.getMessage();
+        }
         return new Pair<>(errorCode, errMsg);
+
+
+
     }
 
 }

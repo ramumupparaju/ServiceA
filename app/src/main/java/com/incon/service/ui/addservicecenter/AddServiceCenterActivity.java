@@ -49,10 +49,6 @@ public class AddServiceCenterActivity extends BaseActivity implements
     private View rootView;
     private AddServiceCenterPresenter addServiceCenterPresenter;
     private AddServiceCenter addServiceCenter;
-    private List<FetchCategories> fetchCategoryList;
-    private int categorySelectedPos = -1;
-    private int divisionSelectedPos = -1;
-    private int brandSelectedPos = -1;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
     private ActivityAddserviceCenterBinding binding;
@@ -70,20 +66,29 @@ public class AddServiceCenterActivity extends BaseActivity implements
     protected void onCreateView(Bundle saveInstanceState) {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
         addServiceCenter = new AddServiceCenter();
+        // TODO have to check
+        addServiceCenter.setCategoryId(-1);
+        addServiceCenter.setDivisionId(-1);
+        addServiceCenter.setBrandId(-1);
         binding.setAddServiceCenter(addServiceCenter);
         binding.setAddServiceCenterActivity(this);
         rootView = binding.getRoot();
-        addServiceCenterPresenter.getCategories(SharedPrefsUtils.loginProvider().
-                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
         initViews();
+        initializeToolbar();
 
     }
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadValidationErrors();
         setFocusForViews();
-        /*fetchCategoryList = new ArrayList<>(ConnectApplication.getAppContext().getFetchCategoriesList());
-        loadCategoriesList(fetchCategoryList);*/
+    }
+    private void initializeToolbar() {
+        binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void onDateClick() {
@@ -95,9 +100,8 @@ public class AddServiceCenterActivity extends BaseActivity implements
         String createdDate = addServiceCenter.getCreatedDate();
         if (!TextUtils.isEmpty(createdDate)) {
             cal.setTimeInMillis(DateUtils.convertStringFormatToMillis(
-                    createdDate, DateFormatterConstants.MM_DD_YYYY));
+                    createdDate, DateFormatterConstants.FROM_API_MILLIS));
         }
-
         int customStyle = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                 ? R.style.DatePickerDialogTheme : android.R.style.Theme_DeviceDefault_Light_Dialog;
         DatePickerDialog datePicker = new DatePickerDialog(this,
@@ -118,10 +122,9 @@ public class AddServiceCenterActivity extends BaseActivity implements
                                       int selectedMonth, int selectedDay) {
                     Calendar selectedDateTime = Calendar.getInstance();
                     selectedDateTime.set(selectedYear, selectedMonth, selectedDay);
-
-                    String dobInMMDDYYYY = DateUtils.convertDateToOtherFormat(
-                            selectedDateTime.getTime(), DateFormatterConstants.MM_DD_YYYY);
-                    addServiceCenter.setCreatedDate(dobInMMDDYYYY);
+                    String yyyyMMDD = DateUtils.convertDateToOtherFormat(
+                            selectedDateTime.getTime(), DateFormatterConstants.FROM_API_MILLIS);
+                    addServiceCenter.setCreatedDate(yyyyMMDD);
 
                     Pair<String, Integer> validate = binding.getAddServiceCenter().
                             validateAddServiceCenter((String) binding.edittextCreatedDate.getTag());
@@ -202,9 +205,6 @@ public class AddServiceCenterActivity extends BaseActivity implements
         binding.inputLayoutRegisterEmailid.setError(null);
         binding.inputLayoutRegisterAddress.setError(null);
         binding.inputLayoutCreatedDate.setError(null);
-        binding.spinnerCategory.setError(null);
-        binding.spinnerDivision.setError(null);
-        binding.spinnerBrand.setError(null);
         binding.inputLayoutRegisterGstn.setError(null);
 
         Pair<String, Integer> validation = binding.getAddServiceCenter().validateAddServiceCenter(null);
@@ -254,7 +254,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
                 getString(R.string.error_gender_req));
 
         errorMap.put(AddServiceCenterValidation.CREATED_DATE_REQ,
-                getString(R.string.error_dob_req));
+                getString(R.string.error_created_date_req));
 
         errorMap.put(AddServiceCenterValidation.CREATED_FUTURE_DATE,
                 getString(R.string.error_dob_futuredate));
@@ -282,110 +282,15 @@ public class AddServiceCenterActivity extends BaseActivity implements
         if (validateFields()) {
             addServiceCenterPresenter.addingServiceCenter(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addServiceCenter);
+
         }
     }
+
+
 
     @Override
-    public void loadCategoriesList(List<FetchCategories> categoriesList) {
-        fetchCategoryList = categoriesList;
-        loadCategorySpinnerData();
-    }
-
-    private void loadCategorySpinnerData() {
-
-        String[] stringCategoryList = new String[fetchCategoryList.size()];
-        for (int i = 0; i < fetchCategoryList.size(); i++) {
-            stringCategoryList[i] = fetchCategoryList.get(i).getName();
-        }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                R.layout.view_spinner, stringCategoryList);
-        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerCategory.setAdapter(arrayAdapter);
-        binding.spinnerCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (categorySelectedPos != position) {
-                    FetchCategories fetchCategories = fetchCategoryList.get(position);
-                    addServiceCenter.setCategoryId(fetchCategories.getId());
-                    addServiceCenter.setCategoryName(fetchCategories.getName());
-                    loadDivisionSpinnerData(fetchCategories.getDivisions());
-                    binding.spinnerDivision.setText("");
-                    categorySelectedPos = position;
-                    binding.spinnerBrand.setVisibility(View.GONE);
-                }
-
-                //For avoiding double tapping issue
-                if (binding.spinnerCategory.getOnItemClickListener() != null) {
-                    binding.spinnerCategory.onItemClick(parent, view, position, id);
-                }
-            }
-        });
-
-    }
-
-    private void loadDivisionSpinnerData(List<Division> divisions) {
-
-        if (divisions.size() == 0) {
-            binding.spinnerDivision.setVisibility(View.GONE);
-            return;
-        }
-
-        binding.spinnerDivision.setVisibility(View.VISIBLE);
-        String[] stringDivisionList = new String[divisions.size()];
-        for (int i = 0; i < divisions.size(); i++) {
-            stringDivisionList[i] = divisions.get(i).getName();
-        }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                R.layout.view_spinner, stringDivisionList);
-        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerDivision.setAdapter(arrayAdapter);
-        binding.spinnerDivision.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (divisionSelectedPos != position) {
-                    divisionSelectedPos = position;
-                    FetchCategories fetchCategories = fetchCategoryList.get(categorySelectedPos);
-                    Division divisions1 = fetchCategories.getDivisions().get(divisionSelectedPos);
-                    addServiceCenter.setDivisionId(divisions1.getId());
-                    addServiceCenter.setDivisionName(divisions1.getName());
-                    loadBrandSpinnerData(divisions1.getBrands());
-                    binding.spinnerBrand.setText("");
-                }
-
-                //For avoiding double tapping issue
-                if (binding.spinnerDivision.getOnItemClickListener() != null) {
-                    binding.spinnerDivision.onItemClick(parent, view, position, id);
-                }
-            }
-        });
-    }
-
-    private void loadBrandSpinnerData(final List<Brand> brandList) {
-        if (brandList.size() == 0) {
-            binding.spinnerBrand.setVisibility(View.GONE);
-            return;
-        }
-        binding.spinnerBrand.setVisibility(View.VISIBLE);
-        String[] stringDivisionList = new String[brandList.size()];
-        for (int i = 0; i < brandList.size(); i++) {
-            stringDivisionList[i] = brandList.get(i).getName();
-        }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
-                R.layout.view_spinner, stringDivisionList);
-        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerBrand.setAdapter(arrayAdapter);
-        binding.spinnerBrand.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (brandSelectedPos != position) {
-                    addServiceCenter.setBrandId(brandList.get(position).getId());
-                    addServiceCenter.setBrandName(brandList.get(position).getName());
-                }
-                //For avoiding double tapping issue
-                if (binding.spinnerBrand.getOnItemClickListener() != null) {
-                    binding.spinnerBrand.onItemClick(parent, view, position, id);
-                }
-            }
-        });
+    public void onDestroy() {
+        super.onDestroy();
+        addServiceCenterPresenter.disposeAll();
     }
 }

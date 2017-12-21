@@ -41,6 +41,8 @@ import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.notifications.PushPresenter;
 import com.incon.service.ui.register.RegistrationActivity;
 import com.incon.service.ui.termsandcondition.TermsAndConditionActivity;
+import com.incon.service.utils.Logger;
+import com.incon.service.utils.PermissionUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -101,6 +103,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
         //here data must be an instance of the registration class
         register = ((RegistrationActivity) getActivity()).getRegistration();
         serviceCenter = new ServiceCenter();
+        //TODO have to remove hard code
         serviceCenter.setName("shiva");
         serviceCenter.setContactNo("1234567890");
         serviceCenter.setEmail("asdj@g.com");
@@ -301,11 +304,15 @@ public class RegistrationServiceFragment extends BaseFragment implements
      * validate user , if all fields ok then call next screen
      */
     public void onClickNext() {
+
         if (validateFields()) {
-            if (TextUtils.isEmpty(selectedFilePath)) {
+
+            //TODO have to uncomment image validation code
+           /* if (TextUtils.isEmpty(selectedFilePath)) {
                 showErrorMessage(getString(R.string.error_image_path_upload));
                 return;
-            }
+            }*/
+
             //setting category id
             FetchCategories fetchCategories = fetchCategoryList.get(categorySelectedPos);
             serviceCenter.setCategoryId(fetchCategories.getId());
@@ -399,6 +406,14 @@ public class RegistrationServiceFragment extends BaseFragment implements
 
     }
 
+    @Override
+    public void navigateToLoginScreen() {
+        Intent loginIntent = new Intent(getActivity(), com.incon.service.ui.login.LoginActivity
+                .class);
+        startActivity(loginIntent);
+
+    }
+
     private void loadCategorySpinnerData() {
 
         String[] stringCategoryList = new String[fetchCategoryList.size()];
@@ -432,12 +447,10 @@ public class RegistrationServiceFragment extends BaseFragment implements
     }
 
     private void loadDivisionSpinnerData(List<Division> divisions) {
-
         if (divisions.size() == 0) {
             binding.spinnerDivision.setVisibility(View.GONE);
             return;
         }
-
         binding.spinnerDivision.setVisibility(View.VISIBLE);
         String[] stringDivisionList = new String[divisions.size()];
         for (int i = 0; i < divisions.size(); i++) {

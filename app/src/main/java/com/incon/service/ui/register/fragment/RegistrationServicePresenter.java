@@ -49,7 +49,8 @@ public class RegistrationServicePresenter extends
             @Override
             public void onNext(LoginResponse loginResponse) {
                 // TODO have to save logon details and navigate to home
-                getView().uploadStoreLogo(loginResponse.getStore().getId());
+               // getView().uploadStoreLogo(loginResponse.getStore().getId());
+                getView().navigateToLoginScreen();
             }
 
             @Override

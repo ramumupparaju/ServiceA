@@ -37,11 +37,11 @@ public class RegistrationPresenter extends BasePresenter<RegistrationContract.Vi
     @Override
     public void defaultsApi() {
         getView().showProgress(appContext.getString(R.string.progress_defaults));
-        DisposableObserver<DefaultsResponse> observer = new DisposableObserver<DefaultsResponse>() {
+        DisposableObserver<List<FetchCategories>> observer = new DisposableObserver<List<FetchCategories>>() {
             @Override
-            public void onNext(DefaultsResponse defaultsResponse) {
+            public void onNext(List<FetchCategories> fetchCategoriesList) {
                 getView().hideProgress();
-                ConnectApplication.getAppContext().setFetchCategoriesList(defaultsResponse.getCategoryTypeResponseList());
+                ConnectApplication.getAppContext().setFetchCategoriesList(fetchCategoriesList);
                 getView().startRegistration(true);
             }
 

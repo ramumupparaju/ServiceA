@@ -174,6 +174,10 @@
     <string name="action_update_pwd">Update Password</string>
     <string name="action_feedback">Feedback</string>
     <string name="action_development">Development</string>
+    <!--service center setings-->
+    <string name="action_add_user">Add User</string>
+    <string name="action_add_service_center">Add Service Center</string>
+    <string name="action_add_designation">Add Designation</string>
 
     <!--settings screen-->
     <string name="action_settings">Settings</string>
@@ -220,6 +224,7 @@
     <string name="error_timezone_req">Time Zone is required</string>
     <string name="error_zipcode_req">Zip Code is required</string>
     <string name="error_dob_req">Date of Birth is required</string>
+    <string name="error_created_date_req">Created Date is required</string>
     <string name="error_gender_req">Gender is required</string>
     <string name="error_verificationcode_req">Verification Code is required</string>
     <string name="error_dob_patient_is_user">You must be at least 16 years old to use the
@@ -503,6 +508,10 @@
     <string name="title_report">Report</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_qr_code_scanner">QR Code Scanner</string>
+
+
+    <string name="title_add_user">Add User</string>
+
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
