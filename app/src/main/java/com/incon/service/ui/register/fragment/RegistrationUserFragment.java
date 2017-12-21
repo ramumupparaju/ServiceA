@@ -22,20 +22,13 @@ import android.widget.TextView;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
-import com.incon.service.callbacks.AlertDialogCallback;
-import com.incon.service.callbacks.TextAlertDialogCallback;
-import com.incon.service.custom.view.AppOtpDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.FragmentRegistrationUserBinding;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.RegistrationMapActivity;
-import com.incon.service.ui.home.HomeActivity;
-import com.incon.service.ui.notifications.PushPresenter;
 import com.incon.service.ui.register.RegistrationActivity;
-import com.incon.service.ui.termsandcondition.TermsAndConditionActivity;
 import com.incon.service.utils.DateUtils;
-import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.Calendar;
@@ -47,9 +40,9 @@ import java.util.TimeZone;
  * Created on 13 Jun 2017 4:01 PM.
  */
 public class RegistrationUserFragment extends BaseFragment implements
-        RegistrationUserFragmentContract.View {
+        RegistrationUserContract.View {
 
-    private RegistrationUserFragmentPresenter registrationUserInfoFragPresenter;
+    private RegistrationUserPresenter registrationUserInfoFragPresenter;
     private FragmentRegistrationUserBinding binding;
     private Registration register; // initialized from registration acticity
     private Animation shakeAnim;
@@ -59,7 +52,7 @@ public class RegistrationUserFragment extends BaseFragment implements
     @Override
     protected void initializePresenter() {
 
-        registrationUserInfoFragPresenter = new RegistrationUserFragmentPresenter();
+        registrationUserInfoFragPresenter = new RegistrationUserPresenter();
         registrationUserInfoFragPresenter.setView(this);
         setBasePresenter(registrationUserInfoFragPresenter);
     }
@@ -83,6 +76,7 @@ public class RegistrationUserFragment extends BaseFragment implements
         setTitle();
         return rootView;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -298,13 +292,11 @@ public class RegistrationUserFragment extends BaseFragment implements
      * validate user , if all fields ok then call next screen
      */
     public void onClickNext() {
-        navigateToRegistrationActivityNext();
-
-
-        /*if (validateFields()) {
+        if (validateFields()) {
+                register.setGender(String.valueOf(register.getGenderType().charAt(0)));
             register.setServiceCenterUserType(binding.serviceCenterType.isChecked() ? RegistrationConstants.SERVICE_GROUP : RegistrationConstants.SERVICE_INDIVIDUAL);
             navigateToRegistrationActivityNext();
-        }*/
+        }
     }
 
     private boolean validateFields() {

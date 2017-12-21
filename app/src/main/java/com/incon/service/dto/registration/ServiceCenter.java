@@ -53,32 +53,39 @@ public class ServiceCenter extends BaseObservable {
     private transient String divisionName;
     private transient String brandName;
 
+    @Bindable
     public String getCategoryName() {
         return categoryName;
     }
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+        notifyChange();
     }
 
+    @Bindable
     public String getDivisionName() {
         return divisionName;
     }
 
     public void setDivisionName(String divisionName) {
         this.divisionName = divisionName;
+        notifyChange();
     }
 
+    @Bindable
     public String getBrandName() {
         return brandName;
     }
 
     public void setBrandName(String brandName) {
         this.brandName = brandName;
+        notifyChange();
     }
 
     public ServiceCenter() {
     }
+
     @Bindable
     public String getAddress() {
         return address;
@@ -113,12 +120,14 @@ public class ServiceCenter extends BaseObservable {
         this.categoryId = categoryId;
     }
 
+    @Bindable
     public String getContactNo() {
         return contactNo;
     }
 
     public void setContactNo(String contactNo) {
         this.contactNo = contactNo;
+        notifyChange();
     }
 
     public Integer getDivisionId() {
@@ -129,20 +138,24 @@ public class ServiceCenter extends BaseObservable {
         this.divisionId = divisionId;
     }
 
+    @Bindable
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+        notifyChange();
     }
 
+    @Bindable
     public String getGstn() {
         return gstn;
     }
 
     public void setGstn(String gstn) {
         this.gstn = gstn;
+        notifyChange();
     }
 
     public String getLocation() {
@@ -153,15 +166,15 @@ public class ServiceCenter extends BaseObservable {
         this.location = location;
     }
 
+    @Bindable
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+        notifyChange();
     }
-
-
 
 
     public Pair<String, Integer> validateServiceInfo(String tag) {
@@ -233,13 +246,13 @@ public class ServiceCenter extends BaseObservable {
                 boolean serviceEmail = TextUtils.isEmpty(getEmail());
                 if (emptyValidation && serviceEmail) {
                     return AppConstants.RegistrationValidation.EMAIL_REQ;
-                }else if (!serviceEmail && !ValidationUtils.isValidEmail(getEmail())) {
+                } else if (!serviceEmail && !ValidationUtils.isValidEmail(getEmail())) {
                     return AppConstants.RegistrationValidation.EMAIL_NOTVALID;
                 }
                 break;
 
             case 7:
-                boolean serviceGstn = TextUtils.isEmpty(getEmail());
+                boolean serviceGstn = TextUtils.isEmpty(getGstn());
                 if (emptyValidation && serviceGstn) {
                     return AppConstants.RegistrationValidation.GSTN_REQ;
                 }

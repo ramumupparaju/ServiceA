@@ -12,7 +12,6 @@ import com.incon.service.custom.view.AppOtpDialog;
 import com.incon.service.databinding.ActivityResetPasswordPromptBinding;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.changepassword.ChangePasswordActivity;
-import com.incon.service.ui.validateotp.ValidateOtpPresenter;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.HashMap;

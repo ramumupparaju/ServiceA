@@ -25,6 +25,7 @@ public class LoginResponse extends ApiBaseResponse {
     @SerializedName("usertype")
     @Expose
     private Integer usertype;
+    private StoreResponse store;
     @SerializedName("country")
     @Expose
     private String country;
@@ -57,6 +58,14 @@ public class LoginResponse extends ApiBaseResponse {
 
     public void setServiceCenterUserType(String serviceCenterUserType) {
         this.serviceCenterUserType = serviceCenterUserType;
+    }
+
+    public StoreResponse getStore() {
+        return store;
+    }
+
+    public void setStore(StoreResponse store) {
+        this.store = store;
     }
 
     public String getMobileNumber() {

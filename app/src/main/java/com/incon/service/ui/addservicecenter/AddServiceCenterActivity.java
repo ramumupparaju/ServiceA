@@ -73,6 +73,8 @@ public class AddServiceCenterActivity extends BaseActivity implements
         binding.setAddServiceCenter(addServiceCenter);
         binding.setAddServiceCenterActivity(this);
         rootView = binding.getRoot();
+        addServiceCenterPresenter.getCategories(SharedPrefsUtils.loginProvider().
+                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
         initViews();
 
     }
@@ -80,8 +82,8 @@ public class AddServiceCenterActivity extends BaseActivity implements
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadValidationErrors();
         setFocusForViews();
-        fetchCategoryList = new ArrayList<>(ConnectApplication.getAppContext().getFetchCategoriesList());
-        loadCategoriesList(fetchCategoryList);
+        /*fetchCategoryList = new ArrayList<>(ConnectApplication.getAppContext().getFetchCategoriesList());
+        loadCategoriesList(fetchCategoryList);*/
     }
 
     public void onDateClick() {
@@ -90,7 +92,6 @@ public class AddServiceCenterActivity extends BaseActivity implements
     private void showDatePicker() {
         AppUtils.hideSoftKeyboard(this, binding.edittextCreatedDate);
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-
         String createdDate = addServiceCenter.getCreatedDate();
         if (!TextUtils.isEmpty(createdDate)) {
             cal.setTimeInMillis(DateUtils.convertStringFormatToMillis(

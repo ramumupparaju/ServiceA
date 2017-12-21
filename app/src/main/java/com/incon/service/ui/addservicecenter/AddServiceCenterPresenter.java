@@ -59,7 +59,7 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
     }
 
     @Override
-    public void getCategories(int merchantId) {
+    public void getCategories(int userId) {
 
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
@@ -80,7 +80,7 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
 
             }
         };
-        AppApiService.getInstance().getCategories(merchantId).subscribe(observer);
+        AppApiService.getInstance().getCategories(userId).subscribe(observer);
         addDisposable(observer);
     }
 }

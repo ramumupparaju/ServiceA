@@ -18,6 +18,6 @@ public interface AddServiceCenterContract {
 
     interface Presenter {
         void addingServiceCenter(int userId, AddServiceCenter addServiceCenter);
-        void getCategories(int merchantId);
+        void getCategories(int userId);
         }
 }

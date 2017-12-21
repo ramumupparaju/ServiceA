@@ -11,7 +11,7 @@ import java.util.HashMap;
  * Created on 08 Jun 2017 6:32 PM.
  *
  */
-public class RegistrationUserFragmentContract {
+public class RegistrationUserContract {
 
     public interface View extends BaseView {
         void navigateToRegistrationActivityNext();

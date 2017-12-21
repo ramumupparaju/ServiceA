@@ -38,7 +38,7 @@ import retrofit2.http.Path;
 public interface AppServiceObservable {
     //default data api
     @GET("defaults")
-    Observable<List<FetchCategories>> defaultsApi();
+    Observable<DefaultsResponse> defaultsApi();
 
     //login api
     @POST("service/login")
@@ -168,8 +168,8 @@ public interface AppServiceObservable {
                                                                     String modelNumber);
 
     //FetchCategories api
-    @GET("merchant/getcategories/{merchantId}")
-    Observable<List<FetchCategories>> getCategories(@Path("merchantId") int merchantId);
+    @GET("service/getcategories/{userId}")
+    Observable<List<FetchCategories>> getCategories(@Path("userId") int userId);
 
 
     //warranty registration validateotp api

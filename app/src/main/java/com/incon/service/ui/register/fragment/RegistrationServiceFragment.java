@@ -1,5 +1,6 @@
 package com.incon.service.ui.register.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -21,32 +22,39 @@ import android.widget.TextView;
 import com.incon.service.AppConstants;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.defaults.DefaultsResponse;
 import com.incon.service.apimodel.components.fetchcategorie.Brand;
 import com.incon.service.apimodel.components.fetchcategorie.Division;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
-import com.incon.service.callbacks.AlertDialogCallback;
-import com.incon.service.callbacks.TextAlertDialogCallback;
-import com.incon.service.custom.view.AppCheckBoxListDialog;
 import com.incon.service.custom.view.AppOtpDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
+import com.incon.service.custom.view.PickImageDialog;
+import com.incon.service.custom.view.PickImageDialogInterface;
 import com.incon.service.databinding.FragmentRegistrationServiceBinding;
 import com.incon.service.dto.registration.AddressInfo;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.dto.registration.ServiceCenter;
+import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.RegistrationMapActivity;
-import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.notifications.PushPresenter;
 import com.incon.service.ui.register.RegistrationActivity;
 import com.incon.service.ui.termsandcondition.TermsAndConditionActivity;
-import com.incon.service.utils.OfflineDataManager;
-import com.incon.service.utils.SharedPrefsUtils;
+import com.incon.service.utils.Logger;
+import com.incon.service.utils.PermissionUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import net.hockeyapp.android.LoginActivity;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
+import static com.incon.service.AppConstants.LoginPrefs.STORE_LOGO;
 
 
 /**
@@ -56,11 +64,11 @@ public class RegistrationServiceFragment extends BaseFragment implements
         RegistrationServiceContract.View {
     private static final String TAG = RegistrationServiceFragment.class.getSimpleName();
     private FragmentRegistrationServiceBinding binding;
-    private RegistrationServicePresenter registrationServiceFragmentPresenter;
+    private RegistrationServicePresenter registrationServicePresenter;
     // registration
     private Registration register; // initialized from registration acticity
     private ServiceCenter serviceCenter;
-
+    private PickImageDialog pickImageDialog;
     private Animation shakeAnim;
     private HashMap<Integer, String> errorMap;
     private String selectedFilePath = "";
@@ -73,9 +81,9 @@ public class RegistrationServiceFragment extends BaseFragment implements
 
     @Override
     protected void initializePresenter() {
-        registrationServiceFragmentPresenter = new RegistrationServicePresenter();
-        registrationServiceFragmentPresenter.setView(this);
-        setBasePresenter(registrationServiceFragmentPresenter);
+        registrationServicePresenter = new RegistrationServicePresenter();
+        registrationServicePresenter.setView(this);
+        setBasePresenter(registrationServicePresenter);
     }
 
     @Override
@@ -112,6 +120,62 @@ public class RegistrationServiceFragment extends BaseFragment implements
         fetchCategoryList = categoriesList;
         loadCategorySpinnerData();
     }
+    //  camera to open
+    public void openCameraToUpload() {
+        PermissionUtils.getInstance().grantPermission(getActivity(),
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA},
+                new PermissionUtils.Callback() {
+                    @Override
+                    public void onFinish(HashMap<String, Integer> permissionsStatusMap) {
+                        int storageStatus = permissionsStatusMap.get(
+                                Manifest.permission.CAMERA);
+                        switch (storageStatus) {
+                            case PermissionUtils.PERMISSION_GRANTED:
+                                showImageOptionsDialog();
+                                Logger.v(TAG, "location :" + "granted");
+                                break;
+                            case PermissionUtils.PERMISSION_DENIED:
+                                Logger.v(TAG, "location :" + "denied");
+                                break;
+                            case PermissionUtils.PERMISSION_DENIED_FOREVER:
+                                Logger.v(TAG, "location :" + "denied forever");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+    }
+
+    private void showImageOptionsDialog() {
+        pickImageDialog = new PickImageDialog(getActivity());
+        pickImageDialog.mImageHandlingDelegate = pickImageDialogInterface;
+        pickImageDialog.initDialogLayout();
+    }
+    private PickImageDialogInterface pickImageDialogInterface = new PickImageDialogInterface() {
+        @Override
+        public void handleIntent(Intent intent, int requestCode) {
+            if (requestCode == RequestCodes.SEND_IMAGE_PATH) { // loading image in full screen
+                if (TextUtils.isEmpty(selectedFilePath)) {
+                    showErrorMessage(getString(R.string.error_image_path_req));
+                } else {
+                    intent.putExtra(IntentConstants.IMAGE_PATH, selectedFilePath);
+                    startActivity(intent);
+                }
+                return;
+            }
+            startActivityForResult(intent, requestCode);
+        }
+
+        @Override
+        public void displayPickedImage(String uri, int requestCode) {
+            selectedFilePath = uri;
+            ((BaseActivity) getActivity()).loadImageUsingGlide(
+                    selectedFilePath, binding.storeLogoIv);
+        }
+    };
+
 
     // validations
     private void loadValidationErrors() {
@@ -230,7 +294,10 @@ public class RegistrationServiceFragment extends BaseFragment implements
      */
     public void onClickNext() {
         if (validateFields()) {
-
+            if (TextUtils.isEmpty(selectedFilePath)) {
+                showErrorMessage(getString(R.string.error_image_path_upload));
+                return;
+            }
             navigateToRegistrationActivityNext();
         }
     }
@@ -268,6 +335,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
                     serviceCenter.setAddressInfo((AddressInfo) data.getParcelableExtra(IntentConstants.ADDRESS_INFO));
                     break;
                 default:
+                    pickImageDialog.onActivityResult(requestCode, resultCode, data);
                     break;
             }
         }
@@ -275,7 +343,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
     }
 
     private void callRegisterApi() {
-        registrationServiceFragmentPresenter.register(register);
+        registrationServicePresenter.register(register);
     }
 
     public void navigateToHomeScreen() {
@@ -286,14 +354,27 @@ public class RegistrationServiceFragment extends BaseFragment implements
             dialog.dismiss();
         }
         Intent intent = new Intent(getActivity(),
-                HomeActivity.class);
+                LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent
                 .FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
+    @Override
+    public void uploadStoreLogo(int storeId) {
+        File fileToUpload = new File(selectedFilePath == null ? "" : selectedFilePath);
+        if (fileToUpload.exists()) {
+            RequestBody requestFile =
+                    RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), fileToUpload);
+            // MultipartBody.Part is used to send also the actual file name
+            MultipartBody.Part imagenPerfil = MultipartBody.Part.createFormData(STORE_LOGO,
+                    fileToUpload.getName(), requestFile);
+            registrationServicePresenter.uploadStoreLogo(storeId, imagenPerfil);
+        } else {
+            showErrorMessage(getString(R.string.error_image_path_upload));
+        }
 
-
+    }
 
     private void loadCategorySpinnerData() {
 
@@ -399,6 +480,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-        registrationServiceFragmentPresenter.disposeAll();
+        registrationServicePresenter.disposeAll();
     }
 }

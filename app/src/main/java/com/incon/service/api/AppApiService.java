@@ -69,7 +69,7 @@ public class AppApiService implements AppConstants {
     }
 
     //default data api
-    public Observable<List<FetchCategories>> defaultsApi() {
+    public Observable<DefaultsResponse> defaultsApi() {
         return addNetworkCheck(serviceInstance.defaultsApi());
     }
 
@@ -201,8 +201,8 @@ public class AppApiService implements AppConstants {
     }
 
     //FetchCategories api
-    public Observable<List<FetchCategories>> getCategories(int merchantId) {
-        return addNetworkCheck(serviceInstance.getCategories(merchantId));
+    public Observable<List<FetchCategories>> getCategories(int userId) {
+        return addNetworkCheck(serviceInstance.getCategories(userId));
     }
 
 

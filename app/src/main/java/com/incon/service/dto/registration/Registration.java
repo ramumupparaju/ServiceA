@@ -33,8 +33,7 @@ public class Registration extends BaseObservable {
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("gender")
-    @Expose
+
     private String gender;
     @SerializedName("location")
     @Expose
@@ -56,8 +55,20 @@ public class Registration extends BaseObservable {
     @Expose
     private ServiceCenter serviceCenter;
 
+    private transient String genderType;
+
     private transient String confirmPassword;
     private transient String dateOfBirthToShow;
+    @Bindable
+    public String getGenderType() {
+        return genderType;
+    }
+
+    public void setGenderType(String genderType) {
+        this.genderType = genderType;
+        notifyChange();
+    }
+
 
     public ServiceCenter getServiceCenter() {
         return serviceCenter;

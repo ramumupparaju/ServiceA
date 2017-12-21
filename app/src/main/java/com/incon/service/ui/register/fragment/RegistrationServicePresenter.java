@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
+import okhttp3.MultipartBody;
 
 
 public class RegistrationServicePresenter extends
@@ -29,13 +30,11 @@ public class RegistrationServicePresenter extends
 
     private static final String TAG = RegistrationServicePresenter.class.getName();
     private Context appContext;
-    private LoginDataManagerImpl loginDataManagerImpl;
 
     @Override
     public void initialize(Bundle extras) {
         super.initialize(extras);
         appContext = ConnectApplication.getAppContext();
-        loginDataManagerImpl = new LoginDataManagerImpl();
     }
 
     /**
@@ -50,6 +49,7 @@ public class RegistrationServicePresenter extends
             @Override
             public void onNext(LoginResponse loginResponse) {
                 // TODO have to save logon details and navigate to home
+                getView().uploadStoreLogo(loginResponse.getStore().getId());
             }
 
             @Override
@@ -67,13 +67,30 @@ public class RegistrationServicePresenter extends
         addDisposable(observer);
     }
 
+    @Override
+    public void uploadStoreLogo(int storeId, MultipartBody.Part storeLogo) {
+        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
+            @Override
+            public void onNext(Object loginResponse) {
+                // save login data to shared preferences
+                getView().hideProgress();
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+            }
 
+            @Override
+            public void onComplete() {
+                getView().hideProgress();
+            }
+        };
+        AppApiService.getInstance().uploadStoreLogo(storeId, storeLogo).subscribe(observer);
+        addDisposable(observer);
 
-
-    public void saveMerchantInfo(LoginResponse loginResponse) {
-        // save login data to shared preferences
-        loginDataManagerImpl.saveLoginDataToPrefs(loginResponse);
     }
 
 }

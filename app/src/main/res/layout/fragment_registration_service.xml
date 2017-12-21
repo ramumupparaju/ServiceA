@@ -41,7 +41,9 @@
                 android:layout_height="76dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="32dp"
-                app:srcCompat="@drawable/ic_showroom"/>
+                app:srcCompat="@drawable/ic_showroom"
+                android:onClick="@{() -> serviceFragment.openCameraToUpload()}"
+                />
 
             <RelativeLayout
                 style="@style/BothMatch"
