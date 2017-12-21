@@ -83,7 +83,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 new RegistrationServicePresenter();
         registrationServiceFragmentPresenter.initialize(null);
         registrationServiceFragmentPresenter.setView(registrationView);
-        registrationServiceFragmentPresenter.registerRequestOtp(phoneNumber);
     }
 
     RegistrationServiceContract.View registrationView =
@@ -99,17 +98,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     //DO nothing
                 }
 
-
-
-                @Override
-                public void validateOTP() {
-                    //DO nothing
-                }
-
-                @Override
-                public void loadCategoriesList(List<FetchCategories> categoriesList) {
-
-                }
 
                 @Override
                 public void showProgress(String message) {

@@ -292,6 +292,7 @@
     <string name="progress_categories">Fetching categories...</string>
     <string name="progress_adding_designation">Adding designation...</string>
     <string name="progress_adding_user">Adding user...</string>
+    <string name="progress_adding_service_center">Adding service center...</string>
     <string name="progress_designations">Loading designations...</string>
     <string name="progress_add_new_model">Adding new model...</string>
     <string name="progress_product_details">Fetching product details...</string>

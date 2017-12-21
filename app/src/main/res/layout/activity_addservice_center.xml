@@ -221,24 +221,23 @@
                     android:text="@={addServiceCenter.gstn}"/>
             </com.incon.service.custom.view.CustomTextInputLayout>
 
+            <Button
+                android:id="@+id/button_submit"
+                style="@style/w150_wrap"
+                fontPath="fonts/OpenSans-Bold.ttf"
+                android:layout_below="@+id/input_layout_register_gstn"
+                android:layout_marginBottom="@dimen/margin_30"
+                android:layout_marginLeft="@dimen/margin_110"
+                android:layout_marginTop="@dimen/margin_5"
+                android:background="@drawable/btn_login_register_roundedcorner"
+                android:onClick="@{() -> addServiceCenterActivity.onSubmitClick()}"
+                android:text="@string/add_new_submit"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_13"/>
+
         </RelativeLayout>
 
     </ScrollView>
-
-        <Button
-            android:id="@+id/button_submit"
-            style="@style/w150_wrap"
-            fontPath="fonts/OpenSans-Bold.ttf"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:layout_marginLeft="@dimen/margin_110"
-            android:layout_marginTop="@dimen/margin_10"
-            android:background="@drawable/btn_login_register_roundedcorner"
-            android:onClick="@{() -> addServiceCenterActivity.onSubmitClick()}"
-            android:text="@string/add_new_submit"
-            android:textAllCaps="true"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_13"/>
-
 </RelativeLayout>
 </layout>

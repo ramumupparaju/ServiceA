@@ -20,11 +20,11 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.incon.service.AppUtils;
+import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchcategorie.Brand;
 import com.incon.service.apimodel.components.fetchcategorie.Division;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
-import com.incon.service.custom.view.CustomAutoCompleteView;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddserviceCenterBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
@@ -32,7 +32,9 @@ import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -47,9 +49,10 @@ public class AddServiceCenterActivity extends BaseActivity implements
     private View rootView;
     private AddServiceCenterPresenter addServiceCenterPresenter;
     private AddServiceCenter addServiceCenter;
-    private List<FetchCategories> fetchCategorieList;
+    private List<FetchCategories> fetchCategoryList;
     private int categorySelectedPos = -1;
     private int divisionSelectedPos = -1;
+    private int brandSelectedPos = -1;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
     private ActivityAddserviceCenterBinding binding;
@@ -63,7 +66,6 @@ public class AddServiceCenterActivity extends BaseActivity implements
     protected int getLayoutId() {
         return R.layout.activity_addservice_center;
     }
-
     @Override
     protected void onCreateView(Bundle saveInstanceState) {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
@@ -78,7 +80,10 @@ public class AddServiceCenterActivity extends BaseActivity implements
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadValidationErrors();
         setFocusForViews();
+        fetchCategoryList = new ArrayList<>(ConnectApplication.getAppContext().getFetchCategoriesList());
+        loadCategoriesList(fetchCategoryList);
     }
+
     public void onDateClick() {
         showDatePicker();
     }
@@ -153,7 +158,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
                     public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_NEXT) {
                             switch (textView.getId()) {
-                                case R.id.edittext_register_phone:
+                                case R.id.edittext_number:
                                     break;
 
                                 default:
@@ -221,10 +226,11 @@ public class AddServiceCenterActivity extends BaseActivity implements
             ((CustomTextInputLayout) view.getParent().getParent())
                     .setError(validationId == VALIDATION_SUCCESS ? null
                             : errorMap.get(validationId));
-        } else if (view instanceof CustomAutoCompleteView) {
-            ((CustomTextInputLayout) view.getParent().getParent())
-                    .setError(validationId == VALIDATION_SUCCESS ? null
-                            : errorMap.get(validationId));
+        }
+
+        else {
+            ((MaterialBetterSpinner) view).setError(validationId == VALIDATION_SUCCESS ? null
+                    : errorMap.get(validationId));
         }
 
         if (validationId != VALIDATION_SUCCESS) {
@@ -278,13 +284,17 @@ public class AddServiceCenterActivity extends BaseActivity implements
         }
     }
 
-
+    @Override
+    public void loadCategoriesList(List<FetchCategories> categoriesList) {
+        fetchCategoryList = categoriesList;
+        loadCategorySpinnerData();
+    }
 
     private void loadCategorySpinnerData() {
 
-        String[] stringCategoryList = new String[fetchCategorieList.size()];
-        for (int i = 0; i < fetchCategorieList.size(); i++) {
-            stringCategoryList[i] = fetchCategorieList.get(i).getName();
+        String[] stringCategoryList = new String[fetchCategoryList.size()];
+        for (int i = 0; i < fetchCategoryList.size(); i++) {
+            stringCategoryList[i] = fetchCategoryList.get(i).getName();
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 R.layout.view_spinner, stringCategoryList);
@@ -294,7 +304,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (categorySelectedPos != position) {
-                    FetchCategories fetchCategories = fetchCategorieList.get(position);
+                    FetchCategories fetchCategories = fetchCategoryList.get(position);
                     addServiceCenter.setCategoryId(fetchCategories.getId());
                     addServiceCenter.setCategoryName(fetchCategories.getName());
                     loadDivisionSpinnerData(fetchCategories.getDivisions());
@@ -333,7 +343,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (divisionSelectedPos != position) {
                     divisionSelectedPos = position;
-                    FetchCategories fetchCategories = fetchCategorieList.get(categorySelectedPos);
+                    FetchCategories fetchCategories = fetchCategoryList.get(categorySelectedPos);
                     Division divisions1 = fetchCategories.getDivisions().get(divisionSelectedPos);
                     addServiceCenter.setDivisionId(divisions1.getId());
                     addServiceCenter.setDivisionName(divisions1.getName());
@@ -366,8 +376,10 @@ public class AddServiceCenterActivity extends BaseActivity implements
         binding.spinnerBrand.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                addServiceCenter.setBrandId(brandList.get(position).getId());
-                addServiceCenter.setBrandName(brandList.get(position).getName());
+                if (brandSelectedPos != position) {
+                    addServiceCenter.setBrandId(brandList.get(position).getId());
+                    addServiceCenter.setBrandName(brandList.get(position).getName());
+                }
                 //For avoiding double tapping issue
                 if (binding.spinnerBrand.getOnItemClickListener() != null) {
                     binding.spinnerBrand.onItemClick(parent, view, position, id);

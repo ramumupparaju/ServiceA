@@ -75,8 +75,6 @@ public interface AppServiceObservable {
     Observable<Object> uploadStoreLogo(@Path("storeId") String storeId,
                                        @Part MultipartBody.Part storeLogo);
 
-
-
     //registration request otp
     @GET("user/requestotp/{phoneNumber}/register")
     Observable<Object> registerRequestOtp(@Path("phoneNumber") String phoneNumber);

@@ -49,7 +49,7 @@ public class RegistrationServicePresenter extends
         DisposableObserver<LoginResponse> observer = new DisposableObserver<LoginResponse>() {
             @Override
             public void onNext(LoginResponse loginResponse) {
-                getView().validateOTP();
+                // TODO have to save logon details and navigate to home
             }
 
             @Override
@@ -67,131 +67,8 @@ public class RegistrationServicePresenter extends
         addDisposable(observer);
     }
 
-    /**
-     * Uploading store logo to server
-     */
-    // upload store logo implemenatation
 
 
-    //validate otp implemenatation
-    @Override
-    public void validateOTP(HashMap<String, String> verify) {
-        getView().showProgress(appContext.getString(R.string.validating_code));
-        ValidateOtpPresenter otpPresenter = new ValidateOtpPresenter();
-        otpPresenter.initialize(null);
-        otpPresenter.setView(otpView);
-        otpPresenter.validateOTP(verify);
-    }
-
-    ValidateOtpContract.View otpView = new ValidateOtpContract.View() {
-        @Override
-        public void validateOTP(LoginResponse loginResponse) {
-// save login data to shared preferences
-            loginDataManagerImpl.saveLoginDataToPrefs(loginResponse);
-            getView().hideProgress();
-            getView().navigateToHomeScreen();
-        }
-
-        @Override
-        public void validateWarrantyOTP(ValidateWarrantyOtpResponse warrantyOtpResponse) {
-            //DO nothing
-        }
-
-        @Override
-        public void showProgress(String message) {
-            getView().showProgress(message);
-        }
-
-        @Override
-        public void hideProgress() {
-            getView().hideProgress();
-        }
-
-        @Override
-        public void showErrorMessage(String errorMessage) {
-            getView().showErrorMessage(errorMessage);
-        }
-
-        @Override
-        public void handleException(Pair<Integer, String> error) {
-            getView().handleException(error);
-        }
-    };
-
-    // register request otp implemenatation
-    @Override
-    public void registerRequestOtp(String phoneNumber) {
-        getView().showProgress(appContext.getString(R.string.progress_resend));
-        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
-            @Override
-            public void onNext(Object loginResponse) {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getView().hideProgress();
-                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
-                getView().handleException(errorDetails);
-            }
-
-            @Override
-            public void onComplete() {
-                getView().hideProgress();
-            }
-        };
-        AppApiService.getInstance().registerRequestOtp(phoneNumber).subscribe(observer);
-        addDisposable(observer);
-    }
-
-    //register request password otp implemenatation
-    @Override
-    public void registerRequestPasswordOtp(String phoneNumber) {
-        getView().showProgress(appContext.getString(R.string.progress_resend));
-        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
-            @Override
-            public void onNext(Object loginResponse) {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getView().hideProgress();
-                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
-                getView().handleException(errorDetails);
-            }
-
-            @Override
-            public void onComplete() {
-                getView().hideProgress();
-            }
-        };
-        AppApiService.getInstance().registerRequestPasswordOtp(phoneNumber).subscribe(observer);
-        addDisposable(observer);
-    }
-
-    @Override
-    public void getCategories(int merchantId) {
-        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
-            @Override
-            public void onNext(Object categoriesList) {
-                getView().loadCategoriesList((List<FetchCategories>) categoriesList);
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getView().hideProgress();
-                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
-                getView().handleException(errorDetails);
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-        AppApiService.getInstance().getCategories(merchantId).subscribe(observer);
-        addDisposable(observer);
-    }
 
 
     public void saveMerchantInfo(LoginResponse loginResponse) {

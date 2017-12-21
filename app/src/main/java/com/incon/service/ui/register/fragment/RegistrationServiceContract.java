@@ -21,17 +21,12 @@ public class RegistrationServiceContract {
         void navigateToRegistrationActivityNext();
         void navigateToHomeScreen();
        // void uploadStoreLogo(int storeId);
-        void validateOTP();
-        void loadCategoriesList(List<FetchCategories> categoriesList);
     }
 
     interface Presenter {
         void register(Registration registrationBody);
+        //TODO need to implement  service center logo Api
        // void uploadStoreLogo(int storeId, MultipartBody.Part storeLogo);
-        void validateOTP(HashMap<String, String> verify);
-        void registerRequestOtp(String phoneNumber);
-        void registerRequestPasswordOtp(String phoneNumber);
-        void getCategories(int merchantId);
     }
 
 }

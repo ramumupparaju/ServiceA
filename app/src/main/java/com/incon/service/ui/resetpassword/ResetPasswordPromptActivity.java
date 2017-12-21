@@ -6,26 +6,23 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.incon.service.R;
-import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppOtpDialog;
 import com.incon.service.databinding.ActivityResetPasswordPromptBinding;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.changepassword.ChangePasswordActivity;
-import com.incon.service.ui.register.fragment.RegistrationServiceContract;
-import com.incon.service.ui.register.fragment.RegistrationServicePresenter;
+import com.incon.service.ui.validateotp.ValidateOtpPresenter;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class ResetPasswordPromptActivity extends BaseActivity implements
-        RegistrationServiceContract.View {
+        ResetPasswordPromptContract.View {
 
     private static final String TAG = ResetPasswordPromptActivity.class.getName();
     private ActivityResetPasswordPromptBinding binding;
-    private RegistrationServicePresenter registrationServiceFragmentPresenter;
+    private ResetPasswordPromptPresenter resetPasswordPromptPresenter;
     private AppOtpDialog dialog;
     private String enteredOtp;
     private String phoneNumber;
@@ -38,9 +35,9 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
 
     @Override
     protected void initializePresenter() {
-        registrationServiceFragmentPresenter = new RegistrationServicePresenter();
-        registrationServiceFragmentPresenter.setView(this);
-        setBasePresenter(registrationServiceFragmentPresenter);
+        resetPasswordPromptPresenter = new ResetPasswordPromptPresenter();
+        resetPasswordPromptPresenter.setView(this);
+        setBasePresenter(resetPasswordPromptPresenter);
     }
 
     @Override
@@ -79,7 +76,7 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
                                 verifyOTP.put(ApiRequestKeyConstants.BODY_MOBILE_NUMBER,
                                         phoneNumber);
                                 verifyOTP.put(ApiRequestKeyConstants.BODY_OTP, enteredOtp);
-                                registrationServiceFragmentPresenter.validateOTP(verifyOTP);
+                                resetPasswordPromptPresenter.doRequestOtpApi(verifyOTP);
 
                                 break;
                             case AlertDialogCallback.CANCEL:
@@ -87,8 +84,8 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
                                 ResetPasswordPromptActivity.this.finish();
                                 break;
                             case TextAlertDialogCallback.RESEND_OTP:
-                                registrationServiceFragmentPresenter.registerRequestPasswordOtp(
-                                        phoneNumber);
+//                                TODO have to implement resend otp
+                                resetPasswordPromptPresenter.doResendOtpApi(phoneNumber);
                                 break;
                             default:
                                 break;
@@ -99,52 +96,21 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
         dialog.showDialog();
     }
 
-
-    @Override
-    public void showProgress(String message) {
-    }
-
-    @Override
-    public void hideProgress() {
-    }
-
-    @Override
-    public void showErrorMessage(String errorMessage) {
-        super.showErrorMessage(errorMessage);
-    }
-
     public void onOkClick() {
         //DO nothing
     }
 
     @Override
-    public void navigateToRegistrationActivityNext() {
-        //DO nothing
-    }
-
-    @Override
-    public void navigateToHomeScreen() {
+    public void validateOtp() {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-        Intent intent = new Intent(this,
-                ChangePasswordActivity.class);
+        Intent intent = new Intent(this, ChangePasswordActivity.class);
         intent.putExtra(IntentConstants.FROM_FORGOT_PASSWORD_SCREEN, true);
         startActivity(intent);
         finish();
     }
 
-
-
-    @Override
-    public void validateOTP() {
-        //DO nothing
-    }
-
-    @Override
-    public void loadCategoriesList(List<FetchCategories> categoriesList) {
-
-    }
 
     @Override
     protected void onDestroy() {
@@ -152,6 +118,7 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-        registrationServiceFragmentPresenter.disposeAll();
+        resetPasswordPromptPresenter.disposeAll();
     }
+
 }

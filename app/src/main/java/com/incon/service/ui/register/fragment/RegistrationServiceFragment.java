@@ -73,7 +73,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
 
     @Override
     protected void initializePresenter() {
-
         registrationServiceFragmentPresenter = new RegistrationServicePresenter();
         registrationServiceFragmentPresenter.setView(this);
         setBasePresenter(registrationServiceFragmentPresenter);
@@ -107,6 +106,11 @@ public class RegistrationServiceFragment extends BaseFragment implements
 
         fetchCategoryList = new ArrayList<>(ConnectApplication.getAppContext().getFetchCategoriesList());
         loadCategoriesList(fetchCategoryList);
+    }
+
+    public void loadCategoriesList(List<FetchCategories> categoriesList) {
+        fetchCategoryList = categoriesList;
+        loadCategorySpinnerData();
     }
 
     // validations
@@ -164,7 +168,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
                 };
 
         binding.edittextRegisterPhone.setOnEditorActionListener(onEditorActionListener);
-
         binding.edittextRegisterServiceName.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextRegisterPhone.setOnFocusChangeListener(onFocusChangeListener);
         binding.edittextRegisterEmailid.setOnFocusChangeListener(onFocusChangeListener);
@@ -272,7 +275,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
     }
 
     private void callRegisterApi() {
-
         registrationServiceFragmentPresenter.register(register);
     }
 
@@ -291,22 +293,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
     }
 
 
-    //validate otp
-    @Override
-    public void validateOTP() {
-        //make it as registration done but not verified otp
-        SharedPrefsUtils.loginProvider().setBooleanPreference(LoginPrefs.IS_REGISTERED, true);
-        SharedPrefsUtils.loginProvider().setStringPreference(LoginPrefs.USER_PHONE_NUMBER,
-                serviceCenter.getContactNo());
-
-        showOtpDialog();
-    }
-
-    @Override
-    public void loadCategoriesList(List<FetchCategories> categoriesList) {
-        fetchCategoryList = categoriesList;
-        loadCategorySpinnerData();
-    }
 
 
     private void loadCategorySpinnerData() {
@@ -405,45 +391,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
                 }
             }
         });
-    }
-
-    // otp dialog
-    private void showOtpDialog() {
-        final String phoneNumber = serviceCenter.getContactNo();
-        dialog = new AppOtpDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String otpString) {
-                        enteredOtp = otpString;
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                if (TextUtils.isEmpty(enteredOtp)) {
-                                    showErrorMessage(getString(R.string.error_otp_req));
-                                    return;
-                                }
-                                HashMap<String, String> verifyOTP = new HashMap<>();
-                                verifyOTP.put(ApiRequestKeyConstants.BODY_MOBILE_NUMBER,
-                                        phoneNumber);
-                                verifyOTP.put(ApiRequestKeyConstants.BODY_OTP, enteredOtp);
-                                registrationServiceFragmentPresenter.validateOTP(verifyOTP);
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                dialog.dismiss();
-                                break;
-                            case TextAlertDialogCallback.RESEND_OTP:
-                                registrationServiceFragmentPresenter.registerRequestOtp(phoneNumber);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.dialog_verify_title, phoneNumber))
-                .build();
-        dialog.showDialog();
     }
 
     @Override
