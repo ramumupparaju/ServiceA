@@ -75,7 +75,7 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
                                 verifyOTP.put(ApiRequestKeyConstants.BODY_MOBILE_NUMBER,
                                         phoneNumber);
                                 verifyOTP.put(ApiRequestKeyConstants.BODY_OTP, enteredOtp);
-                                resetPasswordPromptPresenter.doRequestOtpApi(verifyOTP);
+                                resetPasswordPromptPresenter.validateOTP(verifyOTP);
 
                                 break;
                             case AlertDialogCallback.CANCEL:
@@ -101,13 +101,26 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
 
     @Override
     public void validateOtp() {
-        if (dialog != null && dialog.isShowing()) {
+       /* if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
         Intent intent = new Intent(this, ChangePasswordActivity.class);
         intent.putExtra(IntentConstants.FROM_FORGOT_PASSWORD_SCREEN, true);
         startActivity(intent);
+        finish();*/
+    }
+
+    @Override
+    public void navigateToHomeScreen() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+        Intent intent = new Intent(this,
+                ChangePasswordActivity.class);
+        intent.putExtra(IntentConstants.FROM_FORGOT_PASSWORD_SCREEN, true);
+        startActivity(intent);
         finish();
+
     }
 
 

@@ -12,13 +12,14 @@ public class ResetPasswordPromptContract {
 
     public interface View extends BaseView {
         void validateOtp();
+        void navigateToHomeScreen();
 
     }
 
     interface Presenter {
 
-        void doRequestOtpApi(HashMap<String, String> verifyOTP);
-
+      //  void doRequestOtpApi(HashMap<String, String> verifyOTP);
+        void validateOTP(HashMap<String, String> verify);
         void doResendOtpApi(String phoneNumber);
     }
 

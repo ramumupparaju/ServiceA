@@ -86,12 +86,11 @@ public interface AppServiceObservable {
     @GET("user/requestotp/{phoneNumber}/register")
     Observable<Object> registerRequestOtp(@Path("phoneNumber") String phoneNumber);
 
-    //registration request password otp
+    // request password otp
     @GET("user/requestotp/{phoneNumber}/password")
     Observable<Object> registerRequestPasswordOtp(@Path("phoneNumber") String phoneNumber);
 
     // user profile update api
-    // service/updateuser/22
     @POST("user/updateuser/{userId}")
     Observable<LoginResponse> upDateUserProfile(@Path(
             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
@@ -99,7 +98,7 @@ public interface AppServiceObservable {
     @POST("account/sendOtp")
     Observable<SendOtpResponse> sendOtp(@Body HashMap<String, String> email);
 
-    @POST("service/validateotp")
+    @POST("user/validateotp")
     Observable<LoginResponse> validateOtp(@Body HashMap<String, String> verify);
 
     //forgot password api
