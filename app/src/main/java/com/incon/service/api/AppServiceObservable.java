@@ -12,6 +12,7 @@ import com.incon.service.apimodel.components.productinforesponse.ProductInfoResp
 import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
+import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.dto.addfavorites.AddUserAddress;
@@ -85,7 +86,7 @@ public interface AppServiceObservable {
 
     // user profile update api
    // service/updateuser/22
-    @POST("service/updateuser/{userId}")
+    @POST("user/updateuser/{userId}")
     Observable<LoginResponse> upDateUserProfile(@Path(
             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
 
@@ -107,9 +108,10 @@ public interface AppServiceObservable {
     @GET("product/checkqropnestatus/{qrCode}")
     Observable<Object> checkQrCodestatus(@Path("qrCode") String qrCode);
 
-    // purchased history  api
-    @GET("user/history/purchased/{userId}")
-    Observable<List<ProductInfoResponse>> purchasedApi(@Path("userId") int userId);
+    //service/getservicecenters/153
+    // get service centers api
+    @GET("service/getservicecenters/{userId}")
+    Observable<List<ServiceCenterResponse>> getServiceCentersApi(@Path("userId") int userId);
 
     // add favourites  api
     @POST("user/addtofavourites")

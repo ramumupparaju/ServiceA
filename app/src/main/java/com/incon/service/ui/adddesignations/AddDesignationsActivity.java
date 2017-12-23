@@ -86,12 +86,13 @@ public class AddDesignationsActivity extends BaseActivity implements
         //TODO have to remove hardcoding
         serviceCenterResponseList = new ArrayList<>();
         ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
-        serviceCenterResponse.setId(Integer.valueOf("1"));
-        serviceCenterResponse.setName("moonzdream");
-        serviceCenterResponseList.add(serviceCenterResponse);
-        serviceCenterResponse = new ServiceCenterResponse();
-        serviceCenterResponse.setId(Integer.valueOf("2"));
-        serviceCenterResponse.setName("incon");
+        serviceCenterResponse.setId(serviceCenterResponse.getId());
+        serviceCenterResponse.setName(serviceCenterResponse.getName());
+        //serviceCenterResponse.setName("moonzdream");
+       // serviceCenterResponseList.add(serviceCenterResponse);
+       // serviceCenterResponse = new ServiceCenterResponse();
+      //  serviceCenterResponse.setId(Integer.valueOf("2"));
+       // serviceCenterResponse.setName("incon");
         serviceCenterResponseList.add(serviceCenterResponse);
 
         List<String> serviceCenterNamesList = new ArrayList<>();
@@ -115,6 +116,12 @@ public class AddDesignationsActivity extends BaseActivity implements
                 }
             }
         });
+
+    }
+
+
+    @Override
+    public void loadServiceCentersList(List<ServiceCenterResponse> serviceCenterResponseList) {
 
     }
 
@@ -215,4 +222,6 @@ public class AddDesignationsActivity extends BaseActivity implements
         }
 
     }
+
+
 }

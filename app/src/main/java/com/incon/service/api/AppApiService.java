@@ -13,6 +13,7 @@ import com.incon.service.apimodel.components.productinforesponse.ProductInfoResp
 import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
+import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
 import com.incon.service.dto.adddesignation.AddDesignation;
@@ -162,9 +163,9 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.checkQrCodestatus(qrCode));
     }
 
-    // purchased history  api
-    public Observable<List<ProductInfoResponse>> purchasedApi(int userId) {
-        return addNetworkCheck(serviceInstance.purchasedApi(userId));
+    // get service centers api  api
+    public Observable<List<ServiceCenterResponse>> getServiceCentersApi(int userId) {
+        return addNetworkCheck(serviceInstance.getServiceCentersApi(userId));
     }
 
 
