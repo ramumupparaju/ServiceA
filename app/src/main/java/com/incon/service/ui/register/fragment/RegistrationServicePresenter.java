@@ -49,7 +49,7 @@ public class RegistrationServicePresenter extends
             @Override
             public void onNext(LoginResponse loginResponse) {
                 // TODO have to save logon details and navigate to home
-               // getView().uploadStoreLogo(loginResponse.getStore().getId());
+              // getView().uploadServiceCenterLogo(loginResponse.getStore().getId());
                 getView().navigateToLoginScreen();
             }
 
@@ -68,8 +68,9 @@ public class RegistrationServicePresenter extends
         addDisposable(observer);
     }
 
+
     @Override
-    public void uploadStoreLogo(int storeId, MultipartBody.Part storeLogo) {
+    public void uploadServiceCenterLogo(int serviceCenterId, MultipartBody.Part serviceCenterLogo) {
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
             public void onNext(Object loginResponse) {
@@ -89,7 +90,8 @@ public class RegistrationServicePresenter extends
                 getView().hideProgress();
             }
         };
-        AppApiService.getInstance().uploadStoreLogo(storeId, storeLogo).subscribe(observer);
+        AppApiService.getInstance().uploadServiceCenterLogo(serviceCenterId, serviceCenterLogo).
+                subscribe(observer);
         addDisposable(observer);
 
     }

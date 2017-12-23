@@ -69,11 +69,11 @@ public interface AppServiceObservable {
                                                                           serviceCenterId
             ,@Path("userId") int userId);
 
-    // store id  api
+    // service center logo  api
     @Multipart
-    @POST("merchant/logoupdate/{storeId}")
-    Observable<Object> uploadStoreLogo(@Path("storeId") String storeId,
-                                       @Part MultipartBody.Part storeLogo);
+    @POST("service/logoupdate/{serviceCenterId}")
+    Observable<Object> uploadServiceCenterLogo(@Path("storeId") String serviceCenterId,
+                                       @Part MultipartBody.Part serviceCenterLogo);
 
     //registration request otp
     @GET("user/requestotp/{phoneNumber}/register")
@@ -84,6 +84,7 @@ public interface AppServiceObservable {
     Observable<Object> registerRequestPasswordOtp(@Path("phoneNumber") String phoneNumber);
 
     // user profile update api
+   // service/updateuser/22
     @POST("user/updateuser/{userId}")
     Observable<LoginResponse> upDateUserProfile(@Path(
             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
@@ -93,12 +94,13 @@ public interface AppServiceObservable {
 
     @POST("service/validateotp")
     Observable<LoginResponse> validateOtp(@Body HashMap<String, String> verify);
-
-    @POST("merchant/forgotpassword")
+    //forgot password api
+    @POST("service/forgotpassword")
     Observable<ApiBaseResponse> forgotPassword(@Body HashMap<String, String> phoneNumber);
 
+
     // change password api
-    @POST("merchant/changepassword")
+    @POST("service/changepassword")
     Observable<LoginResponse> changePassword(@Body HashMap<String, String> password);
 
     // check qr Codestatus  api

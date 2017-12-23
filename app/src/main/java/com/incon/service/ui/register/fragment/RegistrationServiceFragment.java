@@ -391,7 +391,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
     }
 
     @Override
-    public void uploadStoreLogo(int storeId) {
+    public void uploadServiceCenterLogo(int serviceCenterId) {
         File fileToUpload = new File(selectedFilePath == null ? "" : selectedFilePath);
         if (fileToUpload.exists()) {
             RequestBody requestFile =
@@ -399,7 +399,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part imagenPerfil = MultipartBody.Part.createFormData(STORE_LOGO,
                     fileToUpload.getName(), requestFile);
-            registrationServicePresenter.uploadStoreLogo(storeId, imagenPerfil);
+            registrationServicePresenter.uploadServiceCenterLogo(serviceCenterId, imagenPerfil);
         } else {
             showErrorMessage(getString(R.string.error_image_path_upload));
         }

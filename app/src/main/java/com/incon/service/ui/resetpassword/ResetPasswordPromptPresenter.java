@@ -32,7 +32,7 @@ public class ResetPasswordPromptPresenter extends
         ValidateOtpPresenter otpPresenter = new ValidateOtpPresenter();
         otpPresenter.initialize(null);
         otpPresenter.setView(otpView);
-//        otpPresenter.validateOTP(verify);
+        otpPresenter.validateOTP(verifyOTP);
     }
 
     @Override

@@ -120,16 +120,16 @@ public class AppApiService implements AppConstants {
     }
 
 
-    // store id  api
-    public Observable<Object> uploadStoreLogo(int storeId, MultipartBody.Part storeLogo) {
-        return addNetworkCheck(serviceInstance.uploadStoreLogo(String.valueOf(storeId), storeLogo));
+    // service center logo  api
+    public Observable<Object> uploadServiceCenterLogo(int serviceCenterId, MultipartBody.Part serviceCenterLogo) {
+        return addNetworkCheck(serviceInstance.uploadServiceCenterLogo(String.valueOf(serviceCenterId), serviceCenterLogo));
     }
 
 
     // user profile update api
     public Observable<LoginResponse> upDateUserProfile(
-            int merchantId, UpDateUserProfile upDateUserProfile) {
-        return addNetworkCheck(serviceInstance.upDateUserProfile(merchantId, upDateUserProfile));
+            int userId, UpDateUserProfile upDateUserProfile) {
+        return addNetworkCheck(serviceInstance.upDateUserProfile(userId, upDateUserProfile));
     }
 
     //registration request otp

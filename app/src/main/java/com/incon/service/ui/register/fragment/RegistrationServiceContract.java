@@ -20,14 +20,13 @@ public class RegistrationServiceContract {
     public interface View extends BaseView {
         void navigateToRegistrationActivityNext();
         void navigateToHomeScreen();
-        void uploadStoreLogo(int storeId);
+        void uploadServiceCenterLogo(int serviceCenterId);
         void navigateToLoginScreen();
     }
 
     interface Presenter {
         void register(Registration registrationBody);
-        //TODO need to implement  service center logo Api
-        void uploadStoreLogo(int storeId, MultipartBody.Part storeLogo);
+        void uploadServiceCenterLogo(int serviceCenterId, MultipartBody.Part serviceCenterLogo);
     }
 
 }
