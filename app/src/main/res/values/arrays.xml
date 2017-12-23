@@ -52,7 +52,6 @@
         <item>@string/title_menu_add_user</item>
         <item>@string/title_menu_add_service_center</item>
         <item>@string/title_menu_add_designations</item>
-        <item>@string/title_menu_all_service_centers</item>
         <item>@string/title_menu_change_password</item>
         <item>@string/title_menu_timings</item>
         <item>@string/title_menu_contact_details</item>
