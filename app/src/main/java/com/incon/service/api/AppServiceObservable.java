@@ -85,7 +85,7 @@ public interface AppServiceObservable {
 
     // user profile update api
    // service/updateuser/22
-    @POST("user/updateuser/{userId}")
+    @POST("service/updateuser/{userId}")
     Observable<LoginResponse> upDateUserProfile(@Path(
             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
 
