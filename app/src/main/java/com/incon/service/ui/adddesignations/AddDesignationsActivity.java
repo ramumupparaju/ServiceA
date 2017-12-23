@@ -41,6 +41,7 @@ public class AddDesignationsActivity extends BaseActivity implements
     private int serviceCenterSelectedPos = -1;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
+    private int userId;
 
     @Override
     protected int getLayoutId() {
@@ -62,6 +63,8 @@ public class AddDesignationsActivity extends BaseActivity implements
         binding.setAddDesignationsActivity(this);
         rootView = binding.getRoot();
         initViews();
+        addDesignationsPresenter.serviceCentersList(SharedPrefsUtils.loginProvider().
+                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
         initializeToolbar();
     }
 
@@ -73,31 +76,38 @@ public class AddDesignationsActivity extends BaseActivity implements
             }
         });
     }
-
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadValidationErrors();
         setFocusForViews();
-        loadServiceCenterSpinnerData();
-
     }
 
     private void loadServiceCenterSpinnerData() {
-        //TODO have to remove hardcoding
-        serviceCenterResponseList = new ArrayList<>();
+        //TODO have to remove hardcoding and comment lines
+
+      /*  serviceCenterResponseList = new ArrayList<>();
         ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
         serviceCenterResponse.setId(serviceCenterResponse.getId());
-        serviceCenterResponse.setName(serviceCenterResponse.getName());
-        //serviceCenterResponse.setName("moonzdream");
-       // serviceCenterResponseList.add(serviceCenterResponse);
-       // serviceCenterResponse = new ServiceCenterResponse();
-      //  serviceCenterResponse.setId(Integer.valueOf("2"));
-       // serviceCenterResponse.setName("incon");
-        serviceCenterResponseList.add(serviceCenterResponse);
+        serviceCenterResponse.setName(serviceCenterResponse.getName());*/
+        //   serviceCenterResponseList.add(serviceCenterResponse);
+    /*
+     serviceCenterResponse.setId(Integer.valueOf("1"));
+      serviceCenterResponse.setName("moonzdream");
+      serviceCenterResponseList.add(serviceCenterResponse);
+    serviceCenterResponse = new ServiceCenterResponse();
+    serviceCenterResponse.setId(Integer.valueOf("2"));
+   serviceCenterResponse.setName("incon");*/
 
-        List<String> serviceCenterNamesList = new ArrayList<>();
+     //   serviceCenterResponseList.add(serviceCenterResponse);
+
+           /*   List<String> serviceCenterNamesList = new ArrayList<>();
         for (ServiceCenterResponse centerResponse : serviceCenterResponseList) {
             serviceCenterNamesList.add(centerResponse.getName());
+        }*/
+
+        String[] serviceCenterNamesList = new String[serviceCenterResponseList.size()];
+        for (int i = 0; i < serviceCenterResponseList.size(); i++) {
+            serviceCenterNamesList[i] = serviceCenterResponseList.get(i).getName();
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
@@ -107,7 +117,11 @@ public class AddDesignationsActivity extends BaseActivity implements
         binding.spinnerServiceCenter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 if (serviceCenterSelectedPos != position) {
+                    ServiceCenterResponse serviceCenterResponse = serviceCenterResponseList.get(position);
+                    addDesignation.setServiceCenterId(serviceCenterResponse.getId());
+                    addDesignation.setName(serviceCenterResponse.getName());
                     serviceCenterSelectedPos = position;
                 }
                 //For avoiding double tapping issue
@@ -116,12 +130,6 @@ public class AddDesignationsActivity extends BaseActivity implements
                 }
             }
         });
-
-    }
-
-
-    @Override
-    public void loadServiceCentersList(List<ServiceCenterResponse> serviceCenterResponseList) {
 
     }
 
@@ -221,6 +229,17 @@ public class AddDesignationsActivity extends BaseActivity implements
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addDesignation);
         }
 
+    }
+
+    @Override
+    public void loadServiceCentersList(List<ServiceCenterResponse> serviceCenterResponseList) {
+        this.serviceCenterResponseList = serviceCenterResponseList;
+        loadServiceCenterSpinnerData();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        addDesignationsPresenter.disposeAll();
     }
 
 

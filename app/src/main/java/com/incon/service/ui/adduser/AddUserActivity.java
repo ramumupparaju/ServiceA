@@ -135,6 +135,10 @@ public class AddUserActivity extends BaseActivity implements
         serviceCenterResponse = new ServiceCenterResponse();
         serviceCenterResponse.setId(Integer.valueOf("2"));
         serviceCenterResponse.setName("incon");
+
+     /*   serviceCenterResponse.setId(serviceCenterResponse.getId());
+        serviceCenterResponse.setName(serviceCenterResponse.getName());*/
+
         serviceCenterResponseList.add(serviceCenterResponse);
 
         List<String> serviceCenterNamesList = new ArrayList<>();

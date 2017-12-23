@@ -7,6 +7,7 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
+import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
 import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
 import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.ui.BasePresenter;
@@ -60,7 +61,6 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
     @Override
     public void serviceCentersList(int userId) {
         getView().showProgress(appContext.getString(R.string.progress_loading_service_centers));
-
         DisposableObserver<List<ServiceCenterResponse>> observer = new
                 DisposableObserver<List<ServiceCenterResponse>>() {
                     @Override
@@ -82,7 +82,6 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
                 };
         AppApiService.getInstance().getServiceCentersApi(userId).subscribe(observer);
         addDisposable(observer);
-
 
     }
 }

@@ -70,6 +70,13 @@ public interface AppServiceObservable {
                                                                           serviceCenterId
             ,@Path("userId") int userId);
 
+
+    // get service centers api
+    @GET("service/getservicecenters/{userId}")
+    Observable<List<ServiceCenterResponse>> getServiceCentersApi(@Path("userId") int userId);
+
+
+
     // service center logo  api
     @Multipart
     @POST("service/logoupdate/{serviceCenterId}")
@@ -107,11 +114,6 @@ public interface AppServiceObservable {
     // check qr Codestatus  api
     @GET("product/checkqropnestatus/{qrCode}")
     Observable<Object> checkQrCodestatus(@Path("qrCode") String qrCode);
-
-    //service/getservicecenters/153
-    // get service centers api
-    @GET("service/getservicecenters/{userId}")
-    Observable<List<ServiceCenterResponse>> getServiceCentersApi(@Path("userId") int userId);
 
     // add favourites  api
     @POST("user/addtofavourites")
