@@ -467,6 +467,7 @@
     <string name="title_menu_add_user">Add User</string>
     <string name="title_menu_add_service_center">Add Service Center</string>
     <string name="title_menu_add_designations">Add Designations</string>
+    <string name="title_menu_all_service_centers">All Service Centers</string>
 
     <string name="title_menu_change_password">Change Password</string>
     <string name="title_menu_profile">Profile</string>

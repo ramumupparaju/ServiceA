@@ -100,6 +100,7 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
                 R.drawable.ic_menu_change_password,
                 R.drawable.ic_menu_change_password,
                 R.drawable.ic_menu_change_password,
+                R.drawable.ic_menu_change_password,
 
                 R.drawable.ic_menu_change_password,
                 R.drawable.ic_menu_timings,
@@ -159,6 +160,10 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
                 startActivity(addDesignationsIntent);
                 break;
 
+            case MenuConstants.ALL_SERVICE_CENTERS:
+                Intent addDesignationsInten = new Intent(this, AddDesignationsActivity.class);
+                startActivity(addDesignationsInten);
+                break;
 
             case MenuConstants.CHANGE_PWD:
                 Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);

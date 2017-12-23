@@ -392,10 +392,11 @@ public interface AppConstants {
         int ADD_USER = 1;
         int ADD_SERVICE_CENTER = 2;
         int ADD_DESIGNATIONS = 3;
-        int CHANGE_PWD = 4;
-        int TIMEINGS = 5;
-        int CONTACTDETAILS = 6;
-        int LOGOUT = 7;
+        int ALL_SERVICE_CENTERS = 4;
+        int CHANGE_PWD = 5;
+        int TIMEINGS = 6;
+        int CONTACTDETAILS = 7;
+        int LOGOUT = 8;
 
 
     }

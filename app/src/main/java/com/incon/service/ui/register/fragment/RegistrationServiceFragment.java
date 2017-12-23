@@ -25,8 +25,6 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchcategorie.Brand;
 import com.incon.service.apimodel.components.fetchcategorie.Division;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
-import com.incon.service.callbacks.AlertDialogCallback;
-import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppOtpDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.custom.view.PickImageDialog;
