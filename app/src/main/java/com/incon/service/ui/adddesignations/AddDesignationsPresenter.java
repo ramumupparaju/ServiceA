@@ -26,6 +26,7 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
         implements AddDesignationsContract.Presenter {
     private static final String TAG = AddDesignationsPresenter.class.getName();
     private Context appContext;
+
     @Override
     public void initialize(Bundle extras) {
         super.initialize(extras);
@@ -54,7 +55,8 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
 
             }
         };
-        AppApiService.getInstance().addDesignation(userId,addDesignation).subscribe(observer);;
+        AppApiService.getInstance().addDesignation(userId, addDesignation).subscribe(observer);
+        ;
         addDisposable(observer);
     }
 

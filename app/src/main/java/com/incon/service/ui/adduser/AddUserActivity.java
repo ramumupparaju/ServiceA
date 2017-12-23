@@ -83,7 +83,7 @@ public class AddUserActivity extends BaseActivity implements
         initViews();
         initializeToolbar();
         //TODO have to remove hard code
-        addUserPresenter.fetchDesignations(1,SharedPrefsUtils.loginProvider().
+        addUserPresenter.fetchDesignations(1, SharedPrefsUtils.loginProvider().
                 getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
 
     }
@@ -126,7 +126,7 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     private void loadServiceCenterSpinnerData() {
-// TODO have to remove hard coding
+        // TODO have to remove hard coding
         serviceCenterResponseList = new ArrayList<>();
         ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
         serviceCenterResponse.setId(Integer.valueOf("1"));
@@ -383,7 +383,7 @@ public class AddUserActivity extends BaseActivity implements
     @Override
     public void loadFetchDesignations(List<FetchDesignationsResponse> fetchDesignationsResponse) {
         this.fetchDesignationsResponseList = fetchDesignationsResponse;
-       loadDesignationsSpinnerData();
+        loadDesignationsSpinnerData();
 
     }
 }

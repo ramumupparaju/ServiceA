@@ -116,8 +116,8 @@ public class AppApiService implements AppConstants {
 
     // fetch designations api
     public Observable<List<FetchDesignationsResponse>> fetchDesignations(
-            int serviceCenterId,  int userId) {
-        return addNetworkCheck(serviceInstance.fetchDesignations(serviceCenterId,userId));
+            int serviceCenterId, int userId) {
+        return addNetworkCheck(serviceInstance.fetchDesignations(serviceCenterId, userId));
     }
 
 

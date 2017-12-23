@@ -76,6 +76,7 @@ public class AddDesignationsActivity extends BaseActivity implements
             }
         });
     }
+
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadValidationErrors();
@@ -98,7 +99,7 @@ public class AddDesignationsActivity extends BaseActivity implements
     serviceCenterResponse.setId(Integer.valueOf("2"));
    serviceCenterResponse.setName("incon");*/
 
-     //   serviceCenterResponseList.add(serviceCenterResponse);
+        //   serviceCenterResponseList.add(serviceCenterResponse);
 
            /*   List<String> serviceCenterNamesList = new ArrayList<>();
         for (ServiceCenterResponse centerResponse : serviceCenterResponseList) {
@@ -236,6 +237,7 @@ public class AddDesignationsActivity extends BaseActivity implements
         this.serviceCenterResponseList = serviceCenterResponseList;
         loadServiceCenterSpinnerData();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

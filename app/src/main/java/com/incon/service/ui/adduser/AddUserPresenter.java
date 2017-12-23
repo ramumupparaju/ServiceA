@@ -20,10 +20,11 @@ import io.reactivex.observers.DisposableObserver;
  * Created by MY HOME on 17-Dec-17.
  */
 
-public class AddUserPresenter  extends BasePresenter<AddUserContract.View>
+public class AddUserPresenter extends BasePresenter<AddUserContract.View>
         implements AddUserContract.Presenter {
     private static final String TAG = AddUserPresenter.class.getName();
     private Context appContext;
+
     @Override
     public void initialize(Bundle extras) {
         super.initialize(extras);
@@ -51,7 +52,7 @@ public class AddUserPresenter  extends BasePresenter<AddUserContract.View>
 
             }
         };
-        AppApiService.getInstance().addUser(userId,addUser).subscribe(observer);
+        AppApiService.getInstance().addUser(userId, addUser).subscribe(observer);
         addDisposable(observer);
 
     }
@@ -61,22 +62,24 @@ public class AddUserPresenter  extends BasePresenter<AddUserContract.View>
         getView().showProgress(appContext.getString(R.string.progress_designations));
         DisposableObserver<List<FetchDesignationsResponse>> observer = new
                 DisposableObserver<List<FetchDesignationsResponse>>() {
-            @Override
-            public void onNext(List<FetchDesignationsResponse> fetchDesignationsResponse) {
-               getView().loadFetchDesignations(fetchDesignationsResponse);
-                getView().hideProgress();
-            }
-            @Override
-            public void onError(Throwable e) {
-                getView().hideProgress();
-                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
-                getView().handleException(errorDetails);
-            }
-            @Override
-            public void onComplete() {
-            }
-        };
-        AppApiService.getInstance().fetchDesignations(serviceCenterId,userId).subscribe(observer);
+                    @Override
+                    public void onNext(List<FetchDesignationsResponse> fetchDesignationsResponse) {
+                        getView().loadFetchDesignations(fetchDesignationsResponse);
+                        getView().hideProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().hideProgress();
+                        Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                        getView().handleException(errorDetails);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                };
+        AppApiService.getInstance().fetchDesignations(serviceCenterId, userId).subscribe(observer);
         addDisposable(observer);
 
     }

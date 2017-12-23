@@ -68,7 +68,7 @@ public interface AppServiceObservable {
     @GET("service/getdesignations/{serviceCenterId}/{userId}")
     Observable<List<FetchDesignationsResponse>> fetchDesignations(@Path("serviceCenterId") int
                                                                           serviceCenterId
-            ,@Path("userId") int userId);
+            , @Path("userId") int userId);
 
 
     // get service centers api
@@ -76,12 +76,11 @@ public interface AppServiceObservable {
     Observable<List<ServiceCenterResponse>> getServiceCentersApi(@Path("userId") int userId);
 
 
-
     // service center logo  api
     @Multipart
     @POST("service/logoupdate/{serviceCenterId}")
     Observable<Object> uploadServiceCenterLogo(@Path("storeId") String serviceCenterId,
-                                       @Part MultipartBody.Part serviceCenterLogo);
+                                               @Part MultipartBody.Part serviceCenterLogo);
 
     //registration request otp
     @GET("user/requestotp/{phoneNumber}/register")
@@ -92,7 +91,7 @@ public interface AppServiceObservable {
     Observable<Object> registerRequestPasswordOtp(@Path("phoneNumber") String phoneNumber);
 
     // user profile update api
-   // service/updateuser/22
+    // service/updateuser/22
     @POST("user/updateuser/{userId}")
     Observable<LoginResponse> upDateUserProfile(@Path(
             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
@@ -102,6 +101,7 @@ public interface AppServiceObservable {
 
     @POST("service/validateotp")
     Observable<LoginResponse> validateOtp(@Body HashMap<String, String> verify);
+
     //forgot password api
     @POST("service/forgotpassword")
     Observable<ApiBaseResponse> forgotPassword(@Body HashMap<String, String> phoneNumber);
