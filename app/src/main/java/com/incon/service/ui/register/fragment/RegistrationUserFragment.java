@@ -51,7 +51,6 @@ public class RegistrationUserFragment extends BaseFragment implements
 
     @Override
     protected void initializePresenter() {
-
         registrationUserInfoFragPresenter = new RegistrationUserPresenter();
         registrationUserInfoFragPresenter.setView(this);
         setBasePresenter(registrationUserInfoFragPresenter);
