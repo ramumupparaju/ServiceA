@@ -41,7 +41,7 @@ public class ServiceCenterResponse {
     private Integer createdBy;
     @SerializedName("createdDate")
     @Expose
-    private Integer createdDate;
+    private Long createdDate;
     @SerializedName("gstn")
     @Expose
     private String gstn;
@@ -129,11 +129,11 @@ public class ServiceCenterResponse {
         this.createdBy = createdBy;
     }
 
-    public Integer getCreatedDate() {
+    public Long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Integer createdDate) {
+    public void setCreatedDate(Long createdDate) {
         this.createdDate = createdDate;
     }
 

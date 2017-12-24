@@ -84,6 +84,5 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
                 };
         AppApiService.getInstance().getServiceCentersApi(userId).subscribe(observer);
         addDisposable(observer);
-
     }
 }
