@@ -33,7 +33,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="32dp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/connect_icon" />
+                android:src="@drawable/connect_icon_service" />
             <!-- user information title text -->
             <TextView
                 android:id="@+id/text_userinfo_title"

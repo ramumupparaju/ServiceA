@@ -25,6 +25,7 @@ import com.incon.service.ui.adduser.AddUserActivity;
 import com.incon.service.ui.changepassword.ChangePasswordActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.settings.adapters.SettingsAdapter;
+import com.incon.service.ui.settings.service.AllServiceCentersActivity;
 import com.incon.service.ui.settings.update.UpDateUserProfileActivity;
 import com.incon.service.utils.OfflineDataManager;
 import com.incon.service.utils.SharedPrefsUtils;
@@ -36,7 +37,6 @@ import static com.incon.service.AppConstants.LoginPrefs.USER_NAME;
 
 /**
  * Created on 26 Jul 2017 3:47 PM.
- *
  */
 public class SettingsActivity extends BaseActivity implements SettingsContract.View,
         IClickCallback {
@@ -99,8 +99,6 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
         int[] icons = {
                 R.drawable.ic_menu_change_password,
                 R.drawable.ic_menu_change_password,
-                R.drawable.ic_menu_change_password,
-                R.drawable.ic_menu_change_password,
                 R.drawable.ic_menu_timings,
                 R.drawable.ic_menu_contact_details,
                 R.drawable.ic_menu_logout_svg};
@@ -143,19 +141,9 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
                 startActivity(userProfileIntent);
                 break;
 
-            case MenuConstants.ADD_USER:
-                Intent addUserIntent = new Intent(this,AddUserActivity.class);
+            case MenuConstants.ALL_SERVICE_CENTERS:
+                Intent addUserIntent = new Intent(this, AllServiceCentersActivity.class);
                 startActivity(addUserIntent);
-                break;
-
-            case MenuConstants.ADD_SERVICE_CENTER:
-                Intent addServiceCenterIntent = new Intent(this, AddServiceCenterActivity.class);
-                startActivity(addServiceCenterIntent);
-                break;
-
-            case MenuConstants.ADD_DESIGNATIONS:
-                Intent addDesignationsIntent = new Intent(this, AddDesignationsActivity.class);
-                startActivity(addDesignationsIntent);
                 break;
 
             case MenuConstants.CHANGE_PWD:

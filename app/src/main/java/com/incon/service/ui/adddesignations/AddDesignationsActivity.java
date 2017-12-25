@@ -33,15 +33,15 @@ import java.util.List;
 
 public class AddDesignationsActivity extends BaseActivity implements
         AddDesignationsContract.View {
-    private View rootView;
+
     private AddDesignationsPresenter addDesignationsPresenter;
     private ActivityAddDesignationsBinding binding;
+
     private AddDesignation addDesignation;
     public List<ServiceCenterResponse> serviceCenterResponseList;
     private int serviceCenterSelectedPos = -1;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
-    private int userId;
 
     @Override
     protected int getLayoutId() {
@@ -61,11 +61,11 @@ public class AddDesignationsActivity extends BaseActivity implements
         addDesignation = new AddDesignation();
         binding.setAddDesignation(addDesignation);
         binding.setAddDesignationsActivity(this);
-        rootView = binding.getRoot();
         initViews();
+
+        //fetching servicing centers list to add designations
         addDesignationsPresenter.serviceCentersList(SharedPrefsUtils.loginProvider().
                 getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
-        initializeToolbar();
     }
 
     private void initializeToolbar() {
@@ -78,34 +78,14 @@ public class AddDesignationsActivity extends BaseActivity implements
     }
 
     private void initViews() {
+        initializeToolbar();
+
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadValidationErrors();
         setFocusForViews();
     }
 
     private void loadServiceCenterSpinnerData() {
-        //TODO have to remove hardcoding and comment lines
-
-      /*  serviceCenterResponseList = new ArrayList<>();
-        ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
-        serviceCenterResponse.setId(serviceCenterResponse.getId());
-        serviceCenterResponse.setName(serviceCenterResponse.getName());*/
-        //   serviceCenterResponseList.add(serviceCenterResponse);
-    /*
-     serviceCenterResponse.setId(Integer.valueOf("1"));
-      serviceCenterResponse.setName("moonzdream");
-      serviceCenterResponseList.add(serviceCenterResponse);
-    serviceCenterResponse = new ServiceCenterResponse();
-    serviceCenterResponse.setId(Integer.valueOf("2"));
-   serviceCenterResponse.setName("incon");*/
-
-        //   serviceCenterResponseList.add(serviceCenterResponse);
-
-           /*   List<String> serviceCenterNamesList = new ArrayList<>();
-        for (ServiceCenterResponse centerResponse : serviceCenterResponseList) {
-            serviceCenterNamesList.add(centerResponse.getName());
-        }*/
-
         String[] serviceCenterNamesList = new String[serviceCenterResponseList.size()];
         for (int i = 0; i < serviceCenterResponseList.size(); i++) {
             serviceCenterNamesList[i] = serviceCenterResponseList.get(i).getName();

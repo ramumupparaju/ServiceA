@@ -33,12 +33,11 @@ public interface AppConstants {
         String DELIVERED = "DLD";
         String INSTALLED = "INS";
     }
+
     interface BooleanConstants {
         int IS_TRUE = 1;
         int IS_FALSE = 0;
     }
-
-
 
 
     interface FilterConstants {
@@ -389,13 +388,11 @@ public interface AppConstants {
 
     interface MenuConstants {
         int PROFILE = 0;
-        int ADD_USER = 1;
-        int ADD_SERVICE_CENTER = 2;
-        int ADD_DESIGNATIONS = 3;
-        int CHANGE_PWD = 4;
-        int TIMEINGS = 5;
-        int CONTACTDETAILS = 6;
-        int LOGOUT = 7;
+        int ALL_SERVICE_CENTERS = 1;
+        int CHANGE_PWD = 2;
+        int TIMEINGS = 3;
+        int CONTACTDETAILS = 4;
+        int LOGOUT = 5;
 
 
     }
