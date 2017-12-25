@@ -1,5 +1,8 @@
 package com.incon.service.apimodel.components.servicecenterresponse;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by PC on 12/20/2017.
  */
 
-public class ServiceCenterResponse {
+public class ServiceCenterResponse extends BaseObservable {
 
     @SerializedName("id")
     @Expose
@@ -57,12 +60,14 @@ public class ServiceCenterResponse {
         this.id = id;
     }
 
+    @Bindable
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+        notifyChange();
     }
 
     public String getLocation() {
