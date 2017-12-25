@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="productinforesponse"
-            type="com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse" />
+            name="fetchNewRequestResponse"
+            type="com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse" />
     </data>
 
     <RelativeLayout
@@ -43,7 +43,6 @@
                 <TextView
                     style="@style/BothWrap"
                     android:layout_marginTop="@dimen/margin_10"
-                    android:text="@{productinforesponse.productName}"
                     android:textColor="@color/ebony_clay"
                     android:textSize="12.4sp" />
 

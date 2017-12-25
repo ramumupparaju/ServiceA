@@ -4,16 +4,16 @@ package com.incon.service.api;
 import com.incon.service.AppConstants;
 import com.incon.service.BuildConfig;
 import com.incon.service.apimodel.base.ApiBaseResponse;
-import com.incon.service.apimodel.components.adddesignationresponse.DesignationResponse;
-import com.incon.service.apimodel.components.defaults.DefaultsResponse;
+import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
-import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
+import com.incon.service.apimodel.components.fetchdesignations.FetchDesignationsResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.login.LoginResponse;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.productinfo.ProductInfoResponse;
 import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
-import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
 import com.incon.service.dto.adddesignation.AddDesignation;
@@ -166,6 +166,11 @@ public class AppApiService implements AppConstants {
     // get service centers api  api
     public Observable<List<ServiceCenterResponse>> getServiceCentersApi(int userId) {
         return addNetworkCheck(serviceInstance.getServiceCentersApi(userId));
+    }
+
+    // fetch  new service request api
+    public Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.fetchNewServiceRequestApi(userId));
     }
 
 

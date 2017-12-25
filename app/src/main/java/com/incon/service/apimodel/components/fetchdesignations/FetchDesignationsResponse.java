@@ -1,4 +1,4 @@
-package com.incon.service.apimodel.components.fetchdesignationsresponse;
+package com.incon.service.apimodel.components.fetchdesignations;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

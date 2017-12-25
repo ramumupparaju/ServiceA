@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.incon.service.R;
-import com.incon.service.databinding.FragmentFeedbackBinding;
 import com.incon.service.databinding.FragmentReportsBinding;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;

@@ -286,6 +286,7 @@
     <string name="progress_purchased_history">Loading Purchased History...</string>
     <string name="progress_interest_history">Loading Interest History...</string>
     <string name="progress_buy_request_">Loading BuyRequest...</string>
+    <string name="progress_fetch_new_service_request">Fetching New Service Request...</string>
     <string name="progress_return_history">Loading Return History...</string>
     <string name="progress_buy_request">Loading Buy Request...</string>
     <string name="progress_get_addresses">Loading Address...</string>
@@ -476,7 +477,7 @@
     <string name="update_save">SAVE</string>
 
 
-    <!--Buy Request Screen-->
+    <!--RequestResponseuest Screen-->
     <string name="buy_request_brand">Brand</string>
     <string name="buy_request_product_image">Product Image</string>
     <string name="buy_request_product_info">Product Info</string>

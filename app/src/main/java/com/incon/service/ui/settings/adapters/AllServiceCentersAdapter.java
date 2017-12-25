@@ -5,16 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.incon.service.BR;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
-import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.databinding.ItemAllServiceCentersBinding;
-import com.incon.service.dto.settings.SettingsItem;
 
 import java.util.ArrayList;
 import java.util.List;

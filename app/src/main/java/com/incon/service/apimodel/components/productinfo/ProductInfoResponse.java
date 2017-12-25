@@ -1,4 +1,7 @@
-package com.incon.service.apimodel.components.productresponse;
+package com.incon.service.apimodel.components.productinfo;
+
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by MY HOME on 25-Dec-17.
  */
 
-public class ProductInfoResponse {
+public class ProductInfoResponse extends BaseObservable {
     @SerializedName("name")
     @Expose
     private String name;
@@ -30,12 +33,14 @@ public class ProductInfoResponse {
     @Expose
     private Boolean feedbackSubmitted;
 
+    @Bindable
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+        notifyChange();
     }
 
     public String getModelNo() {

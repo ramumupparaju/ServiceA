@@ -5,23 +5,19 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/secondtop_row"
-            style="@style/MatchWrap"
+            android:id="@+id/third_row"
+            style="@style/BothMatch"
             android:orientation="horizontal"
-            android:visibility="gone">
-
-        </LinearLayout>
+            android:visibility="gone" />
 
         <LinearLayout
-            android:id="@+id/top_row"
-            style="@style/MatchWrap"
+            android:id="@+id/second_row"
+            style="@style/BothMatch"
             android:orientation="horizontal"
-            android:visibility="gone">
-
-        </LinearLayout>
+            android:visibility="gone" />
 
         <LinearLayout
-            android:id="@+id/bottom_row"
+            android:id="@+id/first_row"
             style="@style/MatchWrap"
             android:orientation="horizontal">
 

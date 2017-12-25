@@ -1,52 +1,51 @@
 package com.incon.service.ui.status.fragment;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import com.incon.service.AppUtils;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.databinding.BottomSheetNewRequestFragmentBinding;
-import com.incon.service.databinding.CustomBottomViewBinding;
+import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
-import com.incon.service.ui.BaseFragment;
+import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
+import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.incon.service.AppUtils.callPhoneNumber;
+
 /**
  * Created by PC on 12/5/2017.
  */
 
-public class NewRequestsFragment extends BaseFragment implements NewRequestContract.View {
-    private FragmentNewrequestBinding fragmentNewrequestBinding;
+public class NewRequestsFragment extends BaseTabFragment implements NewRequestContract.View {
+    private FragmentNewrequestBinding binding;
     private View rootView;
     private int userId;
     private NewRequestPresenter newRequestPresenter;
     private NewRequestsAdapter newRequestsAdapter;
-    private int productSelectedPosition = -1;
-    private BottomSheetDialog bottomSheetDialog;
-    private BottomSheetNewRequestFragmentBinding bottomSheetNewRequestBinding;
+    private List<FetchNewRequestResponse> fetchNewRequestResponses;
+    private AppAlertDialog detailsDialog;
+
     @Override
     protected void initializePresenter() {
-
         newRequestPresenter = new NewRequestPresenter();
         newRequestPresenter.setView(this);
         setBasePresenter(newRequestPresenter);
-
     }
 
     @Override
@@ -58,12 +57,12 @@ public class NewRequestsFragment extends BaseFragment implements NewRequestContr
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            fragmentNewrequestBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
             initViews();
             loadBottomSheet();
 
-            rootView = fragmentNewrequestBinding.getRoot();
+            rootView = binding.getRoot();
         }
         setTitle();
         return rootView;
@@ -72,34 +71,29 @@ public class NewRequestsFragment extends BaseFragment implements NewRequestContr
     private void initViews() {
         newRequestsAdapter = new NewRequestsAdapter();
         newRequestsAdapter.setClickCallback(iClickCallback);
+        binding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                getContext(), linearLayoutManager.getOrientation());
-        fragmentNewrequestBinding.requestRecyclerview.addItemDecoration(dividerItemDecoration);
-        fragmentNewrequestBinding.requestRecyclerview.setAdapter(newRequestsAdapter);
-        fragmentNewrequestBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
+        binding.requestRecyclerview.setAdapter(newRequestsAdapter);
+        binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
-        loadReturnHistory(null);
+        newRequestPresenter.fetchNewServiceRequests(userId);
     }
 
     private void dismissSwipeRefresh() {
-        if (fragmentNewrequestBinding.swiperefresh.isRefreshing()) {
-            fragmentNewrequestBinding.swiperefresh.setRefreshing(false);
+        if (binding.swiperefresh.isRefreshing()) {
+            binding.swiperefresh.setRefreshing(false);
         }
     }
 
-    private void loadBottomSheet() {
-        bottomSheetNewRequestBinding = DataBindingUtil.inflate(LayoutInflater.from(
-                getActivity()), R.layout.bottom_sheet_new_request_fragment, null, false);
-        bottomSheetDialog = new BottomSheetDialog(getActivity());
-        bottomSheetDialog.setContentView(bottomSheetNewRequestBinding.getRoot());
+    @Override
+    public void loadBottomSheet() {
+        super.loadBottomSheet();
         bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
             }
         });
-
     }
 
 
@@ -107,88 +101,75 @@ public class NewRequestsFragment extends BaseFragment implements NewRequestContr
         @Override
         public void onClickPosition(int position) {
             newRequestsAdapter.clearSelection();
-            ProductInfoResponse returnHistoryResponse = newRequestsAdapter.
+            FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.
                     getItemFromPosition(position);
-            returnHistoryResponse.setSelected(true);
+            fetchNewRequestResponse.setSelected(true);
             newRequestsAdapter.notifyDataSetChanged();
-
-            createBottomSheetView(position);
+            productSelectedPosition = position;
+            createBottomSheetFirstRow(position);
             bottomSheetDialog.show();
         }
     };
 
-    private void createBottomSheetView(int position) {
-        productSelectedPosition = position;
-        bottomSheetNewRequestBinding.topRow.setVisibility(View.GONE);
-
-        String[] bottomNames = new String[4];
+    private void createBottomSheetFirstRow(int position) {
+        int length;
+        int[] bottomDrawables;
+        String[] bottomNames;
+        length = 4;
+        bottomNames = new String[4];
         bottomNames[0] = getString(R.string.bottom_option_customer);
         bottomNames[1] = getString(R.string.bottom_option_product);
         bottomNames[2] = getString(R.string.bottom_option_service_center);
         bottomNames[3] = getString(R.string.bottom_option_status_update);
 
-        int[] bottomDrawables = new int[4];
+        bottomDrawables = new int[4];
         bottomDrawables[0] = R.drawable.ic_option_customer;
         bottomDrawables[1] = R.drawable.ic_option_product;
         bottomDrawables[2] = R.drawable.ic_option_find_service_center;
         bottomDrawables[3] = R.drawable.ic_option_delete;
 
-        bottomSheetNewRequestBinding.bottomRow.removeAllViews();
-        int length = bottomNames.length;
-        LinearLayout.LayoutParams params =
-                new LinearLayout.LayoutParams(
-                        0, ViewGroup.LayoutParams.WRAP_CONTENT, length);
-        params.setMargins(1, 1, 1, 1);
-        for (int i = 0; i < length; i++) {
-            LinearLayout linearLayout = new LinearLayout(getContext());
-            linearLayout.setWeightSum(1f);
-            linearLayout.setGravity(Gravity.CENTER);
-            CustomBottomViewBinding customBottomView = getCustomBottomView();
-            customBottomView.viewTv.setText(bottomNames[i]);
-            customBottomView.viewTv.setTextSize(10f);
-            customBottomView.viewLogo.setImageResource(bottomDrawables[i]);
-            View bottomRootView = customBottomView.getRoot();
-            bottomRootView.setTag(i);
-            linearLayout.addView(bottomRootView);
-            bottomRootView.setOnClickListener(bottomViewClickListener);
-            bottomSheetNewRequestBinding.bottomRow.addView(linearLayout, params);
-        }
+        bottomSheetPurchasedBinding.firstRow.setVisibility(View.VISIBLE);
+        bottomSheetPurchasedBinding.secondRow.setVisibility(View.GONE);
+        bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
+        bottomSheetPurchasedBinding.firstRow.removeAllViews();
+        bottomSheetPurchasedBinding.firstRow.setWeightSum(length);
+        setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, bottomNames, bottomDrawables, bottomSheetFirstRowClickListener, "-1");
+
     }
 
-
-    private View.OnClickListener bottomViewClickListener = new View.OnClickListener() {
+    // bottom sheet click event
+    private View.OnClickListener bottomSheetFirstRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Integer tag = (Integer) view.getTag();
+            String unparsedTag = (String) view.getTag();
+            Integer tag = Integer.valueOf(unparsedTag);
             String[] bottomOptions;
             int[] topDrawables;
-            changeBackgroundText(tag, view);
+            changeSelectedViews(bottomSheetPurchasedBinding.firstRow, unparsedTag);
             if (tag == 0) {
                 bottomOptions = new String[3];
-                bottomOptions[0] = getString(R.string.bottom_option_Call);
+                bottomOptions[0] = getString(R.string.bottom_option_call_customer_care);
                 bottomOptions[1] = getString(R.string.bottom_option_location);
                 bottomOptions[2] = getString(R.string.bottom_option_edit);
                 topDrawables = new int[3];
                 topDrawables[0] = R.drawable.ic_option_call;
-                topDrawables[1] = R.drawable.ic_option_location;
-                topDrawables[2] = R.drawable.ic_option_feedback;
+                topDrawables[1] = R.drawable.ic_option_find_service_center;
+                topDrawables[2] = R.drawable.ic_option_service_request;
+
             } else if (tag == 1) {
-                bottomOptions = new String[3];
+                bottomOptions = new String[2];
                 bottomOptions[0] = getString(R.string.bottom_option_warranty_details);
                 bottomOptions[1] = getString(R.string.bottom_option_past_history);
-                bottomOptions[2] = getString(R.string.bottom_option_special_instructions);
-                topDrawables = new int[3];
+                topDrawables = new int[2];
                 topDrawables[0] = R.drawable.ic_options_features;
                 topDrawables[1] = R.drawable.ic_option_pasthistory;
-                topDrawables[2] = R.drawable.ic_option_sp_instructions;
             } else if (tag == 2) {
-                bottomOptions = new String[2];
+                bottomOptions = new String[1];
                 bottomOptions[0] = getString(R.string.bottom_option_Call);
-                bottomOptions[1] = getString(R.string.bottom_option_assign);
-                topDrawables = new int[2];
+                // bottomOptions[1] = getString(R.string.bottom_option_assign);
+                topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
-                topDrawables[1] = R.drawable.ic_option_assign;
-                changeBackgroundText(tag, view);
+                // topDrawables[1] = R.drawable.ic_option_assign;
             } else {
                 bottomOptions = new String[3];
                 bottomOptions[0] = getString(R.string.bottom_option_accept);
@@ -199,149 +180,183 @@ public class NewRequestsFragment extends BaseFragment implements NewRequestContr
                 topDrawables[1] = R.drawable.ic_option_accept_request;
                 topDrawables[2] = R.drawable.ic_option_hold;
             }
-            bottomSheetNewRequestBinding.secondtopRow.removeAllViews();
-            bottomSheetNewRequestBinding.topRow.removeAllViews();
-            int length1 = bottomOptions.length;
-            bottomSheetNewRequestBinding.topRow.setVisibility(View.VISIBLE);
-            int length = length1;
-            LinearLayout.LayoutParams params =
-                    new LinearLayout.LayoutParams(
-                            0,
-                            ViewGroup.LayoutParams.MATCH_PARENT, length);
-            params.setMargins(1, 1, 1, 1);
-            for (int i = 0; i < length; i++) {
-                LinearLayout linearLayout = new LinearLayout(getContext());
-                linearLayout.setWeightSum(1f);
-                linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-                CustomBottomViewBinding customBottomView = getCustomBottomView();
-                customBottomView.viewTv.setText(bottomOptions[i]);
-                customBottomView.viewTv.setTextSize(10f);
-                customBottomView.viewLogo.setImageResource(topDrawables[i]);
-                View topRootView = customBottomView.getRoot();
-                topRootView.setTag(i);
-               // topRootView.setOnClickListener(topViewClickListener);
-                linearLayout.addView(topRootView);
-                bottomSheetNewRequestBinding.topRow.addView(linearLayout, params);
-            }
+
+            bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
+            bottomSheetPurchasedBinding.secondRow.removeAllViews();
+            bottomSheetPurchasedBinding.secondRow.setWeightSum(bottomOptions.length);
+            setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, bottomOptions, topDrawables, bottomSheetSecondRowClickListener, unparsedTag);
         }
     };
 
 
-    private View.OnClickListener topViewClickListener = new View.OnClickListener() {
+    // bottom sheet top view click event
+    private View.OnClickListener bottomSheetSecondRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            TextView viewById = (TextView) view.findViewById(R.id.view_tv);
-            String topClickedText = viewById.getText().toString();
-            Integer tag = (Integer) view.getTag();
-            changeBackgroundText(tag, view);
-            String[] bottomOptions;
-            int[] topDrawables;
+            String unparsedTag = (String) view.getTag();
+            String[] tagArray = unparsedTag.split(COMMA_SEPARATOR);
 
-            if (tag == 0 && topClickedText.equals(getString(
-                    R.string.bottom_option_main_features))) {
-                bottomOptions = new String[0];
-                topDrawables = new int[0];
-            } else if (tag == 1 && topClickedText.equals(getString(
-                    R.string.bottom_option_details))) {
-                bottomOptions = new String[5];
-                bottomOptions[0] = getString(R.string.bottom_option_return_policy);
-                bottomOptions[1] = getString(R.string.bottom_option_special_instructions);
-                bottomOptions[2] = getString(R.string.bottom_option_how_to_use);
-                bottomOptions[3] = getString(R.string.bottom_option_warranty);
-                bottomOptions[4] = getString(R.string.bottom_option_share);
-                topDrawables = new int[5];
-                topDrawables[0] = R.drawable.ic_option_return_policy;
-                topDrawables[1] = R.drawable.ic_option_sp_instructions;
-                topDrawables[2] = R.drawable.ic_option_howtouse;
-                topDrawables[3] = R.drawable.ic_option_warranty;
-                topDrawables[4] = R.drawable.ic_option_share;
-            } else if (tag == 2 && topClickedText.equals(getString(
-                    R.string.bottom_option_feedback))) {
-                bottomOptions = new String[0];
-                topDrawables = new int[0];
-//                showFeedBackDialog();
-            } else if (tag == 0 && topClickedText.equals(getString(
-                    R.string.bottom_option_Call))) {
-                bottomOptions = new String[0];
-                topDrawables = new int[0];
-            } else if (tag == 1 && topClickedText.equals(getString(
-                    R.string.bottom_option_location))) {
-                bottomOptions = new String[0];
-                topDrawables = new int[0];
-            } else if (tag == 2 && topClickedText.equals(getString(
-                    R.string.bottom_option_review))) {
-                bottomOptions = new String[0];
-                topDrawables = new int[0];
-//                showFeedBackDialog();
-            } else {
-                bottomOptions = new String[0];
-                topDrawables = new int[0];
-            }
+            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
+                    productSelectedPosition);
+            changeSelectedViews(bottomSheetPurchasedBinding.secondRow, unparsedTag);
 
-            bottomSheetNewRequestBinding.secondtopRow.removeAllViews();
-            int length1 = bottomOptions.length;
-            bottomSheetNewRequestBinding.secondtopRow.setVisibility(View.VISIBLE);
-            int length = length1;
-            LinearLayout.LayoutParams params =
-                    new LinearLayout.LayoutParams(
-                            0, ViewGroup.LayoutParams.WRAP_CONTENT, length);
-            params.setMargins(1, 1, 1, 1);
-            for (int i = 0; i < length; i++) {
-                LinearLayout linearLayout = new LinearLayout(getContext());
-                linearLayout.setWeightSum(1f);
-                linearLayout.setGravity(Gravity.CENTER);
-                CustomBottomViewBinding customBottomView = getCustomBottomView();
-                customBottomView.viewTv.setText(bottomOptions[i]);
-                customBottomView.viewTv.setTextSize(10f);
-                customBottomView.viewLogo.setImageResource(topDrawables[i]);
-                View bottomRootView = customBottomView.getRoot();
-                bottomRootView.setTag(i);
-                linearLayout.addView(bottomRootView);
-                bottomRootView.setOnClickListener(secondtopViewClickListener);
-                bottomSheetNewRequestBinding.secondtopRow.addView(linearLayout, params);
+            String[] bottomOptions = new String[0];
+            int[] topDrawables = new int[0];
+
+            int firstRowTag = Integer.parseInt(tagArray[0]);
+            int secondRowTag = Integer.parseInt(tagArray[1]);
+
+            // customer
+            if (firstRowTag == 0) {
+
+                //call customer care
+                if (secondRowTag == 0) {
+                    callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
+                    return;
+                } else if (secondRowTag == 1) {
+                    // find service center
+                    showLocationDialog();
+                    return;
+                } else if (secondRowTag == 2) {
+                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                }
+
+            } else if (firstRowTag == 1) { // product
+
+                if (secondRowTag == 0) {
+                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    // TODO have to get details from back end
+                    /*String purchasedDate = DateUtils.convertMillisToStringFormat(
+                            itemFromPosition.getPurchasedDate(), DateFormatterConstants.DD_MM_YYYY);
+                    String warrantyEndDate = DateUtils.convertMillisToStringFormat(
+                            itemFromPosition.getWarrantyEndDate(), DateFormatterConstants.DD_MM_YYYY);
+                    long noOfDays = DateUtils.convertDifferenceDateIndays(
+                            itemFromPosition.getWarrantyEndDate(), System.currentTimeMillis());
+                    String warrantyConditions = itemFromPosition.getWarrantyConditions();
+                    showInformationDialog(getString(
+                            R.string.bottom_option_warranty), getString(
+                            R.string.purchased_warranty_status_now)
+                            + noOfDays + " Days Left "
+                            + "\n"
+                            + getString(
+                            R.string.purchased_purchased_date)
+                            + purchasedDate
+                            + "\n"
+                            + getString(
+                            R.string.purchased_warranty_covers_date)
+                            + warrantyConditions
+                            + "\n"
+                            + getString(
+                            R.string.purchased_warranty_ends_on) + warrantyEndDate);
+                    return;
+*/
+                } else if (secondRowTag == 1) { // warranty
+                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                }
+            } else if (firstRowTag == 2) {
+                if (secondRowTag == 0) {
+                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                }
+            } else if (firstRowTag == 3) {
+                if (secondRowTag == 0) {
+                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                } else if (secondRowTag == 1) {
+                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                } else {
+                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                }
+
             }
+            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.thirdRow.removeAllViews();
+            bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
+            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
     };
 
-
-    private View.OnClickListener secondtopViewClickListener = new View.OnClickListener() {
+    private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            TextView viewById = (TextView) view.findViewById(R.id.view_tv);
-            String topClickedText = viewById.getText().toString();
-            Integer tag = (Integer) view.getTag();
-            changeBackgroundText(tag, view);
-            if (tag == 0 && topClickedText.equals(getString(
-                    R.string.bottom_option_return_policy))) {
+            String unparsedTag = (String) view.getTag();
+            String[] tagArray = unparsedTag.split(COMMA_SEPARATOR);
 
-            } else if (tag == 1 && topClickedText.equals(getString(
-                    R.string.bottom_option_special_instructions))) {
 
-            } else if (tag == 2 && topClickedText.equals(getString(
-                    R.string.bottom_option_how_to_use))) {
-            } else if (tag == 3 && topClickedText.equals(getString(
-                    R.string.bottom_option_warranty))) {
+            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
+                    productSelectedPosition);
+            changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, unparsedTag);
 
-            } else if (tag == 4 && topClickedText.equals(getString(
-                    R.string.bottom_option_share))) {
-            } else if (tag == 0 && topClickedText.equals(getString(
-                    R.string.bottom_option_feedback))) {
+            int firstRowTag = Integer.parseInt(tagArray[0]);
+            int secondRowTag = Integer.parseInt(tagArray[1]);
+            int thirdRowTag = Integer.parseInt(tagArray[2]);
+
+
+            if (firstRowTag == 3) {
+
+                if (secondRowTag == 0) {
+
+                    if (thirdRowTag == 0) {
+                        // TODO have set images
+                    } else if (thirdRowTag == 1) {
+                        // TODO have set images
+                    }
+                } else if (secondRowTag == 1) {
+                    //show diloge
+                } else if (secondRowTag == 2) {
+                    // TODO have set images
+                }
+
             }
+
+
         }
+
     };
 
-    private CustomBottomViewBinding getCustomBottomView() {
-        return DataBindingUtil.inflate(
-                LayoutInflater.from(getActivity()), R.layout.custom_bottom_view, null, false);
+
+    private void showInformationDialog(String title, String messageInfo) {
+        detailsDialog = new AppAlertDialog.AlertDialogBuilder(getActivity(), new
+                AlertDialogCallback() {
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                detailsDialog.dismiss();
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                detailsDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(title).content(messageInfo)
+                .build();
+        detailsDialog.showDialog();
+        detailsDialog.setCancelable(true);
     }
+
+    private void showLocationDialog() {
+        FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
+                productSelectedPosition);
+
+        if (TextUtils.isEmpty(itemFromPosition.getCustomer().getLocation())) {
+            AppUtils.shortToast(getActivity(), getString(R.string.error_location));
+            return;
+        }
+
+        Intent addressIntent = new Intent(getActivity(), RegistrationMapActivity.class);
+        addressIntent.putExtra(IntentConstants.LOCATION_COMMA, itemFromPosition.getCustomer().getLocation());
+        addressIntent.putExtra(IntentConstants.ADDRESS_COMMA, itemFromPosition.getServiceCenter().getAddress());
+        startActivity(addressIntent);
+    }
+
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
                     newRequestsAdapter.clearData();
-                    newRequestPresenter.returnHistory(userId);
-
-
+                    newRequestPresenter.fetchNewServiceRequests(userId);
                 }
             };
 
@@ -353,21 +368,22 @@ public class NewRequestsFragment extends BaseFragment implements NewRequestContr
 
 
     @Override
-    public void loadReturnHistory(List<ProductInfoResponse> returnHistoryResponseList) {
+    public void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
 
-        if (returnHistoryResponseList == null) {
-            returnHistoryResponseList = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                ProductInfoResponse productInfoResponse = new ProductInfoResponse();
-                returnHistoryResponseList.add(productInfoResponse);
-            }
+        if (fetchNewRequestResponsesList == null) {
+            fetchNewRequestResponsesList = new ArrayList<>();
         }
-        if (returnHistoryResponseList.size() == 0) {
-            fragmentNewrequestBinding.returnTextview.setVisibility(View.VISIBLE);
+        if (fetchNewRequestResponsesList.size() == 0) {
+            binding.requestTextview.setVisibility(View.VISIBLE);
             dismissSwipeRefresh();
         } else {
-            newRequestsAdapter.setData(returnHistoryResponseList);
+            newRequestsAdapter.setData(fetchNewRequestResponsesList);
             dismissSwipeRefresh();
         }
+    }
+
+    @Override
+    public void onSearchClickListerner(String searchableText, String searchType) {
+        //TODO have to do filter list
     }
 }

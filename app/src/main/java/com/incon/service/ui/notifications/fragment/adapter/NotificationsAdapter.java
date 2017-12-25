@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-import com.android.databinding.library.baseAdapters.BR;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.notifications.NotificationsResponse;
 import com.incon.service.callbacks.IClickCallback;
@@ -71,10 +69,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter
 
 
         public void bind(NotificationsResponse topCourse) {
-            binding.setVariable(BR.notificationsResponse, topCourse);
-            /*binding.textTaskTime.setText(DateUtils.formatTimeDay(System.currentTimeMillis()
-                    - topCourse.getId() * 1000));
-            */binding.executePendingBindings();
         }
 
         @Override

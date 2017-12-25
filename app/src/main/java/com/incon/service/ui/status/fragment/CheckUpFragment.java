@@ -3,43 +3,31 @@ package com.incon.service.ui.status.fragment;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.databinding.BottomSheetCheckupFragmentBinding;
-import com.incon.service.databinding.CustomBottomViewBinding;
 import com.incon.service.databinding.FragmentCheckupBinding;
-import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.status.adapter.CheckUpAdapter;
-import com.incon.service.ui.status.adapter.NewRequestsAdapter;
+import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.SharedPrefsUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by PC on 12/5/2017.
  */
 
-public class CheckUpFragment extends BaseFragment implements CheckUpContract.View {
+public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.View {
     private FragmentCheckupBinding fragmentCheckupBinding;
     private View rootView;
     private CheckUpAdapter checkUpAdapter;
     private CheckUpPresenter checkUpPresenter;
-    private int productSelectedPosition = -1;
-    private BottomSheetDialog bottomSheetDialog;
-    private BottomSheetCheckupFragmentBinding bottomSheetCheckupFragmentBinding;
     private int userId;
 
     @Override
@@ -82,7 +70,6 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
         fragmentCheckupBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
-        loadReturnHistory(null);
     }
 
 
@@ -92,11 +79,9 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
         }
     }
 
-    private void loadBottomSheet() {
-        bottomSheetCheckupFragmentBinding = DataBindingUtil.inflate(LayoutInflater.from(
-                getActivity()), R.layout.bottom_sheet_checkup_fragment, null, false);
-        bottomSheetDialog = new BottomSheetDialog(getActivity());
-        bottomSheetDialog.setContentView(bottomSheetCheckupFragmentBinding.getRoot());
+    @Override
+    public void loadBottomSheet() {
+        super.loadBottomSheet();
         bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -111,9 +96,9 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
         public void onClickPosition(int position) {
 
             checkUpAdapter.clearSelection();
-            ProductInfoResponse returnHistoryResponse = checkUpAdapter.
+            FetchNewRequestResponse fetchNewRequestResponse = checkUpAdapter.
                     getItemFromPosition(position);
-            returnHistoryResponse.setSelected(true);
+            fetchNewRequestResponse.setSelected(true);
             checkUpAdapter.notifyDataSetChanged();
 
             createBottomSheetView(position);
@@ -123,7 +108,7 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
 
     private void createBottomSheetView(int position) {
         productSelectedPosition = position;
-        bottomSheetCheckupFragmentBinding.topRow.setVisibility(View.GONE);
+//        bottomSheetCheckupFragmentBinding.topRow.setVisibility(View.GONE);
 
         String[] bottomNames = new String[4];
         bottomNames[0] = getString(R.string.bottom_option_customer);
@@ -137,7 +122,7 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
         bottomDrawables[2] = R.drawable.ic_option_find_service_center;
         bottomDrawables[3] = R.drawable.ic_option_delete;
 
-        bottomSheetCheckupFragmentBinding.bottomRow.removeAllViews();
+        /*bottomSheetCheckupFragmentBinding.bottomRow.removeAllViews();
         int length = bottomNames.length;
         LinearLayout.LayoutParams params =
                 new LinearLayout.LayoutParams(
@@ -156,7 +141,7 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
             linearLayout.addView(bottomRootView);
             bottomRootView.setOnClickListener(bottomViewClickListener);
             bottomSheetCheckupFragmentBinding.bottomRow.addView(linearLayout, params);
-        }
+        }*/
     }
 
 
@@ -203,7 +188,7 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
                 topDrawables[1] = R.drawable.ic_option_pasthistory;
                 topDrawables[2] = R.drawable.ic_option_close;
             }
-            bottomSheetCheckupFragmentBinding.secondtopRow.removeAllViews();
+            /*bottomSheetCheckupFragmentBinding.secondtopRow.removeAllViews();
             bottomSheetCheckupFragmentBinding.topRow.removeAllViews();
             int length1 = bottomOptions.length;
             bottomSheetCheckupFragmentBinding.topRow.setVisibility(View.VISIBLE);
@@ -226,7 +211,7 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
                 // topRootView.setOnClickListener(topViewClickListener);
                 linearLayout.addView(topRootView);
                 bottomSheetCheckupFragmentBinding.topRow.addView(linearLayout, params);
-            }
+            }*/
         }
     };
 
@@ -282,7 +267,7 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
                 topDrawables = new int[0];
             }
 
-            bottomSheetCheckupFragmentBinding.secondtopRow.removeAllViews();
+            /*bottomSheetCheckupFragmentBinding.secondtopRow.removeAllViews();
             int length1 = bottomOptions.length;
             bottomSheetCheckupFragmentBinding.secondtopRow.setVisibility(View.VISIBLE);
             int length = length1;
@@ -303,7 +288,7 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
                 linearLayout.addView(bottomRootView);
                 bottomRootView.setOnClickListener(secondtopViewClickListener);
                 bottomSheetCheckupFragmentBinding.secondtopRow.addView(linearLayout, params);
-            }
+            }*/
         }
     };
 
@@ -334,17 +319,11 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
         }
     };
 
-    private CustomBottomViewBinding getCustomBottomView() {
-        return DataBindingUtil.inflate(
-                LayoutInflater.from(getActivity()), R.layout.custom_bottom_view, null, false);
-    }
-
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
                     checkUpAdapter.clearData();
-                    checkUpPresenter.returnHistory(userId);
 
                 }
             };
@@ -356,20 +335,7 @@ public class CheckUpFragment extends BaseFragment implements CheckUpContract.Vie
 
 
     @Override
-    public void loadReturnHistory(List<ProductInfoResponse> returnHistoryResponseList) {
-        if (returnHistoryResponseList == null) {
-            returnHistoryResponseList = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                ProductInfoResponse productInfoResponse = new ProductInfoResponse();
-                returnHistoryResponseList.add(productInfoResponse);
-            }
-        }
-        if (returnHistoryResponseList.size() == 0) {
-            fragmentCheckupBinding.returnTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
-        } else {
-            checkUpAdapter.setData(returnHistoryResponseList);
-            dismissSwipeRefresh();
-        }
+    public void onSearchClickListerner(String searchableText, String searchType) {
+        //TODO have to implement search
     }
 }

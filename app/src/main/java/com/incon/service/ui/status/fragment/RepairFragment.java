@@ -3,47 +3,33 @@ package com.incon.service.ui.status.fragment;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.databinding.BottomSheetCheckupFragmentBinding;
-import com.incon.service.databinding.BottomSheetRepairFragmentBinding;
-import com.incon.service.databinding.CustomBottomViewBinding;
-import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.databinding.FragmentRepairBinding;
-import com.incon.service.ui.BaseFragment;
-import com.incon.service.ui.status.adapter.CheckUpAdapter;
 import com.incon.service.ui.status.adapter.RepairAdapter;
+import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.SharedPrefsUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by PC on 12/5/2017.
  */
 
-public class RepairFragment extends BaseFragment implements RepairContract.View {
+public class RepairFragment extends BaseTabFragment implements RepairContract.View {
     private FragmentRepairBinding fragmentRepairBinding;
 
     private View rootView;
     private RepairAdapter repairAdapter;
     private RepairPresenter repairPresenter;
-    private int productSelectedPosition = -1;
     private int userId;
-    private BottomSheetDialog bottomSheetDialog;
-    private BottomSheetRepairFragmentBinding sheetRepairFragmentBinding;
 
     @Override
     protected void initializePresenter() {
@@ -85,14 +71,11 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
         fragmentRepairBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
-        loadReturnHistory(null);
     }
 
-    private void loadBottomSheet() {
-        sheetRepairFragmentBinding = DataBindingUtil.inflate(LayoutInflater.from(
-                getActivity()), R.layout.bottom_sheet_repair_fragment, null, false);
-        bottomSheetDialog = new BottomSheetDialog(getActivity());
-        bottomSheetDialog.setContentView(sheetRepairFragmentBinding.getRoot());
+    @Override
+    public void loadBottomSheet() {
+        super.loadBottomSheet();
         bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -106,9 +89,9 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
         @Override
         public void onClickPosition(int position) {
             repairAdapter.clearSelection();
-            ProductInfoResponse returnHistoryResponse = repairAdapter.
+            FetchNewRequestResponse fetchNewRequestResponse = repairAdapter.
                     getItemFromPosition(position);
-            returnHistoryResponse.setSelected(true);
+            fetchNewRequestResponse.setSelected(true);
             repairAdapter.notifyDataSetChanged();
             createBottomSheetView(position);
             bottomSheetDialog.show();
@@ -117,7 +100,7 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
 
     private void createBottomSheetView(int position) {
         productSelectedPosition = position;
-        sheetRepairFragmentBinding.topRow.setVisibility(View.GONE);
+//        sheetRepairFragmentBinding.topRow.setVisibility(View.GONE);
 
         String[] bottomNames = new String[4];
         bottomNames[0] = getString(R.string.bottom_option_customer);
@@ -131,7 +114,7 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
         bottomDrawables[2] = R.drawable.ic_option_find_service_center;
         bottomDrawables[3] = R.drawable.ic_option_delete;
 
-        sheetRepairFragmentBinding.bottomRow.removeAllViews();
+        /*sheetRepairFragmentBinding.bottomRow.removeAllViews();
         int length = bottomNames.length;
         LinearLayout.LayoutParams params =
                 new LinearLayout.LayoutParams(
@@ -150,7 +133,7 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
             linearLayout.addView(bottomRootView);
             bottomRootView.setOnClickListener(bottomViewClickListener);
             sheetRepairFragmentBinding.bottomRow.addView(linearLayout, params);
-        }
+        }*/
     }
 
 
@@ -195,7 +178,7 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
                 topDrawables[1] = R.drawable.ic_option_hold;
                 topDrawables[2] = R.drawable.ic_option_close;
             }
-            sheetRepairFragmentBinding.secondtopRow.removeAllViews();
+            /*sheetRepairFragmentBinding.secondtopRow.removeAllViews();
             sheetRepairFragmentBinding.topRow.removeAllViews();
             int length1 = bottomOptions.length;
             sheetRepairFragmentBinding.topRow.setVisibility(View.VISIBLE);
@@ -218,7 +201,7 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
                 // topRootView.setOnClickListener(topViewClickListener);
                 linearLayout.addView(topRootView);
                 sheetRepairFragmentBinding.topRow.addView(linearLayout, params);
-            }
+            }*/
         }
     };
 
@@ -274,7 +257,7 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
                 topDrawables = new int[0];
             }
 
-            sheetRepairFragmentBinding.secondtopRow.removeAllViews();
+            /*sheetRepairFragmentBinding.secondtopRow.removeAllViews();
             int length1 = bottomOptions.length;
             sheetRepairFragmentBinding.secondtopRow.setVisibility(View.VISIBLE);
             int length = length1;
@@ -295,7 +278,7 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
                 linearLayout.addView(bottomRootView);
                 bottomRootView.setOnClickListener(secondtopViewClickListener);
                 sheetRepairFragmentBinding.secondtopRow.addView(linearLayout, params);
-            }
+            }*/
         }
     };
 
@@ -326,17 +309,11 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
         }
     };
 
-    private CustomBottomViewBinding getCustomBottomView() {
-        return DataBindingUtil.inflate(
-                LayoutInflater.from(getActivity()), R.layout.custom_bottom_view, null, false);
-    }
-
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
                     repairAdapter.clearData();
-                    repairPresenter.returnHistory(userId);
 
                 }
             };
@@ -347,27 +324,14 @@ public class RepairFragment extends BaseFragment implements RepairContract.View 
     }
 
 
-    @Override
-    public void loadReturnHistory(List<ProductInfoResponse> returnHistoryResponseList) {
-        if (returnHistoryResponseList == null) {
-            returnHistoryResponseList = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                ProductInfoResponse productInfoResponse = new ProductInfoResponse();
-                returnHistoryResponseList.add(productInfoResponse);
-            }
-        }
-        if (returnHistoryResponseList.size() == 0) {
-            fragmentRepairBinding.returnTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
-        } else {
-            repairAdapter.setData(returnHistoryResponseList);
-            dismissSwipeRefresh();
-        }
-    }
-
     private void dismissSwipeRefresh() {
         if (fragmentRepairBinding.swiperefresh.isRefreshing()) {
             fragmentRepairBinding.swiperefresh.setRefreshing(false);
         }
+    }
+
+    @Override
+    public void onSearchClickListerner(String searchableText, String searchType) {
+        //TODO have to implement search click listener
     }
 }

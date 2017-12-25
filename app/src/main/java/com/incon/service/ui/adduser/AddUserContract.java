@@ -1,7 +1,6 @@
 package com.incon.service.ui.adduser;
 
-import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
-import com.incon.service.dto.addservicecenter.AddServiceCenter;
+import com.incon.service.apimodel.components.fetchdesignations.FetchDesignationsResponse;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseView;
 

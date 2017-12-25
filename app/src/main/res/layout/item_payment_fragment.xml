@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="productinforesponse"
-            type="com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse" />
+            name="fetchNewRequestResponse"
+            type="com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse" />
     </data>
 
     <RelativeLayout

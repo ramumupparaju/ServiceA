@@ -1,4 +1,4 @@
-package com.incon.service.apimodel.components.servicecenterresponse;
+package com.incon.service.apimodel.components.servicecenter;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;

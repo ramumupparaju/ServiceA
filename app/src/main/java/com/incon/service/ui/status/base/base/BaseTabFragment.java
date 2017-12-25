@@ -1,4 +1,4 @@
-package com.incon.connect.user.ui.history.base;
+package com.incon.service.ui.status.base.base;
 
 public abstract class BaseTabFragment extends BaseProductOptionsFragment {
 

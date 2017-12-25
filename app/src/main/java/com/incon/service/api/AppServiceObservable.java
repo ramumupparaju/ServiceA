@@ -2,17 +2,17 @@ package com.incon.service.api;
 
 
 import com.incon.service.apimodel.base.ApiBaseResponse;
-import com.incon.service.apimodel.components.adddesignationresponse.DesignationResponse;
-import com.incon.service.apimodel.components.defaults.DefaultsResponse;
+import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
 import com.incon.service.apimodel.components.favorites.AddUserAddressResponse;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
-import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
+import com.incon.service.apimodel.components.fetchdesignations.FetchDesignationsResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.login.LoginResponse;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.productinfo.ProductInfoResponse;
 import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
-import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.dto.addfavorites.AddUserAddress;
@@ -74,6 +74,10 @@ public interface AppServiceObservable {
     // get service centers api
     @GET("service/getservicecenters/{userId}")
     Observable<List<ServiceCenterResponse>> getServiceCentersApi(@Path("userId") int userId);
+
+    // fetch  new service request api
+    @GET("service/fetchrequests/1/NEW/{userId}")
+    Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(@Path("userId") int userId);
 
 
     // service center logo  api

@@ -13,9 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.incon.service.AppConstants;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddDesignationsBinding;
 import com.incon.service.dto.adddesignation.AddDesignation;
@@ -23,7 +22,6 @@ import com.incon.service.ui.BaseActivity;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

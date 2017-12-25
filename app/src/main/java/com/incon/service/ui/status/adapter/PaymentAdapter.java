@@ -5,14 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.android.databinding.library.baseAdapters.BR;
-import com.incon.service.AppUtils;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
-import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.databinding.ItemNewRequestFragmentBinding;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.databinding.ItemPaymentFragmentBinding;
 import com.incon.service.ui.BaseRecyclerViewAdapter;
 
@@ -32,8 +27,8 @@ public class PaymentAdapter extends BaseRecyclerViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ProductInfoResponse returnHistoryResponse = filteredList.get(position);
-        ((PaymentAdapter.ViewHolder) holder).bind(returnHistoryResponse);
+        FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
+        ((PaymentAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -45,7 +40,8 @@ public class PaymentAdapter extends BaseRecyclerViewAdapter {
             binding.getRoot().setOnClickListener(this);
         }
 
-        public void bind(ProductInfoResponse returnHistoryResponse) {
+        public void bind(FetchNewRequestResponse fetchNewRequestResponse) {
+
             }
 
         @Override

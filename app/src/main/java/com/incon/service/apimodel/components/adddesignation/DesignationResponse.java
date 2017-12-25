@@ -1,4 +1,4 @@
-package com.incon.service.apimodel.components.adddesignationresponse;
+package com.incon.service.apimodel.components.adddesignation;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

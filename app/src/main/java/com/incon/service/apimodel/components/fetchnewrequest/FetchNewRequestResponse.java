@@ -3,37 +3,54 @@ package com.incon.service.apimodel.components.fetchnewrequest;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.incon.service.apimodel.components.assigneduser.AssignedUser;
-import com.incon.service.apimodel.components.customer.Customer;
-import com.incon.service.apimodel.components.productresponse.ProductInfoResponse;
-import com.incon.service.apimodel.components.request.Request;
-import com.incon.service.dto.registration.ServiceCenter;
+import com.incon.service.apimodel.components.customer.CustomerResponse;
+import com.incon.service.apimodel.components.productinfo.ProductInfoResponse;
+import com.incon.service.apimodel.components.request.RequestResponse;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 
 /**
  * Created by MY HOME on 25-Dec-17.
  */
 
-public class Fetchnewrequest {
+public class FetchNewRequestResponse {
     @SerializedName("customer")
     @Expose
-    private Customer customer;
+    private CustomerResponse customer;
     @SerializedName("product")
     @Expose
     private ProductInfoResponse product;
+
     @SerializedName("serviceCenter")
     @Expose
-    private ServiceCenter serviceCenter;
+    private ServiceCenterResponse serviceCenter;
     @SerializedName("request")
     @Expose
-    private Request request;
+    private RequestResponse request;
     @SerializedName("assignedUser")
     @Expose
     private AssignedUser assignedUser;
 
-    public Customer getCustomer() {
+    public CustomerResponse getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public ServiceCenterResponse getServiceCenter() {
+        return serviceCenter;
+    }
+
+    public void setServiceCenter(ServiceCenterResponse serviceCenter) {
+        this.serviceCenter = serviceCenter;
+    }
+    private transient boolean isSelected;
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public void setCustomer(CustomerResponse customer) {
         this.customer = customer;
     }
 
@@ -45,19 +62,12 @@ public class Fetchnewrequest {
         this.product = product;
     }
 
-    public ServiceCenter getServiceCenter() {
-        return serviceCenter;
-    }
 
-    public void setServiceCenter(ServiceCenter serviceCenter) {
-        this.serviceCenter = serviceCenter;
-    }
-
-    public Request getRequest() {
+    public RequestResponse getRequest() {
         return request;
     }
 
-    public void setRequest(Request request) {
+    public void setRequest(RequestResponse request) {
         this.request = request;
     }
 

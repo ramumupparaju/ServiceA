@@ -1,4 +1,4 @@
-package com.incon.connect.user.ui.history.base;
+package com.incon.service.ui.status.base.base;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -15,24 +15,23 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.incon.connect.user.R;
-import com.incon.connect.user.databinding.BottomSheetPurchasedBinding;
-import com.incon.connect.user.ui.BaseFragment;
-import com.incon.connect.user.utils.DeviceUtils;
-import com.incon.connect.user.utils.Logger;
-
+import com.incon.service.R;
+import com.incon.service.databinding.CustomBottomSheetBinding;
+import com.incon.service.ui.BaseFragment;
+import com.incon.service.utils.DeviceUtils;
+import com.incon.service.utils.Logger;
 
 public abstract class BaseProductOptionsFragment extends BaseFragment {
 
 
     public BottomSheetDialog bottomSheetDialog;
-    public BottomSheetPurchasedBinding bottomSheetPurchasedBinding;
+    public CustomBottomSheetBinding bottomSheetPurchasedBinding;
     public int productSelectedPosition = -1;
 
     // load bottom sheet
     public void loadBottomSheet() {
         bottomSheetPurchasedBinding = DataBindingUtil.inflate(LayoutInflater.from(
-                getActivity()), R.layout.bottom_sheet_purchased, null, false);
+                getActivity()), R.layout.custom_bottom_sheet, null, false);
         bottomSheetDialog = new BottomSheetDialog(getActivity());
         bottomSheetDialog.setContentView(bottomSheetPurchasedBinding.getRoot());
     }

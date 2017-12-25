@@ -3,44 +3,33 @@ package com.incon.service.ui.status.fragment;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.databinding.BottomSheetNewPaymentFragmentBinding;
-import com.incon.service.databinding.CustomBottomViewBinding;
 import com.incon.service.databinding.FragmentPaymentBinding;
-import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.status.adapter.PaymentAdapter;
+import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.SharedPrefsUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by PC on 12/5/2017.
  */
 
-public class PaymentFragment extends BaseFragment implements PaymentContract.View {
+public class PaymentFragment extends BaseTabFragment implements PaymentContract.View {
 
     private FragmentPaymentBinding fragmentPaymentBinding;
     private View rootView;
     private PaymentAdapter paymentAdapter;
     private PaymentPresenter paymentPresenter;
-    private int productSelectedPosition = -1;
-    private BottomSheetDialog bottomSheetDialog;
     private int userId;
-    private BottomSheetNewPaymentFragmentBinding bottomSheetNewPaymentFragmentBinding;
     @Override
     protected void initializePresenter() {
         paymentPresenter = new PaymentPresenter();
@@ -81,7 +70,6 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
         fragmentPaymentBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
-        loadReturnHistory(null);
 
     }
 
@@ -91,11 +79,9 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
         }
     }
 
-    private void loadBottomSheet() {
-        bottomSheetNewPaymentFragmentBinding = DataBindingUtil.inflate(LayoutInflater.from(
-                getActivity()), R.layout.bottom_sheet_new_payment_fragment, null, false);
-        bottomSheetDialog = new BottomSheetDialog(getActivity());
-        bottomSheetDialog.setContentView(bottomSheetNewPaymentFragmentBinding.getRoot());
+    @Override
+    public void loadBottomSheet() {
+        super.loadBottomSheet();
         bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -109,9 +95,9 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
         @Override
         public void onClickPosition(int position) {
             paymentAdapter.clearSelection();
-            ProductInfoResponse returnHistoryResponse = paymentAdapter.
+            FetchNewRequestResponse fetchNewRequestResponse = paymentAdapter.
                     getItemFromPosition(position);
-            returnHistoryResponse.setSelected(true);
+            fetchNewRequestResponse.setSelected(true);
             paymentAdapter.notifyDataSetChanged();
 
             createBottomSheetView(position);
@@ -121,7 +107,7 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
 
     private void createBottomSheetView(int position) {
         productSelectedPosition = position;
-        bottomSheetNewPaymentFragmentBinding.topRow.setVisibility(View.GONE);
+//        bottomSheetNewPaymentFragmentBinding.topRow.setVisibility(View.GONE);
 
         String[] bottomNames = new String[4];
         bottomNames[0] = getString(R.string.bottom_option_customer);
@@ -135,7 +121,7 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
         bottomDrawables[2] = R.drawable.ic_option_find_service_center;
         bottomDrawables[3] = R.drawable.ic_option_delete;
 
-        bottomSheetNewPaymentFragmentBinding.bottomRow.removeAllViews();
+        /*bottomSheetNewPaymentFragmentBinding.bottomRow.removeAllViews();
         int length = bottomNames.length;
         LinearLayout.LayoutParams params =
                 new LinearLayout.LayoutParams(
@@ -154,7 +140,7 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
             linearLayout.addView(bottomRootView);
             bottomRootView.setOnClickListener(bottomViewClickListener);
             bottomSheetNewPaymentFragmentBinding.bottomRow.addView(linearLayout, params);
-        }
+        }*/
     }
 
 
@@ -195,7 +181,7 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_options_features;
             }
-            bottomSheetNewPaymentFragmentBinding.secondtopRow.removeAllViews();
+            /*bottomSheetNewPaymentFragmentBinding.secondtopRow.removeAllViews();
             bottomSheetNewPaymentFragmentBinding.topRow.removeAllViews();
             int length1 = bottomOptions.length;
             bottomSheetNewPaymentFragmentBinding.topRow.setVisibility(View.VISIBLE);
@@ -218,7 +204,7 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
                 // topRootView.setOnClickListener(topViewClickListener);
                 linearLayout.addView(topRootView);
                 bottomSheetNewPaymentFragmentBinding.topRow.addView(linearLayout, params);
-            }
+            }*/
         }
     };
 
@@ -274,7 +260,7 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
                 topDrawables = new int[0];
             }
 
-            bottomSheetNewPaymentFragmentBinding.secondtopRow.removeAllViews();
+            /*bottomSheetNewPaymentFragmentBinding.secondtopRow.removeAllViews();
             int length1 = bottomOptions.length;
             bottomSheetNewPaymentFragmentBinding.secondtopRow.setVisibility(View.VISIBLE);
             int length = length1;
@@ -295,7 +281,7 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
                 linearLayout.addView(bottomRootView);
                 bottomRootView.setOnClickListener(secondtopViewClickListener);
                 bottomSheetNewPaymentFragmentBinding.secondtopRow.addView(linearLayout, params);
-            }
+            }*/
         }
     };
 
@@ -326,16 +312,11 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
         }
     };
 
-    private CustomBottomViewBinding getCustomBottomView() {
-        return DataBindingUtil.inflate(
-                LayoutInflater.from(getActivity()), R.layout.custom_bottom_view, null, false);
-    }
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
                     paymentAdapter.clearData();
-                    paymentPresenter.returnHistory(userId);
 
                 }
             };
@@ -347,20 +328,7 @@ public class PaymentFragment extends BaseFragment implements PaymentContract.Vie
 
 
     @Override
-    public void loadReturnHistory(List<ProductInfoResponse> returnHistoryResponseList) {
-        if (returnHistoryResponseList == null) {
-            returnHistoryResponseList = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                ProductInfoResponse productInfoResponse = new ProductInfoResponse();
-                returnHistoryResponseList.add(productInfoResponse);
-            }
-        }
-        if (returnHistoryResponseList.size() == 0) {
-            fragmentPaymentBinding.returnTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
-        } else {
-            paymentAdapter.setData(returnHistoryResponseList);
-            dismissSwipeRefresh();
-        }
+    public void onSearchClickListerner(String searchableText, String searchType) {
+        //TODO search click listener
     }
 }

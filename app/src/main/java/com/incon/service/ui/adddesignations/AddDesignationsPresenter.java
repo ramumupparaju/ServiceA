@@ -7,11 +7,9 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
-import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.ui.BasePresenter;
-import com.incon.service.ui.addservicecenter.AddServiceCenterPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.List;
