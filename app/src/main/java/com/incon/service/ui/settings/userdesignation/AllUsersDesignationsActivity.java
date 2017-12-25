@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.incon.service.R;
-import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.databinding.ActivityAllUsersDesignationsBinding;

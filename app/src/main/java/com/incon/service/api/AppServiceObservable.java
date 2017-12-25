@@ -2,17 +2,17 @@ package com.incon.service.api;
 
 
 import com.incon.service.apimodel.base.ApiBaseResponse;
-import com.incon.service.apimodel.components.adddesignationresponse.DesignationResponse;
-import com.incon.service.apimodel.components.defaults.DefaultsResponse;
+import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
 import com.incon.service.apimodel.components.favorites.AddUserAddressResponse;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
-import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.login.LoginResponse;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.productinfo.ProductInfoResponse;
 import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
-import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
+import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.dto.addfavorites.AddUserAddress;
@@ -143,9 +143,6 @@ public interface AppServiceObservable {
     @POST("user/buyrequest")
     Observable<Object> buyRequestApi(@Body HashMap<String, String> buyRequestBody);
 
-    //return history  api
-    @GET("user/history/return/{userId}")
-    Observable<List<ProductInfoResponse>> returnApi(@Path("userId") int userId);
 
     // getting user addresses api
     @GET("user/getaddresses/{userId}")
@@ -155,22 +152,10 @@ public interface AppServiceObservable {
     @POST("user/addaddress")
     Observable<Object> addProductAddress(@Body AddUserAddress addUserAddress);
 
-    //  favourites addresse api
-    @GET("user/favourites/{userId}/{addressId}")
-    Observable<List<ProductInfoResponse>> favouritesProductApi(
-            @Path("userId") int userId, @Path("addressId") int addressId);
 
     @GET("user/getuser/scan/{qrCode}/")
     Observable<UserInfoResponse> userInfoUsingQrCode(@Path("qrCode") String qrCode);
 
-    // user intereste api
-    @POST("user/interested/{customerId}")
-    Observable<ProductInfoResponse> userInterestedUsingQrCode(@Path("customerId") int customerId, @Body
-            HashMap<String,
-                    String> qrCode);
-
-    @POST("product/getproduct")
-    Observable<ProductInfoResponse> productInfoUsingQrCode(@Body HashMap<String, String> qrCode);
 
     //search modelNumber  api
     @GET("product/search/{modelNumber}")

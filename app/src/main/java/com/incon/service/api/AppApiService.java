@@ -4,16 +4,16 @@ package com.incon.service.api;
 import com.incon.service.AppConstants;
 import com.incon.service.BuildConfig;
 import com.incon.service.apimodel.base.ApiBaseResponse;
-import com.incon.service.apimodel.components.adddesignationresponse.DesignationResponse;
-import com.incon.service.apimodel.components.defaults.DefaultsResponse;
+import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
-import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.login.LoginResponse;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.productinfo.ProductInfoResponse;
 import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
-import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
+import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
 import com.incon.service.dto.adddesignation.AddDesignation;
@@ -114,11 +114,6 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.addDesignation(userId, addDesignation));
     }
 
-    // fetch designations api
-    public Observable<List<FetchDesignationsResponse>> fetchDesignations(
-            int serviceCenterId, int userId) {
-        return addNetworkCheck(serviceInstance.fetchDesignations(serviceCenterId, userId));
-    }
 
 
     // service center logo  api
@@ -189,11 +184,6 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.interestApi(userId));
     }
 
-    //return history  api
-    public Observable<List<ProductInfoResponse>> returnApi(int userId) {
-        return addNetworkCheck(serviceInstance.returnApi(userId));
-    }
-
 
     // getting user details from qr code
     public Observable<UserInfoResponse> userInfoUsingQrCode(String qrCode) {
@@ -206,10 +196,6 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.newUserRegistation(phoneNumber));
     }
 
-    // getting product details from qr code
-    public Observable<ProductInfoResponse> productInfoUsingQrCode(HashMap<String, String> qrCode) {
-        return addNetworkCheck(serviceInstance.productInfoUsingQrCode(qrCode));
-    }
 
     //search modelNumber  api
     public Observable<List<ModelSearchResponse>> modelNumberSearch(String modelNumber) {

@@ -1,6 +1,5 @@
 package com.incon.service.ui.settings.userdesignation;
 
-import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
 import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.ui.BaseView;
 

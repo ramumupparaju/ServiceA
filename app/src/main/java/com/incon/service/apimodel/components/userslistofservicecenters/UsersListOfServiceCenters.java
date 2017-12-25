@@ -2,7 +2,7 @@ package com.incon.service.apimodel.components.userslistofservicecenters;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 
 /**
  * Created by INCON TECHNOLOGIES on 12/25/2017.
