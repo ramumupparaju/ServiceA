@@ -22,6 +22,13 @@
         <item>Female</item>
     </string-array>
 
+    <!-- adding new options  -->
+    <string-array name="select_new_options">
+        <item>Add new service center</item>
+        <item>Add new user</item>
+        <item>Add new Designation</item>
+    </string-array>
+
     <!-- image capture options -->
     <string-array name="select_image_list">
         <item>Take Photo</item>
