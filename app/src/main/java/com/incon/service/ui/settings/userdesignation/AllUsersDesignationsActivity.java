@@ -77,18 +77,22 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         usersList = new ArrayList<>();
         designationsList = new ArrayList<>();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                this, linearLayoutManager.getOrientation());
+
 
         designationsListAdapter = new DesignationsListAdapter();
         designationsListAdapter.setClickCallback(iClickCallback);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
+                this, linearLayoutManager.getOrientation());
         binding.allDesignationsRecyclerview.addItemDecoration(dividerItemDecoration);
         binding.allDesignationsRecyclerview.setAdapter(designationsListAdapter);
         binding.allDesignationsRecyclerview.setLayoutManager(linearLayoutManager);
 
         usersListAdapter = new UsersListAdapter();
         usersListAdapter.setClickCallback(iClickCallback);
+        linearLayoutManager = new LinearLayoutManager(this);
+        dividerItemDecoration = new DividerItemDecoration(
+                this, linearLayoutManager.getOrientation());
         binding.allUsersRecyclerview.addItemDecoration(dividerItemDecoration);
         binding.allUsersRecyclerview.setAdapter(usersListAdapter);
         binding.allUsersRecyclerview.setLayoutManager(linearLayoutManager);
