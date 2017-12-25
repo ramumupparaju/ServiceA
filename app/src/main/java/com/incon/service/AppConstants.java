@@ -201,6 +201,7 @@ public interface AppConstants {
         String LOCATION_COMMA = "locationDetails";
         String FROM_FORGOT_PASSWORD_SCREEN = "fromForgotPasswordScreen";
         String ADDRESS_INFO = "addressInfo";
+        String SERVICE_CENTER_DATA = "serviceCenterData";
     }
 
 

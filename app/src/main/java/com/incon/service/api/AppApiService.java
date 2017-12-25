@@ -4,16 +4,16 @@ package com.incon.service.api;
 import com.incon.service.AppConstants;
 import com.incon.service.BuildConfig;
 import com.incon.service.apimodel.base.ApiBaseResponse;
-import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
+import com.incon.service.apimodel.components.adddesignationresponse.DesignationResponse;
+import com.incon.service.apimodel.components.defaults.DefaultsResponse;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
-import com.incon.service.apimodel.components.fetchdesignations.FetchDesignationsResponse;
-import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.fetchdesignationsresponse.FetchDesignationsResponse;
 import com.incon.service.apimodel.components.login.LoginResponse;
-import com.incon.service.apimodel.components.productinfo.ProductInfoResponse;
+import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
 import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
+import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
 import com.incon.service.dto.adddesignation.AddDesignation;
@@ -161,6 +161,16 @@ public class AppApiService implements AppConstants {
     // check qr Codestatus  api
     public Observable<Object> checkQrCodestatus(String qrCode) {
         return addNetworkCheck(serviceInstance.checkQrCodestatus(qrCode));
+    }
+
+    // get users list of service centers api
+    public Observable<Object> getDesignationsListUsingServiceCenter(int serviceCenterId, int userId) {
+        return addNetworkCheck(serviceInstance.getDesignationsListUsingServiceCenter(serviceCenterId, userId));
+    }
+
+    // get users list of service centers api
+    public Observable<List<UsersListOfServiceCenters>> getUsersListOfServiceCenterApi(int userId) {
+        return addNetworkCheck(serviceInstance.getUsersListOfServiceCentersApi(userId));
     }
 
     // get service centers api  api

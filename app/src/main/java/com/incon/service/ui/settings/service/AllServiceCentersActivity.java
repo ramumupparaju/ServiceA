@@ -8,15 +8,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.incon.service.R;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
-import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.custom.view.AppListDialog;
+import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.callbacks.IEditClickCallback;
 import com.incon.service.databinding.ActivityAllServiceCentersBinding;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BaseActivity;
-import com.incon.service.ui.adddesignations.AddDesignationsActivity;
 import com.incon.service.ui.addservicecenter.AddServiceCenterActivity;
-import com.incon.service.ui.adduser.AddUserActivity;
 import com.incon.service.ui.settings.adapters.AllServiceCentersAdapter;
+import com.incon.service.ui.settings.userdesignation.AllUsersDesignationsActivity;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import java.util.List;
 /**
  * Created by PC on 12/19/2017.
  */
-
 public class AllServiceCentersActivity extends BaseActivity implements
         AllServiceCentersContract.View {
 
@@ -34,7 +32,6 @@ public class AllServiceCentersActivity extends BaseActivity implements
 
     public List<ServiceCenterResponse> serviceCenterResponseList;
     private AllServiceCentersAdapter allServiceCentersAdapter;
-    private AppListDialog appListDialog;
 
     @Override
     protected int getLayoutId() {
@@ -74,11 +71,40 @@ public class AllServiceCentersActivity extends BaseActivity implements
     }
 
     //recyclerview click event
-    private IClickCallback iClickCallback = new IClickCallback() {
+    private IEditClickCallback iClickCallback = new IEditClickCallback() {
+        @Override
+        public void onEditClickPosition(int position) {
+            AddServiceCenter addServiceCenter = getServiceCenterRequestFromResponse(serviceCenterResponseList.get(position));
+            Intent intent = new Intent(AllServiceCentersActivity.this, AddServiceCenterActivity.class);
+            intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, addServiceCenter);
+            startActivity(intent);
+        }
+
         @Override
         public void onClickPosition(int position) {
+            Intent intent = new Intent(AllServiceCentersActivity.this, AllUsersDesignationsActivity.class);
+            intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, serviceCenterResponseList.get(position).getId());
+            startActivity(intent);
         }
     };
+
+    private AddServiceCenter getServiceCenterRequestFromResponse(ServiceCenterResponse serviceCenterResponse) {
+        AddServiceCenter addServiceCenter = new AddServiceCenter();
+        addServiceCenter.setId(serviceCenterResponse.getId());
+        addServiceCenter.setAddress(serviceCenterResponse.getAddress());
+        addServiceCenter.setBrandId(serviceCenterResponse.getBrandId());
+        addServiceCenter.setCategoryId(serviceCenterResponse.getCategoryId());
+        addServiceCenter.setContactNo(serviceCenterResponse.getContactNo());
+        //TODO have to change as parameter
+        addServiceCenter.setCreatedDate(String.valueOf(serviceCenterResponse.getCreatedDate()));
+        addServiceCenter.setDivisionId(serviceCenterResponse.getDivisionId());
+        addServiceCenter.setEmail(serviceCenterResponse.getEmail());
+        addServiceCenter.setLocation(serviceCenterResponse.getLocation());
+        addServiceCenter.setName(serviceCenterResponse.getName());
+        addServiceCenter.setGstn(serviceCenterResponse.getGstn());
+        return addServiceCenter;
+    }
+
 
 
     private void initializeToolbar() {
@@ -91,52 +117,10 @@ public class AllServiceCentersActivity extends BaseActivity implements
         binding.toolbarNewIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showNewOptionDialog();
-            }
-        });
-    }
-
-    private void showNewOptionDialog() {
-        String[] items = getResources().getStringArray(R.array.select_new_options);
-
-        appListDialog = new AppListDialog();
-        appListDialog.setClickCallback(clickCallback);
-        appListDialog.initDialogLayout(this, items);
-    }
-
-    IClickCallback clickCallback = new IClickCallback() {
-        @Override
-        public void onClickPosition(int position) {
-            Intent intent = null;
-            switch (position) {
-                case 0:
-                    //load add new center screen;
-                    intent = new Intent(AllServiceCentersActivity.this, AddServiceCenterActivity.class);
-                    break;
-                case 1:
-                    //load new user screen
-                    intent = new Intent(AllServiceCentersActivity.this, AddUserActivity.class);
-                    break;
-                case 2:
-                    //load designations screen
-                    intent = new Intent(AllServiceCentersActivity.this, AddDesignationsActivity.class);
-                    break;
-                default:
-                    break;
-            }
-            if (intent != null) {
+                Intent intent = new Intent(AllServiceCentersActivity.this, AddServiceCenterActivity.class);
                 startActivity(intent);
             }
-
-        }
-    };
-
-    /**
-     * onclick listener for add designations
-     */
-    public void onClickNewDesignation() {
-
-
+        });
     }
 
     @Override

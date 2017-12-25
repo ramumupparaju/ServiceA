@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
 
         <variable
             name="isEditable"
-            type="Boolean"/>
+            type="Boolean" />
 
         <variable
             name="upDateUserProfile"
-            type="com.incon.service.dto.update.UpDateUserProfile"/>
+            type="com.incon.service.dto.update.UpDateUserProfile" />
 
         <variable
             name="upDateUserProfileActivity"
-            type="com.incon.service.ui.settings.update.UpDateUserProfileActivity"/>
+            type="com.incon.service.ui.settings.update.UpDateUserProfileActivity" />
 
     </data>
 
@@ -47,7 +47,7 @@
                         android:paddingEnd="@dimen/margin_25"
                         android:paddingStart="@dimen/margin_15"
                         android:visibility="visible"
-                        app:srcCompat="@drawable/ic_back_arrow"/>
+                        app:srcCompat="@drawable/ic_back_arrow" />
 
                     <TextView
                         android:id="@+id/toolbar_text_user"
@@ -56,8 +56,7 @@
                         android:layout_centerInParent="true"
                         android:text="@string/action_update_user_profile"
                         android:textColor="@color/white"
-                        android:textSize="15.5sp"/>
-
+                        android:textSize="15.5sp" />
 
 
                     <ImageView
@@ -69,7 +68,7 @@
                         android:paddingEnd="@dimen/margin_15"
                         android:paddingStart="@dimen/margin_15"
                         android:visibility="@{isEditable ? View.GONE : View.VISIBLE}"
-                        app:srcCompat="@drawable/ic_edit_profile"/>
+                        app:srcCompat="@drawable/ic_edit_profile" />
 
                 </RelativeLayout>
 
@@ -98,7 +97,7 @@
                     android:maxLength="@integer/character_limit_200"
                     android:maxLines="1"
                     android:tag="0"
-                    android:text="@={upDateUserProfile.name}"/>
+                    android:text="@={upDateUserProfile.name}" />
 
             </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -123,7 +122,7 @@
                     android:maxLength="@integer/character_limit_45"
                     android:maxLines="1"
                     android:tag="1"
-                    android:text="@={upDateUserProfile.mobileNumber}"/>
+                    android:text="@={upDateUserProfile.mobileNumber}" />
             </com.incon.service.custom.view.CustomTextInputLayout>
 
             <!-- Gender -->
@@ -132,16 +131,16 @@
                 style="@style/spinnerItemStyle"
                 android:layout_below="@id/input_layout_up_date_phone"
                 android:layout_marginBottom="@dimen/margin_24"
-                android:hint="@string/register_gender_hint"
-                android:tag="2"
                 android:enabled="@{isEditable ? true : false }"
                 android:focusable="@{isEditable ? true : false }"
                 android:focusableInTouchMode="@{isEditable ? true : false }"
+                android:hint="@string/register_gender_hint"
+                android:tag="2"
                 android:text="@={upDateUserProfile.gender}"
                 app:errorEnabled="true"
                 app:met_floatingLabel="highlight"
                 app:met_textColor="@color/colorForgotPasswordHintText"
-                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+                app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
             <!-- Date of Birth -->
             <com.incon.service.custom.view.CustomTextInputLayout
@@ -157,11 +156,10 @@
                     android:id="@+id/edittext_up_date_dob"
                     style="@style/Register_TextInputEditText"
                     android:enabled="false"
-                    android:tag="3"
                     android:focusable="@{isEditable ? true : false }"
                     android:focusableInTouchMode="@{isEditable ? true : false }"
-                    android:text="@={upDateUserProfile.dateOfBirthToShow}"
-                    />
+                    android:tag="3"
+                    android:text="@={upDateUserProfile.dateOfBirthToShow}" />
             </com.incon.service.custom.view.CustomTextInputLayout>
 
             <!--dummy view for dob click event -->
@@ -177,8 +175,7 @@
                 android:enabled="@{isEditable ? true : false }"
                 android:focusable="@{isEditable ? true : false }"
                 android:focusableInTouchMode="@{isEditable ? true : false }"
-                android:onClick="@{() -> upDateUserProfileActivity.onDobClick()}"
-                />
+                android:onClick="@{() -> upDateUserProfileActivity.onDobClick()}" />
 
             <!-- Email ID -->
             <com.incon.service.custom.view.CustomTextInputLayout
@@ -193,16 +190,15 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edittext_up_date_emailid"
                     style="@style/Register_TextInputEditText"
+                    android:enabled="@{isEditable ? true : false }"
+                    android:focusable="@{isEditable ? true : false }"
+                    android:focusableInTouchMode="@{isEditable ? true : false }"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLength="@integer/character_limit_200"
                     android:maxLines="1"
-                    android:enabled="@{isEditable ? true : false }"
-                    android:focusable="@{isEditable ? true : false }"
-                    android:focusableInTouchMode="@{isEditable ? true : false }"
                     android:tag="4"
-                    android:text="@={upDateUserProfile.userEmail}"
-                    />
+                    android:text="@={upDateUserProfile.userEmail}" />
             </com.incon.service.custom.view.CustomTextInputLayout>
 
             <!-- Address -->
@@ -219,11 +215,10 @@
                     android:id="@+id/edittext_up_date_address"
                     style="@style/Register_TextInputEditText"
                     android:enabled="false"
-                    android:tag="7"
                     android:focusable="@{isEditable ? true : false }"
                     android:focusableInTouchMode="@{isEditable ? true : false }"
-                    android:text="@={upDateUserProfile.address}"
-                    />
+                    android:tag="7"
+                    android:text="@={upDateUserProfile.address}" />
             </com.incon.service.custom.view.CustomTextInputLayout>
 
 
@@ -240,8 +235,7 @@
                 android:enabled="@{isEditable ? true : false }"
                 android:focusable="@{isEditable ? true : false }"
                 android:focusableInTouchMode="@{isEditable ? true : false }"
-                android:onClick="@{() -> upDateUserProfileActivity.onAddressClick()}"
-                />
+                android:onClick="@{() -> upDateUserProfileActivity.onAddressClick()}" />
 
             <Button
                 android:id="@+id/button_submit"
@@ -257,7 +251,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/tueo_theme"
                 android:textSize="@dimen/text_size_13"
-                android:visibility="@{isEditable ? View.VISIBLE : View.GONE}"/>
+                android:visibility="@{isEditable ? View.VISIBLE : View.GONE}" />
 
         </RelativeLayout>
 

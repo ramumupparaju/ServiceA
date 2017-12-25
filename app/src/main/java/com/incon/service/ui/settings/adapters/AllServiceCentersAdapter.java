@@ -10,6 +10,7 @@ import com.incon.service.BR;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.IEditClickCallback;
 import com.incon.service.databinding.ItemAllServiceCentersBinding;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
 public class AllServiceCentersAdapter extends RecyclerView.Adapter<AllServiceCentersAdapter.ViewHolder> {
 
     private List<ServiceCenterResponse> serviceCenterResponses = new ArrayList<>();
-    private IClickCallback clickCallback;
+    private IEditClickCallback clickCallback;
 
     @Override
     public AllServiceCentersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,7 +37,7 @@ public class AllServiceCentersAdapter extends RecyclerView.Adapter<AllServiceCen
         notifyDataSetChanged();
     }
 
-    public void setClickCallback(IClickCallback clickCallback) {
+    public void setClickCallback(IEditClickCallback clickCallback) {
         this.clickCallback = clickCallback;
     }
 
@@ -58,7 +59,9 @@ public class AllServiceCentersAdapter extends RecyclerView.Adapter<AllServiceCen
         public ViewHolder(ItemAllServiceCentersBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            binding.getRoot().setOnClickListener(this);
+            View root = binding.getRoot();
+            (root.findViewById(R.id.edit_imageview)).setOnClickListener(this);
+            root.setOnClickListener(this);
         }
 
         public void bind(ServiceCenterResponse serviceCenterResponse, int position) {
@@ -68,6 +71,10 @@ public class AllServiceCentersAdapter extends RecyclerView.Adapter<AllServiceCen
 
         @Override
         public void onClick(View v) {
+            if (v.getId() == R.id.edit_imageview) {
+                clickCallback.onEditClickPosition(getAdapterPosition());
+                return;
+            }
             clickCallback.onClickPosition(getAdapterPosition());
         }
 

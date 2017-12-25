@@ -6,7 +6,7 @@
 
         <variable
             name="activity"
-            type="com.incon.service.ui.settings.service.AllServiceCentersActivity" />
+            type="com.incon.service.ui.settings.userdesignation.AllUsersDesignationsActivity" />
 
     </data>
 
@@ -38,7 +38,7 @@
                     style="@style/BothWrap"
                     fontPath="fonts/OpenSans-Bold.ttf"
                     android:layout_centerInParent="true"
-                    android:text="@string/action_all_service_centers"
+                    android:text="@string/action_all_users_designation"
                     android:textColor="@color/white"
                     android:textSize="15.5sp" />
 
@@ -51,14 +51,51 @@
                     android:layout_marginRight="@dimen/margin_10"
                     app:srcCompat="@drawable/ic_add_new" />
 
+
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/all_service_centers_recyclerview"
+        <LinearLayout
+            android:id="@+id/views_layout"
             style="@style/MatchWrap"
             android:layout_below="@id/toolbar"
+            android:orientation="horizontal"
+            android:weightSum="2.5">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/action_users" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:onCheckedChanged="@{(switch, checked) -> activity.onCheckedChanged(checked)}" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/action_designations" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/all_users_recyclerview"
+            style="@style/MatchWrap"
+            android:layout_below="@id/views_layout"
+            android:layout_marginTop="@dimen/margin_10"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="4dp"
+            android:scrollbarThumbVertical="@drawable/scrollbar"
+            android:scrollbars="vertical" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/all_designations_recyclerview"
+            style="@style/MatchWrap"
+            android:layout_below="@id/views_layout"
             android:layout_marginTop="@dimen/margin_10"
             android:fadeScrollbars="false"
             android:scrollbarSize="4dp"

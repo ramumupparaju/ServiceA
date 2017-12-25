@@ -59,7 +59,7 @@ public class AddUserPresenter extends BasePresenter<AddUserContract.View>
 
     @Override
     public void fetchDesignations(int serviceCenterId, int userId) {
-        getView().showProgress(appContext.getString(R.string.progress_designations));
+//        getView().showProgress(appContext.getString(R.string.progress_designations));
         DisposableObserver<List<FetchDesignationsResponse>> observer = new
                 DisposableObserver<List<FetchDesignationsResponse>>() {
                     @Override
@@ -79,7 +79,8 @@ public class AddUserPresenter extends BasePresenter<AddUserContract.View>
                     public void onComplete() {
                     }
                 };
-        AppApiService.getInstance().fetchDesignations(serviceCenterId, userId).subscribe(observer);
+        //TODO
+//        AppApiService.getInstance().fetchDesignations(serviceCenterId, userId).subscribe(observer);
         addDisposable(observer);
 
     }
