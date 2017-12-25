@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="modelResponse"
-            type="com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse" />
+            name="usersListOfServiceCenters"
+            type="com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters" />
     </data>
 
     <RelativeLayout
@@ -18,16 +18,8 @@
         <TextView
             style="@style/BothWrap"
             android:layout_marginTop="@dimen/margin_8"
-            android:text="@={modelResponse.name}"
             android:textColor="@color/black"
             android:textSize="12.4sp" />
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/edit_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            app:srcCompat="@drawable/ic_add_new" />
 
     </RelativeLayout>
 </layout>

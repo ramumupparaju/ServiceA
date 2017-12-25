@@ -14,6 +14,7 @@ import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
 import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
 import com.incon.service.dto.adddesignation.AddDesignation;
@@ -114,13 +115,6 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.addDesignation(userId, addDesignation));
     }
 
-    // fetch designations api
-    public Observable<List<FetchDesignationsResponse>> fetchDesignations(
-            int serviceCenterId, int userId) {
-        return addNetworkCheck(serviceInstance.fetchDesignations(serviceCenterId, userId));
-    }
-
-
     // service center logo  api
     public Observable<Object> uploadServiceCenterLogo(int serviceCenterId, MultipartBody.Part serviceCenterLogo) {
         return addNetworkCheck(serviceInstance.uploadServiceCenterLogo(String.valueOf(serviceCenterId), serviceCenterLogo));
@@ -161,6 +155,16 @@ public class AppApiService implements AppConstants {
     // check qr Codestatus  api
     public Observable<Object> checkQrCodestatus(String qrCode) {
         return addNetworkCheck(serviceInstance.checkQrCodestatus(qrCode));
+    }
+
+    // get users list of service centers api
+    public Observable<Object> getDesignationsListUsingServiceCenter(int serviceCenterId, int userId) {
+        return addNetworkCheck(serviceInstance.getDesignationsListUsingServiceCenter(serviceCenterId, userId));
+    }
+
+    // get users list of service centers api
+    public Observable<List<UsersListOfServiceCenters>> getUsersListOfServiceCenterApi(int userId) {
+        return addNetworkCheck(serviceInstance.getUsersListOfServiceCentersApi(userId));
     }
 
     // get service centers api  api

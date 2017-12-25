@@ -13,9 +13,12 @@ import java.util.List;
 public interface AddServiceCenterContract {
     interface View extends BaseView {
 
+        void loadedDefaultsData(boolean isDataAvailable);
     }
 
     interface Presenter {
+        void defaultsApi();
+
         void addingServiceCenter(int userId, AddServiceCenter addServiceCenter);
-        }
+    }
 }

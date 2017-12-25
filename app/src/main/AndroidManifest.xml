@@ -108,6 +108,11 @@
             android:screenOrientation="portrait"></activity>
 
         <activity
+            android:name=".ui.settings.userdesignation.AllUsersDesignationsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
             android:name=".ui.addservicecenter.AddServiceCenterActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"></activity>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.TextInputEditText;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -46,42 +47,60 @@ import java.util.TimeZone;
 
 public class AddServiceCenterActivity extends BaseActivity implements
         AddServiceCenterContract.View {
-    private View rootView;
     private AddServiceCenterPresenter addServiceCenterPresenter;
+    private ActivityAddserviceCenterBinding binding;
     private AddServiceCenter addServiceCenter;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
-    private ActivityAddserviceCenterBinding binding;
+
     @Override
     protected void initializePresenter() {
         addServiceCenterPresenter = new AddServiceCenterPresenter();
         addServiceCenterPresenter.setView(this);
         setBasePresenter(addServiceCenterPresenter);
     }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_addservice_center;
     }
+
     @Override
     protected void onCreateView(Bundle saveInstanceState) {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
-        addServiceCenter = new AddServiceCenter();
-        // TODO have to check
-        addServiceCenter.setCategoryId(-1);
-        addServiceCenter.setDivisionId(-1);
-        addServiceCenter.setBrandId(-1);
+
+        Intent bundle = getIntent();
+
+        if (bundle != null) {
+            addServiceCenter = bundle.getParcelableExtra(IntentConstants.SERVICE_CENTER_DATA);
+            binding.toolbarTitle.setText(getString(R.string.title_update_service_center));
+            binding.buttonSubmit.setText(getString(R.string.action_update));
+            binding.toolbarDeleteIv.setVisibility(View.VISIBLE);
+        } else {
+            binding.toolbarTitle.setText(getString(R.string.action_add_service_center));
+            binding.toolbarDeleteIv.setVisibility(View.GONE);
+            binding.buttonSubmit.setText(getString(R.string.action_submit));
+            addServiceCenter = new AddServiceCenter();
+            // TODO have to check
+            addServiceCenter.setCategoryId(-1);
+            addServiceCenter.setDivisionId(-1);
+            addServiceCenter.setBrandId(-1);
+        }
         binding.setAddServiceCenter(addServiceCenter);
         binding.setAddServiceCenterActivity(this);
-        rootView = binding.getRoot();
         initViews();
         initializeToolbar();
 
     }
+
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadValidationErrors();
         setFocusForViews();
+
+        addServiceCenterPresenter.defaultsApi();
     }
+
     private void initializeToolbar() {
         binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,11 +108,22 @@ public class AddServiceCenterActivity extends BaseActivity implements
                 finish();
             }
         });
+        binding.toolbarDeleteIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDeleteServiceCenterDialog();
+            }
+        });
+    }
+
+    private void showDeleteServiceCenterDialog() {
+
     }
 
     public void onDateClick() {
         showDatePicker();
     }
+
     private void showDatePicker() {
         AppUtils.hideSoftKeyboard(this, binding.edittextCreatedDate);
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
@@ -227,9 +257,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
             ((CustomTextInputLayout) view.getParent().getParent())
                     .setError(validationId == VALIDATION_SUCCESS ? null
                             : errorMap.get(validationId));
-        }
-
-        else {
+        } else {
             ((MaterialBetterSpinner) view).setError(validationId == VALIDATION_SUCCESS ? null
                     : errorMap.get(validationId));
         }
@@ -286,11 +314,22 @@ public class AddServiceCenterActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    public void loadedDefaultsData(boolean isDataAvailable) {
 
+        if (isDataAvailable) {
+
+            //TODO have to initialize spinner data from application class list
+        } else {
+            AppUtils.shortToast(this, getString(R.string.error_loading_categories));
+        }
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         addServiceCenterPresenter.disposeAll();
     }
+
+
 }

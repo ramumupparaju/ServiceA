@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="addServiceCenter"
-            type="com.incon.service.dto.addservicecenter.AddServiceCenter"/>
+            type="com.incon.service.dto.addservicecenter.AddServiceCenter" />
 
         <variable
             name="addServiceCenterActivity"
-            type="com.incon.service.ui.addservicecenter.AddServiceCenterActivity"/>
+            type="com.incon.service.ui.addservicecenter.AddServiceCenterActivity" />
 
     </data>
 
@@ -28,6 +28,7 @@
             <RelativeLayout
 
                 style="@style/BothMatch">
+
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
@@ -45,17 +46,25 @@
                             android:paddingEnd="@dimen/margin_25"
                             android:paddingStart="@dimen/margin_15"
                             android:visibility="visible"
-                            app:srcCompat="@drawable/ic_back_arrow"/>
+                            app:srcCompat="@drawable/ic_back_arrow" />
 
                         <TextView
-                            android:id="@+id/toolbar_text_user"
+                            android:id="@+id/toolbar_title"
                             style="@style/BothWrap"
                             fontPath="fonts/OpenSans-Bold.ttf"
                             android:layout_centerInParent="true"
                             android:text="@string/action_add_service_center"
                             android:textColor="@color/white"
-                            android:textSize="15.5sp"/>
+                            android:textSize="15.5sp" />
 
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/toolbar_delete_iv"
+                            style="@style/BothWrap"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/margin_10"
+                            app:srcCompat="@drawable/ic_option_delete" />
 
                     </RelativeLayout>
 
@@ -66,9 +75,9 @@
                 <com.incon.service.custom.view.CustomTextInputLayout
                     android:id="@+id/input_layout_name"
                     style="@style/Register_TextInputLayout"
-                    android:hint="@string/register_name_hint"
-                    android:layout_marginTop="@dimen/margin_10"
                     android:layout_below="@+id/toolbar"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:hint="@string/register_name_hint"
                     app:errorEnabled="true"
                     app:fontName="fonts/OpenSans-Regular.ttf"
                     app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
@@ -82,7 +91,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="0"
-                        android:text="@={addServiceCenter.name}"/>
+                        android:text="@={addServiceCenter.name}" />
 
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -105,7 +114,7 @@
                         android:maxLength="@integer/character_limit_45"
                         android:maxLines="1"
                         android:tag="1"
-                        android:text="@={addServiceCenter.contactNo}"/>
+                        android:text="@={addServiceCenter.contactNo}" />
 
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -129,7 +138,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="2"
-                        android:text="@={addServiceCenter.email}"/>
+                        android:text="@={addServiceCenter.email}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!-- Address -->
@@ -147,7 +156,7 @@
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
                         android:tag="3"
-                        android:text="@={addServiceCenter.address}"/>
+                        android:text="@={addServiceCenter.address}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!--Dummy view used for click action-->
@@ -160,7 +169,7 @@
                     android:layout_alignStart="@+id/input_layout_register_address"
                     android:layout_alignTop="@+id/input_layout_register_address"
                     android:background="@null"
-                    android:onClick="@{() -> addServiceCenterActivity.onAddressClick()}"/>
+                    android:onClick="@{() -> addServiceCenterActivity.onAddressClick()}" />
 
                 <com.incon.service.custom.view.CustomTextInputLayout
                     android:id="@+id/input_layout_created_date"
@@ -176,7 +185,7 @@
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
                         android:tag="4"
-                        android:text="@={addServiceCenter.createdDate}"/>
+                        android:text="@={addServiceCenter.createdDate}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
                 <!-- dummy view for Offers start date selection -->
                 <View
@@ -188,7 +197,7 @@
                     android:layout_alignStart="@+id/input_layout_created_date"
                     android:layout_alignTop="@+id/input_layout_created_date"
                     android:background="@null"
-                    android:onClick="@{() -> addServiceCenterActivity.onDateClick()}"/>
+                    android:onClick="@{() -> addServiceCenterActivity.onDateClick()}" />
 
                 <!-- GSTN -->
                 <com.incon.service.custom.view.CustomTextInputLayout
@@ -209,7 +218,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="5"
-                        android:text="@={addServiceCenter.gstn}"/>
+                        android:text="@={addServiceCenter.gstn}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <Button
@@ -225,7 +234,7 @@
                     android:text="@string/add_new_submit"
                     android:textAllCaps="true"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_13"/>
+                    android:textSize="@dimen/text_size_13" />
 
             </RelativeLayout>
 

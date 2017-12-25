@@ -13,6 +13,7 @@ import com.incon.service.apimodel.components.qrcodebaruser.UserInfoResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.search.ModelSearchResponse;
 import com.incon.service.apimodel.components.servicecenterresponse.ServiceCenterResponse;
+import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.dto.addfavorites.AddUserAddress;
@@ -64,12 +65,13 @@ public interface AppServiceObservable {
     Observable<DesignationResponse> addDesignation(@Path("userId") int userId,
                                                    @Body AddDesignation addDesignation);
 
-    //fetch designation api
-    @GET("service/getdesignations/{serviceCenterId}/{userId}")
-    Observable<List<FetchDesignationsResponse>> fetchDesignations(@Path("serviceCenterId") int
-                                                                          serviceCenterId
-            , @Path("userId") int userId);
+    // get designations list using service center and user id
+    @GET("service/service/getdesignations/{serviceCenterId}/{userId}")
+    Observable<Object> getDesignationsListUsingServiceCenter(@Path("serviceCenterId") int serviceCenterId, @Path("userId") int userId);
 
+    // get users list of service centers api
+    @GET("service/getuserslist/{userId}")
+    Observable<List<UsersListOfServiceCenters>> getUsersListOfServiceCentersApi(@Path("userId") int userId);
 
     // get service centers api
     @GET("service/getservicecenters/{userId}")

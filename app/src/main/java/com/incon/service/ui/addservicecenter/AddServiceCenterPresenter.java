@@ -10,6 +10,8 @@ import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BasePresenter;
+import com.incon.service.ui.register.RegistrationContract;
+import com.incon.service.ui.register.RegistrationPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.List;
@@ -25,6 +27,7 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
 
     private static final String TAG = AddServiceCenterPresenter.class.getName();
     private Context appContext;
+
     @Override
     public void initialize(Bundle extras) {
         super.initialize(extras);
@@ -33,8 +36,49 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
 
 
     @Override
-    public void addingServiceCenter(int userId, AddServiceCenter addServiceCenter)
-    {
+    public void defaultsApi() {
+        RegistrationPresenter registrationPresenter = new RegistrationPresenter();
+        registrationPresenter.initialize(null);
+        registrationPresenter.setView(new RegistrationContract.View() {
+            @Override
+            public void navigateToNext() {
+                //do nothing
+            }
+
+            @Override
+            public void navigateToBack() {
+                //do nothing
+            }
+
+            @Override
+            public void startRegistration(boolean isDataAvailable) {
+                getView().loadedDefaultsData(isDataAvailable);
+            }
+
+            @Override
+            public void showProgress(String message) {
+                getView().showProgress(message);
+            }
+
+            @Override
+            public void hideProgress() {
+                getView().hideProgress();
+            }
+
+            @Override
+            public void showErrorMessage(String errorMessage) {
+                getView().showErrorMessage(errorMessage);
+            }
+
+            @Override
+            public void handleException(Pair<Integer, String> error) {
+                getView().handleException(error);
+            }
+        });
+    }
+
+    @Override
+    public void addingServiceCenter(int userId, AddServiceCenter addServiceCenter) {
         getView().showProgress(appContext.getString(R.string.progress_adding_service_center));
 
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
@@ -55,7 +99,7 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
 
             }
         };
-        AppApiService.getInstance().addServiceCenter(userId,addServiceCenter).subscribe(observer);
+        AppApiService.getInstance().addServiceCenter(userId, addServiceCenter).subscribe(observer);
         addDisposable(observer);
     }
 

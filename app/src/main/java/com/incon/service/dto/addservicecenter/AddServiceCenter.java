@@ -2,6 +2,8 @@ package com.incon.service.dto.addservicecenter;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -14,7 +16,10 @@ import com.incon.service.utils.ValidationUtils;
  * Created by MY HOME on 16-Dec-17.
  */
 
-public class AddServiceCenter extends BaseObservable {
+public class AddServiceCenter extends BaseObservable implements Parcelable {
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("address")
     @Expose
     private String address;
@@ -49,6 +54,18 @@ public class AddServiceCenter extends BaseObservable {
     private transient String categoryName;
     private transient String divisionName;
     private transient String brandName;
+
+    public AddServiceCenter() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     @Bindable
     public String getCategoryName() {
         return categoryName;
@@ -58,6 +75,7 @@ public class AddServiceCenter extends BaseObservable {
         this.categoryName = categoryName;
         notifyChange();
     }
+
     @Bindable
     public String getDivisionName() {
         return divisionName;
@@ -67,6 +85,7 @@ public class AddServiceCenter extends BaseObservable {
         this.divisionName = divisionName;
         notifyChange();
     }
+
     @Bindable
     public String getBrandName() {
         return brandName;
@@ -102,6 +121,7 @@ public class AddServiceCenter extends BaseObservable {
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
+
     @Bindable
     public String getContactNo() {
         return contactNo;
@@ -111,6 +131,7 @@ public class AddServiceCenter extends BaseObservable {
         this.contactNo = contactNo;
         notifyChange();
     }
+
     @Bindable
     public String getCreatedDate() {
         return createdDate;
@@ -128,6 +149,7 @@ public class AddServiceCenter extends BaseObservable {
     public void setDivisionId(Integer divisionId) {
         this.divisionId = divisionId;
     }
+
     @Bindable
     public String getEmail() {
         return email;
@@ -145,6 +167,7 @@ public class AddServiceCenter extends BaseObservable {
     public void setLocation(String location) {
         this.location = location;
     }
+
     @Bindable
     public String getName() {
         return name;
@@ -154,6 +177,7 @@ public class AddServiceCenter extends BaseObservable {
         this.name = name;
         notifyChange();
     }
+
     @Bindable
     public String getGstn() {
         return gstn;
@@ -240,6 +264,77 @@ public class AddServiceCenter extends BaseObservable {
         return AppConstants.VALIDATION_SUCCESS;
     }
 
+
+    protected AddServiceCenter(Parcel in) {
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        address = in.readString();
+        brandId = in.readByte() == 0x00 ? null : in.readInt();
+        categoryId = in.readByte() == 0x00 ? null : in.readInt();
+        contactNo = in.readString();
+        createdDate = in.readString();
+        divisionId = in.readByte() == 0x00 ? null : in.readInt();
+        email = in.readString();
+        location = in.readString();
+        name = in.readString();
+        gstn = in.readString();
+        categoryName = in.readString();
+        divisionName = in.readString();
+        brandName = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(address);
+        if (brandId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(brandId);
+        }
+        if (categoryId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(categoryId);
+        }
+        dest.writeString(contactNo);
+        dest.writeString(createdDate);
+        if (divisionId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(divisionId);
+        }
+        dest.writeString(email);
+        dest.writeString(location);
+        dest.writeString(name);
+        dest.writeString(gstn);
+        dest.writeString(categoryName);
+        dest.writeString(divisionName);
+        dest.writeString(brandName);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<AddServiceCenter> CREATOR = new Parcelable.Creator<AddServiceCenter>() {
+        @Override
+        public AddServiceCenter createFromParcel(Parcel in) {
+            return new AddServiceCenter(in);
+        }
+
+        @Override
+        public AddServiceCenter[] newArray(int size) {
+            return new AddServiceCenter[size];
+        }
+    };
 }
-
-

@@ -52,6 +52,17 @@ public class ServiceCenterResponse extends BaseObservable {
     @Expose
     private Object addressInfo;
 
+    @SerializedName("logoUrl")
+    @Expose
+    private String logoUrl;
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
     public Integer getId() {
         return id;
     }
