@@ -43,6 +43,7 @@
                     android:textSize="15.5sp" />
 
                 <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/toolbar_new_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
