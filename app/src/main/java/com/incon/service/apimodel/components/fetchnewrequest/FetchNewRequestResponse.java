@@ -41,7 +41,9 @@ public class FetchNewRequestResponse {
     public void setServiceCenter(ServiceCenterResponse serviceCenter) {
         this.serviceCenter = serviceCenter;
     }
+
     private transient boolean isSelected;
+
     public boolean isSelected() {
         return isSelected;
     }

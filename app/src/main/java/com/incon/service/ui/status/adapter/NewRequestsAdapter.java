@@ -44,7 +44,7 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
         }
 
         public void bind(FetchNewRequestResponse fetchNewRequestResponse, int position) {
-            binding.setVariable(BR.fetchNewRequestResponse,fetchNewRequestResponse);
+            binding.setVariable(BR.fetchNewRequestResponse, fetchNewRequestResponse);
             View root = binding.getRoot();
             binding.executePendingBindings();
         }
