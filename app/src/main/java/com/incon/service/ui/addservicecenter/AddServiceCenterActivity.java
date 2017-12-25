@@ -62,9 +62,9 @@ public class AddServiceCenterActivity extends BaseActivity implements
         binding = DataBindingUtil.setContentView(this, getLayoutId());
 
         Intent bundle = getIntent();
-
-        if (bundle != null) {
+        if (bundle != null)
             addServiceCenter = bundle.getParcelableExtra(IntentConstants.SERVICE_CENTER_DATA);
+        if (addServiceCenter != null) {
             binding.toolbarTitle.setText(getString(R.string.title_update_service_center));
             binding.buttonSubmit.setText(getString(R.string.action_update));
             binding.toolbarDeleteIv.setVisibility(View.VISIBLE);
