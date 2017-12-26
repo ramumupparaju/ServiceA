@@ -310,6 +310,7 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                 @Override
                 public void onRefresh() {
                     paymentAdapter.clearData();
+                    paymentPresenter.fetchNewServiceRequests(userId);
 
                 }
             };
@@ -317,6 +318,7 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
     @Override
     public void onDestroy() {
         super.onDestroy();
+        paymentPresenter.disposeAll();
     }
 
 

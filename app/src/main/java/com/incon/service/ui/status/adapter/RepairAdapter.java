@@ -28,7 +28,7 @@ public class RepairAdapter extends BaseRecyclerViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        FetchNewRequestResponse fetchNewRequestResponse = fetchNewRequestResponseList.get(position);
+        FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
         ((RepairAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
     }
 

@@ -350,7 +350,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         addressIntent.putExtra(IntentConstants.ADDRESS_COMMA, itemFromPosition.getServiceCenter().getAddress());
         startActivity(addressIntent);
     }
-
+    // data re load
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

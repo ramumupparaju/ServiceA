@@ -28,7 +28,7 @@ public class CheckUpAdapter  extends BaseRecyclerViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        FetchNewRequestResponse fetchNewRequestResponse = fetchNewRequestResponseList.get(position);
+        FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
         ((CheckUpAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
     }
 

@@ -333,6 +333,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 @Override
                 public void onRefresh() {
                     checkUpAdapter.clearData();
+                    checkUpPresenter.fetchNewServiceRequests(userId);
 
                 }
             };
