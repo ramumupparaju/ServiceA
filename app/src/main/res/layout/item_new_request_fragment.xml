@@ -30,7 +30,8 @@
                 android:layout_height="32dp"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:alpha="70"
-                android:src="@drawable/ic_user_favorite"/>
+                android:src="@drawable/ic_user_favorite"
+                />
             <!--product image-->
             <ImageView
                 android:id="@+id/product_imageview"
