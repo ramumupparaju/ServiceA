@@ -1,94 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <data>
-
         <variable
             name="fetchNewRequestResponse"
             type="com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse" />
     </data>
-
-    <RelativeLayout
-        android:id="@+id/layout_return_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/list_item_selector"
-        android:padding="@dimen/margin_5">
-
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        style="@style/MatchWrap"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_3"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_3"
+        app:cardCornerRadius="@dimen/corner_radius">
 
         <RelativeLayout
-            android:id="@+id/views_layout"
+            android:id="@+id/layout_checkup_item"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="120dp">
+            <!--brand image-->
             <ImageView
-                app:srcCompat="@drawable/ic_option_approval"
-                android:layout_marginTop="@dimen/margin_50"
                 android:id="@+id/brand_imageview"
-                style="@style/image_product_icon" />
-
+                android:layout_width="45dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:alpha="70"
+                android:src="@drawable/ic_user_favorite" />
+            <!--product image-->
             <ImageView
-                app:srcCompat="@drawable/ic_option_approval"
-                android:layout_marginTop="@dimen/margin_50"
                 android:id="@+id/product_imageview"
                 style="@style/image_product_icon"
-                android:layout_toRightOf="@id/brand_imageview" />
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/brand_imageview"
+                android:src="@drawable/ic_user_favorite" />
+            <!--product name-->
+            <TextView
+                android:id="@+id/product_name"
+                style="@style/BothWrap"
+                fontPath="fonts/OpenSans-Bold.ttf"
+                android:layout_marginTop="@dimen/margin_5"
+                android:layout_toRightOf="@id/product_imageview"
+                android:maxLines="2"
+                android:text="@={fetchNewRequestResponse.product.name}"
+                android:textAllCaps="true"
+                android:textColor="@color/ebony_clay"
+                android:textSize="12.4sp" />
+            <!--model number -->
+            <TextView
+                android:id="@+id/model_number"
+                style="@style/BothWrap"
+                android:layout_below="@+id/product_name"
+                android:layout_marginTop="@dimen/margin_5"
+                android:layout_toRightOf="@id/product_imageview"
+                android:maxLines="2"
+                android:text="@={fetchNewRequestResponse.product.modelNo}"
+                android:textAllCaps="true"
+                android:textColor="@color/ebony_clay"
+                android:textSize="12.4sp" />
 
-            <LinearLayout
-                android:id="@+id/product_info_layout"
-                style="@style/linear_layout_product_details"
-                android:layout_toRightOf="@id/product_imageview">
-
-                <TextView
-                    style="@style/BothWrap"
-                    android:text="@string/title_product_name"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:textColor="@color/ebony_clay"
-                    android:textSize="12.4sp" />
-
-
-                <TextView
-                    android:id="@+id/return_date"
-                    style="@style/BothWrap"
-                    android:text="@string/title_model_no"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:textColor="@color/ebony_clay"
-                    android:textSize="12.4sp" />
-
-                <TextView
-                    style="@style/BothWrap"
-                    android:text="@string/title_complaint"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:textColor="@color/ebony_clay"
-                    android:textSize="12.4sp" />
+            <TextView
+                android:id="@+id/text_complaint"
+                style="@style/BothWrap"
+                android:layout_below="@+id/model_number"
+                android:layout_marginTop="@dimen/margin_5"
+                android:layout_toRightOf="@id/product_imageview"
+                android:maxLines="2"
+                android:text="@={fetchNewRequestResponse.product.modelNo}"
+                android:textAllCaps="true"
+                android:textColor="@color/ebony_clay"
+                android:textSize="12.4sp" />
 
 
-                <TextView
-                    style="@style/BothWrap"
-                    android:text="@string/title_location"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:textColor="@color/ebony_clay"
-                    android:textSize="12.4sp" />
+            <!--location-->
+            <TextView
+                android:id="@+id/text_location"
+                style="@style/BothWrap"
+                android:layout_width="80dp"
+                android:layout_below="@+id/text_complaint"
+                android:layout_toRightOf="@id/product_imageview"
+                android:textColor="@color/ebony_clay"
+                android:text="@={fetchNewRequestResponse.customer.location}"
+                android:textSize="12.4sp" />
 
-
-                <TextView
-                    style="@style/BothWrap"
-                    android:text="@string/title_warranty_status"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:textColor="@color/ebony_clay"
-                    android:textSize="12.4sp" />
-
-                <TextView
-                    style="@style/BothWrap"
-                    android:text="@string/title_employee_name"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:textColor="@color/ebony_clay"
-                    android:textSize="12.4sp" />
-
-            </LinearLayout>
-
+            <!--warrenty status-->
+            <TextView
+                android:id="@+id/text_waranty_status"
+                style="@style/BothWrap"
+                android:layout_width="80dp"
+                android:text="@={fetchNewRequestResponse.product.modelNo}"
+                android:layout_below="@+id/text_location"
+                android:layout_toRightOf="@id/product_imageview"
+                android:textColor="@color/ebony_clay"
+                android:textSize="12.4sp" />
+            <!--attending date and time-->
+            <TextView
+                android:id="@+id/text_attending_date_time"
+                style="@style/BothWrap"
+                android:text="@={fetchNewRequestResponse.product.modelNo}"
+                android:layout_width="80dp"
+                android:layout_below="@+id/text_waranty_status"
+                android:layout_toRightOf="@id/product_imageview"
+                android:textColor="@color/ebony_clay"
+                android:textSize="12.4sp" />
         </RelativeLayout>
-
-    </RelativeLayout>
+    </android.support.v7.widget.CardView>
 </layout>

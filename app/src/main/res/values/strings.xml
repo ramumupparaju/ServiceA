@@ -51,6 +51,9 @@
     <string name="bottom_option_suggestions">Suggestions</string>
     <string name="bottom_option_bill">Bill</string>
     <string name="bottom_option_past_history">Past History</string>
+    <string name="bottom_option_cash">Cash</string>
+    <string name="bottom_option_online">Online</string>
+    <string name="bottom_option_card">Card</string>
     <string name="bottom_option_share">Share</string>
     <string name="bottom_option_transfer">Transfer</string>
     <string name="bottom_option_feedback">Feedback :</string>

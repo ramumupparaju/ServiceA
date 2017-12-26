@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.incon.service.BR;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.databinding.ItemCheckupFragmentBinding;
@@ -27,7 +28,7 @@ public class CheckUpAdapter  extends BaseRecyclerViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
+        FetchNewRequestResponse fetchNewRequestResponse = fetchNewRequestResponseList.get(position);
         ((CheckUpAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
     }
 
@@ -41,6 +42,9 @@ public class CheckUpAdapter  extends BaseRecyclerViewAdapter {
         }
 
         public void bind(FetchNewRequestResponse fetchNewRequestResponse) {
+            binding.setVariable(BR.fetchNewRequestResponse, fetchNewRequestResponse);
+            View root = binding.getRoot();
+            binding.executePendingBindings();
 
         }
 
