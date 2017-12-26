@@ -171,10 +171,10 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 bottomOptions[2] = getString(R.string.bottom_option_close);
                 bottomOptions[3] = getString(R.string.bottom_option_assign);
                 topDrawables = new int[4];
-                topDrawables[0] = R.drawable.ic_option_accept_request;
-                topDrawables[1] = R.drawable.ic_option_accept_request;
-                topDrawables[2] = R.drawable.ic_option_hold;
-                topDrawables[3] = R.drawable.ic_option_hold;
+                topDrawables[0] = R.drawable.ic_option_repair_done;
+                topDrawables[1] = R.drawable.ic_option_hold;
+                topDrawables[2] = R.drawable.ic_option_close;
+                topDrawables[3] = R.drawable.ic_option_assign;
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
@@ -246,7 +246,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 }
             } else if (firstRowTag == 2) { // service center
                 if (secondRowTag == 0) {
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                 }
             } else if (firstRowTag == 3) { // status upadates
                 if (secondRowTag == 0) {

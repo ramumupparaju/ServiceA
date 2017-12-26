@@ -126,7 +126,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         bottomDrawables[0] = R.drawable.ic_option_customer;
         bottomDrawables[1] = R.drawable.ic_option_product;
         bottomDrawables[2] = R.drawable.ic_option_find_service_center;
-        bottomDrawables[3] = R.drawable.ic_option_delete;
+        bottomDrawables[3] = R.drawable.ic_option_service_support;
 
         bottomSheetPurchasedBinding.firstRow.setVisibility(View.VISIBLE);
         bottomSheetPurchasedBinding.secondRow.setVisibility(View.GONE);
@@ -153,7 +153,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 bottomOptions[2] = getString(R.string.bottom_option_edit);
                 topDrawables = new int[3];
                 topDrawables[0] = R.drawable.ic_option_call;
-                topDrawables[1] = R.drawable.ic_option_find_service_center;
+                topDrawables[1] = R.drawable.ic_option_location;
                 topDrawables[2] = R.drawable.ic_option_service_request;
 
             } else if (tag == 1) {
@@ -256,7 +256,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 }
             } else if (firstRowTag == 2) {
                 if (secondRowTag == 0) {
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                 }
             } else if (firstRowTag == 3) {
                 if (secondRowTag == 0) {

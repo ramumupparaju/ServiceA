@@ -245,7 +245,7 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                 }
             } else if (firstRowTag == 2) { // service center
                 if (secondRowTag == 0) {
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                 }
             } else if (firstRowTag == 3) { // status upadates
                 if (secondRowTag == 0) {

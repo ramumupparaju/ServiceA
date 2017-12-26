@@ -179,8 +179,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 topDrawables = new int[4];
                 topDrawables[0] = R.drawable.ic_option_accept_request;
                 topDrawables[1] = R.drawable.ic_option_accept_request;
-                topDrawables[2] = R.drawable.ic_option_hold;
-                topDrawables[3] = R.drawable.ic_option_hold;
+                topDrawables[2] = R.drawable.ic_option_close;
+                topDrawables[3] = R.drawable.ic_option_assign;
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
@@ -251,7 +251,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             } else if (firstRowTag == 2) {
                 if (secondRowTag == 0) {
                     // call
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                 }
                 //status update
             } else if (firstRowTag == 3) {
