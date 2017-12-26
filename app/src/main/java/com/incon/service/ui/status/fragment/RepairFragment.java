@@ -253,12 +253,9 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 } else if (secondRowTag == 1) {
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                }
-                else if (secondRowTag == 2) {
+                } else if (secondRowTag == 2) {
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                }
-
-                else {
+                } else {
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
 
@@ -325,7 +322,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
         }
 
     };
-
 
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =

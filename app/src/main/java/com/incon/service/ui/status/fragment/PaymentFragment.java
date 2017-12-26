@@ -39,6 +39,7 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
     private int userId;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
+
     @Override
     protected void initializePresenter() {
         paymentPresenter = new PaymentPresenter();
@@ -290,9 +291,7 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                         AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                     } else if (thirdRowTag == 1) {
                         AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                    }
-
-                    else if (thirdRowTag == 2) {
+                    } else if (thirdRowTag == 2) {
                         AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                     }
 
@@ -304,8 +303,6 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
         }
 
     };
-
-
 
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =

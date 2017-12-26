@@ -12,8 +12,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="120dp"
+        android:background="@color/alabaster"
         android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
         app:contentInsetStart="0dp">
 
@@ -27,7 +27,7 @@
                 android:paddingEnd="25dp"
                 android:paddingStart="15dp"
                 android:visibility="visible"
-                app:srcCompat="@drawable/ic_tab_settings" />
+                app:srcCompat="@drawable/ic_settings" />
 
             <TextView
                 android:id="@+id/toolbar_title_tv"
@@ -35,7 +35,7 @@
                 fontPath="fonts/OpenSans-Bold.ttf"
                 android:layout_centerInParent="true"
                 android:text="Title"
-                android:textColor="@color/white"
+                android:textColor="@color/dull_lavender"
                 android:textSize="15.5sp" />
 
             <ImageView

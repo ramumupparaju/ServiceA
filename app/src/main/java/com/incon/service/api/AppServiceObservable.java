@@ -87,6 +87,13 @@ public interface AppServiceObservable {
     Observable<Object> uploadServiceCenterLogo(@Path("storeId") String serviceCenterId,
                                                @Part MultipartBody.Part serviceCenterLogo);
 
+
+
+
+
+
+
+
     //registration request otp
     @GET("user/requestotp/{phoneNumber}/register")
     Observable<Object> registerRequestOtp(@Path("phoneNumber") String phoneNumber);

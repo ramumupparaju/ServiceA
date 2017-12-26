@@ -142,6 +142,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         bottomSheetPurchasedBinding.firstRow.setWeightSum(length);
         setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, bottomNames, bottomDrawables, bottomSheetFirstRowClickListener, "-1");
     }
+
     // bottom sheet click event
     private View.OnClickListener bottomSheetFirstRowClickListener = new View.OnClickListener() {
         @Override
@@ -258,10 +259,9 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 } else if (secondRowTag == 1) {
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                } else if (secondRowTag == 2){
+                } else if (secondRowTag == 2) {
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                }
-                else {
+                } else {
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
 
@@ -326,14 +326,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         }
 
     };
-
-
-
-
-
-
-
-
 
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
