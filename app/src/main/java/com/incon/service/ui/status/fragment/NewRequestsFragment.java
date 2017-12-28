@@ -255,6 +255,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     return;
 */
                 } else if (secondRowTag == 1) { // past history
+                    showPastHisoryDialog();
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
             } else if (firstRowTag == 2) { // service center
@@ -279,6 +280,11 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
     };
+
+    private void showPastHisoryDialog() {
+
+
+    }
 
     private void showHoldDialog() {
         holdDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
