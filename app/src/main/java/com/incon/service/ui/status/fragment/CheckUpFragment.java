@@ -71,8 +71,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         checkUpAdapter = new CheckUpAdapter();
         checkUpAdapter.setClickCallback(iClickCallback);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.requestRecyclerview.setAdapter(checkUpAdapter);
-        binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
+        binding.checkupRecyclerview.setAdapter(checkUpAdapter);
+        binding.checkupRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
         userId = 1;
@@ -146,25 +146,25 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             String[] bottomOptions;
             int[] topDrawables;
             changeSelectedViews(bottomSheetPurchasedBinding.firstRow, unparsedTag);
-            if (tag == 0) {
+            if (tag == 0) {  // customer
                 bottomOptions = new String[1];
                 bottomOptions[0] = getString(R.string.bottom_option_call_customer_care);
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
 
-            } else if (tag == 1) {
+            } else if (tag == 1) { // product
                 bottomOptions = new String[2];
                 bottomOptions[0] = getString(R.string.bottom_option_warranty_details);
                 bottomOptions[1] = getString(R.string.bottom_option_past_history);
                 topDrawables = new int[2];
                 topDrawables[0] = R.drawable.ic_options_features;
                 topDrawables[1] = R.drawable.ic_option_pasthistory;
-            } else if (tag == 2) {
+            } else if (tag == 2) { // service center
                 bottomOptions = new String[1];
                 bottomOptions[0] = getString(R.string.bottom_option_Call);
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
-            } else {
+            } else { // status update
                 bottomOptions = new String[4];
                 bottomOptions[0] = getString(R.string.bottom_option_estimation);
                 bottomOptions[1] = getString(R.string.bottom_option_note);
@@ -212,7 +212,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 }
             } else if (firstRowTag == 1) { // product
 
-                if (secondRowTag == 0) {
+                if (secondRowTag == 0) {  // warrenty details
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                     // TODO have to get details from back end
                     /*String purchasedDate = DateUtils.convertMillisToStringFormat(
@@ -242,20 +242,20 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 } else if (secondRowTag == 1) { // history
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
-            } else if (firstRowTag == 2) {
+            } else if (firstRowTag == 2) { // service center
                 if (secondRowTag == 0) {
                     // call
                     callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                 }
-                //status update
-            } else if (firstRowTag == 3) {
-                if (secondRowTag == 0) {
+
+            } else if (firstRowTag == 3) {  //status update
+                if (secondRowTag == 0) {  // estimation
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                } else if (secondRowTag == 1) {
+                } else if (secondRowTag == 1) { // note
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                } else if (secondRowTag == 2) {
+                } else if (secondRowTag == 2) { // close
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                } else {
+                } else {  // assign
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
 
@@ -350,7 +350,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             fetchNewRequestResponsesList = new ArrayList<>();
         }
         if (fetchNewRequestResponsesList.size() == 0) {
-            binding.requestTextview.setVisibility(View.VISIBLE);
+            binding.checkupTextview.setVisibility(View.VISIBLE);
             dismissSwipeRefresh();
         } else {
             checkUpAdapter.setData(fetchNewRequestResponsesList);

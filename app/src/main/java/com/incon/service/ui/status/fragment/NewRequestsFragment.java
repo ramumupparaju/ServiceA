@@ -16,7 +16,9 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
+import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
@@ -40,6 +42,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private NewRequestsAdapter newRequestsAdapter;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
+    private AppEditTextDialog acceptRejectDialog;
+    private String merchantComment;
 
     @Override
     protected void initializePresenter() {
@@ -147,7 +151,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             String[] bottomOptions;
             int[] topDrawables;
             changeSelectedViews(bottomSheetPurchasedBinding.firstRow, unparsedTag);
-            if (tag == 0) {
+            if (tag == 0) { // customer
                 bottomOptions = new String[3];
                 bottomOptions[0] = getString(R.string.bottom_option_call_customer_care);
                 bottomOptions[1] = getString(R.string.bottom_option_location);
@@ -157,21 +161,19 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 topDrawables[1] = R.drawable.ic_option_location;
                 topDrawables[2] = R.drawable.ic_option_service_request;
 
-            } else if (tag == 1) {
+            } else if (tag == 1) { // product
                 bottomOptions = new String[2];
                 bottomOptions[0] = getString(R.string.bottom_option_warranty_details);
                 bottomOptions[1] = getString(R.string.bottom_option_past_history);
                 topDrawables = new int[2];
                 topDrawables[0] = R.drawable.ic_options_features;
                 topDrawables[1] = R.drawable.ic_option_pasthistory;
-            } else if (tag == 2) {
+            } else if (tag == 2) {  // service center
                 bottomOptions = new String[1];
                 bottomOptions[0] = getString(R.string.bottom_option_Call);
-                // bottomOptions[1] = getString(R.string.bottom_option_assign);
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
-                // topDrawables[1] = R.drawable.ic_option_assign;
-            } else {
+            } else { // status update
                 bottomOptions = new String[3];
                 bottomOptions[0] = getString(R.string.bottom_option_accept);
                 bottomOptions[1] = getString(R.string.bottom_option_reject);
@@ -208,24 +210,23 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             int firstRowTag = Integer.parseInt(tagArray[0]);
             int secondRowTag = Integer.parseInt(tagArray[1]);
 
-            // customer
-            if (firstRowTag == 0) {
 
-                //call customer care
-                if (secondRowTag == 0) {
+            if (firstRowTag == 0) { // customer
+
+                if (secondRowTag == 0) {  //call customer care
+
                     callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                     return;
-                } else if (secondRowTag == 1) {
-                    // find service center
+                } else if (secondRowTag == 1) { // location
                     showLocationDialog();
                     return;
-                } else if (secondRowTag == 2) {
+                } else if (secondRowTag == 2) { // edit time
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
 
             } else if (firstRowTag == 1) { // product
 
-                if (secondRowTag == 0) {
+                if (secondRowTag == 0) { // warranty details
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                     // TODO have to get details from back end
                     /*String purchasedDate = DateUtils.convertMillisToStringFormat(
@@ -252,19 +253,21 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                             R.string.purchased_warranty_ends_on) + warrantyEndDate);
                     return;
 */
-                } else if (secondRowTag == 1) { // warranty
+                } else if (secondRowTag == 1) { // past history
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
-            } else if (firstRowTag == 2) {
-                if (secondRowTag == 0) {
+            } else if (firstRowTag == 2) { // service center
+                if (secondRowTag == 0) { // cal
                     callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                 }
-            } else if (firstRowTag == 3) {
-                if (secondRowTag == 0) {
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                } else if (secondRowTag == 1) {
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                } else {
+            } else if (firstRowTag == 3) {   // status update
+                if (secondRowTag == 0) {  // accept
+                    showAcceptRejectDialog(true);
+
+                } else if (secondRowTag == 1) { // reject
+                    showAcceptRejectDialog(false);
+
+                } else { // hold
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
 
@@ -272,47 +275,37 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
-            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
     };
 
-    private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String unparsedTag = (String) view.getTag();
-            String[] tagArray = unparsedTag.split(COMMA_SEPARATOR);
-
-
-            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
-                    productSelectedPosition);
-            changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, unparsedTag);
-
-            int firstRowTag = Integer.parseInt(tagArray[0]);
-            int secondRowTag = Integer.parseInt(tagArray[1]);
-            int thirdRowTag = Integer.parseInt(tagArray[2]);
-
-
-            if (firstRowTag == 3) {
-
-                if (secondRowTag == 0) {
-
-                    if (thirdRowTag == 0) {
-                        // TODO have set images
-                    } else if (thirdRowTag == 1) {
-                        // TODO have set images
+    private void showAcceptRejectDialog(final boolean isAccept) {
+        acceptRejectDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
                     }
-                } else if (secondRowTag == 1) {
-                    //show diloge
-                } else if (secondRowTag == 2) {
-                    // TODO have set images
-                }
 
-            }
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
 
-
-        }
-
-    };
+                                acceptRejectDialog.dismiss();
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                acceptRejectDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(isAccept ? getString(R.string.bottom_option_accept) : getString(
+                R.string.bottom_option_reject))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        acceptRejectDialog.showDialog();
+    }
 
 
     private void showInformationDialog(String title, String messageInfo) {
@@ -351,6 +344,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         addressIntent.putExtra(IntentConstants.ADDRESS_COMMA, itemFromPosition.getServiceCenter().getAddress());
         startActivity(addressIntent);
     }
+
     // data re load
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {

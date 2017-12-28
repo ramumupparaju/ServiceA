@@ -60,8 +60,8 @@ public class ApprovalFragment extends BaseFragment implements ApprovalContract.V
         approvalAdapter = new ApprovalAdapter();
         approvalAdapter.setClickCallback(iClickCallback);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.requestRecyclerview.setAdapter(approvalAdapter);
-        binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
+        binding.apprvalRecyclerview.setAdapter(approvalAdapter);
+        binding.apprvalRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
         userId = 1;

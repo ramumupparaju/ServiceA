@@ -3,7 +3,6 @@ package com.incon.service.ui.feedback;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.feedback.adapter.FeedBackAdapter;
 import com.incon.service.ui.feedback.adapter.FeedBackContract;
 import com.incon.service.ui.feedback.adapter.FeedBackPresenter;
+import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.utils.SharedPrefsUtils;
 
 /**
@@ -24,7 +24,7 @@ import com.incon.service.utils.SharedPrefsUtils;
  */
 
 public class FeedbackFragment extends BaseFragment implements FeedBackContract.View {
-    private FragmentFeedbackBinding fragmentFeedbackBinding;
+    private FragmentFeedbackBinding binding;
     private View rootView;
     private FeedBackAdapter feedBackAdapter;
     private FeedBackPresenter feedBackPresenter;
@@ -40,6 +40,7 @@ public class FeedbackFragment extends BaseFragment implements FeedBackContract.V
 
     @Override
     public void setTitle() {
+        ((HomeActivity) getActivity()).setToolbarTitle(getString(R.string.title_feedback));
 
     }
 
@@ -47,12 +48,12 @@ public class FeedbackFragment extends BaseFragment implements FeedBackContract.V
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            fragmentFeedbackBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_feedback,
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feedback,
                     container, false);
 
             initViews();
 
-            rootView = fragmentFeedbackBinding.getRoot();
+            rootView = binding.getRoot();
         }
         setTitle();
         return rootView;
@@ -62,20 +63,10 @@ public class FeedbackFragment extends BaseFragment implements FeedBackContract.V
         feedBackAdapter = new FeedBackAdapter();
         feedBackAdapter.setClickCallback(iClickCallback);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                getContext(), linearLayoutManager.getOrientation());
-        fragmentFeedbackBinding.requestRecyclerview.addItemDecoration(dividerItemDecoration);
-        fragmentFeedbackBinding.requestRecyclerview.setAdapter(feedBackAdapter);
-        fragmentFeedbackBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
+        binding.requestRecyclerview.setAdapter(feedBackAdapter);
+        binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
-    }
-
-
-    private void dismissSwipeRefresh() {
-        if (fragmentFeedbackBinding.swiperefresh.isRefreshing()) {
-            fragmentFeedbackBinding.swiperefresh.setRefreshing(false);
-        }
     }
 
 

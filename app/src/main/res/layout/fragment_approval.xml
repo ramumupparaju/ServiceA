@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/return_textview"
+                    android:id="@+id/apprval_textview"
                     style="@style/BothMatch"
                     android:gravity="center"
                     android:text="No ReturnItems"
@@ -24,7 +24,7 @@
                     />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/request_recyclerview"
+                    android:id="@+id/apprval_recyclerview"
                     style="@style/MatchWrap"
                     android:layout_marginTop="@dimen/margin_10"
                     android:fadeScrollbars="false"

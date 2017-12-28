@@ -70,8 +70,8 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
         paymentAdapter = new PaymentAdapter();
         paymentAdapter.setClickCallback(iClickCallback);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.requestRecyclerview.setAdapter(paymentAdapter);
-        binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
+        binding.paymentRecyclerview.setAdapter(paymentAdapter);
+        binding.paymentRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
         userId = 1;
@@ -147,27 +147,25 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
             String[] bottomOptions;
             int[] topDrawables;
             changeSelectedViews(bottomSheetPurchasedBinding.firstRow, unparsedTag);
-            if (tag == 0) {
+            if (tag == 0) { // customer
                 bottomOptions = new String[1];
                 bottomOptions[0] = getString(R.string.bottom_option_call_customer_care);
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
 
-            } else if (tag == 1) {
+            } else if (tag == 1) {  // product
                 bottomOptions = new String[2];
                 bottomOptions[0] = getString(R.string.bottom_option_warranty_details);
                 bottomOptions[1] = getString(R.string.bottom_option_past_history);
                 topDrawables = new int[2];
                 topDrawables[0] = R.drawable.ic_options_features;
                 topDrawables[1] = R.drawable.ic_option_pasthistory;
-            } else if (tag == 2) {
+            } else if (tag == 2) { // service center
                 bottomOptions = new String[1];
                 bottomOptions[0] = getString(R.string.bottom_option_Call);
-                // bottomOptions[1] = getString(R.string.bottom_option_assign);
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
-                // topDrawables[1] = R.drawable.ic_option_assign;
-            } else {
+            } else {  // status update
                 bottomOptions = new String[1];
                 bottomOptions[0] = getString(R.string.bottom_option_paid);
                 topDrawables = new int[1];
@@ -200,18 +198,18 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
             int firstRowTag = Integer.parseInt(tagArray[0]);
             int secondRowTag = Integer.parseInt(tagArray[1]);
 
-            // customer
-            if (firstRowTag == 0) {
 
-                //call customer care
-                if (secondRowTag == 0) {
+            if (firstRowTag == 0) { // customer
+
+
+                if (secondRowTag == 0) { //call customer care
                     callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                     return;
                 }
 
             } else if (firstRowTag == 1) { // product
 
-                if (secondRowTag == 0) {
+                if (secondRowTag == 0) { // warrenty details
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                     // TODO have to get details from back end
                     /*String purchasedDate = DateUtils.convertMillisToStringFormat(
@@ -238,15 +236,15 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                             R.string.purchased_warranty_ends_on) + warrantyEndDate);
                     return;
 */
-                } else if (secondRowTag == 1) { // warranty
+                } else if (secondRowTag == 1) { // history
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
             } else if (firstRowTag == 2) { // service center
-                if (secondRowTag == 0) {
+                if (secondRowTag == 0) { // call
                     callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                 }
             } else if (firstRowTag == 3) { // status upadates
-                if (secondRowTag == 0) {
+                if (secondRowTag == 0) {  // paid
                     bottomOptions = new String[3];
                     bottomOptions[0] = getString(R.string.bottom_option_cash);
                     bottomOptions[1] = getString(R.string.bottom_option_online);
@@ -283,25 +281,21 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
 
             if (firstRowTag == 3) { // status update
 
-                if (secondRowTag == 0) {
+                if (secondRowTag == 0) { // paid
 
-                    if (thirdRowTag == 0) {
+                    if (thirdRowTag == 0) { // cash
                         AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                    } else if (thirdRowTag == 1) {
+                    } else if (thirdRowTag == 1) { // online
                         AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                    } else if (thirdRowTag == 2) {
+                    } else if (thirdRowTag == 2) { // card
                         AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                     }
-
                 }
-
             }
-
 
         }
 
     };
-
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {
