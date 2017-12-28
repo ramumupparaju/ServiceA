@@ -178,6 +178,19 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.fetchNewServiceRequestApi(userId));
     }
 
+    // fetch  approval service request api
+    public Observable<Object> fetchApprovalServiceRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.fetchApprovalServiceRequestApi(userId));
+    }
+   // fetch  repair service request api
+    public Observable<Object> fetchRepairServiceRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.fetchRepairServiceRequestApi(userId));
+    }   // fetch  repair service request api
+
+    public Observable<Object> fetchPaymentServiceRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.fetchPaymentServiceRequestApi(userId));
+    }
+
 
     //interested history  api
     public Observable<List<ProductInfoResponse>> interestApi(int userId) {

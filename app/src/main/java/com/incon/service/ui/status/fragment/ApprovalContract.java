@@ -8,8 +8,10 @@ import com.incon.service.ui.BaseView;
 
 public interface ApprovalContract {
     interface View extends BaseView {
+        void fetchApprovalServiceRequests(Object o);
     }
 
     interface Presenter {
+        void fetchApprovalServiceRequests(int userId);
     }
 }

@@ -77,8 +77,21 @@ public interface AppServiceObservable {
     Observable<List<ServiceCenterResponse>> getServiceCentersApi(@Path("userId") int userId);
 
     // fetch  new service request api
-    @GET("service/fetchrequests/1/NEW/{userId}")
+    @GET("service/fetchrequests/{userId}/NEW")
     Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(@Path("userId") int userId);
+
+    // fetch  approval  new service request api
+    @GET("service/fetchrequests/{userId}/APPROVAL")
+    Observable<Object> fetchApprovalServiceRequestApi(@Path("userId") int userId);
+
+    // fetch  repair  new service request api
+    @GET("service/fetchrequests/{userId}/REPAIR")
+    Observable<Object> fetchRepairServiceRequestApi(@Path("userId") int userId);
+
+
+    // fetch  payment  new service request api
+    @GET("service/fetchrequests/{userId}/PAYMENT")
+    Observable<Object> fetchPaymentServiceRequestApi(@Path("userId") int userId);
 
 
     // service center logo  api

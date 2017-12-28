@@ -1,9 +1,6 @@
 package com.incon.service.ui.status.fragment;
 
-import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.ui.BaseView;
-
-import java.util.List;
 
 /**
  * Created by PC on 12/6/2017.
@@ -11,10 +8,10 @@ import java.util.List;
 
 public interface RepairContract {
     interface View extends BaseView {
-        void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
+        void fetchRepairServiceRequests(Object o);
     }
 
     interface Presenter {
-        void fetchNewServiceRequests(int userId);
+        void fetchRepairServiceRequests(int userId);
     }
 }

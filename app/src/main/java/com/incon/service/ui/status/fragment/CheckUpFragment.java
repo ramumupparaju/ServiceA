@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
@@ -61,10 +59,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             // handle events from here using android binding
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_checkup,
                     container, false);
-
             initViews();
             loadBottomSheet();
-
             rootView = binding.getRoot();
         }
         setTitle();
@@ -75,13 +71,11 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         checkUpAdapter = new CheckUpAdapter();
         checkUpAdapter.setClickCallback(iClickCallback);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                getContext(), linearLayoutManager.getOrientation());
-        binding.requestRecyclerview.addItemDecoration(dividerItemDecoration);
         binding.requestRecyclerview.setAdapter(checkUpAdapter);
         binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
+        userId = 1;
         checkUpPresenter.fetchNewServiceRequests(userId);
     }
 

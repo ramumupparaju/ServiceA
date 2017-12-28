@@ -295,6 +295,10 @@
     <string name="progress_interest_history">Loading Interest History...</string>
     <string name="progress_buy_request_">Loading BuyRequest...</string>
     <string name="progress_fetch_new_service_request">Fetching New Service Request...</string>
+    <string name="progress_fetch_checkup_service_request">Fetching Checkup Service Request...</string>
+    <string name="progress_fetch_repair_service_request">Fetching Repair Service Request...</string>
+    <string name="progress_fetch_payment_service_request">Fetching Payment Service Request...</string>
+    <string name="progress_fetch_approval_service_request">Fetching Approval Service Request...</string>
     <string name="progress_return_history">Loading Return History...</string>
     <string name="progress_buy_request">Loading Buy Request...</string>
     <string name="progress_get_addresses">Loading Address...</string>

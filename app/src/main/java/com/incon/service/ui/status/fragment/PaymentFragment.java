@@ -4,12 +4,10 @@ import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
@@ -21,7 +19,6 @@ import com.incon.service.ui.status.adapter.PaymentAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.SharedPrefsUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.incon.service.AppUtils.callPhoneNumber;
@@ -77,7 +74,8 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
         binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
-        paymentPresenter.fetchNewServiceRequests(userId);
+        userId = 1;
+        paymentPresenter.fetchPaymentServiceRequests(userId);
 
     }
 
@@ -310,7 +308,7 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                 @Override
                 public void onRefresh() {
                     paymentAdapter.clearData();
-                    paymentPresenter.fetchNewServiceRequests(userId);
+                    paymentPresenter.fetchPaymentServiceRequests(userId);
 
                 }
             };
@@ -328,6 +326,12 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
     }
 
     @Override
+    public void fetchPaymentServiceRequests(Object o) {
+        // TODO have to set data
+
+    }
+
+  /*  @Override
     public void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
 
         if (fetchNewRequestResponsesList == null) {
@@ -340,5 +344,5 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
             paymentAdapter.setData(fetchNewRequestResponsesList);
             dismissSwipeRefresh();
         }
-    }
+    }*/
 }

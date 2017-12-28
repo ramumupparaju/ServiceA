@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
@@ -24,7 +22,6 @@ import com.incon.service.ui.status.adapter.RepairAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.SharedPrefsUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.incon.service.AppUtils.callPhoneNumber;
@@ -47,7 +44,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
         repairPresenter = new RepairPresenter();
         repairPresenter.setView(this);
         setBasePresenter(repairPresenter);
-
     }
 
     @Override
@@ -79,7 +75,8 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
         binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
-        repairPresenter.fetchNewServiceRequests(userId);
+        userId = 1;
+        repairPresenter.fetchRepairServiceRequests(userId);
     }
 
     @Override
@@ -133,7 +130,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
         setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, bottomNames, bottomDrawables, bottomSheetFirstRowClickListener, "-1");
 
     }
-
 
     // bottom sheet click event
     private View.OnClickListener bottomSheetFirstRowClickListener = new View.OnClickListener() {
@@ -323,13 +319,12 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
 
     };
 
-
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
                     repairAdapter.clearData();
-                    repairPresenter.fetchNewServiceRequests(userId);
+                    repairPresenter.fetchRepairServiceRequests(userId);
 
                 }
             };
@@ -353,6 +348,13 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     }
 
     @Override
+    public void fetchRepairServiceRequests(Object o) {
+
+    }
+
+
+
+ /*   @Override
     public void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
 
         if (fetchNewRequestResponsesList == null) {
@@ -365,5 +367,5 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
             repairAdapter.setData(fetchNewRequestResponsesList);
             dismissSwipeRefresh();
         }
-    }
+    }*/
 }

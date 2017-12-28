@@ -33,7 +33,7 @@ public class CheckUpPresenter extends BasePresenter<CheckUpContract.View> implem
 
     @Override
     public void fetchNewServiceRequests(int userId) {
-        getView().showProgress(appContext.getString(R.string.progress_fetch_new_service_request));
+        getView().showProgress(appContext.getString(R.string.progress_fetch_checkup_service_request));
         DisposableObserver<List<FetchNewRequestResponse>> observer = new DisposableObserver<List<FetchNewRequestResponse>>() {
             @Override
             public void onNext(List<FetchNewRequestResponse> fetchNewRequestResponses) {

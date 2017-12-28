@@ -77,6 +77,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
+        userId = 1;
         newRequestPresenter.fetchNewServiceRequests(userId);
     }
 
