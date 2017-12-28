@@ -14,8 +14,13 @@ import android.view.ViewGroup;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.callbacks.AlertDialogCallback;
+import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
+import com.incon.service.custom.view.AppEditTextDialog;
+import com.incon.service.custom.view.AssignOptionDialog;
 import com.incon.service.databinding.FragmentRepairBinding;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.status.adapter.RepairAdapter;
@@ -38,6 +43,10 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private int userId;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
+    private AssignOptionDialog assignOptionDialog;
+    private AppEditTextDialog closeDialog;
+    private AppEditTextDialog repairDialog;
+    private AppEditTextDialog holdDialog;
 
     @Override
     protected void initializePresenter() {
@@ -244,13 +253,13 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 }
             } else if (firstRowTag == 3) { // status upadates
                 if (secondRowTag == 0) { // repair done
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    showRepairDone();
                 } else if (secondRowTag == 1) { // hold
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    showHoldDialog();
                 } else if (secondRowTag == 2) { // close
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    showCloseDialog();
                 } else { // assign
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    showAssignDialog();
                 }
 
             }
@@ -259,6 +268,110 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
         }
     };
+
+    private void showHoldDialog() {
+        holdDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                holdDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_hold))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        holdDialog.showDialog();
+    }
+
+    private void showRepairDone() {
+        repairDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                repairDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_close))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        repairDialog.showDialog();
+
+    }
+
+    private void showCloseDialog() {
+        closeDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                closeDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_close))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        closeDialog.showDialog();
+    }
+
+    private void showAssignDialog() {
+        assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+
+                        break;
+                    case AlertDialogCallback.CANCEL:
+
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).title(getString(R.string.option_assign))
+                .submitButtonText(getString(R.string.action_submit))
+                .build();
+        assignOptionDialog.showDialog();
+        assignOptionDialog.setCancelable(true);
+
+    }
 
     private void showLocationDialog() {
 

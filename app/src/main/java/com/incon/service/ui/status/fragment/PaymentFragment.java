@@ -285,17 +285,21 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
 
                     if (thirdRowTag == 0) { // cash
                         AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                    } else if (thirdRowTag == 1) { // online
+                    } else if (thirdRowTag == 1) {
                         AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                    } else if (thirdRowTag == 2) { // card
+                    } else if (thirdRowTag == 2) {
                         AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                     }
+
                 }
+
             }
+
 
         }
 
     };
+
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {

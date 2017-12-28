@@ -43,6 +43,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
+    private AppEditTextDialog holdDialog;
     private String merchantComment;
 
     @Override
@@ -268,15 +269,43 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     showAcceptRejectDialog(false);
 
                 } else { // hold
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    showHoldDialog();
                 }
 
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
+            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
     };
+
+    private void showHoldDialog() {
+        holdDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                holdDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_hold))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        holdDialog.showDialog();
+
+    }
 
     private void showAcceptRejectDialog(final boolean isAccept) {
         acceptRejectDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
@@ -306,6 +335,45 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 .build();
         acceptRejectDialog.showDialog();
     }
+
+
+    private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String unparsedTag = (String) view.getTag();
+            String[] tagArray = unparsedTag.split(COMMA_SEPARATOR);
+
+
+            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
+                    productSelectedPosition);
+            changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, unparsedTag);
+
+            int firstRowTag = Integer.parseInt(tagArray[0]);
+            int secondRowTag = Integer.parseInt(tagArray[1]);
+            int thirdRowTag = Integer.parseInt(tagArray[2]);
+
+
+            if (firstRowTag == 3) {
+
+                if (secondRowTag == 0) {
+
+                    if (thirdRowTag == 0) {
+                        // TODO have set images
+                    } else if (thirdRowTag == 1) {
+                        // TODO have set images
+                    }
+                } else if (secondRowTag == 1) {
+                    //show diloge
+                } else if (secondRowTag == 2) {
+                    // TODO have set images
+                }
+
+            }
+
+
+        }
+
+    };
 
 
     private void showInformationDialog(String title, String messageInfo) {

@@ -14,8 +14,13 @@ import android.view.ViewGroup;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.callbacks.AlertDialogCallback;
+import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
+import com.incon.service.custom.view.AppEditTextDialog;
+import com.incon.service.custom.view.AssignOptionDialog;
 import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.status.adapter.CheckUpAdapter;
@@ -39,6 +44,9 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private int userId;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
+    private AppEditTextDialog noteDialog;
+    private AppEditTextDialog closeDialog;
+    private AssignOptionDialog assignOptionDialog;
 
     @Override
     protected void initializePresenter() {
@@ -252,13 +260,17 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 if (secondRowTag == 0) {  // estimation
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 } else if (secondRowTag == 1) { // note
+                    showNoteDialog();
+
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 } else if (secondRowTag == 2) { // close
+
+                    showCloseDialog();
+
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 } else {  // assign
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    showAssignDialog();
                 }
-
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
@@ -266,6 +278,84 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
     };
+
+    private void showAssignDialog() {
+        assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+
+                        break;
+                    case AlertDialogCallback.CANCEL:
+
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).title(getString(R.string.option_assign))
+                .submitButtonText(getString(R.string.action_submit))
+                .build();
+        assignOptionDialog.showDialog();
+        assignOptionDialog.setCancelable(true);
+
+    }
+
+    private void showCloseDialog() {
+        closeDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                closeDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_close))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        closeDialog.showDialog();
+    }
+
+    private void showNoteDialog() {
+        noteDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                noteDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_note))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        noteDialog.showDialog();
+
+    }
 
     private void showLocationDialog() {
 

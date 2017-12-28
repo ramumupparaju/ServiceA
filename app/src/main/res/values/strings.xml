@@ -16,6 +16,7 @@
     <string name="error_no_connectivity">Looks like you are offline, please check internet
         connectivity</string>
     <!-- bottom sheet options-->
+    <string name="user_comment_hint">Comment</string>
     <string name="sample_test">Sample test</string>
     <string name="coming_soon">Coming Soon</string>
     <string name="bottom_option_customer">Customer</string>
@@ -80,6 +81,8 @@
     <string name="status_repair_done">Repair Done</string>
     <string name="status_payment">Payment</string>
     <string name="status_feedback">Feedback</string>
+    <string name="option_assign">Assign</string>
+
 
 
     <!--new request-->
@@ -101,7 +104,6 @@
     <string name="action_price">Price :</string>
     <string name="action_batchno">Batch No :</string>
     <string name="action_serialno">Serial No :</string>
-    <string name="action_submit">Submit</string>
     <string name="action_otp">OTP</string>
     <string name="action_qr_code">QR Code Scan</string>
     <string name="action_manual_entry">Manual Enter</string>
@@ -166,6 +168,7 @@
     <string name="action_logout">Logout</string>
     <string name="action_start">Start</string>
     <string name="action_cancel">Cancel</string>
+    <string name="action_submit">Submit</string>
     <string name="action_request_call">Request Call</string>
     <string name="action_take_new_survey">take new survey</string>
     <string name="action_save">save</string>
