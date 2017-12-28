@@ -67,10 +67,5 @@
             android:layout_marginRight="@dimen/margin_30"
             android:text="@string/action_submit"/>
 
-
-
-
-
-
     </RelativeLayout>
 </layout>

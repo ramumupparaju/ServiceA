@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import com.incon.service.R;
 import com.incon.service.callbacks.AssignOptionCallback;
-import com.incon.service.databinding.DialogAssignOptionsBinding;
+import com.incon.service.databinding.DialogAssignBinding;
 
 /**
  * Created by MY HOME on 28-Dec-17.
@@ -22,7 +22,7 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
     private final AssignOptionCallback assignOptionCallback;
     private String[] optionsArray;
     private String[] optionsArrayTwo;
-    private DialogAssignOptionsBinding binding;
+    private DialogAssignBinding binding;
     private EditText editTextNotes;
     private final String submitButton; // required
 
@@ -35,7 +35,7 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
 
     public void showDialog() {
         binding = DataBindingUtil.inflate(
-                LayoutInflater.from(context), R.layout.dialog_assign_options, null, false);
+                LayoutInflater.from(context), R.layout.dialog_assign, null, false);
         View contentView = binding.getRoot();
         editTextNotes = binding.edittextComment;
 
@@ -85,22 +85,21 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
             this.title = title;
             return this;
         }
-
         public AlertDialogBuilder submitButtonText(String submitButton) {
             this.submitButton = submitButton;
             return this;
         }
-
         public AssignOptionDialog build() {
             AssignOptionDialog dialog = new AssignOptionDialog(this);
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
             return dialog;
         }
-
     }
 
     @Override
     public void onClick(View view) {
-
+        if (assignOptionCallback == null) {
+            return;
+        }
     }
 }

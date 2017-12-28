@@ -16,9 +16,11 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.PassHistoryCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
+import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
@@ -45,6 +47,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private AppEditTextDialog acceptRejectDialog;
     private AppEditTextDialog holdDialog;
     private String merchantComment;
+    private PastHistoryDialog pastHistoryDialog;
 
     @Override
     protected void initializePresenter() {
@@ -256,7 +259,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 */
                 } else if (secondRowTag == 1) { // past history
                     showPastHisoryDialog();
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
             } else if (firstRowTag == 2) { // service center
                 if (secondRowTag == 0) { // cal
@@ -282,8 +284,26 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     };
 
     private void showPastHisoryDialog() {
+        pastHistoryDialog = new PastHistoryDialog.AlertDialogBuilder(getContext(), new PassHistoryCallback() {
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
 
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
 
+                        break;
+                    case AlertDialogCallback.CANCEL:
+
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).title(getString(R.string.option_past_history))
+                .build();
+        pastHistoryDialog.showDialog();
+        pastHistoryDialog.setCancelable(true);
     }
 
     private void showHoldDialog() {

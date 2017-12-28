@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="fetchNewRequestResponse"
+            type="com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse"/>
+    </data>
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        style="@style/MatchWrap"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_3"
+        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_3"
+        app:cardCornerRadius="@dimen/corner_radius">
+
+            <LinearLayout
+                android:id="@+id/product_details_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+            <LinearLayout
+                android:id="@+id/layout_product_detail"
+                style="@style/bill_header_linear_layout">
+
+
+                <TextView
+                    android:id="@+id/text_product_name"
+                    style="@style/bill_header_right_text_view"
+                    android:text="Product name"/>
+
+                <TextView
+                    android:id="@+id/text_model_number"
+                    style="@style/bill_header_right_text_view"
+                    android:text="Model no"/>
+
+                <TextView
+                    android:id="@+id/text_sn"
+                    style="@style/bill_header_right_text_view"
+                    android:text="S/N"/>
+
+
+                <TextView
+                    android:id="@+id/text_price"
+                    style="@style/bill_header_right_text_view"
+                    android:text="Price"/>
+
+
+                <TextView
+                    android:id="@+id/text_discount"
+                    style="@style/bill_header_right_text_view"
+                    android:text="Discount"/>
+
+
+                <TextView
+                    android:id="@+id/text_gst"
+                    style="@style/bill_header_right_text_view"
+                    android:text="GST"/>
+
+
+                <TextView
+                    android:id="@+id/text_total"
+                    style="@style/bill_header_right_text_view"
+                    android:text="Total"/>
+            </LinearLayout>
+
+            <!--product details values-->
+            <LinearLayout
+                android:id="@+id/layout_product_detail_valus"
+                style="@style/bill_header_linear_layout">
+
+
+                <TextView
+                    android:id="@+id/text_product_name_valus"
+                    style="@style/bill_header_left_text_view"
+                    />
+
+                <TextView
+                    android:id="@+id/text_model_number_valus"
+                    style="@style/bill_header_left_text_view"
+                    />
+
+                <TextView
+                    android:id="@+id/text_sn_valus"
+                    style="@style/bill_header_left_text_view"
+                    />
+
+                <TextView
+                    android:id="@+id/text_price_valus"
+                    style="@style/bill_header_left_text_view"
+                    />
+
+
+                <TextView
+                    android:id="@+id/text_discount_valus"
+                    style="@style/bill_header_left_text_view"
+                    />
+
+
+                <TextView
+                    android:id="@+id/text_gst_valus"
+                    style="@style/bill_header_left_text_view"
+                    />
+
+                <TextView
+                    android:id="@+id/text_total_valus"
+                    style="@style/bill_header_left_text_view"
+                    />
+            </LinearLayout>
+            </LinearLayout>
+    </android.support.v7.widget.CardView>
+</layout>
