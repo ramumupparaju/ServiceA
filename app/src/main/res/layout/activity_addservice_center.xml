@@ -172,53 +172,52 @@
                     android:onClick="@{() -> addServiceCenterActivity.onAddressClick()}" />
 
 
+                <!-- &lt;!&ndash; category&ndash;&gt;
+                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                     android:id="@+id/spinner_category"
+                     style="@style/spinnerItemStyle"
+                     android:layout_below="@id/input_layout_register_address"
+                     android:layout_marginBottom="@dimen/margin_24"
+                     android:focusable="true"
+                     android:hint="@string/add_new__category"
+                     android:tag="2"
+                     android:text="@={addServiceCenter.categoryName}"
+                     android:visibility="visible"
+                     app:met_floatingLabel="highlight"
+                     app:met_textColor="@color/colorForgotPasswordHintText"
+                     app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
-               <!-- &lt;!&ndash; category&ndash;&gt;
-                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/spinner_category"
-                    style="@style/spinnerItemStyle"
-                    android:layout_below="@id/input_layout_register_address"
-                    android:layout_marginBottom="@dimen/margin_24"
-                    android:focusable="true"
-                    android:hint="@string/add_new__category"
-                    android:tag="2"
-                    android:text="@={addServiceCenter.categoryName}"
-                    android:visibility="visible"
-                    app:met_floatingLabel="highlight"
-                    app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+                 &lt;!&ndash; division no &ndash;&gt;
+                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                     android:id="@+id/spinner_division"
+                     style="@style/spinnerItemStyle"
+                     android:layout_below="@id/spinner_category"
+                     android:layout_marginBottom="@dimen/margin_24"
+                     android:focusable="true"
+                     android:hint="@string/add_new__division"
+                     android:tag="3"
+                     android:text="@={addServiceCenter.divisionName}"
+                     android:visibility="gone"
+                     app:met_floatingLabel="highlight"
+                     app:met_textColor="@color/colorForgotPasswordHintText"
+                     app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
-                &lt;!&ndash; division no &ndash;&gt;
-                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/spinner_division"
-                    style="@style/spinnerItemStyle"
-                    android:layout_below="@id/spinner_category"
-                    android:layout_marginBottom="@dimen/margin_24"
-                    android:focusable="true"
-                    android:hint="@string/add_new__division"
-                    android:tag="3"
-                    android:text="@={addServiceCenter.divisionName}"
-                    android:visibility="gone"
-                    app:met_floatingLabel="highlight"
-                    app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-
-                &lt;!&ndash;brand&ndash;&gt;
-                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/spinner_brand"
-                    style="@style/spinnerItemStyle"
-                    android:layout_below="@id/spinner_division"
-                    android:layout_marginBottom="@dimen/margin_24"
-                    android:focusable="true"
-                    android:hint="@string/action_brand"
-                    android:tag="4"
-                    android:text="@={addServiceCenter.brandName}"
-                    android:visibility="gone"
-                    app:errorEnabled="true"
-                    app:met_floatingLabel="highlight"
-                    app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
--->
+                 &lt;!&ndash;brand&ndash;&gt;
+                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                     android:id="@+id/spinner_brand"
+                     style="@style/spinnerItemStyle"
+                     android:layout_below="@id/spinner_division"
+                     android:layout_marginBottom="@dimen/margin_24"
+                     android:focusable="true"
+                     android:hint="@string/action_brand"
+                     android:tag="4"
+                     android:text="@={addServiceCenter.brandName}"
+                     android:visibility="gone"
+                     app:errorEnabled="true"
+                     app:met_floatingLabel="highlight"
+                     app:met_textColor="@color/colorForgotPasswordHintText"
+                     app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+ -->
 
                 <com.incon.service.custom.view.CustomTextInputLayout
                     android:id="@+id/input_layout_created_date"
