@@ -6,7 +6,7 @@
 
         <variable
             name="addDesignation"
-            type="com.incon.service.dto.adddesignation.AddDesignation" />
+            type="com.incon.service.apimodel.components.adddesignation.DesignationData" />
 
         <variable
             name="addDesignationsActivity"

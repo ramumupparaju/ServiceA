@@ -7,8 +7,7 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
-import com.incon.service.apimodel.components.login.LoginResponse;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
@@ -40,11 +39,11 @@ public class AllUsersDesignationsPresenter extends BasePresenter<AllUsersDesigna
         getView().showProgress(appContext.getString(R.string.progress_loading_data));
 
         Observable<List<UsersListOfServiceCenters>> userListObservable = getUserListObservable(userId);
-        Observable<List<DesignationResponse>> designationsListObservable = getDesignationListObservable(userId, serviceCenterId);
+        Observable<List<DesignationData>> designationsListObservable = getDesignationListObservable(userId, serviceCenterId);
 
-        Observable<String> zip = Observable.zip(userListObservable, designationsListObservable, new BiFunction<List<UsersListOfServiceCenters>, List<DesignationResponse>, String>() {
+        Observable<String> zip = Observable.zip(userListObservable, designationsListObservable, new BiFunction<List<UsersListOfServiceCenters>, List<DesignationData>, String>() {
             @Override
-            public String apply(@NonNull List<UsersListOfServiceCenters> usersList, @NonNull List<DesignationResponse> designationsList) throws Exception {
+            public String apply(@NonNull List<UsersListOfServiceCenters> usersList, @NonNull List<DesignationData> designationsList) throws Exception {
 
                 getView().loadUsersDesignationsList(usersList, designationsList);
                 return "";
@@ -73,7 +72,7 @@ public class AllUsersDesignationsPresenter extends BasePresenter<AllUsersDesigna
         addDisposable(observer);
     }
 
-    private Observable<List<DesignationResponse>> getDesignationListObservable(int userId, int serviceCenterId) {
+    private Observable<List<DesignationData>> getDesignationListObservable(int userId, int serviceCenterId) {
         return AppApiService.getInstance().getDesignationsListUsingServiceCenter(userId, serviceCenterId);
     }
 

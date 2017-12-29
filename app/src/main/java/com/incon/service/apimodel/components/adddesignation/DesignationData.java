@@ -4,15 +4,18 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+import android.util.Pair;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.incon.service.AppConstants;
 
 /**
  * Created by PC on 12/20/2017.
  */
 
-public class DesignationResponse extends BaseObservable implements Parcelable {
+public class DesignationData extends BaseObservable implements Parcelable {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -38,6 +41,9 @@ public class DesignationResponse extends BaseObservable implements Parcelable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public DesignationData() {
     }
 
     @Bindable
@@ -82,7 +88,7 @@ public class DesignationResponse extends BaseObservable implements Parcelable {
         this.createdBy = createdBy;
     }
 
-    protected DesignationResponse(Parcel in) {
+    protected DesignationData(Parcel in) {
         id = in.readByte() == 0x00 ? null : in.readInt();
         name = in.readString();
         description = in.readString();
@@ -126,15 +132,57 @@ public class DesignationResponse extends BaseObservable implements Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<DesignationResponse> CREATOR = new Parcelable.Creator<DesignationResponse>() {
+    public static final Parcelable.Creator<DesignationData> CREATOR = new Parcelable.Creator<DesignationData>() {
         @Override
-        public DesignationResponse createFromParcel(Parcel in) {
-            return new DesignationResponse(in);
+        public DesignationData createFromParcel(Parcel in) {
+            return new DesignationData(in);
         }
 
         @Override
-        public DesignationResponse[] newArray(int size) {
-            return new DesignationResponse[size];
+        public DesignationData[] newArray(int size) {
+            return new DesignationData[size];
         }
     };
+
+
+
+    public Pair<String, Integer> validateAddDesignations(String tag) {
+
+        int fieldId = AppConstants.VALIDATION_FAILURE;
+        if (tag == null) {
+            for (int i = 0; i <= 1; i++) {
+                fieldId = validateFields(i, true);
+                if (fieldId != AppConstants.VALIDATION_SUCCESS) {
+                    tag = i + "";
+                    break;
+                }
+            }
+        } else {
+            fieldId = validateFields(Integer.parseInt(tag), false);
+        }
+
+        return new Pair<>(tag, fieldId);
+    }
+
+    private int validateFields(int id, boolean emptyValidation) {
+        switch (id) {
+            case 0:
+                if (emptyValidation && TextUtils.isEmpty(getDescription())) {
+                    return AppConstants.AddDesignationsValidation.DESCRIPTION;
+                }
+                break;
+
+
+            case 1:
+                boolean nameEmpty = TextUtils.isEmpty(getName());
+                if (emptyValidation && nameEmpty) {
+                    return AppConstants.AddDesignationsValidation.NAME_REQ;
+                }
+                break;
+
+            default:
+                return AppConstants.VALIDATION_SUCCESS;
+        }
+        return AppConstants.VALIDATION_SUCCESS;
+    }
 }

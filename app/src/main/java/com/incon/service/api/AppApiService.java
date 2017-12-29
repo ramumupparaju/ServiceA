@@ -4,7 +4,7 @@ package com.incon.service.api;
 import com.incon.service.AppConstants;
 import com.incon.service.BuildConfig;
 import com.incon.service.apimodel.base.ApiBaseResponse;
-import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.login.LoginResponse;
@@ -13,7 +13,6 @@ import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse
 import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
-import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.login.LoginUserData;
@@ -105,8 +104,8 @@ public class AppApiService implements AppConstants {
 
 
     // add add designation api
-    public Observable<DesignationResponse> addDesignation(
-            int userId, AddDesignation addDesignation) {
+    public Observable<DesignationData> addDesignation(
+            int userId, DesignationData addDesignation) {
         return addNetworkCheck(serviceInstance.addDesignation(userId, addDesignation));
     }
 
@@ -144,7 +143,7 @@ public class AppApiService implements AppConstants {
     }
 
     // get users list of service centers api
-    public Observable<List<DesignationResponse>> getDesignationsListUsingServiceCenter(int userId, int serviceCenterId) {
+    public Observable<List<DesignationData>> getDesignationsListUsingServiceCenter(int userId, int serviceCenterId) {
         return addNetworkCheck(serviceInstance.getDesignationsListUsingServiceCenter(userId, serviceCenterId));
     }
 

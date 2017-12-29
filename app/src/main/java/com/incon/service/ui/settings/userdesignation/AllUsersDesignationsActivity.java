@@ -8,10 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.incon.service.R;
-import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.callbacks.IEditClickCallback;
 import com.incon.service.databinding.ActivityAllUsersDesignationsBinding;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.adddesignations.AddDesignationsActivity;
@@ -36,7 +35,7 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
     private List<UsersListOfServiceCenters> usersList;
 
     private DesignationsListAdapter designationsListAdapter;
-    private List<DesignationResponse> designationsList;
+    private List<DesignationData> designationsList;
 
 
     private int serviceCenterId;
@@ -115,7 +114,7 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         @Override
         public void onClickPosition(int position) {
             if (isDesignation) {
-                DesignationResponse designationResponse = designationsList.get(position);
+                DesignationData designationResponse = designationsList.get(position);
                 Intent intent = new Intent(AllUsersDesignationsActivity.this, AddDesignationsActivity.class);
                 intent.putExtra(IntentConstants.DESIGNATION_DATA, designationResponse);
                 startActivity(intent);
@@ -147,7 +146,7 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
 
     @Override
     public void loadUsersDesignationsList(List<UsersListOfServiceCenters> usersList,
-                                          List<DesignationResponse> designationsList) {
+                                          List<DesignationData> designationsList) {
 
         if (usersList == null) {
             usersList = new ArrayList<>();

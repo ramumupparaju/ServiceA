@@ -1,10 +1,7 @@
 package com.incon.service.ui.adddesignations;
 
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
-import com.incon.service.dto.adddesignation.AddDesignation;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.ui.BaseView;
-
-import java.util.List;
 
 /**
  * Created by PC on 12/19/2017.
@@ -15,6 +12,6 @@ public interface AddDesignationsContract {
 
     }
     interface Presenter {
-        void addDesignations(int userId, AddDesignation addDesignation);
+        void addDesignations(int userId, DesignationData addDesignation);
     }
 }

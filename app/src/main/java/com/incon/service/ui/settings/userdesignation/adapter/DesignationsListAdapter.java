@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.incon.service.BR;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.databinding.ItemDesignationsListBinding;
 
@@ -20,14 +20,14 @@ import java.util.List;
 
 public class DesignationsListAdapter extends RecyclerView.Adapter<DesignationsListAdapter.ViewHolder> {
 
-    private List<DesignationResponse> designationsList;
+    private List<DesignationData> designationsList;
     private IClickCallback clickCallback;
 
     public void setClickCallback(IClickCallback clickCallback) {
         this.clickCallback = clickCallback;
     }
 
-    public DesignationsListAdapter(List<DesignationResponse> designationsList) {
+    public DesignationsListAdapter(List<DesignationData> designationsList) {
         this.designationsList = designationsList;
     }
 
@@ -41,7 +41,7 @@ public class DesignationsListAdapter extends RecyclerView.Adapter<DesignationsLi
 
     @Override
     public void onBindViewHolder(DesignationsListAdapter.ViewHolder holder, int position) {
-        DesignationResponse designationResponse = designationsList.get(position);
+        DesignationData designationResponse = designationsList.get(position);
         holder.bind(designationResponse, position);
 
     }
@@ -51,7 +51,7 @@ public class DesignationsListAdapter extends RecyclerView.Adapter<DesignationsLi
         return designationsList.size();
     }
 
-    public void setData(List<DesignationResponse> designationsList) {
+    public void setData(List<DesignationData> designationsList) {
         this.designationsList = designationsList;
     }
 
@@ -65,7 +65,7 @@ public class DesignationsListAdapter extends RecyclerView.Adapter<DesignationsLi
             binding.getRoot().setOnClickListener(this);
         }
 
-        public void bind(DesignationResponse usersListOfServiceCenters, int position) {
+        public void bind(DesignationData usersListOfServiceCenters, int position) {
             binding.setVariable(BR.modelResponse, usersListOfServiceCenters);
             binding.executePendingBindings();
         }

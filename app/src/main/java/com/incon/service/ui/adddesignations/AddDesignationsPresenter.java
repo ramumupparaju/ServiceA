@@ -7,13 +7,9 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
-import com.incon.service.dto.adddesignation.AddDesignation;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.ui.BasePresenter;
-import com.incon.service.ui.validateotp.ValidateOtpPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
-
-import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -33,7 +29,7 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
     }
 
     @Override
-    public void addDesignations(int userId, AddDesignation addDesignation) {
+    public void addDesignations(int userId, DesignationData addDesignation) {
         getView().showProgress(appContext.getString(R.string.progress_adding_designation));
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override

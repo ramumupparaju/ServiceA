@@ -10,21 +10,17 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.incon.service.R;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddDesignationsBinding;
-import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by PC on 12/19/2017.
@@ -36,7 +32,7 @@ public class AddDesignationsActivity extends BaseActivity implements
     private AddDesignationsPresenter addDesignationsPresenter;
     private ActivityAddDesignationsBinding binding;
 
-    private AddDesignation addDesignation;
+    private DesignationData addDesignation;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
     private int serviceCenterId;
@@ -65,7 +61,7 @@ public class AddDesignationsActivity extends BaseActivity implements
 
         }
 
-        addDesignation = new AddDesignation();
+        addDesignation = new DesignationData();
         binding.setAddDesignation(addDesignation);
         binding.setAddDesignationsActivity(this);
 
