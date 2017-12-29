@@ -60,6 +60,11 @@ public interface AppConstants {
         int ERROR_FORBIDDEN = 403; // pay load error
     }
 
+    interface UserConstants {
+        int SUPER_ADMIN_TYPE = 7;
+        int USER_TYPE = 8;
+    }
+
     interface PushConstants {
         String BUNDLE_TEXT = "text";
         String BUNDLE_TITLE = "title";
@@ -273,6 +278,7 @@ public interface AppConstants {
         String USER_PASSWORD = "userPassword";
         String USER_CONFIRM_PASSWORD = "userConfirmPassword";
         String USER_UUID = "uuid";
+        String SERVICE_CENTER_ID = "serviceCenterId";
         String STORE_ID = "storeId";
         String STORE_NAME = "storeName";
         String STORE_EMAIL_ID = "storeEmailId";

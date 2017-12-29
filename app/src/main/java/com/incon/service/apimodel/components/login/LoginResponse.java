@@ -25,6 +25,8 @@ public class LoginResponse extends ApiBaseResponse {
     @SerializedName("usertype")
     @Expose
     private Integer usertype;
+    @SerializedName("serviceCenter")
+    @Expose
     private StoreResponse store;
     @SerializedName("country")
     @Expose

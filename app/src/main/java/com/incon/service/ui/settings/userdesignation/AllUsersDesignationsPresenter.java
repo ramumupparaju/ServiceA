@@ -7,6 +7,7 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
+import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
@@ -71,13 +72,65 @@ public class AllUsersDesignationsPresenter extends BasePresenter<AllUsersDesigna
         addDisposable(observer);
     }
 
+    /**
+     * for testing purpose
+     * @param designationsListObservable
+     */
+    private void diDesignationsListApi(Observable<Object> designationsListObservable) {
+        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
+            @Override
+            public void onNext(Object o) {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+            }
+
+            @Override
+            public void onComplete() {
+                getView().hideProgress();
+            }
+        };
+        designationsListObservable.subscribe(observer);
+        addDisposable(observer);
+    }
+
+    /**
+     * for testing purpose
+     * @param userListObservable
+     */
+    private void doUsersLisetApi(Observable<List<UsersListOfServiceCenters>> userListObservable) {
+
+        DisposableObserver<List<UsersListOfServiceCenters>> observer = new DisposableObserver<List<UsersListOfServiceCenters>>() {
+            @Override
+            public void onNext(List<UsersListOfServiceCenters> loginResponse) {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+            }
+
+            @Override
+            public void onComplete() {
+                getView().hideProgress();
+            }
+        };
+        userListObservable.subscribe(observer);
+        addDisposable(observer);
+    }
+
     private Observable<Object> getDesignationListObservable(int userId, int serviceCenterId) {
         return AppApiService.getInstance().getDesignationsListUsingServiceCenter(userId, serviceCenterId);
     }
 
     private Observable<List<UsersListOfServiceCenters>> getUserListObservable(int userId) {
         return AppApiService.getInstance().getUsersListOfServiceCenterApi(userId);
-
     }
 }
 

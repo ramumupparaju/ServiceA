@@ -18,6 +18,7 @@ import com.incon.service.ui.adddesignations.AddDesignationsActivity;
 import com.incon.service.ui.adduser.AddUserActivity;
 import com.incon.service.ui.settings.userdesignation.adapter.DesignationsListAdapter;
 import com.incon.service.ui.settings.userdesignation.adapter.UsersListAdapter;
+import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,10 +61,8 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         initViews();
 
         serviceCenterId = getIntent().getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
-        //fetching servicing centers list to add designations
-        /*allUsersDesignationsPresenter.doUsersDesignationsApi(SharedPrefsUtils.loginProvider().
-                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), serviceCenterId);*/
-        allUsersDesignationsPresenter.doUsersDesignationsApi(1, 153);
+        allUsersDesignationsPresenter.doUsersDesignationsApi(SharedPrefsUtils.loginProvider().
+                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), serviceCenterId);
     }
 
     public void onCheckedChanged(boolean checked) {

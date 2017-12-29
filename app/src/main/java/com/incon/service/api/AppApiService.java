@@ -148,8 +148,8 @@ public class AppApiService implements AppConstants {
     }
 
     // get users list of service centers api
-    public Observable<Object> getDesignationsListUsingServiceCenter(int serviceCenterId, int userId) {
-        return addNetworkCheck(serviceInstance.getDesignationsListUsingServiceCenter(serviceCenterId, userId));
+    public Observable<Object> getDesignationsListUsingServiceCenter(int userId, int serviceCenterId) {
+        return addNetworkCheck(serviceInstance.getDesignationsListUsingServiceCenter(userId, serviceCenterId));
     }
 
     // get users list of service centers api

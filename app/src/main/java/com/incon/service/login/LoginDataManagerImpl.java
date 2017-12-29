@@ -31,5 +31,9 @@ public class LoginDataManagerImpl implements LoginDataManager, AppConstants.Logi
         sharedPrefsUtils.setStringPreference(USER_UUID,
                 loginResponse.getUuid());
 
+        //storing service center details
+        sharedPrefsUtils.setIntegerPreference(SERVICE_CENTER_ID,
+                loginResponse.getStore().getId());
+
     }
 }

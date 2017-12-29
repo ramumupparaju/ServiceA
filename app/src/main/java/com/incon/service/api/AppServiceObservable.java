@@ -65,8 +65,8 @@ public interface AppServiceObservable {
                                                    @Body AddDesignation addDesignation);
 
     // get designations list using service center and user id
-    @GET("service/service/getdesignations/{serviceCenterId}/{userId}")
-    Observable<Object> getDesignationsListUsingServiceCenter(@Path("serviceCenterId") int serviceCenterId, @Path("userId") int userId);
+    @GET("service/getdesignations/{serviceCenterId}/{userId}")
+    Observable<Object> getDesignationsListUsingServiceCenter(@Path("userId") int userId, @Path("serviceCenterId") int serviceCenterId);
 
     // get users list of service centers api
     @GET("service/getuserslist/{serviceCenterId}")
