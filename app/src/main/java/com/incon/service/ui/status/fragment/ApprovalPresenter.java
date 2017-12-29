@@ -50,7 +50,6 @@ public class ApprovalPresenter extends BasePresenter<ApprovalContract.View> impl
             }
         };
         AppApiService.getInstance().fetchApprovalServiceRequestApi(userId).subscribe(observer);
-
-
+        addDisposable(observer);
     }
 }

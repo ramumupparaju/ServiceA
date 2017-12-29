@@ -54,7 +54,7 @@ public class CheckUpPresenter extends BasePresenter<CheckUpContract.View> implem
             }
         };
         AppApiService.getInstance().fetchNewServiceRequestApi(userId).subscribe(observer);
-
+        addDisposable(observer);
     }
 
 

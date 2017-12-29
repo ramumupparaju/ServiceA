@@ -85,7 +85,6 @@
     <string name="option_past_history">Past History</string>
 
 
-
     <!--new request-->
     <string name="option_product_name">Product name</string>
     <string name="option_model_number">Model No</string>
@@ -454,7 +453,6 @@
     <string name="register_password_hint_unicode">&#9432;</string>
     <string name="register_timezone_why_unicode">\u003F</string>
     <string name="validating_code">validating code..</string>
-
 
 
     <!--google maps-->

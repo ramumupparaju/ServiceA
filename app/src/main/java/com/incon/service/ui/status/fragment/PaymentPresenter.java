@@ -50,7 +50,7 @@ public class PaymentPresenter extends BasePresenter<PaymentContract.View> implem
             }
         };
         AppApiService.getInstance().fetchPaymentServiceRequestApi(userId).subscribe(observer);
-
+        addDisposable(observer);
 
     }
 }

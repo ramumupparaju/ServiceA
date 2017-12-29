@@ -49,7 +49,7 @@ public class RepairPresenter extends BasePresenter<RepairContract.View> implemen
             }
         };
         AppApiService.getInstance().fetchRepairServiceRequestApi(userId).subscribe(observer);
-
+        addDisposable(observer);
     }
 
 }

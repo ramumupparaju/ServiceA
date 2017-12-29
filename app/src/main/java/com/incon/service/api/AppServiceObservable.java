@@ -77,8 +77,12 @@ public interface AppServiceObservable {
     Observable<List<ServiceCenterResponse>> getServiceCentersApi(@Path("userId") int userId);
 
     // fetch  new service request api
-    @GET("service/fetchrequests/{userId}/NEW")
-    Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(@Path("userId") int userId);
+    @GET("service/fetchrequests/{servicerCenterId}/NEW")
+    Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(@Path("servicerCenterId") int servicerCenterId);
+
+    // fetch  new service request api
+    @GET("service/fetchrequests/{servicerCenterId}/checkup")
+    Observable<List<FetchNewRequestResponse>> fetchCheckupRequestApi(@Path("servicerCenterId") int servicerCenterId);
 
     // fetch  approval  new service request api
     @GET("service/fetchrequests/{userId}/APPROVAL")
@@ -128,76 +132,11 @@ public interface AppServiceObservable {
     @POST("service/changepassword")
     Observable<LoginResponse> changePassword(@Body HashMap<String, String> password);
 
-    // check qr Codestatus  api
-    @GET("product/checkqropnestatus/{qrCode}")
-    Observable<Object> checkQrCodestatus(@Path("qrCode") String qrCode);
-
-    // add favourites  api
-    @POST("user/addtofavourites")
-    Observable<Object> addToFavotites(@Body HashMap<String, String> favoriteMap);
-
-    // add favourites  api
-    @GET("user/history/deletepurchased/{warrantyId}")
-    Observable<Object> deleteProduct(@Path("warrantyId") int warrantyId);
-
-    //assign qr code to product api
-    @POST("product/assign")
-    Observable<Object> assignQrCodeToProduct(@Body AssignQrCode qrCode);
-
-    //interested history  api
-    @GET("user/history/interested/{userId}")
-    Observable<List<ProductInfoResponse>> interestApi(@Path("userId") int userId);
-
-    //delete interest product api
-    @GET("user/history/deleteinterested/{interestId}")
-    Observable<Object> deleteApi(@Path("interestId") int interestId);
-
-    //buy requests api
-    @POST("user/buyrequest")
-    Observable<Object> buyRequestApi(@Body HashMap<String, String> buyRequestBody);
-
-
-    // getting user addresses api
-    @GET("user/getaddresses/{userId}")
-    Observable<List<AddUserAddressResponse>> getAddressesApi(@Path("userId") int userId);
-
-    //  user addresses api
-    @POST("user/addaddress")
-    Observable<Object> addProductAddress(@Body AddUserAddress addUserAddress);
-
-
-    @GET("user/getuser/scan/{qrCode}/")
-    Observable<UserInfoResponse> userInfoUsingQrCode(@Path("qrCode") String qrCode);
-
-
-    //search modelNumber  api
-    @GET("product/search/{modelNumber}")
-    Observable<List<ModelSearchResponse>> modelNumberSearch(@Path("modelNumber")
-                                                                    String modelNumber);
-
-    //FetchCategories api
-    @GET("service/getcategories/{userId}")
-    Observable<List<FetchCategories>> getCategories(@Path("userId") int userId);
-
 
     //warranty registration validateotp api
     @POST("warranty/validateotp")
     Observable<ValidateWarrantyOtpResponse> validateWarrantyOtp(@Body HashMap<String, String>
                                                                         verify);
-
-    //warranty registration requestotp api
-    @GET("warranty/requestotp/{phoneNumber}/password")
-    Observable<Object> warrantyRequestOtp(@Path("phoneNumber") String phoneNumber);
-
-    //transfer product api
-    @GET("user/transfer/{phoneNumber}/{userId}")
-    Observable<Object> transferRequest(@Path("phoneNumber") String phoneNumber,
-                                       @Path("userId") int userId);
-
-    // new user registation  api
-    @POST("user/newuser/{phoneNumber}")
-    Observable<UserInfoResponse> newUserRegistation(@Path("phoneNumber")
-                                                            String phoneNumber);
 
     // push token  api
     @POST("user/updatefcmtoken/{userId}")

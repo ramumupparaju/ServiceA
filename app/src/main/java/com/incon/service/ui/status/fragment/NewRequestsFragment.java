@@ -39,15 +39,15 @@ import static com.incon.service.AppUtils.callPhoneNumber;
 public class NewRequestsFragment extends BaseTabFragment implements NewRequestContract.View {
     private FragmentNewrequestBinding binding;
     private View rootView;
-    private int userId;
     private NewRequestPresenter newRequestPresenter;
     private NewRequestsAdapter newRequestsAdapter;
-    private List<FetchNewRequestResponse> fetchNewRequestResponses;
+
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
     private AppEditTextDialog holdDialog;
     private String merchantComment;
     private PastHistoryDialog pastHistoryDialog;
+    private int userId;
 
     @Override
     protected void initializePresenter() {
@@ -58,7 +58,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     @Override
     public void setTitle() {
-
     }
 
     @Override
@@ -69,7 +68,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     container, false);
             initViews();
             loadBottomSheet();
-
             rootView = binding.getRoot();
         }
         setTitle();
@@ -462,6 +460,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
+
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.requestTextview.setVisibility(View.VISIBLE);
             dismissSwipeRefresh();

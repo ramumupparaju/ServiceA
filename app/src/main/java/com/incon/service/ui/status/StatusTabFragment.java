@@ -30,7 +30,6 @@ public class StatusTabFragment extends BaseFragment {
     private Typeface defaultTypeFace;
     private Typeface selectedTypeFace;
     private String[] tabTitles;
-    private String[] serviceArray;
     @Override
     protected void initializePresenter() {
 
@@ -64,11 +63,11 @@ public class StatusTabFragment extends BaseFragment {
     }
 
     private void loadServiceSpinner() {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+        /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.view_spinner, serviceArray);
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
         binding.spinnerService.setAdapter(arrayAdapter);
-        binding.spinnerService.setText(serviceArray[0]);
+        binding.spinnerService.setText(serviceArray[0]);*/
 
     }
 

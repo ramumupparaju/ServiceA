@@ -16,7 +16,7 @@ import com.incon.service.ui.BaseRecyclerViewAdapter;
  * Created by PC on 12/6/2017.
  */
 
-public class CheckUpAdapter  extends BaseRecyclerViewAdapter {
+public class CheckUpAdapter extends BaseRecyclerViewAdapter {
 
     @Override
     public CheckUpAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
