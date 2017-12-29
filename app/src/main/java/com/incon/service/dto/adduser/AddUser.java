@@ -8,6 +8,7 @@ import android.util.Pair;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.incon.service.AppConstants;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.ValidationUtils;
 
@@ -47,12 +48,15 @@ public class AddUser extends BaseObservable {
     @SerializedName("password")
     @Expose
     private String password;
-    @SerializedName("serviceCenterId")
+    @SerializedName("serviceCenterResponse")
     @Expose
-    private String serviceCenterId;
+    private ServiceCenterResponse serviceCenterResponse;
     @SerializedName("serviceCenterRoleId")
     @Expose
-    private String serviceCenterRoleId;
+    private Integer serviceCenterRoleId;
+    @SerializedName("reportingId")
+    @Expose
+    private Integer reportingId;
 
     private transient String  serviceCenterName;
     private transient String serviceCenterDesignation;
@@ -195,20 +199,28 @@ public class AddUser extends BaseObservable {
         notifyChange();
     }
 
-    public String getServiceCenterId() {
-        return serviceCenterId;
+    public ServiceCenterResponse getServiceCenterResponse() {
+        return serviceCenterResponse;
     }
 
-    public void setServiceCenterId(String serviceCenterId) {
-        this.serviceCenterId = serviceCenterId;
+    public void setServiceCenterResponse(ServiceCenterResponse serviceCenterResponse) {
+        this.serviceCenterResponse = serviceCenterResponse;
     }
 
-    public String getServiceCenterRoleId() {
+    public Integer getServiceCenterRoleId() {
         return serviceCenterRoleId;
     }
 
-    public void setServiceCenterRoleId(String serviceCenterRoleId) {
+    public void setServiceCenterRoleId(Integer serviceCenterRoleId) {
         this.serviceCenterRoleId = serviceCenterRoleId;
+    }
+
+    public Integer getReportingId() {
+        return reportingId;
+    }
+
+    public void setReportingId(Integer reportingId) {
+        this.reportingId = reportingId;
     }
 
     private int validateDob() {
@@ -324,17 +336,17 @@ public class AddUser extends BaseObservable {
                 break;
 
             case 8:
-                boolean serviceCenterNameEmpty = TextUtils.isEmpty(getServiceCenterName());
+               /* boolean serviceCenterNameEmpty = TextUtils.isEmpty(getServiceCenterName());
                 if (emptyValidation && serviceCenterNameEmpty) {
                     return AppConstants.AddUserValidations.SERVICE_CENTER_NAME;
-                }
+                }*/
                 break;
 
             case 9:
-                boolean serviceCenterDesignationEmpty = TextUtils.isEmpty(getServiceCenterDesignation());
+               /* boolean serviceCenterDesignationEmpty = TextUtils.isEmpty(getServiceCenterDesignation());
                 if (emptyValidation && serviceCenterDesignationEmpty) {
                     return AppConstants.AddUserValidations.SERVICE_DISIGNATION;
-                }
+                }*/
                 break;
 
 

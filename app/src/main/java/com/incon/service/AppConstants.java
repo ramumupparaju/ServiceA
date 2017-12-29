@@ -207,6 +207,8 @@ public interface AppConstants {
         String FROM_FORGOT_PASSWORD_SCREEN = "fromForgotPasswordScreen";
         String ADDRESS_INFO = "addressInfo";
         String SERVICE_CENTER_DATA = "serviceCenterData";
+        String USER_DATA = "userData";
+        String DESIGNATION_DATA = "designationData";
     }
 
 

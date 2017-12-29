@@ -52,7 +52,6 @@ public class AddUserActivity extends BaseActivity implements
     private Animation shakeAnim;
     private MaterialBetterSpinner genderSpinner;
     private ActivityAdduserBinding binding;
-    public List<ServiceCenterResponse> serviceCenterResponseList;
     public List<FetchDesignationsResponse> fetchDesignationsResponseList;
     private int designationSelectedPos = -1;
     private int serviceCenterId;
@@ -73,7 +72,22 @@ public class AddUserActivity extends BaseActivity implements
     @Override
     protected void onCreateView(Bundle saveInstanceState) {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
+
+        Intent bundle = getIntent();
+        if (bundle != null)
+            addUser = bundle.getParcelableExtra(IntentConstants.USER_DATA);
+        if (addUser != null) {
+            //TODO
+        } else {
+
+        }
         addUser = new AddUser();
+        addUser.setServiceCenterDesignation("Manager"); //todo remove
+        addUser.setServiceCenterRoleId(24);
+        addUser.setReportingId(162);
+        ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
+        addUser.setServiceCenterResponse(serviceCenterResponse);
+
         binding.setAddUser(addUser);
         binding.setAddUserActivity(this);
         rootView = binding.getRoot();
@@ -81,6 +95,7 @@ public class AddUserActivity extends BaseActivity implements
         //loading data from intent
         Intent intent = getIntent();
         serviceCenterId = intent.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
+        serviceCenterResponse.setId(serviceCenterId);
 
         initViews();
         initializeToolbar();
@@ -99,12 +114,14 @@ public class AddUserActivity extends BaseActivity implements
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadGenderSpinnerData();
+        loadDesignationsSpinnerData();
         loadValidationErrors();
         setFocusListenersForEditText();
     }
 
     private void loadDesignationsSpinnerData() {
-        List<String> fetchDesignationList = new ArrayList<>();
+        //TODO have to enable
+        /*List<String> fetchDesignationList = new ArrayList<>();
         for (FetchDesignationsResponse fetchDesignationsResponse : fetchDesignationsResponseList) {
             fetchDesignationList.add(fetchDesignationsResponse.getName());
         }
@@ -120,7 +137,7 @@ public class AddUserActivity extends BaseActivity implements
                     designationSelectedPos = position;
                 }
             }
-        });
+        });*/
     }
 
 
@@ -335,7 +352,6 @@ public class AddUserActivity extends BaseActivity implements
     public void onSubmitClick() {
         if (validateFields()) {
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
-            addUser.setServiceCenterRoleId(String.valueOf(fetchDesignationsResponseList.get(designationSelectedPos).getId()));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
         }

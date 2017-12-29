@@ -1,5 +1,10 @@
 package com.incon.service.apimodel.components.userslistofservicecenters;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
@@ -8,7 +13,7 @@ import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse
  * Created by INCON TECHNOLOGIES on 12/25/2017.
  */
 
-public class UsersListOfServiceCenters {
+public class UsersListOfServiceCenters extends BaseObservable implements Parcelable {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -64,12 +69,14 @@ public class UsersListOfServiceCenters {
         this.id = id;
     }
 
+    @Bindable
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+        notifyChange();
     }
 
     public String getEmail() {
@@ -144,4 +151,68 @@ public class UsersListOfServiceCenters {
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
+
+    protected UsersListOfServiceCenters(Parcel in) {
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        name = in.readString();
+        email = in.readString();
+        address = in.readString();
+        location = in.readString();
+        usertype = in.readByte() == 0x00 ? null : in.readInt();
+        serviceCenter = (ServiceCenterResponse) in.readValue(ServiceCenterResponse.class.getClassLoader());
+        country = in.readString();
+        dob = in.readString();
+        gender = in.readString();
+        serviceCenterRoleId = in.readByte() == 0x00 ? null : in.readInt();
+        mobileNumber = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(name);
+        dest.writeString(email);
+        dest.writeString(address);
+        dest.writeString(location);
+        if (usertype == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(usertype);
+        }
+        dest.writeValue(serviceCenter);
+        dest.writeString(country);
+        dest.writeString(dob);
+        dest.writeString(gender);
+        if (serviceCenterRoleId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(serviceCenterRoleId);
+        }
+        dest.writeString(mobileNumber);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<UsersListOfServiceCenters> CREATOR = new Parcelable.Creator<UsersListOfServiceCenters>() {
+        @Override
+        public UsersListOfServiceCenters createFromParcel(Parcel in) {
+            return new UsersListOfServiceCenters(in);
+        }
+
+        @Override
+        public UsersListOfServiceCenters[] newArray(int size) {
+            return new UsersListOfServiceCenters[size];
+        }
+    };
 }

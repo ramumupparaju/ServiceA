@@ -8,11 +8,10 @@ import android.view.ViewGroup;
 
 import com.incon.service.BR;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
+import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.databinding.ItemDesignationsListBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,11 +20,15 @@ import java.util.List;
 
 public class DesignationsListAdapter extends RecyclerView.Adapter<DesignationsListAdapter.ViewHolder> {
 
-    private List<UsersListOfServiceCenters> usersListOfServiceCenters = new ArrayList<>();
+    private List<DesignationResponse> designationsList;
     private IClickCallback clickCallback;
 
     public void setClickCallback(IClickCallback clickCallback) {
         this.clickCallback = clickCallback;
+    }
+
+    public DesignationsListAdapter(List<DesignationResponse> designationsList) {
+        this.designationsList = designationsList;
     }
 
     @Override
@@ -38,14 +41,18 @@ public class DesignationsListAdapter extends RecyclerView.Adapter<DesignationsLi
 
     @Override
     public void onBindViewHolder(DesignationsListAdapter.ViewHolder holder, int position) {
-        UsersListOfServiceCenters usersListOfServiceCenter = usersListOfServiceCenters.get(position);
-        holder.bind(usersListOfServiceCenter, position);
+        DesignationResponse designationResponse = designationsList.get(position);
+        holder.bind(designationResponse, position);
 
     }
 
     @Override
     public int getItemCount() {
-        return usersListOfServiceCenters.size();
+        return designationsList.size();
+    }
+
+    public void setData(List<DesignationResponse> designationsList) {
+        this.designationsList = designationsList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -58,7 +65,7 @@ public class DesignationsListAdapter extends RecyclerView.Adapter<DesignationsLi
             binding.getRoot().setOnClickListener(this);
         }
 
-        public void bind(UsersListOfServiceCenters usersListOfServiceCenters, int position) {
+        public void bind(DesignationResponse usersListOfServiceCenters, int position) {
             binding.setVariable(BR.modelResponse, usersListOfServiceCenters);
             binding.executePendingBindings();
         }

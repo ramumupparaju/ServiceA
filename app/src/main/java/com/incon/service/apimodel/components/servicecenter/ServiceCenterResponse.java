@@ -73,6 +73,9 @@ public class ServiceCenterResponse extends BaseObservable implements Parcelable 
         this.id = id;
     }
 
+    public ServiceCenterResponse() {
+    }
+
     @Bindable
     public String getName() {
         return name;

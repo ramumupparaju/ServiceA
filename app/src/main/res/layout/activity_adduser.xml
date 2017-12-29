@@ -37,7 +37,7 @@
 
                     <RelativeLayout style="@style/BothMatch">
 
-                        <ImageView
+                        <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/toolbar_left_iv"
                             android:layout_width="@dimen/margin_64"
                             android:layout_height="@dimen/margin_64"
@@ -48,13 +48,21 @@
                             app:srcCompat="@drawable/ic_back_arrow" />
 
                         <TextView
-                            android:id="@+id/toolbar_text_user"
+                            android:id="@+id/toolbar_Title"
                             style="@style/BothWrap"
                             fontPath="fonts/OpenSans-Bold.ttf"
                             android:layout_centerInParent="true"
                             android:text="@string/action_add_user"
                             android:textColor="@color/white"
                             android:textSize="15.5sp" />
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/toolbar_delete_iv"
+                            style="@style/BothWrap"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/margin_10"
+                            app:srcCompat="@drawable/ic_option_delete" />
 
 
                     </RelativeLayout>
@@ -260,7 +268,7 @@
                     android:layout_marginBottom="@dimen/margin_24"
                     android:focusable="true"
                     android:hint="@string/register__service_center_designation_hint"
-                    android:tag="9"
+                    android:tag="8"
                     android:text="@={addUser.serviceCenterDesignation}"
                     android:visibility="visible"
                     app:met_floatingLabel="highlight"
@@ -268,15 +276,14 @@
                     app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
 
-                <!-- service_center-->
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/spinner_reporting_user"
                     style="@style/spinnerItemStyle"
                     android:layout_below="@id/spinner_service_center_designation"
                     android:layout_marginBottom="@dimen/margin_24"
                     android:focusable="true"
-                    android:hint="@string/register__service_center_hint"
-                    android:tag="8"
+                    android:hint="@string/hint_reporting_person"
+                    android:tag="9"
                     android:visibility="visible"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"

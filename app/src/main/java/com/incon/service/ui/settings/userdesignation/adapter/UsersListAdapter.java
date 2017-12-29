@@ -18,17 +18,18 @@ import java.util.List;
 /**
  * Created by INCON TECHNOLOGIES on 12/25/2017.
  */
-
 public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.ViewHolder> {
 
-    private List<UsersListOfServiceCenters> usersListOfServiceCenters = new ArrayList<>();
+    private List<UsersListOfServiceCenters> usersList = new ArrayList<>();
     private IClickCallback clickCallback;
 
     public void setClickCallback(IClickCallback clickCallback) {
         this.clickCallback = clickCallback;
     }
 
-
+    public UsersListAdapter(List<UsersListOfServiceCenters> usersList) {
+        this.usersList = usersList;
+    }
 
     @Override
     public UsersListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,18 +41,23 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
 
     @Override
     public void onBindViewHolder(UsersListAdapter.ViewHolder holder, int position) {
-        UsersListOfServiceCenters usersListOfServiceCenter = usersListOfServiceCenters.get(position);
+        UsersListOfServiceCenters usersListOfServiceCenter = usersList.get(position);
         holder.bind(usersListOfServiceCenter, position);
 
     }
 
     @Override
     public int getItemCount() {
-        return usersListOfServiceCenters.size();
+        return usersList.size();
+    }
+
+    public void setData(List<UsersListOfServiceCenters> usersList) {
+        this.usersList = usersList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ItemUsersListBinding binding;
+
         public ViewHolder(ItemUsersListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

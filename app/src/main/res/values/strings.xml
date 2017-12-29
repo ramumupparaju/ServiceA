@@ -439,7 +439,7 @@
     <string name="register__service_center_hint">Service Center Name</string>
     <string name="register__service_center_designation_hint">Service Center Designation</string>
     <string name="user_name_hint">Name</string>
-    <string name="user__hint">Name</string>
+    <string name="user_hint">Name</string>
     <string name="user_contact_hint">Contact</string>
     <string name="user_address_hint">Address</string>
     <string name="register_postalcode_hint">Postal Code</string>
@@ -453,6 +453,7 @@
     <string name="register_password_hint_unicode">&#9432;</string>
     <string name="register_timezone_why_unicode">\u003F</string>
     <string name="validating_code">validating code..</string>
+    <string name="hint_reporting_person">Reporting person</string>
 
 
     <!--google maps-->

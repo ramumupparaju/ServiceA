@@ -56,6 +56,15 @@ public class AddDesignationsActivity extends BaseActivity implements
     @Override
     protected void onCreateView(Bundle saveInstanceState) {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
+
+        Intent bundle = getIntent();
+        if (bundle != null)
+            addDesignation = bundle.getParcelableExtra(IntentConstants.DESIGNATION_DATA);
+        if (addDesignation != null) {
+        } else {
+
+        }
+
         addDesignation = new AddDesignation();
         binding.setAddDesignation(addDesignation);
         binding.setAddDesignationsActivity(this);
