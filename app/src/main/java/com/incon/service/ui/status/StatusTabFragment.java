@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import com.incon.service.R;
 import com.incon.service.custom.view.CustomViewPager;
@@ -29,6 +30,7 @@ public class StatusTabFragment extends BaseFragment {
     private Typeface defaultTypeFace;
     private Typeface selectedTypeFace;
     private String[] tabTitles;
+    private String[] serviceArray;
     @Override
     protected void initializePresenter() {
 
@@ -56,7 +58,17 @@ public class StatusTabFragment extends BaseFragment {
     private void initViews() {
 
         initViewPager();
+        loadServiceSpinner();
 
+
+    }
+
+    private void loadServiceSpinner() {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.view_spinner, serviceArray);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        binding.spinnerService.setAdapter(arrayAdapter);
+        binding.spinnerService.setText(serviceArray[0]);
 
     }
 

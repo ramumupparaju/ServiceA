@@ -115,7 +115,6 @@ public class AppApiService implements AppConstants {
     }
 
 
-
     // service center logo  api
     public Observable<Object> uploadServiceCenterLogo(int serviceCenterId, MultipartBody.Part serviceCenterLogo) {
         return addNetworkCheck(serviceInstance.uploadServiceCenterLogo(String.valueOf(serviceCenterId), serviceCenterLogo));
@@ -164,8 +163,8 @@ public class AppApiService implements AppConstants {
     }
 
     // get users list of service centers api
-    public Observable<List<UsersListOfServiceCenters>> getUsersListOfServiceCenterApi(int userId) {
-        return addNetworkCheck(serviceInstance.getUsersListOfServiceCentersApi(userId));
+    public Observable<List<UsersListOfServiceCenters>> getUsersListOfServiceCenterApi(int serviceCenterId) {
+        return addNetworkCheck(serviceInstance.getUsersListOfServiceCentersApi(serviceCenterId));
     }
 
     // get service centers api  api
@@ -182,7 +181,8 @@ public class AppApiService implements AppConstants {
     public Observable<Object> fetchApprovalServiceRequestApi(int userId) {
         return addNetworkCheck(serviceInstance.fetchApprovalServiceRequestApi(userId));
     }
-   // fetch  repair service request api
+
+    // fetch  repair service request api
     public Observable<Object> fetchRepairServiceRequestApi(int userId) {
         return addNetworkCheck(serviceInstance.fetchRepairServiceRequestApi(userId));
     }   // fetch  repair service request api

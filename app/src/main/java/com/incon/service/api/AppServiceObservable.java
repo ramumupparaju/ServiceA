@@ -69,8 +69,8 @@ public interface AppServiceObservable {
     Observable<Object> getDesignationsListUsingServiceCenter(@Path("serviceCenterId") int serviceCenterId, @Path("userId") int userId);
 
     // get users list of service centers api
-    @GET("service/getuserslist/{userId}")
-    Observable<List<UsersListOfServiceCenters>> getUsersListOfServiceCentersApi(@Path("userId") int userId);
+    @GET("service/getuserslist/{serviceCenterId}")
+    Observable<List<UsersListOfServiceCenters>> getUsersListOfServiceCentersApi(@Path("serviceCenterId") int serviceCenterId);
 
     // get service centers api
     @GET("service/getservicecenters/{userId}")
@@ -99,7 +99,6 @@ public interface AppServiceObservable {
     @POST("service/logoupdate/{serviceCenterId}")
     Observable<Object> uploadServiceCenterLogo(@Path("storeId") String serviceCenterId,
                                                @Part MultipartBody.Part serviceCenterLogo);
-
 
     //registration request otp
     @GET("user/requestotp/{phoneNumber}/register")

@@ -77,6 +77,7 @@ public class AllUsersDesignationsPresenter extends BasePresenter<AllUsersDesigna
 
     private Observable<List<UsersListOfServiceCenters>> getUserListObservable(int userId) {
         return AppApiService.getInstance().getUsersListOfServiceCenterApi(userId);
+
     }
 }
 

@@ -22,6 +22,7 @@
         <item>Female</item>
     </string-array>
 
+
     <!-- adding new options  -->
     <string-array name="select_new_options">
         <item>Add new service center</item>
