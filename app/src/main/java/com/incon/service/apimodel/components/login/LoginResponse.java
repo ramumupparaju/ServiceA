@@ -25,9 +25,10 @@ public class LoginResponse extends ApiBaseResponse {
     @SerializedName("usertype")
     @Expose
     private Integer usertype;
+
     @SerializedName("serviceCenter")
     @Expose
-    private StoreResponse store;
+    private ServiceCenterResponse serviceCenter;
     @SerializedName("country")
     @Expose
     private String country;
@@ -44,15 +45,15 @@ public class LoginResponse extends ApiBaseResponse {
     @Expose
     private String mobileNumber;
 
-    @SerializedName("msisdn")
-    @Expose
-    private String msisdn;
-
-    @SerializedName("uuid")
-    @Expose
-    private String uuid;
     private String password;
     private transient String confirmPassword;
+    public ServiceCenterResponse getServiceCenter() {
+        return serviceCenter;
+    }
+
+    public void setServiceCenter(ServiceCenterResponse serviceCenter) {
+        this.serviceCenter = serviceCenter;
+    }
 
     public String getServiceCenterUserType() {
         return serviceCenterUserType;
@@ -60,14 +61,6 @@ public class LoginResponse extends ApiBaseResponse {
 
     public void setServiceCenterUserType(String serviceCenterUserType) {
         this.serviceCenterUserType = serviceCenterUserType;
-    }
-
-    public StoreResponse getStore() {
-        return store;
-    }
-
-    public void setStore(StoreResponse store) {
-        this.store = store;
     }
 
     public String getMobileNumber() {
@@ -134,14 +127,6 @@ public class LoginResponse extends ApiBaseResponse {
         this.location = location;
     }
 
-    public String getMsisdn() {
-        return msisdn;
-    }
-
-    public void setMsisdn(String msisdn) {
-        this.msisdn = msisdn;
-    }
-
     public Integer getUsertype() {
         return usertype;
     }
@@ -150,14 +135,6 @@ public class LoginResponse extends ApiBaseResponse {
         this.usertype = usertype;
     }
 
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
 
     public String getCountry() {
         return country;

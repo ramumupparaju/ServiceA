@@ -6,6 +6,7 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
+import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 
 import net.hockeyapp.android.CrashManager;
 
@@ -16,6 +17,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class ConnectApplication extends Application {
 
     private List<FetchCategories> fetchCategoriesList;
+    private List<DefaultStatusData> defaultStausData;
     private static Context context;
 
     public List<FetchCategories> getFetchCategoriesList() {
@@ -24,6 +26,14 @@ public class ConnectApplication extends Application {
 
     public void setFetchCategoriesList(List<FetchCategories> fetchCategoriesList) {
         this.fetchCategoriesList = fetchCategoriesList;
+    }
+
+    public List<DefaultStatusData> getDefaultStausData() {
+        return defaultStausData;
+    }
+
+    public void setDefaultStausData(List<DefaultStatusData> defaultStausData) {
+        this.defaultStausData = defaultStausData;
     }
 
     @Override

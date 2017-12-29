@@ -7,6 +7,7 @@ import com.incon.service.apimodel.base.ApiBaseResponse;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
@@ -89,6 +90,10 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.register(registrationBody));
     }
 
+    // get status list api
+    public Observable<List<DefaultStatusData>> getStatusList() {
+        return addNetworkCheck(serviceInstance.getStatusList());
+    }
     // add service center api
     public Observable<LoginResponse> addServiceCenter(
             int userId, AddServiceCenter addServiceCenter) {

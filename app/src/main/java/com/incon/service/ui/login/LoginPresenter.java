@@ -7,7 +7,6 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.login.LoginUserData;
@@ -20,7 +19,6 @@ import com.incon.service.ui.validateotp.ValidateOtpPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.HashMap;
-import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 

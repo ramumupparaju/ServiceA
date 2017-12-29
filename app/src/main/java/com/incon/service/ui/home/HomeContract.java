@@ -12,6 +12,7 @@ public interface HomeContract {
     }
 
     interface Presenter {
+        void getDefaultStatusData();
     }
 
 }
