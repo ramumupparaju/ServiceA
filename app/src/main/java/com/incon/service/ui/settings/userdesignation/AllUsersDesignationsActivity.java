@@ -9,9 +9,9 @@ import android.view.View;
 
 import com.incon.service.R;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.databinding.ActivityAllUsersDesignationsBinding;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.adddesignations.AddDesignationsActivity;
 import com.incon.service.ui.adduser.AddUserActivity;
@@ -32,7 +32,7 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
     private AllUsersDesignationsPresenter allUsersDesignationsPresenter;
 
     private UsersListAdapter usersListAdapter;
-    private List<UsersListOfServiceCenters> usersList;
+    private List<AddUser> usersList;
 
     private DesignationsListAdapter designationsListAdapter;
     private List<DesignationData> designationsList;
@@ -119,7 +119,7 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
                 intent.putExtra(IntentConstants.DESIGNATION_DATA, designationResponse);
                 startActivity(intent);
             } else {
-                UsersListOfServiceCenters usersListOfServiceCenters = usersList.get(position);
+                AddUser usersListOfServiceCenters = usersList.get(position);
                 Intent intent = new Intent(AllUsersDesignationsActivity.this, AddUserActivity.class);
                 intent.putExtra(IntentConstants.USER_DATA, usersListOfServiceCenters);
                 startActivity(intent);
@@ -145,7 +145,7 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
     }
 
     @Override
-    public void loadUsersDesignationsList(List<UsersListOfServiceCenters> usersList,
+    public void loadUsersDesignationsList(List<AddUser> usersList,
                                           List<DesignationData> designationsList) {
 
         if (usersList == null) {

@@ -1,7 +1,7 @@
 package com.incon.service.ui.settings.userdesignation;
 
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseView;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface AllUsersDesignationsContract {
     interface View extends BaseView {
-        void loadUsersDesignationsList(List<UsersListOfServiceCenters> usersListOfServiceCenters,
+        void loadUsersDesignationsList(List<AddUser> usersListOfServiceCenters,
                                        List<DesignationData> designationListResponses);
     }
     interface Presenter {

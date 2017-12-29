@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 
 import com.incon.service.BR;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.databinding.ItemUsersListBinding;
+import com.incon.service.dto.adduser.AddUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +20,14 @@ import java.util.List;
  */
 public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.ViewHolder> {
 
-    private List<UsersListOfServiceCenters> usersList = new ArrayList<>();
+    private List<AddUser> usersList = new ArrayList<>();
     private IClickCallback clickCallback;
 
     public void setClickCallback(IClickCallback clickCallback) {
         this.clickCallback = clickCallback;
     }
 
-    public UsersListAdapter(List<UsersListOfServiceCenters> usersList) {
+    public UsersListAdapter(List<AddUser> usersList) {
         this.usersList = usersList;
     }
 
@@ -41,7 +41,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
 
     @Override
     public void onBindViewHolder(UsersListAdapter.ViewHolder holder, int position) {
-        UsersListOfServiceCenters usersListOfServiceCenter = usersList.get(position);
+        AddUser usersListOfServiceCenter = usersList.get(position);
         holder.bind(usersListOfServiceCenter, position);
 
     }
@@ -51,7 +51,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
         return usersList.size();
     }
 
-    public void setData(List<UsersListOfServiceCenters> usersList) {
+    public void setData(List<AddUser> usersList) {
         this.usersList = usersList;
     }
 
@@ -64,7 +64,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
             binding.getRoot().setOnClickListener(this);
         }
 
-        public void bind(UsersListOfServiceCenters usersListOfServiceCenters, int position) {
+        public void bind(AddUser usersListOfServiceCenters, int position) {
             binding.setVariable(BR.modelResponse, usersListOfServiceCenters);
             binding.executePendingBindings();
         }

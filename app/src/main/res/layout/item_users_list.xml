@@ -5,7 +5,7 @@
 
         <variable
             name="usersListOfServiceCenters"
-            type="com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters" />
+            type="com.incon.service.dto.adduser.AddUser" />
     </data>
 
     <RelativeLayout

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.apimodel.components.fetchdesignations.FetchDesignationsResponse;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.custom.view.CustomTextInputLayout;
@@ -77,11 +79,15 @@ public class AddUserActivity extends BaseActivity implements
         if (bundle != null)
             addUser = bundle.getParcelableExtra(IntentConstants.USER_DATA);
         if (addUser != null) {
-            //TODO
+            binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_user));
+            binding.buttonSubmit.setText(getString(R.string.action_update));
+            binding.toolbar.toolbarRightIv.setVisibility(View.VISIBLE);
         } else {
-
-        }
+            binding.toolbar.toolbarTitleTv.setText(getString(R.string.action_add_user));
+            binding.toolbar.toolbarRightIv.setVisibility(View.GONE);
+            binding.buttonSubmit.setText(getString(R.string.action_submit));
         addUser = new AddUser();
+        }
         addUser.setServiceCenterDesignation("Manager"); //todo remove
         addUser.setServiceCenterRoleId(24);
         addUser.setReportingId(162);
@@ -103,12 +109,25 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     private void initializeToolbar() {
-        binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
+        binding.toolbar.toolbarLeftIv.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        binding.toolbar.toolbarLeftIv.setImageResource(R.drawable.ic_back_arrow);
+        binding.toolbar.toolbarRightIv.setImageResource(R.drawable.ic_option_delete);
+        binding.toolbar.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        binding.toolbar.toolbarRightIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDeleteUserDialog();
+            }
+        });
+    }
+
+    private void showDeleteUserDialog() {
+        //TODO have to implement delete api
     }
 
     private void initViews() {

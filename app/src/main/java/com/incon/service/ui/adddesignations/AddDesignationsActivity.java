@@ -2,6 +2,7 @@ package com.incon.service.ui.adddesignations;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.util.Pair;
@@ -16,6 +17,7 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddDesignationsBinding;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -57,11 +59,16 @@ public class AddDesignationsActivity extends BaseActivity implements
         if (bundle != null)
             addDesignation = bundle.getParcelableExtra(IntentConstants.DESIGNATION_DATA);
         if (addDesignation != null) {
+            binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_user));
+            binding.buttonSubmit.setText(getString(R.string.action_update));
+            binding.toolbar.toolbarRightIv.setVisibility(View.VISIBLE);
         } else {
-
+            binding.toolbar.toolbarTitleTv.setText(getString(R.string.action_add_user));
+            binding.toolbar.toolbarRightIv.setVisibility(View.GONE);
+            binding.buttonSubmit.setText(getString(R.string.action_submit));
+            addDesignation = new DesignationData();
         }
 
-        addDesignation = new DesignationData();
         binding.setAddDesignation(addDesignation);
         binding.setAddDesignationsActivity(this);
 
@@ -74,12 +81,25 @@ public class AddDesignationsActivity extends BaseActivity implements
     }
 
     private void initializeToolbar() {
-        binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
+        binding.toolbar.toolbarLeftIv.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        binding.toolbar.toolbarLeftIv.setImageResource(R.drawable.ic_back_arrow);
+        binding.toolbar.toolbarRightIv.setImageResource(R.drawable.ic_option_delete);
+        binding.toolbar.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        binding.toolbar.toolbarRightIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDeleteDesignationDialog();
+            }
+        });
+    }
+
+    private void showDeleteDesignationDialog() {
+        //TODO have to implemente delete designation
     }
 
     private void initViews() {

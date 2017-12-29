@@ -8,7 +8,6 @@ import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResp
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
@@ -63,7 +62,7 @@ public interface AppServiceObservable {
 
     // get users list of service centers api
     @GET("service/getuserslist/{serviceCenterId}")
-    Observable<List<UsersListOfServiceCenters>> getUsersListOfServiceCentersApi(@Path("serviceCenterId") int serviceCenterId);
+    Observable<List<AddUser>> getUsersListOfServiceCentersApi(@Path("serviceCenterId") int serviceCenterId);
 
     // get service centers api
     @GET("service/getservicecenters/{userId}")

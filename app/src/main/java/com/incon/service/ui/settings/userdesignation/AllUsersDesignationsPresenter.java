@@ -8,7 +8,7 @@ import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
@@ -38,12 +38,12 @@ public class AllUsersDesignationsPresenter extends BasePresenter<AllUsersDesigna
     public void doUsersDesignationsApi(int userId, int serviceCenterId) {
         getView().showProgress(appContext.getString(R.string.progress_loading_data));
 
-        Observable<List<UsersListOfServiceCenters>> userListObservable = getUserListObservable(userId);
+        Observable<List<AddUser>> userListObservable = getUserListObservable(userId);
         Observable<List<DesignationData>> designationsListObservable = getDesignationListObservable(userId, serviceCenterId);
 
-        Observable<String> zip = Observable.zip(userListObservable, designationsListObservable, new BiFunction<List<UsersListOfServiceCenters>, List<DesignationData>, String>() {
+        Observable<String> zip = Observable.zip(userListObservable, designationsListObservable, new BiFunction<List<AddUser>, List<DesignationData>, String>() {
             @Override
-            public String apply(@NonNull List<UsersListOfServiceCenters> usersList, @NonNull List<DesignationData> designationsList) throws Exception {
+            public String apply(@NonNull List<AddUser> usersList, @NonNull List<DesignationData> designationsList) throws Exception {
 
                 getView().loadUsersDesignationsList(usersList, designationsList);
                 return "";
@@ -76,7 +76,7 @@ public class AllUsersDesignationsPresenter extends BasePresenter<AllUsersDesigna
         return AppApiService.getInstance().getDesignationsListUsingServiceCenter(userId, serviceCenterId);
     }
 
-    private Observable<List<UsersListOfServiceCenters>> getUserListObservable(int userId) {
+    private Observable<List<AddUser>> getUserListObservable(int userId) {
         return AppApiService.getInstance().getUsersListOfServiceCenterApi(userId);
     }
 }

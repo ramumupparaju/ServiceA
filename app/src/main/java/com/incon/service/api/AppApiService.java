@@ -10,7 +10,6 @@ import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResp
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
@@ -148,7 +147,7 @@ public class AppApiService implements AppConstants {
     }
 
     // get users list of service centers api
-    public Observable<List<UsersListOfServiceCenters>> getUsersListOfServiceCenterApi(int serviceCenterId) {
+    public Observable<List<AddUser>> getUsersListOfServiceCenterApi(int serviceCenterId) {
         return addNetworkCheck(serviceInstance.getUsersListOfServiceCentersApi(serviceCenterId));
     }
 

@@ -521,6 +521,8 @@
     <string name="title_warranty_register">Warranty Registration</string>
     <string name="title_add_new_model">New Model</string>
     <string name="title_update_service_center">Update Service Center</string>
+    <string name="title_update_user">Update User</string>
+    <string name="title_update_designation">Update Designation</string>
     <string name="title_status">Status</string>
     <string name="title_report">Report</string>
     <string name="title_notifications">Notifications</string>
