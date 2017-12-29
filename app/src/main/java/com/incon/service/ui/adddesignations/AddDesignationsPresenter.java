@@ -10,6 +10,7 @@ import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.ui.BasePresenter;
+import com.incon.service.ui.validateotp.ValidateOtpPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.List;
@@ -38,7 +39,6 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
             @Override
             public void onNext(Object categoriesList) {
                 getView().hideProgress();
-
             }
 
             @Override
@@ -54,33 +54,7 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
             }
         };
         AppApiService.getInstance().addDesignation(userId, addDesignation).subscribe(observer);
-        ;
         addDisposable(observer);
     }
 
-    @Override
-    public void serviceCentersList(int userId) {
-        getView().showProgress(appContext.getString(R.string.progress_loading_service_centers));
-        DisposableObserver<List<ServiceCenterResponse>> observer = new
-                DisposableObserver<List<ServiceCenterResponse>>() {
-                    @Override
-                    public void onNext(List<ServiceCenterResponse> serviceCenterResponse) {
-                        getView().loadServiceCentersList(serviceCenterResponse);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().hideProgress();
-                        Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
-                        getView().handleException(errorDetails);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        getView().hideProgress();
-                    }
-                };
-        AppApiService.getInstance().getServiceCentersApi(userId).subscribe(observer);
-        addDisposable(observer);
-    }
 }

@@ -82,7 +82,7 @@ public class AddDesignation extends BaseObservable {
 
         int fieldId = AppConstants.VALIDATION_FAILURE;
         if (tag == null) {
-            for (int i = 0; i <= 2; i++) {
+            for (int i = 0; i <= 1; i++) {
                 fieldId = validateFields(i, true);
                 if (fieldId != AppConstants.VALIDATION_SUCCESS) {
                     tag = i + "";
@@ -111,14 +111,6 @@ public class AddDesignation extends BaseObservable {
                     return AppConstants.AddDesignationsValidation.NAME_REQ;
                 }
                 break;
-
-            case 2:
-                boolean serviceCenterNameEmpty = TextUtils.isEmpty(getServiceCenterName());
-                if (emptyValidation && serviceCenterNameEmpty) {
-                    return AppConstants.AddDesignationsValidation.SERVICE_CENTER_NAME;
-                }
-                break;
-
 
             default:
                 return AppConstants.VALIDATION_SUCCESS;

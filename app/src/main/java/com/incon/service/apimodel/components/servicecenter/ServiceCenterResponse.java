@@ -2,6 +2,8 @@ package com.incon.service.apimodel.components.servicecenter;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,8 +11,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by PC on 12/20/2017.
  */
-
-public class ServiceCenterResponse extends BaseObservable {
+public class ServiceCenterResponse extends BaseObservable implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -63,6 +64,7 @@ public class ServiceCenterResponse extends BaseObservable {
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
     }
+
     public Integer getId() {
         return id;
     }
@@ -168,4 +170,87 @@ public class ServiceCenterResponse extends BaseObservable {
     public void setAddressInfo(Object addressInfo) {
         this.addressInfo = addressInfo;
     }
+
+    protected ServiceCenterResponse(Parcel in) {
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        name = in.readString();
+        location = in.readString();
+        address = in.readString();
+        categoryId = in.readByte() == 0x00 ? null : in.readInt();
+        divisionId = in.readByte() == 0x00 ? null : in.readInt();
+        brandId = in.readByte() == 0x00 ? null : in.readInt();
+        contactNo = in.readString();
+        email = in.readString();
+        createdBy = in.readByte() == 0x00 ? null : in.readInt();
+        createdDate = in.readByte() == 0x00 ? null : in.readLong();
+        gstn = in.readString();
+        addressInfo = (Object) in.readValue(Object.class.getClassLoader());
+        logoUrl = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(name);
+        dest.writeString(location);
+        dest.writeString(address);
+        if (categoryId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(categoryId);
+        }
+        if (divisionId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(divisionId);
+        }
+        if (brandId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(brandId);
+        }
+        dest.writeString(contactNo);
+        dest.writeString(email);
+        if (createdBy == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(createdBy);
+        }
+        if (createdDate == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(createdDate);
+        }
+        dest.writeString(gstn);
+        dest.writeValue(addressInfo);
+        dest.writeString(logoUrl);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<ServiceCenterResponse> CREATOR = new Parcelable.Creator<ServiceCenterResponse>() {
+        @Override
+        public ServiceCenterResponse createFromParcel(Parcel in) {
+            return new ServiceCenterResponse(in);
+        }
+
+        @Override
+        public ServiceCenterResponse[] newArray(int size) {
+            return new ServiceCenterResponse[size];
+        }
+    };
 }

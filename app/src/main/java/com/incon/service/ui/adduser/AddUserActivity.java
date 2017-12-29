@@ -54,8 +54,8 @@ public class AddUserActivity extends BaseActivity implements
     private ActivityAdduserBinding binding;
     public List<ServiceCenterResponse> serviceCenterResponseList;
     public List<FetchDesignationsResponse> fetchDesignationsResponseList;
-    private int serviceCenterSelectedPos = -1;
     private int designationSelectedPos = -1;
+    private int serviceCenterId;
 
     @Override
     protected void initializePresenter() {
@@ -77,11 +77,13 @@ public class AddUserActivity extends BaseActivity implements
         binding.setAddUser(addUser);
         binding.setAddUserActivity(this);
         rootView = binding.getRoot();
+
+        //loading data from intent
+        Intent intent = getIntent();
+        serviceCenterId = intent.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
+
         initViews();
         initializeToolbar();
-        //TODO have to remove hard code
-        addUserPresenter.fetchDesignations(1, SharedPrefsUtils.loginProvider().
-                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
 
     }
 
@@ -99,7 +101,6 @@ public class AddUserActivity extends BaseActivity implements
         loadGenderSpinnerData();
         loadValidationErrors();
         setFocusListenersForEditText();
-        loadServiceCenterSpinnerData();
     }
 
     private void loadDesignationsSpinnerData() {
@@ -122,41 +123,6 @@ public class AddUserActivity extends BaseActivity implements
         });
     }
 
-    private void loadServiceCenterSpinnerData() {
-        // TODO have to remove hard coding
-        serviceCenterResponseList = new ArrayList<>();
-        ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
-        serviceCenterResponse.setId(Integer.valueOf("1"));
-        serviceCenterResponse.setName("moonzdream");
-        serviceCenterResponseList.add(serviceCenterResponse);
-        serviceCenterResponse = new ServiceCenterResponse();
-        serviceCenterResponse.setId(Integer.valueOf("2"));
-        serviceCenterResponse.setName("incon");
-
-     /*   serviceCenterResponse.setId(serviceCenterResponse.getId());
-        serviceCenterResponse.setName(serviceCenterResponse.getName());*/
-
-        serviceCenterResponseList.add(serviceCenterResponse);
-
-        List<String> serviceCenterNamesList = new ArrayList<>();
-        for (ServiceCenterResponse centerResponse : serviceCenterResponseList) {
-            serviceCenterNamesList.add(centerResponse.getName());
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                R.layout.view_spinner, serviceCenterNamesList);
-        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerServiceCenterName.setAdapter(arrayAdapter);
-        binding.spinnerServiceCenterName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (serviceCenterSelectedPos != position) {
-                    serviceCenterSelectedPos = position;
-                }
-            }
-        });
-
-    }
 
     private void loadGenderSpinnerData() {
         String[] genderTypeList = getResources().getStringArray(R.array.gender_options_list);
@@ -359,7 +325,6 @@ public class AddUserActivity extends BaseActivity implements
         binding.inputLayoutRegisterPassword.setError(null);
         binding.inputLayoutRegisterConfirmPassword.setError(null);
         binding.inputLayoutRegisterAddress.setError(null);
-        binding.spinnerServiceCenterName.setError(null);
         binding.spinnerServiceCenterDesignation.setError(null);
 
         Pair<String, Integer> validation = binding.getAddUser().validateAddUser(null);
@@ -370,17 +335,10 @@ public class AddUserActivity extends BaseActivity implements
     public void onSubmitClick() {
         if (validateFields()) {
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
-            addUser.setServiceCenterId(String.valueOf(serviceCenterResponseList.get(serviceCenterSelectedPos).getId()));
             addUser.setServiceCenterRoleId(String.valueOf(fetchDesignationsResponseList.get(designationSelectedPos).getId()));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
         }
     }
 
-    @Override
-    public void loadFetchDesignations(List<FetchDesignationsResponse> fetchDesignationsResponse) {
-        this.fetchDesignationsResponseList = fetchDesignationsResponse;
-        loadDesignationsSpinnerData();
-
-    }
 }

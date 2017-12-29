@@ -1,5 +1,6 @@
 package com.incon.service.ui.adddesignations;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -36,10 +37,9 @@ public class AddDesignationsActivity extends BaseActivity implements
     private ActivityAddDesignationsBinding binding;
 
     private AddDesignation addDesignation;
-    public List<ServiceCenterResponse> serviceCenterResponseList;
-    private int serviceCenterSelectedPos = -1;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
+    private int serviceCenterId;
 
     @Override
     protected int getLayoutId() {
@@ -59,11 +59,13 @@ public class AddDesignationsActivity extends BaseActivity implements
         addDesignation = new AddDesignation();
         binding.setAddDesignation(addDesignation);
         binding.setAddDesignationsActivity(this);
-        initViews();
 
-        //fetching servicing centers list to add designations
-        addDesignationsPresenter.serviceCentersList(SharedPrefsUtils.loginProvider().
-                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
+        //loading data from intent
+        Intent intent = getIntent();
+        serviceCenterId = intent.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
+        addDesignation.setServiceCenterId(serviceCenterId);
+
+        initViews();
     }
 
     private void initializeToolbar() {
@@ -83,35 +85,6 @@ public class AddDesignationsActivity extends BaseActivity implements
         setFocusForViews();
     }
 
-    private void loadServiceCenterSpinnerData() {
-        String[] serviceCenterNamesList = new String[serviceCenterResponseList.size()];
-        for (int i = 0; i < serviceCenterResponseList.size(); i++) {
-            serviceCenterNamesList[i] = serviceCenterResponseList.get(i).getName();
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                R.layout.view_spinner, serviceCenterNamesList);
-        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerServiceCenter.setAdapter(arrayAdapter);
-        binding.spinnerServiceCenter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if (serviceCenterSelectedPos != position) {
-                    ServiceCenterResponse serviceCenterResponse = serviceCenterResponseList.get(position);
-                    addDesignation.setServiceCenterId(serviceCenterResponse.getId());
-                    addDesignation.setName(serviceCenterResponse.getName());
-                    serviceCenterSelectedPos = position;
-                }
-                //For avoiding double tapping issue
-                if (binding.spinnerServiceCenter.getOnItemClickListener() != null) {
-                    binding.spinnerServiceCenter.onItemClick(parent, view, position, id);
-                }
-            }
-        });
-
-    }
-
     private void loadValidationErrors() {
         errorMap = new HashMap<>();
         errorMap.put(AddDesignationsValidation.NAME_REQ,
@@ -120,7 +93,6 @@ public class AddDesignationsActivity extends BaseActivity implements
                 getString(R.string.error_desc_req));
         errorMap.put(AddDesignationsValidation.SERVICE_CENTER_NAME,
                 getString(R.string.error_service_center_name_req));
-
     }
 
     private void setFocusForViews() {
@@ -165,7 +137,6 @@ public class AddDesignationsActivity extends BaseActivity implements
     private boolean validateFields() {
         binding.inputLayoutName.setError(null);
         binding.inputLayoutDescription.setError(null);
-        binding.spinnerServiceCenter.setError(null);
 
         Pair<String, Integer> validation = binding.getAddDesignation().validateAddDesignations(null);
         updateUiAfterValidation(validation.first, validation.second);
@@ -202,18 +173,9 @@ public class AddDesignationsActivity extends BaseActivity implements
             int isAdmin = binding.checkboxAdmin.isChecked() ? BooleanConstants.IS_TRUE : BooleanConstants
                     .IS_FALSE;
             addDesignation.setIsAdmin(isAdmin);
-            addDesignation.setServiceCenterId(serviceCenterResponseList.get
-                    (serviceCenterSelectedPos).getId());
             addDesignationsPresenter.addDesignations(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addDesignation);
         }
-
-    }
-
-    @Override
-    public void loadServiceCentersList(List<ServiceCenterResponse> serviceCenterResponseList) {
-        this.serviceCenterResponseList = serviceCenterResponseList;
-        loadServiceCenterSpinnerData();
     }
 
     @Override
@@ -221,6 +183,4 @@ public class AddDesignationsActivity extends BaseActivity implements
         super.onDestroy();
         addDesignationsPresenter.disposeAll();
     }
-
-
 }

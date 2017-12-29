@@ -76,8 +76,6 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         usersList = new ArrayList<>();
         designationsList = new ArrayList<>();
 
-
-
         designationsListAdapter = new DesignationsListAdapter();
         designationsListAdapter.setClickCallback(iClickCallback);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -117,7 +115,6 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         }
     };
 
-
     private AddServiceCenter getServiceCenterRequestFromResponse(ServiceCenterResponse serviceCenterResponse) {
         AddServiceCenter addServiceCenter = new AddServiceCenter();
         addServiceCenter.setId(serviceCenterResponse.getId());
@@ -147,6 +144,7 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AllUsersDesignationsActivity.this, isDesignation ? AddDesignationsActivity.class : AddUserActivity.class);
+                intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, serviceCenterId);
                 startActivity(intent);
             }
         });

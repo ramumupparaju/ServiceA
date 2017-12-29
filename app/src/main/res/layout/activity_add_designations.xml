@@ -98,26 +98,11 @@
 
         </com.incon.service.custom.view.CustomTextInputLayout>
 
-        <!-- service_center-->
-        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-            android:id="@+id/spinner_service_center"
-            style="@style/spinnerItemStyle"
-            android:layout_below="@id/input_layout_description"
-            android:layout_marginBottom="@dimen/margin_24"
-            android:focusable="true"
-            android:hint="@string/register__service_center_hint"
-            android:tag="2"
-            android:text="@={addDesignation.serviceCenterName}"
-            android:visibility="visible"
-            app:met_floatingLabel="highlight"
-            app:met_textColor="@color/colorForgotPasswordHintText"
-            app:met_textColorHint="@color/colorForgotPasswordHintText" />
-
         <CheckBox
             android:id="@+id/checkbox_admin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/spinner_service_center"
+            android:layout_below="@id/input_layout_description"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:checked="true"

@@ -252,28 +252,11 @@
                     android:background="@null"
                     android:onClick="@{() -> addUserActivity.onAddressClick()}" />
 
-
-                <!-- service_center-->
-                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/spinner_service_center_name"
-                    style="@style/spinnerItemStyle"
-                    android:layout_below="@id/input_layout_register_address"
-                    android:layout_marginBottom="@dimen/margin_24"
-                    android:focusable="true"
-                    android:hint="@string/register__service_center_hint"
-                    android:tag="8"
-                    android:text="@={addUser.serviceCenterName}"
-                    android:visibility="visible"
-                    app:met_floatingLabel="highlight"
-                    app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
-
-
                 <!-- service_center_designation-->
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/spinner_service_center_designation"
                     style="@style/spinnerItemStyle"
-                    android:layout_below="@id/spinner_service_center_name"
+                    android:layout_below="@id/input_layout_register_address"
                     android:layout_marginBottom="@dimen/margin_24"
                     android:focusable="true"
                     android:hint="@string/register__service_center_designation_hint"
@@ -285,11 +268,25 @@
                     app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
 
+                <!-- service_center-->
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinner_reporting_user"
+                    style="@style/spinnerItemStyle"
+                    android:layout_below="@id/spinner_service_center_designation"
+                    android:layout_marginBottom="@dimen/margin_24"
+                    android:focusable="true"
+                    android:hint="@string/register__service_center_hint"
+                    android:tag="8"
+                    android:visibility="visible"
+                    app:met_floatingLabel="highlight"
+                    app:met_textColor="@color/colorForgotPasswordHintText"
+                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
+
                 <Button
                     android:id="@+id/button_submit"
                     style="@style/w150_wrap"
                     fontPath="fonts/OpenSans-Bold.ttf"
-                    android:layout_below="@id/spinner_service_center_designation"
+                    android:layout_below="@id/spinner_reporting_user"
                     android:layout_marginBottom="@dimen/margin_30"
                     android:layout_marginLeft="@dimen/margin_110"
                     android:layout_marginTop="@dimen/margin_5"

@@ -56,33 +56,5 @@ public class AddUserPresenter extends BasePresenter<AddUserContract.View>
         addDisposable(observer);
 
     }
-
-    @Override
-    public void fetchDesignations(int serviceCenterId, int userId) {
-//        getView().showProgress(appContext.getString(R.string.progress_designations));
-        DisposableObserver<List<FetchDesignationsResponse>> observer = new
-                DisposableObserver<List<FetchDesignationsResponse>>() {
-                    @Override
-                    public void onNext(List<FetchDesignationsResponse> fetchDesignationsResponse) {
-                        getView().loadFetchDesignations(fetchDesignationsResponse);
-                        getView().hideProgress();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().hideProgress();
-                        Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
-                        getView().handleException(errorDetails);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                };
-        //TODO
-//        AppApiService.getInstance().fetchDesignations(serviceCenterId, userId).subscribe(observer);
-        addDisposable(observer);
-
-    }
 }
 
