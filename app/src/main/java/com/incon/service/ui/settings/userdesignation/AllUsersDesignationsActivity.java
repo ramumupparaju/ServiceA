@@ -111,12 +111,7 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
     }
 
     //recyclerview click event
-    private IEditClickCallback iClickCallback = new IEditClickCallback() {
-        @Override
-        public void onEditClickPosition(int position) {
-            //TODO have to pass object
-        }
-
+    private IClickCallback iClickCallback = new IClickCallback() {
         @Override
         public void onClickPosition(int position) {
             if (isDesignation) {
