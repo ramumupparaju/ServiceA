@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="addDesignation"
-            type="com.incon.service.dto.adddesignation.AddDesignation"/>
+            type="com.incon.service.dto.adddesignation.AddDesignation" />
 
         <variable
             name="addDesignationsActivity"
-            type="com.incon.service.ui.adddesignations.AddDesignationsActivity"/>
+            type="com.incon.service.ui.adddesignations.AddDesignationsActivity" />
 
     </data>
 
     <RelativeLayout
         style="@style/BothMatch"
         android:background="@color/white">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -34,7 +35,7 @@
                     android:paddingEnd="@dimen/margin_25"
                     android:paddingStart="@dimen/margin_15"
                     android:visibility="visible"
-                    app:srcCompat="@drawable/ic_back_arrow"/>
+                    app:srcCompat="@drawable/ic_back_arrow" />
 
                 <TextView
                     android:id="@+id/toolbar_text_user"
@@ -43,7 +44,7 @@
                     android:layout_centerInParent="true"
                     android:text="@string/action_add_designation"
                     android:textColor="@color/white"
-                    android:textSize="15.5sp"/>
+                    android:textSize="15.5sp" />
 
 
             </RelativeLayout>
@@ -70,7 +71,7 @@
                 android:maxLength="@integer/character_limit_200"
                 android:maxLines="1"
                 android:tag="1"
-                android:text="@={addDesignation.name}"/>
+                android:text="@={addDesignation.name}" />
 
         </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -93,8 +94,7 @@
                 android:maxLength="@integer/character_limit_200"
                 android:maxLines="1"
                 android:tag="0"
-                android:text="@={addDesignation.description}"
-                />
+                android:text="@={addDesignation.description}" />
 
         </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -111,7 +111,7 @@
             android:visibility="visible"
             app:met_floatingLabel="highlight"
             app:met_textColor="@color/colorForgotPasswordHintText"
-            app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+            app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
         <CheckBox
             android:id="@+id/checkbox_admin"
@@ -121,8 +121,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:checked="true"
-            android:text="@string/action_is_admin"
-            />
+            android:text="@string/action_is_admin" />
 
         <Button
             android:id="@+id/button_submit"
@@ -137,7 +136,7 @@
             android:text="@string/add_new_submit"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_13"/>
+            android:textSize="@dimen/text_size_13" />
 
     </RelativeLayout>
 </layout>

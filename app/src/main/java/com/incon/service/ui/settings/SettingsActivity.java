@@ -7,27 +7,20 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-
 import com.incon.service.AppUtils;
 import com.incon.service.BuildConfig;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.defaults.DefaultsResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
 import com.incon.service.databinding.ActivitySettingsBinding;
-import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.settings.SettingsItem;
 import com.incon.service.ui.BaseActivity;
-import com.incon.service.ui.adddesignations.AddDesignationsActivity;
-import com.incon.service.ui.addservicecenter.AddServiceCenterActivity;
-import com.incon.service.ui.adduser.AddUserActivity;
 import com.incon.service.ui.changepassword.ChangePasswordActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.settings.adapters.SettingsAdapter;
 import com.incon.service.ui.settings.service.AllServiceCentersActivity;
 import com.incon.service.ui.settings.update.UpDateUserProfileActivity;
-import com.incon.service.utils.OfflineDataManager;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;

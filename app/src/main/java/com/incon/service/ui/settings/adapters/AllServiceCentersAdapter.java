@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.incon.service.BR;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
-import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.IEditClickCallback;
 import com.incon.service.databinding.ItemAllServiceCentersBinding;
 
