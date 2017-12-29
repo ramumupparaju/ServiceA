@@ -40,7 +40,8 @@
                 <TextView
                     android:id="@+id/text_sn"
                     style="@style/bill_header_right_text_view"
-                    android:text="S/N"/>
+                    android:text="Model no"
+                    />
 
 
                 <TextView
@@ -50,21 +51,24 @@
 
 
                 <TextView
+                    android:text="Model no"
                     android:id="@+id/text_discount"
                     style="@style/bill_header_right_text_view"
-                    android:text="Discount"/>
+                    />
 
 
                 <TextView
+                    android:text="Model no"
                     android:id="@+id/text_gst"
                     style="@style/bill_header_right_text_view"
-                    android:text="GST"/>
+                    />
 
 
                 <TextView
+                    android:text="Model no"
                     android:id="@+id/text_total"
                     style="@style/bill_header_right_text_view"
-                    android:text="Total"/>
+                    />
             </LinearLayout>
 
             <!--product details values-->
