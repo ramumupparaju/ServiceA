@@ -34,7 +34,7 @@ public class AddressInfoResponse {
     private String city;
     @SerializedName("createdDate")
     @Expose
-    private Integer createdDate;
+    private Long createdDate;
     @SerializedName("createdBy")
     @Expose
     private Integer createdBy;
@@ -103,11 +103,11 @@ public class AddressInfoResponse {
         this.city = city;
     }
 
-    public Integer getCreatedDate() {
+    public Long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Integer createdDate) {
+    public void setCreatedDate(Long createdDate) {
         this.createdDate = createdDate;
     }
 

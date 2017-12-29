@@ -28,11 +28,12 @@ public class LoginDataManagerImpl implements LoginDataManager, AppConstants.Logi
                 loginResponse.getGender());
         sharedPrefsUtils.setStringPreference(USER_ADDRESS,
                 loginResponse.getAddress());
-
+        sharedPrefsUtils.setIntegerPreference(USER_TYPE,
+                loginResponse.getUsertype());
 
         //storing service center details
         sharedPrefsUtils.setIntegerPreference(SERVICE_CENTER_ID,
-                loginResponse.getStore().getId());
+                loginResponse.getServiceCenter().getId());
 
     }
 }

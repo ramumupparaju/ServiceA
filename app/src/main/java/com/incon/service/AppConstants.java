@@ -274,6 +274,8 @@ public interface AppConstants {
         String USER_DOB = "userDob";
         String USER_GENDER = "userGender";
         String USER_ADDRESS = "userAddress";
+        String USER_TYPE = "userType";
+        String USER_IS_ADMIN = "userIsAdmin";
         String USER_CITY = "userCity";
         String USER_STATE = "userState";
         String USER_POSTAL_CODE = "userPostalCode";
@@ -281,18 +283,7 @@ public interface AppConstants {
         String USER_CONFIRM_PASSWORD = "userConfirmPassword";
         String USER_UUID = "uuid";
         String SERVICE_CENTER_ID = "serviceCenterId";
-        String STORE_ID = "storeId";
-        String STORE_NAME = "storeName";
-        String STORE_EMAIL_ID = "storeEmailId";
-        String STORE_PHONE_NUMBER = "storePhoneNumber";
         String STORE_LOGO = "storeLogo";
-        String STORE_GSTN = "storeGstn";
-        String STORE_ADDRESS = "storeAddress";
-        String STORE_LOCATION = "storeLocation";
-        String STORE_CITY = "storeCity";
-        String STORE_STATE = "storeState";
-        String STORE_POSTAL_CODE = "storePostalCode";
-        String STORE_CATEGORY_NAME = "StoreCategoryName";
 
 
         String IS_REGISTERED = "isRegistered";

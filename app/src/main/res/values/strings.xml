@@ -112,6 +112,7 @@
     <string name="action_product_status">Is product delivered</string>
     <string name="action_description">Description</string>
     <string name="action_service_center_type">Service Center Type</string>
+    <string name="action_service_center">Service Center</string>
     <string name="action_is_group">Is Group</string>
     <string name="action_is_admin">Is Admin</string>
 
