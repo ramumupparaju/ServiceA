@@ -2,9 +2,17 @@ package com.incon.service.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Pair;
 
 import com.incon.service.ConnectApplication;
+import com.incon.service.api.AppApiService;
+import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.ui.BasePresenter;
+import com.incon.service.utils.ErrorMsgUtil;
+
+import java.util.List;
+
+import io.reactivex.observers.DisposableObserver;
 
 
 /**
@@ -20,6 +28,33 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements
     public void initialize(Bundle extras) {
         super.initialize(extras);
         appContext = ConnectApplication.getAppContext();
+    }
+
+    // get status list
+    @Override
+    public void getDefaultStatusData() {
+
+        DisposableObserver<List<DefaultStatusData>> observer = new DisposableObserver<List<DefaultStatusData>>() {
+            @Override
+            public void onNext(List<DefaultStatusData> statusListResponses) {
+                ConnectApplication.getAppContext().setDefaultStausData(statusListResponses);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+
+            }
+
+            @Override
+            public void onComplete() {
+                getView().hideProgress();
+            }
+        };
+        AppApiService.getInstance().getStatusList().subscribe(observer);
+        addDisposable(observer);
     }
 }
 

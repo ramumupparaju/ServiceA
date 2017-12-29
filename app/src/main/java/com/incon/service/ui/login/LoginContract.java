@@ -12,6 +12,7 @@ public interface LoginContract {
 
     interface View extends BaseView {
         void navigateToHomePage(LoginResponse loginResponse);
+
     }
 
     interface Presenter {
