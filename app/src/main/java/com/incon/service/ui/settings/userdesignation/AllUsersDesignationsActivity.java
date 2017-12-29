@@ -60,6 +60,11 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         initViews();
 
         serviceCenterId = getIntent().getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         allUsersDesignationsPresenter.doUsersDesignationsApi(SharedPrefsUtils.loginProvider().
                 getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), serviceCenterId);
     }
