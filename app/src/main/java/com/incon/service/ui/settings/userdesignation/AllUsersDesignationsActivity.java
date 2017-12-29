@@ -98,6 +98,14 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
     }
 
     private void setListUi() {
+
+        if (isDesignation && designationsList.size() == 0) {
+            binding.emptyData.setVisibility(View.VISIBLE);
+        } else if (!isDesignation && usersList.size() == 0) {
+            binding.emptyData.setVisibility(View.VISIBLE);
+        } else {
+            binding.emptyData.setVisibility(View.GONE);
+        }
         binding.allDesignationsRecyclerview.setVisibility(isDesignation ? View.VISIBLE : View.GONE);
         binding.allUsersRecyclerview.setVisibility(isDesignation ? View.GONE : View.VISIBLE);
     }
@@ -161,6 +169,8 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
 
         designationsListAdapter.setData(designationsList);
         designationsListAdapter.notifyDataSetChanged();
+
+        setListUi();
     }
 
     @Override
