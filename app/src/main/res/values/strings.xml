@@ -112,6 +112,7 @@
     <string name="action_product_status">Is product delivered</string>
     <string name="action_description">Description</string>
     <string name="action_service_center_type">Service Center Type</string>
+    <string name="action_service_center">Service Center</string>
     <string name="action_is_group">Is Group</string>
     <string name="action_is_admin">Is Admin</string>
 
@@ -440,7 +441,7 @@
     <string name="register__service_center_hint">Service Center Name</string>
     <string name="register__service_center_designation_hint">Service Center Designation</string>
     <string name="user_name_hint">Name</string>
-    <string name="user__hint">Name</string>
+    <string name="user_hint">Name</string>
     <string name="user_contact_hint">Contact</string>
     <string name="user_address_hint">Address</string>
     <string name="register_postalcode_hint">Postal Code</string>
@@ -454,6 +455,7 @@
     <string name="register_password_hint_unicode">&#9432;</string>
     <string name="register_timezone_why_unicode">\u003F</string>
     <string name="validating_code">validating code..</string>
+    <string name="hint_reporting_person">Reporting person</string>
 
 
     <!--google maps-->
@@ -521,6 +523,8 @@
     <string name="title_warranty_register">Warranty Registration</string>
     <string name="title_add_new_model">New Model</string>
     <string name="title_update_service_center">Update Service Center</string>
+    <string name="title_update_user">Update User</string>
+    <string name="title_update_designation">Update Designation</string>
     <string name="title_status">Status</string>
     <string name="title_report">Report</string>
     <string name="title_notifications">Notifications</string>

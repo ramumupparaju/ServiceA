@@ -60,6 +60,11 @@ public interface AppConstants {
         int ERROR_FORBIDDEN = 403; // pay load error
     }
 
+    interface UserConstants {
+        int SUPER_ADMIN_TYPE = 7;
+        int USER_TYPE = 8;
+    }
+
     interface PushConstants {
         String BUNDLE_TEXT = "text";
         String BUNDLE_TITLE = "title";
@@ -202,6 +207,8 @@ public interface AppConstants {
         String FROM_FORGOT_PASSWORD_SCREEN = "fromForgotPasswordScreen";
         String ADDRESS_INFO = "addressInfo";
         String SERVICE_CENTER_DATA = "serviceCenterData";
+        String USER_DATA = "userData";
+        String DESIGNATION_DATA = "designationData";
     }
 
 
@@ -267,24 +274,16 @@ public interface AppConstants {
         String USER_DOB = "userDob";
         String USER_GENDER = "userGender";
         String USER_ADDRESS = "userAddress";
+        String USER_TYPE = "userType";
+        String USER_IS_ADMIN = "userIsAdmin";
         String USER_CITY = "userCity";
         String USER_STATE = "userState";
         String USER_POSTAL_CODE = "userPostalCode";
         String USER_PASSWORD = "userPassword";
         String USER_CONFIRM_PASSWORD = "userConfirmPassword";
         String USER_UUID = "uuid";
-        String STORE_ID = "storeId";
-        String STORE_NAME = "storeName";
-        String STORE_EMAIL_ID = "storeEmailId";
-        String STORE_PHONE_NUMBER = "storePhoneNumber";
+        String SERVICE_CENTER_ID = "serviceCenterId";
         String STORE_LOGO = "storeLogo";
-        String STORE_GSTN = "storeGstn";
-        String STORE_ADDRESS = "storeAddress";
-        String STORE_LOCATION = "storeLocation";
-        String STORE_CITY = "storeCity";
-        String STORE_STATE = "storeState";
-        String STORE_POSTAL_CODE = "storePostalCode";
-        String STORE_CATEGORY_NAME = "StoreCategoryName";
 
 
         String IS_REGISTERED = "isRegistered";

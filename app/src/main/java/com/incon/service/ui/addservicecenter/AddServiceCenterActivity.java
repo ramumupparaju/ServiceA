@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -64,12 +65,12 @@ public class AddServiceCenterActivity extends BaseActivity implements
         if (bundle != null)
             addServiceCenter = bundle.getParcelableExtra(IntentConstants.SERVICE_CENTER_DATA);
         if (addServiceCenter != null) {
-            binding.toolbarTitle.setText(getString(R.string.title_update_service_center));
+            binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_service_center));
             binding.buttonSubmit.setText(getString(R.string.action_update));
-            binding.toolbarDeleteIv.setVisibility(View.VISIBLE);
+            binding.toolbar.toolbarRightIv.setVisibility(View.VISIBLE);
         } else {
-            binding.toolbarTitle.setText(getString(R.string.action_add_service_center));
-            binding.toolbarDeleteIv.setVisibility(View.GONE);
+            binding.toolbar.toolbarTitleTv.setText(getString(R.string.action_add_service_center));
+            binding.toolbar.toolbarRightIv.setVisibility(View.GONE);
             binding.buttonSubmit.setText(getString(R.string.action_submit));
             addServiceCenter = new AddServiceCenter();
             // TODO have to check
@@ -93,13 +94,16 @@ public class AddServiceCenterActivity extends BaseActivity implements
     }
 
     private void initializeToolbar() {
-        binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
+        binding.toolbar.toolbarLeftIv.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        binding.toolbar.toolbarLeftIv.setImageResource(R.drawable.ic_back_arrow);
+        binding.toolbar.toolbarRightIv.setImageResource(R.drawable.ic_option_delete);
+        binding.toolbar.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        binding.toolbarDeleteIv.setOnClickListener(new View.OnClickListener() {
+        binding.toolbar.toolbarRightIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDeleteServiceCenterDialog();

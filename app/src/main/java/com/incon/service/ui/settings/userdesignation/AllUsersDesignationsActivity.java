@@ -8,16 +8,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.incon.service.R;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.databinding.ActivityAllUsersDesignationsBinding;
-import com.incon.service.dto.addservicecenter.AddServiceCenter;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.adddesignations.AddDesignationsActivity;
 import com.incon.service.ui.adduser.AddUserActivity;
 import com.incon.service.ui.settings.userdesignation.adapter.DesignationsListAdapter;
 import com.incon.service.ui.settings.userdesignation.adapter.UsersListAdapter;
+import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +32,10 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
     private AllUsersDesignationsPresenter allUsersDesignationsPresenter;
 
     private UsersListAdapter usersListAdapter;
-    private List<UsersListOfServiceCenters> usersList;
+    private List<AddUser> usersList;
 
     private DesignationsListAdapter designationsListAdapter;
-    private List<UsersListOfServiceCenters> designationsList;
+    private List<DesignationData> designationsList;
 
 
     private int serviceCenterId;
@@ -60,10 +60,13 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         initViews();
 
         serviceCenterId = getIntent().getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
-        //fetching servicing centers list to add designations
-        /*allUsersDesignationsPresenter.doUsersDesignationsApi(SharedPrefsUtils.loginProvider().
-                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), serviceCenterId);*/
-        allUsersDesignationsPresenter.doUsersDesignationsApi(1, 153);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        allUsersDesignationsPresenter.doUsersDesignationsApi(SharedPrefsUtils.loginProvider().
+                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), serviceCenterId);
     }
 
     public void onCheckedChanged(boolean checked) {
@@ -77,9 +80,7 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         usersList = new ArrayList<>();
         designationsList = new ArrayList<>();
 
-
-
-        designationsListAdapter = new DesignationsListAdapter();
+        designationsListAdapter = new DesignationsListAdapter(designationsList);
         designationsListAdapter.setClickCallback(iClickCallback);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
@@ -88,7 +89,7 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         binding.allDesignationsRecyclerview.setAdapter(designationsListAdapter);
         binding.allDesignationsRecyclerview.setLayoutManager(linearLayoutManager);
 
-        usersListAdapter = new UsersListAdapter();
+        usersListAdapter = new UsersListAdapter(usersList);
         usersListAdapter.setClickCallback(iClickCallback);
         linearLayoutManager = new LinearLayoutManager(this);
         dividerItemDecoration = new DividerItemDecoration(
@@ -98,10 +99,17 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         binding.allUsersRecyclerview.setLayoutManager(linearLayoutManager);
 
         setListUi();
-
     }
 
     private void setListUi() {
+
+        if (isDesignation && designationsList.size() == 0) {
+            binding.emptyData.setVisibility(View.VISIBLE);
+        } else if (!isDesignation && usersList.size() == 0) {
+            binding.emptyData.setVisibility(View.VISIBLE);
+        } else {
+            binding.emptyData.setVisibility(View.GONE);
+        }
         binding.allDesignationsRecyclerview.setVisibility(isDesignation ? View.VISIBLE : View.GONE);
         binding.allUsersRecyclerview.setVisibility(isDesignation ? View.GONE : View.VISIBLE);
     }
@@ -111,31 +119,18 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         @Override
         public void onClickPosition(int position) {
             if (isDesignation) {
-                //TODO have to show designation updation screen
+                DesignationData designationResponse = designationsList.get(position);
+                Intent intent = new Intent(AllUsersDesignationsActivity.this, AddDesignationsActivity.class);
+                intent.putExtra(IntentConstants.DESIGNATION_DATA, designationResponse);
+                startActivity(intent);
             } else {
-                //TODO have to show user screen with populated data
+                AddUser usersListOfServiceCenters = usersList.get(position);
+                Intent intent = new Intent(AllUsersDesignationsActivity.this, AddUserActivity.class);
+                intent.putExtra(IntentConstants.USER_DATA, usersListOfServiceCenters);
+                startActivity(intent);
             }
         }
     };
-
-
-    private AddServiceCenter getServiceCenterRequestFromResponse(ServiceCenterResponse serviceCenterResponse) {
-        AddServiceCenter addServiceCenter = new AddServiceCenter();
-        addServiceCenter.setId(serviceCenterResponse.getId());
-        addServiceCenter.setAddress(serviceCenterResponse.getAddress());
-        addServiceCenter.setBrandId(serviceCenterResponse.getBrandId());
-        addServiceCenter.setCategoryId(serviceCenterResponse.getCategoryId());
-        addServiceCenter.setContactNo(serviceCenterResponse.getContactNo());
-        //TODO hae to change as parameter
-        addServiceCenter.setCreatedDate(String.valueOf(serviceCenterResponse.getCreatedDate()));
-        addServiceCenter.setDivisionId(serviceCenterResponse.getDivisionId());
-        addServiceCenter.setEmail(serviceCenterResponse.getEmail());
-        addServiceCenter.setLocation(serviceCenterResponse.getLocation());
-        addServiceCenter.setName(serviceCenterResponse.getName());
-        addServiceCenter.setGstn(serviceCenterResponse.getGstn());
-        return addServiceCenter;
-    }
-
 
     private void initializeToolbar() {
         binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
@@ -148,14 +143,33 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AllUsersDesignationsActivity.this, isDesignation ? AddDesignationsActivity.class : AddUserActivity.class);
+                intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, serviceCenterId);
                 startActivity(intent);
             }
         });
     }
 
     @Override
-    public void loadUsersDesignationsList(List<UsersListOfServiceCenters> usersListOfServiceCenters) {
+    public void loadUsersDesignationsList(List<AddUser> usersList,
+                                          List<DesignationData> designationsList) {
 
+        if (usersList == null) {
+            usersList = new ArrayList<>();
+        }
+        if (designationsList == null) {
+            designationsList = new ArrayList<>();
+        }
+
+        this.usersList = usersList;
+        this.designationsList = designationsList;
+
+        usersListAdapter.setData(usersList);
+        usersListAdapter.notifyDataSetChanged();
+
+        designationsListAdapter.setData(designationsList);
+        designationsListAdapter.notifyDataSetChanged();
+
+        setListUi();
     }
 
     @Override

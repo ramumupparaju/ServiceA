@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.apimodel.components.fetchdesignations.FetchDesignationsResponse;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.custom.view.CustomTextInputLayout;
@@ -52,10 +54,9 @@ public class AddUserActivity extends BaseActivity implements
     private Animation shakeAnim;
     private MaterialBetterSpinner genderSpinner;
     private ActivityAdduserBinding binding;
-    public List<ServiceCenterResponse> serviceCenterResponseList;
     public List<FetchDesignationsResponse> fetchDesignationsResponseList;
-    private int serviceCenterSelectedPos = -1;
     private int designationSelectedPos = -1;
+    private int serviceCenterId;
 
     @Override
     protected void initializePresenter() {
@@ -73,37 +74,73 @@ public class AddUserActivity extends BaseActivity implements
     @Override
     protected void onCreateView(Bundle saveInstanceState) {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
+
+        Intent bundle = getIntent();
+        if (bundle != null)
+            addUser = bundle.getParcelableExtra(IntentConstants.USER_DATA);
+        if (addUser != null) {
+            binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_user));
+            binding.buttonSubmit.setText(getString(R.string.action_update));
+            binding.toolbar.toolbarRightIv.setVisibility(View.VISIBLE);
+        } else {
+            binding.toolbar.toolbarTitleTv.setText(getString(R.string.action_add_user));
+            binding.toolbar.toolbarRightIv.setVisibility(View.GONE);
+            binding.buttonSubmit.setText(getString(R.string.action_submit));
         addUser = new AddUser();
+        }
+        addUser.setServiceCenterDesignation("Manager"); //todo remove
+        addUser.setServiceCenterRoleId(24);
+        addUser.setReportingId(162);
+        ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
+        addUser.setServiceCenterResponse(serviceCenterResponse);
+
         binding.setAddUser(addUser);
         binding.setAddUserActivity(this);
         rootView = binding.getRoot();
+
+        //loading data from intent
+        Intent intent = getIntent();
+        serviceCenterId = intent.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
+        serviceCenterResponse.setId(serviceCenterId);
+
         initViews();
         initializeToolbar();
-        //TODO have to remove hard code
-        addUserPresenter.fetchDesignations(1, SharedPrefsUtils.loginProvider().
-                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
 
     }
 
     private void initializeToolbar() {
-        binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
+        binding.toolbar.toolbarLeftIv.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        binding.toolbar.toolbarLeftIv.setImageResource(R.drawable.ic_back_arrow);
+        binding.toolbar.toolbarRightIv.setImageResource(R.drawable.ic_option_delete);
+        binding.toolbar.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        binding.toolbar.toolbarRightIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDeleteUserDialog();
+            }
+        });
+    }
+
+    private void showDeleteUserDialog() {
+        //TODO have to implement delete api
     }
 
     private void initViews() {
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadGenderSpinnerData();
+        loadDesignationsSpinnerData();
         loadValidationErrors();
         setFocusListenersForEditText();
-        loadServiceCenterSpinnerData();
     }
 
     private void loadDesignationsSpinnerData() {
-        List<String> fetchDesignationList = new ArrayList<>();
+        //TODO have to enable
+        /*List<String> fetchDesignationList = new ArrayList<>();
         for (FetchDesignationsResponse fetchDesignationsResponse : fetchDesignationsResponseList) {
             fetchDesignationList.add(fetchDesignationsResponse.getName());
         }
@@ -119,44 +156,9 @@ public class AddUserActivity extends BaseActivity implements
                     designationSelectedPos = position;
                 }
             }
-        });
+        });*/
     }
 
-    private void loadServiceCenterSpinnerData() {
-        // TODO have to remove hard coding
-        serviceCenterResponseList = new ArrayList<>();
-        ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
-        serviceCenterResponse.setId(Integer.valueOf("1"));
-        serviceCenterResponse.setName("moonzdream");
-        serviceCenterResponseList.add(serviceCenterResponse);
-        serviceCenterResponse = new ServiceCenterResponse();
-        serviceCenterResponse.setId(Integer.valueOf("2"));
-        serviceCenterResponse.setName("incon");
-
-     /*   serviceCenterResponse.setId(serviceCenterResponse.getId());
-        serviceCenterResponse.setName(serviceCenterResponse.getName());*/
-
-        serviceCenterResponseList.add(serviceCenterResponse);
-
-        List<String> serviceCenterNamesList = new ArrayList<>();
-        for (ServiceCenterResponse centerResponse : serviceCenterResponseList) {
-            serviceCenterNamesList.add(centerResponse.getName());
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                R.layout.view_spinner, serviceCenterNamesList);
-        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerServiceCenterName.setAdapter(arrayAdapter);
-        binding.spinnerServiceCenterName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (serviceCenterSelectedPos != position) {
-                    serviceCenterSelectedPos = position;
-                }
-            }
-        });
-
-    }
 
     private void loadGenderSpinnerData() {
         String[] genderTypeList = getResources().getStringArray(R.array.gender_options_list);
@@ -359,7 +361,6 @@ public class AddUserActivity extends BaseActivity implements
         binding.inputLayoutRegisterPassword.setError(null);
         binding.inputLayoutRegisterConfirmPassword.setError(null);
         binding.inputLayoutRegisterAddress.setError(null);
-        binding.spinnerServiceCenterName.setError(null);
         binding.spinnerServiceCenterDesignation.setError(null);
 
         Pair<String, Integer> validation = binding.getAddUser().validateAddUser(null);
@@ -370,17 +371,9 @@ public class AddUserActivity extends BaseActivity implements
     public void onSubmitClick() {
         if (validateFields()) {
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
-            addUser.setServiceCenterId(String.valueOf(serviceCenterResponseList.get(serviceCenterSelectedPos).getId()));
-            addUser.setServiceCenterRoleId(String.valueOf(fetchDesignationsResponseList.get(designationSelectedPos).getId()));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
         }
     }
 
-    @Override
-    public void loadFetchDesignations(List<FetchDesignationsResponse> fetchDesignationsResponse) {
-        this.fetchDesignationsResponseList = fetchDesignationsResponse;
-        loadDesignationsSpinnerData();
-
-    }
 }

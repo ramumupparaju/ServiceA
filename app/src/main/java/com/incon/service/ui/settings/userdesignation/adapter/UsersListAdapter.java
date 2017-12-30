@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 
 import com.incon.service.BR;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.databinding.ItemUsersListBinding;
+import com.incon.service.dto.adduser.AddUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +18,18 @@ import java.util.List;
 /**
  * Created by INCON TECHNOLOGIES on 12/25/2017.
  */
-
 public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.ViewHolder> {
 
-    private List<UsersListOfServiceCenters> usersListOfServiceCenters = new ArrayList<>();
+    private List<AddUser> usersList = new ArrayList<>();
     private IClickCallback clickCallback;
 
     public void setClickCallback(IClickCallback clickCallback) {
         this.clickCallback = clickCallback;
     }
 
-
+    public UsersListAdapter(List<AddUser> usersList) {
+        this.usersList = usersList;
+    }
 
     @Override
     public UsersListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,25 +41,30 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
 
     @Override
     public void onBindViewHolder(UsersListAdapter.ViewHolder holder, int position) {
-        UsersListOfServiceCenters usersListOfServiceCenter = usersListOfServiceCenters.get(position);
+        AddUser usersListOfServiceCenter = usersList.get(position);
         holder.bind(usersListOfServiceCenter, position);
 
     }
 
     @Override
     public int getItemCount() {
-        return usersListOfServiceCenters.size();
+        return usersList.size();
+    }
+
+    public void setData(List<AddUser> usersList) {
+        this.usersList = usersList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ItemUsersListBinding binding;
+
         public ViewHolder(ItemUsersListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             binding.getRoot().setOnClickListener(this);
         }
 
-        public void bind(UsersListOfServiceCenters usersListOfServiceCenters, int position) {
+        public void bind(AddUser usersListOfServiceCenters, int position) {
             binding.setVariable(BR.modelResponse, usersListOfServiceCenters);
             binding.executePendingBindings();
         }

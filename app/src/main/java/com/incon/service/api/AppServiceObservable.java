@@ -2,16 +2,14 @@ package com.incon.service.api;
 
 
 import com.incon.service.apimodel.base.ApiBaseResponse;
-import com.incon.service.apimodel.components.adddesignation.DesignationResponse;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
-import com.incon.service.dto.adddesignation.AddDesignation;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.login.LoginUserData;
@@ -60,16 +58,16 @@ public interface AppServiceObservable {
 
     // add adddesignation api
     @POST("service/adddesignation/{userId}")
-    Observable<DesignationResponse> addDesignation(@Path("userId") int userId,
-                                                   @Body AddDesignation addDesignation);
+    Observable<DesignationData> addDesignation(@Path("userId") int userId,
+                                               @Body DesignationData addDesignation);
 
     // get designations list using service center and user id
-    @GET("service/service/getdesignations/{serviceCenterId}/{userId}")
-    Observable<Object> getDesignationsListUsingServiceCenter(@Path("serviceCenterId") int serviceCenterId, @Path("userId") int userId);
+    @GET("service/getdesignations/{serviceCenterId}/{userId}")
+    Observable<List<DesignationData>> getDesignationsListUsingServiceCenter(@Path("userId") int userId, @Path("serviceCenterId") int serviceCenterId);
 
     // get users list of service centers api
     @GET("service/getuserslist/{serviceCenterId}")
-    Observable<List<UsersListOfServiceCenters>> getUsersListOfServiceCentersApi(@Path("serviceCenterId") int serviceCenterId);
+    Observable<List<AddUser>> getUsersListOfServiceCentersApi(@Path("serviceCenterId") int serviceCenterId);
 
     // get service centers api
     @GET("service/getservicecenters/{userId}")

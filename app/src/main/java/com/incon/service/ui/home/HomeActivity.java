@@ -103,7 +103,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
             }
         });
         replaceToolBar(toolBarBinding.toolbar);
-
     }
 
     private FragmentManager.OnBackStackChangedListener backStackChangedListener =

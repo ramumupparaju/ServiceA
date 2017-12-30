@@ -47,7 +47,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private AppEditTextDialog holdDialog;
     private String merchantComment;
     private PastHistoryDialog pastHistoryDialog;
-    private int userId;
+    private int serviceCenterId;
 
     @Override
     protected void initializePresenter() {
@@ -81,10 +81,9 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.requestRecyclerview.setAdapter(newRequestsAdapter);
         binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
-        userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
-                LoginPrefs.USER_ID, DEFAULT_VALUE);
-        userId = 1;
-        newRequestPresenter.fetchNewServiceRequests(userId);
+        serviceCenterId = SharedPrefsUtils.loginProvider().getIntegerPreference(
+                LoginPrefs.SERVICE_CENTER_ID, DEFAULT_VALUE);
+        newRequestPresenter.fetchNewServiceRequests(serviceCenterId);
     }
 
     private void dismissSwipeRefresh() {
@@ -443,7 +442,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 @Override
                 public void onRefresh() {
                     newRequestsAdapter.clearData();
-                    newRequestPresenter.fetchNewServiceRequests(userId);
+                    newRequestPresenter.fetchNewServiceRequests(serviceCenterId);
                 }
             };
 

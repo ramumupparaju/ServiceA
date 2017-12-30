@@ -2,12 +2,15 @@ package com.incon.service.dto.adduser;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Pair;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.incon.service.AppConstants;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.ValidationUtils;
 
@@ -20,8 +23,10 @@ import static com.incon.service.AppConstants.VALIDATION_SUCCESS;
  * Created by MY HOME on 17-Dec-17.
  */
 
-public class AddUser extends BaseObservable {
-
+public class AddUser extends BaseObservable implements Parcelable {
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("address")
     @Expose
     private String address;
@@ -47,12 +52,15 @@ public class AddUser extends BaseObservable {
     @SerializedName("password")
     @Expose
     private String password;
-    @SerializedName("serviceCenterId")
+    @SerializedName("serviceCenterResponse")
     @Expose
-    private String serviceCenterId;
+    private ServiceCenterResponse serviceCenterResponse;
     @SerializedName("serviceCenterRoleId")
     @Expose
-    private String serviceCenterRoleId;
+    private Integer serviceCenterRoleId;
+    @SerializedName("reportingId")
+    @Expose
+    private Integer reportingId;
 
     private transient String  serviceCenterName;
     private transient String serviceCenterDesignation;
@@ -61,6 +69,9 @@ public class AddUser extends BaseObservable {
 
     private transient String confirmPassword;
     private transient String dateOfBirthToShow;
+
+    public AddUser() {
+    }
 
     @Bindable
     public String getServiceCenterName() {
@@ -195,20 +206,28 @@ public class AddUser extends BaseObservable {
         notifyChange();
     }
 
-    public String getServiceCenterId() {
-        return serviceCenterId;
+    public ServiceCenterResponse getServiceCenterResponse() {
+        return serviceCenterResponse;
     }
 
-    public void setServiceCenterId(String serviceCenterId) {
-        this.serviceCenterId = serviceCenterId;
+    public void setServiceCenterResponse(ServiceCenterResponse serviceCenterResponse) {
+        this.serviceCenterResponse = serviceCenterResponse;
     }
 
-    public String getServiceCenterRoleId() {
+    public Integer getServiceCenterRoleId() {
         return serviceCenterRoleId;
     }
 
-    public void setServiceCenterRoleId(String serviceCenterRoleId) {
+    public void setServiceCenterRoleId(Integer serviceCenterRoleId) {
         this.serviceCenterRoleId = serviceCenterRoleId;
+    }
+
+    public Integer getReportingId() {
+        return reportingId;
+    }
+
+    public void setReportingId(Integer reportingId) {
+        this.reportingId = reportingId;
     }
 
     private int validateDob() {
@@ -324,17 +343,17 @@ public class AddUser extends BaseObservable {
                 break;
 
             case 8:
-                boolean serviceCenterNameEmpty = TextUtils.isEmpty(getServiceCenterName());
+               /* boolean serviceCenterNameEmpty = TextUtils.isEmpty(getServiceCenterName());
                 if (emptyValidation && serviceCenterNameEmpty) {
                     return AppConstants.AddUserValidations.SERVICE_CENTER_NAME;
-                }
+                }*/
                 break;
 
             case 9:
-                boolean serviceCenterDesignationEmpty = TextUtils.isEmpty(getServiceCenterDesignation());
+               /* boolean serviceCenterDesignationEmpty = TextUtils.isEmpty(getServiceCenterDesignation());
                 if (emptyValidation && serviceCenterDesignationEmpty) {
                     return AppConstants.AddUserValidations.SERVICE_DISIGNATION;
-                }
+                }*/
                 break;
 
 
@@ -344,6 +363,73 @@ public class AddUser extends BaseObservable {
         return VALIDATION_SUCCESS;
     }
 
+
+    protected AddUser(Parcel in) {
+        address = in.readString();
+        country = in.readString();
+        dob = in.readString();
+        email = in.readString();
+        gender = in.readString();
+        location = in.readString();
+        mobileNumber = in.readString();
+        name = in.readString();
+        password = in.readString();
+        serviceCenterResponse = (ServiceCenterResponse) in.readValue(ServiceCenterResponse.class.getClassLoader());
+        serviceCenterRoleId = in.readByte() == 0x00 ? null : in.readInt();
+        reportingId = in.readByte() == 0x00 ? null : in.readInt();
+        serviceCenterName = in.readString();
+        serviceCenterDesignation = in.readString();
+        genderType = in.readString();
+        confirmPassword = in.readString();
+        dateOfBirthToShow = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(address);
+        dest.writeString(country);
+        dest.writeString(dob);
+        dest.writeString(email);
+        dest.writeString(gender);
+        dest.writeString(location);
+        dest.writeString(mobileNumber);
+        dest.writeString(name);
+        dest.writeString(password);
+        dest.writeValue(serviceCenterResponse);
+        if (serviceCenterRoleId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(serviceCenterRoleId);
+        }
+        if (reportingId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(reportingId);
+        }
+        dest.writeString(serviceCenterName);
+        dest.writeString(serviceCenterDesignation);
+        dest.writeString(genderType);
+        dest.writeString(confirmPassword);
+        dest.writeString(dateOfBirthToShow);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<AddUser> CREATOR = new Parcelable.Creator<AddUser>() {
+        @Override
+        public AddUser createFromParcel(Parcel in) {
+            return new AddUser(in);
+        }
+
+        @Override
+        public AddUser[] newArray(int size) {
+            return new AddUser[size];
+        }
+    };
 }
-
-

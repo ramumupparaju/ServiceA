@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="addUser"
-            type="com.incon.service.dto.adduser.AddUser"/>
+            type="com.incon.service.dto.adduser.AddUser" />
 
         <variable
             name="addUserActivity"
-            type="com.incon.service.ui.adduser.AddUserActivity"/>
+            type="com.incon.service.ui.adduser.AddUserActivity" />
     </data>
 
     <RelativeLayout style="@style/BothMatch">
@@ -26,41 +26,13 @@
 
             <RelativeLayout
                 style="@style/BothMatch"
-                android:paddingBottom="@dimen/margin_38"
-                >
+                android:paddingBottom="@dimen/margin_38">
 
-                <android.support.v7.widget.Toolbar
+                <include
                     android:id="@+id/toolbar"
+                    layout="@layout/tool_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
-                    app:contentInsetStart="0dp">
-
-                    <RelativeLayout style="@style/BothMatch">
-
-                        <ImageView
-                            android:id="@+id/toolbar_left_iv"
-                            android:layout_width="@dimen/margin_64"
-                            android:layout_height="@dimen/margin_64"
-                            android:layout_centerVertical="true"
-                            android:paddingEnd="@dimen/margin_25"
-                            android:paddingStart="@dimen/margin_15"
-                            android:visibility="visible"
-                            app:srcCompat="@drawable/ic_back_arrow"/>
-
-                        <TextView
-                            android:id="@+id/toolbar_text_user"
-                            style="@style/BothWrap"
-                            fontPath="fonts/OpenSans-Bold.ttf"
-                            android:layout_centerInParent="true"
-                            android:text="@string/action_add_user"
-                            android:textColor="@color/white"
-                            android:textSize="15.5sp"/>
-
-
-                    </RelativeLayout>
-
-                </android.support.v7.widget.Toolbar>
+                    android:layout_height="56dp" />
 
 
                 <!-- name -->
@@ -83,7 +55,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="0"
-                        android:text="@={addUser.name}"/>
+                        android:text="@={addUser.name}" />
 
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -101,10 +73,10 @@
                         android:id="@+id/edittext_number"
                         style="@style/Register_TextInputEditText"
                         android:focusable="true"
-                        android:inputType="number"
                         android:imeOptions="actionNext"
+                        android:inputType="number"
                         android:tag="1"
-                        android:text="@={addUser.mobileNumber}"/>
+                        android:text="@={addUser.mobileNumber}" />
 
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -121,7 +93,7 @@
                     app:errorEnabled="true"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
                 <!-- Date of Birth -->
                 <com.incon.service.custom.view.CustomTextInputLayout
@@ -138,8 +110,7 @@
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
                         android:tag="3"
-                        android:text="@={addUser.dateOfBirthToShow}"
-                        />
+                        android:text="@={addUser.dateOfBirthToShow}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!--dummy view for dob click event -->
@@ -152,7 +123,7 @@
                     android:layout_alignStart="@+id/input_layout_register_dob"
                     android:layout_alignTop="@+id/input_layout_register_dob"
                     android:background="@null"
-                    android:onClick="@{() -> addUserActivity.onDobClick()}"/>
+                    android:onClick="@{() -> addUserActivity.onDobClick()}" />
 
 
                 <!-- Email ID -->
@@ -174,7 +145,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="4"
-                        android:text="@={addUser.email}"/>
+                        android:text="@={addUser.email}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
 
@@ -198,7 +169,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="5"
-                        android:text="@={addUser.password}"/>
+                        android:text="@={addUser.password}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!-- confirm Password -->
@@ -221,7 +192,7 @@
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
                         android:tag="6"
-                        android:text="@={addUser.confirmPassword}"/>
+                        android:text="@={addUser.confirmPassword}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!-- Address -->
@@ -239,7 +210,7 @@
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
                         android:tag="7"
-                        android:text="@={addUser.address}"/>
+                        android:text="@={addUser.address}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
                 <!--Dummy view used for click action-->
@@ -252,46 +223,42 @@
                     android:layout_alignStart="@+id/input_layout_register_address"
                     android:layout_alignTop="@+id/input_layout_register_address"
                     android:background="@null"
-                    android:onClick="@{() -> addUserActivity.onAddressClick()}"/>
-
-
-                <!-- service_center-->
-                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/spinner_service_center_name"
-                    style="@style/spinnerItemStyle"
-                    android:layout_below="@id/input_layout_register_address"
-                    android:layout_marginBottom="@dimen/margin_24"
-                    android:focusable="true"
-                    android:hint="@string/register__service_center_hint"
-                    android:tag="8"
-                    android:text="@={addUser.serviceCenterName}"
-                    android:visibility="visible"
-                    app:met_floatingLabel="highlight"
-                    app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-
+                    android:onClick="@{() -> addUserActivity.onAddressClick()}" />
 
                 <!-- service_center_designation-->
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/spinner_service_center_designation"
                     style="@style/spinnerItemStyle"
-                    android:layout_below="@id/spinner_service_center_name"
+                    android:layout_below="@id/input_layout_register_address"
                     android:layout_marginBottom="@dimen/margin_24"
                     android:focusable="true"
                     android:hint="@string/register__service_center_designation_hint"
-                    android:tag="9"
+                    android:tag="8"
                     android:text="@={addUser.serviceCenterDesignation}"
                     android:visibility="visible"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinner_reporting_user"
+                    style="@style/spinnerItemStyle"
+                    android:layout_below="@id/spinner_service_center_designation"
+                    android:layout_marginBottom="@dimen/margin_24"
+                    android:focusable="true"
+                    android:hint="@string/hint_reporting_person"
+                    android:tag="9"
+                    android:visibility="visible"
+                    app:met_floatingLabel="highlight"
+                    app:met_textColor="@color/colorForgotPasswordHintText"
+                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
                 <Button
                     android:id="@+id/button_submit"
                     style="@style/w150_wrap"
                     fontPath="fonts/OpenSans-Bold.ttf"
-                    android:layout_below="@id/spinner_service_center_designation"
+                    android:layout_below="@id/spinner_reporting_user"
                     android:layout_marginBottom="@dimen/margin_30"
                     android:layout_marginLeft="@dimen/margin_110"
                     android:layout_marginTop="@dimen/margin_5"
@@ -300,7 +267,7 @@
                     android:text="@string/add_new_submit"
                     android:textAllCaps="true"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_13"/>
+                    android:textSize="@dimen/text_size_13" />
 
 
             </RelativeLayout>

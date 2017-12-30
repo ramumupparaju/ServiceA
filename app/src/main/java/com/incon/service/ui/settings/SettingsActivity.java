@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.incon.service.AppConstants;
 import com.incon.service.AppUtils;
 import com.incon.service.BuildConfig;
 import com.incon.service.R;
@@ -21,11 +22,13 @@ import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.settings.adapters.SettingsAdapter;
 import com.incon.service.ui.settings.service.AllServiceCentersActivity;
 import com.incon.service.ui.settings.update.UpDateUserProfileActivity;
+import com.incon.service.ui.settings.userdesignation.AllUsersDesignationsActivity;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 
 import static com.incon.service.AppConstants.LoginPrefs.USER_NAME;
+import static com.incon.service.AppConstants.UserConstants.SUPER_ADMIN_TYPE;
 
 
 /**
@@ -40,6 +43,8 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     private ArrayList<SettingsItem> menuItems;
     private AppAlertVerticalTwoButtonsDialog dialog;
     private int position = -1;
+    private int userType;
+    private int isAdmin;
 
     @Override
     protected int getLayoutId() {
@@ -65,6 +70,13 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
                 startActivity(backToHome);
             }
         });
+
+        userType = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
+        if (userType == UserConstants.SUPER_ADMIN_TYPE) {
+            isAdmin = BooleanConstants.IS_TRUE;
+        } else {
+            isAdmin = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_IS_ADMIN, BooleanConstants.IS_FALSE);
+        }
 
         initViews();
         initializeAdapter();
@@ -107,7 +119,17 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
             SettingsItem menuItem = new SettingsItem();
             menuItem.setRowType(SettingsAdapter.ROW_TYPE_ITEM);
             menuItem.setIcon(icons[menuPos]);
-            menuItem.setText(menuTitles[menuPos]);
+            if (menuPos == 0) { //checks user type based on user type we are changing options
+                if (userType == SUPER_ADMIN_TYPE) {
+                    menuItem.setText(menuTitles[menuPos]);
+                } else if (isAdmin == BooleanConstants.IS_TRUE) {
+                    menuItem.setText(getString(R.string.action_service_center));
+                } else {
+                    continue;
+                }
+            } else {
+                menuItem.setText(menuTitles[menuPos]);
+            }
             menuItems.add(menuItem);
         }
     }
@@ -127,6 +149,11 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     @Override
     public void onClickPosition(int position) {
         this.position = position;
+        if (position != 0) { // based on user type we are changing option click actions
+            if (isAdmin == BooleanConstants.IS_FALSE) {
+                ++position;
+            }
+        }
         switch (position) {
 
             case MenuConstants.PROFILE:
@@ -135,8 +162,14 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
                 break;
 
             case MenuConstants.ALL_SERVICE_CENTERS:
-                Intent addUserIntent = new Intent(this, AllServiceCentersActivity.class);
-                startActivity(addUserIntent);
+                if (userType == UserConstants.SUPER_ADMIN_TYPE) { // Based on usertype we are launching different activities
+                    Intent addUserIntent = new Intent(this, AllServiceCentersActivity.class);
+                    startActivity(addUserIntent);
+                } else {
+                    Intent intent = new Intent(this, AllUsersDesignationsActivity.class);
+                    intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.SERVICE_CENTER_ID, DEFAULT_VALUE));
+                    startActivity(intent);
+                }
                 break;
 
             case MenuConstants.CHANGE_PWD:

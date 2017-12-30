@@ -7,7 +7,8 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.userslistofservicecenters.UsersListOfServiceCenters;
+import com.incon.service.apimodel.components.adddesignation.DesignationData;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
@@ -35,16 +36,16 @@ public class AllUsersDesignationsPresenter extends BasePresenter<AllUsersDesigna
 
     @Override
     public void doUsersDesignationsApi(int userId, int serviceCenterId) {
-        getView().showProgress(appContext.getString(R.string.progress_loading_users_list_of_service_centers));
+        getView().showProgress(appContext.getString(R.string.progress_loading_data));
 
-        Observable<List<UsersListOfServiceCenters>> userListObservable = getUserListObservable(userId);
-        Observable<Object> designationsListObservable = getDesignationListObservable(userId, serviceCenterId);
+        Observable<List<AddUser>> userListObservable = getUserListObservable(userId);
+        Observable<List<DesignationData>> designationsListObservable = getDesignationListObservable(userId, serviceCenterId);
 
-        Observable<String> zip = Observable.zip(userListObservable, designationsListObservable, new BiFunction<List<UsersListOfServiceCenters>, Object, String>() {
+        Observable<String> zip = Observable.zip(userListObservable, designationsListObservable, new BiFunction<List<AddUser>, List<DesignationData>, String>() {
             @Override
-            public String apply(@NonNull List<UsersListOfServiceCenters> s1, @NonNull Object s2) throws Exception {
+            public String apply(@NonNull List<AddUser> usersList, @NonNull List<DesignationData> designationsList) throws Exception {
 
-                getView().loadUsersDesignationsList(s1);
+                getView().loadUsersDesignationsList(usersList, designationsList);
                 return "";
             }
         });
@@ -71,13 +72,12 @@ public class AllUsersDesignationsPresenter extends BasePresenter<AllUsersDesigna
         addDisposable(observer);
     }
 
-    private Observable<Object> getDesignationListObservable(int userId, int serviceCenterId) {
+    private Observable<List<DesignationData>> getDesignationListObservable(int userId, int serviceCenterId) {
         return AppApiService.getInstance().getDesignationsListUsingServiceCenter(userId, serviceCenterId);
     }
 
-    private Observable<List<UsersListOfServiceCenters>> getUserListObservable(int userId) {
+    private Observable<List<AddUser>> getUserListObservable(int userId) {
         return AppApiService.getInstance().getUsersListOfServiceCenterApi(userId);
-
     }
 }
 

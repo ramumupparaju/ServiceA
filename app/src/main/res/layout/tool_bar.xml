@@ -19,7 +19,7 @@
 
         <RelativeLayout style="@style/BothMatch">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/toolbar_left_iv"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
@@ -38,7 +38,7 @@
                 android:textColor="@color/dull_lavender"
                 android:textSize="15.5sp" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/toolbar_right_iv"
                 android:layout_width="64dp"
                 android:layout_height="64dp"

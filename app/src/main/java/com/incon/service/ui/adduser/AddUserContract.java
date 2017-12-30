@@ -12,11 +12,9 @@ import java.util.List;
 
 public interface AddUserContract {
     interface View extends BaseView {
-        void loadFetchDesignations(List<FetchDesignationsResponse> fetchDesignationsResponse);
     }
 
     interface Presenter {
         void addingUser(int userId, AddUser addUser);
-        void fetchDesignations(int serviceCenterId, int userId);
     }
 }
