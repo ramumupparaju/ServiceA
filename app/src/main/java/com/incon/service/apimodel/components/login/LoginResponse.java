@@ -45,8 +45,21 @@ public class LoginResponse extends ApiBaseResponse {
     @Expose
     private String mobileNumber;
 
+
+
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
+
     private String password;
     private transient String confirmPassword;
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
     public ServiceCenterResponse getServiceCenter() {
         return serviceCenter;
     }
