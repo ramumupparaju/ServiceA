@@ -14,6 +14,7 @@ import android.view.ViewTreeObserver;
 
 import com.incon.service.AppConstants;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.databinding.ActivityHomeBinding;
 import com.incon.service.databinding.ToolBarBinding;
 import com.incon.service.ui.BaseActivity;
@@ -28,6 +29,7 @@ import com.incon.service.utils.SharedPrefsUtils;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class HomeActivity extends BaseActivity implements HomeContract.View {
 
@@ -99,7 +101,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         toolBarBinding.toolbarRightIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // onUserQrCodeClick();
+                // onUserQrCodeClick();
             }
         });
         replaceToolBar(toolBarBinding.toolbar);
@@ -113,19 +115,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                     currentFragment.setTitle();
                 }
             };
-
-    // generating qr code to user
-    /*public void onUserQrCodeClick() {
-        String userData = SharedPrefsUtils.loginProvider().getStringPreference(
-                AppConstants.LoginPrefs.USER_UUID);
-        if (TextUtils.isEmpty(userData)) {
-            showErrorMessage(getString(R.string.error_uuid));
-            return;
-        }
-        Bundle bundle = new Bundle();
-        bundle.putString(AppConstants.BundleConstants.QRCODE_DATA, userData);
-        replaceFragmentAndAddToStack(UserQrCodeFragment.class, bundle);
-    }*/
 
     public void replaceToolBar(View toolBarView) {
         if (toolBarView == null) {
@@ -194,5 +183,10 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         bnve.enableAnimation(false);
         bnve.enableShiftingMode(false);
         bnve.enableItemShiftingMode(false);
+    }
+
+    @Override
+    public void serviceCenters(List<ServiceCenterResponse> serviceCentersList) {
+        //TODO have to load users data
     }
 }
