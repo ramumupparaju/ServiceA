@@ -7,7 +7,7 @@ import android.support.multidex.MultiDex;
 
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 
 import net.hockeyapp.android.CrashManager;
 
@@ -19,14 +19,14 @@ public class ConnectApplication extends Application {
 
     private List<FetchCategories> fetchCategoriesList;
     private List<DefaultStatusData> defaultStausData;
-    private List<ServiceCenterResponse> serviceCenterList;
+    private List<AddServiceCenter> serviceCenterList;
     private static Context context;
 
-    public List<ServiceCenterResponse> getServiceCenterList() {
+    public List<AddServiceCenter> getServiceCenterList() {
         return serviceCenterList;
     }
 
-    public void setServiceCenterList(List<ServiceCenterResponse> serviceCenterList) {
+    public void setServiceCenterList(List<AddServiceCenter> serviceCenterList) {
         this.serviceCenterList = serviceCenterList;
     }
 

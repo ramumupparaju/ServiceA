@@ -14,7 +14,6 @@ import android.view.ViewTreeObserver;
 
 import com.incon.service.AppConstants;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.databinding.ActivityHomeBinding;
 import com.incon.service.databinding.ToolBarBinding;
 import com.incon.service.ui.BaseActivity;

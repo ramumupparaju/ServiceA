@@ -1,6 +1,6 @@
 package com.incon.service.ui.settings.service;
 
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BaseView;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface AllServiceCentersContract {
     interface View extends BaseView {
-        void loadServiceCentersList(List<ServiceCenterResponse> serviceCenterResponseList);
+        void loadServiceCentersList(List<AddServiceCenter> serviceCenterResponseList);
 
 
     }

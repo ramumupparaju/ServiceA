@@ -29,14 +29,12 @@ import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddserviceCenterBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
-import com.incon.service.dto.registration.ServiceCenter;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +55,6 @@ public class AddServiceCenterActivity extends BaseActivity implements
     private int categorySelectedPos = -1;
     private int divisionSelectedPos = -1;
     private int brandSelectedPos = -1;
-    private ServiceCenter serviceCenter;
     private boolean categoryEditable;
 
     @Override
@@ -132,8 +129,8 @@ public class AddServiceCenterActivity extends BaseActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (categorySelectedPos != position) {
                     FetchCategories fetchCategories = fetchCategoryList.get(position);
-                    serviceCenter.setCategoryId(fetchCategories.getId());
-                    serviceCenter.setCategoryName(fetchCategories.getName());
+                    addServiceCenter.setCategoryId(fetchCategories.getId());
+                    addServiceCenter.setCategoryName(fetchCategories.getName());
                     loadDivisionSpinnerData(fetchCategories.getDivisions());
                     binding.spinnerDivision.setText("");
                     categorySelectedPos = position;
@@ -170,8 +167,8 @@ public class AddServiceCenterActivity extends BaseActivity implements
                     divisionSelectedPos = position;
                     FetchCategories fetchCategories = fetchCategoryList.get(categorySelectedPos);
                     Division divisions1 = fetchCategories.getDivisions().get(divisionSelectedPos);
-                    serviceCenter.setDivisionId(divisions1.getId());
-                    serviceCenter.setDivisionName(divisions1.getName());
+                    addServiceCenter.setDivisionId(divisions1.getId());
+                    addServiceCenter.setDivisionName(divisions1.getName());
                     loadBrandSpinnerData(divisions1.getBrands());
                     binding.spinnerBrand.setText("");
                 }
@@ -202,8 +199,8 @@ public class AddServiceCenterActivity extends BaseActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (brandSelectedPos != position) {
-                    serviceCenter.setBrandId(brandList.get(position).getId());
-                    serviceCenter.setBrandName(brandList.get(position).getName());
+                    addServiceCenter.setBrandId(brandList.get(position).getId());
+                    addServiceCenter.setBrandName(brandList.get(position).getName());
                 }
                 //For avoiding double tapping issue
                 if (binding.spinnerBrand.getOnItemClickListener() != null) {

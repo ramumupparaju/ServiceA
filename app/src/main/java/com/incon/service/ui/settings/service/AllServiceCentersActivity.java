@@ -8,10 +8,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.incon.service.AppConstants;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.callbacks.IEditClickCallback;
 import com.incon.service.databinding.ActivityAllServiceCentersBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
@@ -33,7 +31,7 @@ public class AllServiceCentersActivity extends BaseActivity implements
     private AllServiceCentersPresenter allServiceCentersPresenter;
     private ActivityAllServiceCentersBinding binding;
 
-    public List<ServiceCenterResponse> serviceCenterResponseList;
+    public List<AddServiceCenter> serviceCenterResponseList;
     private AllServiceCentersAdapter allServiceCentersAdapter;
     private int userId = DEFAULT_VALUE;
 
@@ -72,7 +70,7 @@ public class AllServiceCentersActivity extends BaseActivity implements
         binding.allServiceCentersRecyclerview.setAdapter(allServiceCentersAdapter);
         binding.allServiceCentersRecyclerview.setLayoutManager(linearLayoutManager);
 
-        List<ServiceCenterResponse> serviceCenterList = ConnectApplication.getAppContext().getServiceCenterList();
+        List<AddServiceCenter> serviceCenterList = ConnectApplication.getAppContext().getServiceCenterList();
         if (serviceCenterList == null) {
             allServiceCentersPresenter.serviceCentersList(userId);
         } else {
@@ -85,9 +83,8 @@ public class AllServiceCentersActivity extends BaseActivity implements
     private IEditClickCallback iClickCallback = new IEditClickCallback() {
         @Override
         public void onEditClickPosition(int position) {
-            AddServiceCenter addServiceCenter = getServiceCenterRequestFromResponse(serviceCenterResponseList.get(position));
             Intent intent = new Intent(AllServiceCentersActivity.this, AddServiceCenterActivity.class);
-            intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, addServiceCenter);
+            intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, serviceCenterResponseList.get(position));
             startActivityForResult(intent, RequestCodes.ADD_SERVICE_CENTER);
 
         }
@@ -113,23 +110,6 @@ public class AllServiceCentersActivity extends BaseActivity implements
         }
     }
 
-    private AddServiceCenter getServiceCenterRequestFromResponse(ServiceCenterResponse serviceCenterResponse) {
-        AddServiceCenter addServiceCenter = new AddServiceCenter();
-        addServiceCenter.setId(serviceCenterResponse.getId());
-        addServiceCenter.setAddress(serviceCenterResponse.getAddress());
-        addServiceCenter.setBrandId(serviceCenterResponse.getBrandId());
-        addServiceCenter.setCategoryId(serviceCenterResponse.getCategoryId());
-        addServiceCenter.setContactNo(serviceCenterResponse.getContactNo());
-        //TODO have to change as parameter
-        addServiceCenter.setCreatedDate(String.valueOf(serviceCenterResponse.getCreatedDate()));
-        addServiceCenter.setDivisionId(serviceCenterResponse.getDivisionId());
-        addServiceCenter.setEmail(serviceCenterResponse.getEmail());
-        addServiceCenter.setLocation(serviceCenterResponse.getLocation());
-        addServiceCenter.setName(serviceCenterResponse.getName());
-        addServiceCenter.setGstn(serviceCenterResponse.getGstn());
-        return addServiceCenter;
-    }
-
     private void initializeToolbar() {
         binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +127,7 @@ public class AllServiceCentersActivity extends BaseActivity implements
     }
 
     @Override
-    public void loadServiceCentersList(List<ServiceCenterResponse> serviceCenterResponseList) {
+    public void loadServiceCentersList(List<AddServiceCenter> serviceCenterResponseList) {
         if (serviceCenterResponseList == null) {
             serviceCenterResponseList = new ArrayList<>();
         }

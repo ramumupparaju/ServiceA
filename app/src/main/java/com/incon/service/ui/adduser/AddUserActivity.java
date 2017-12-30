@@ -23,9 +23,9 @@ import android.widget.TextView;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAdduserBinding;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.registration.AddressInfo;
 import com.incon.service.ui.BaseActivity;
@@ -94,7 +94,7 @@ public class AddUserActivity extends BaseActivity implements
             addUser = new AddUser();
         }
 
-        ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
+        AddServiceCenter serviceCenterResponse = new AddServiceCenter();
         addUser.setServiceCenterResponse(serviceCenterResponse);
 
         binding.setAddUser(addUser);

@@ -8,7 +8,7 @@ import com.incon.service.AppConstants;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 import com.incon.service.utils.SharedPrefsUtils;
@@ -40,10 +40,10 @@ public class AllServiceCentersPresenter extends BasePresenter<AllServiceCentersC
             userId = SharedPrefsUtils.loginProvider().getIntegerPreference(AppConstants.LoginPrefs.USER_ID, DEFAULT_VALUE);
         }
         getView().showProgress(appContext.getString(R.string.progress_loading_service_centers));
-        DisposableObserver<List<ServiceCenterResponse>> observer = new
-                DisposableObserver<List<ServiceCenterResponse>>() {
+        DisposableObserver<List<AddServiceCenter>> observer = new
+                DisposableObserver<List<AddServiceCenter>>() {
                     @Override
-                    public void onNext(List<ServiceCenterResponse> serviceCenterResponse) {
+                    public void onNext(List<AddServiceCenter> serviceCenterResponse) {
                         getView().loadServiceCentersList(serviceCenterResponse);
                     }
 

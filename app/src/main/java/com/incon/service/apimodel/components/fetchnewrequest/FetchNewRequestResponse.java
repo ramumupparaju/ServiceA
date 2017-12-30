@@ -6,7 +6,7 @@ import com.incon.service.apimodel.components.assigneduser.AssignedUser;
 import com.incon.service.apimodel.components.customer.CustomerResponse;
 import com.incon.service.apimodel.components.productinfo.ProductInfoResponse;
 import com.incon.service.apimodel.components.request.RequestResponse;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 
 /**
  * Created by MY HOME on 25-Dec-17.
@@ -22,7 +22,7 @@ public class FetchNewRequestResponse {
 
     @SerializedName("serviceCenter")
     @Expose
-    private ServiceCenterResponse serviceCenter;
+    private AddServiceCenter serviceCenter;
     @SerializedName("request")
     @Expose
     private RequestResponse request;
@@ -34,11 +34,11 @@ public class FetchNewRequestResponse {
         return customer;
     }
 
-    public ServiceCenterResponse getServiceCenter() {
+    public AddServiceCenter getServiceCenter() {
         return serviceCenter;
     }
 
-    public void setServiceCenter(ServiceCenterResponse serviceCenter) {
+    public void setServiceCenter(AddServiceCenter serviceCenter) {
         this.serviceCenter = serviceCenter;
     }
 
