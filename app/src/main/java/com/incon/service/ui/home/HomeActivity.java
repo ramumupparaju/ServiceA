@@ -185,7 +185,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
     @Override
     public void serviceCentersSuccessfully() {
-        //TODO have to load users data
+        //TODO have to handle based on user
         disableAllAnimation(binding.bottomNavigationView);
         binding.bottomNavigationView.setTextVisibility(true);
         setBottomNavigationViewListeners();
