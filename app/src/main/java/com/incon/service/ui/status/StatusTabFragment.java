@@ -10,13 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.incon.service.ConnectApplication;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.custom.view.CustomViewPager;
 import com.incon.service.databinding.CustomTabBinding;
 import com.incon.service.databinding.FragmentStatusTabBinding;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.StatusTabPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by PC on 12/5/2017.
@@ -30,6 +35,7 @@ public class StatusTabFragment extends BaseFragment {
     private Typeface defaultTypeFace;
     private Typeface selectedTypeFace;
     private String[] tabTitles;
+
     @Override
     protected void initializePresenter() {
 
@@ -57,17 +63,29 @@ public class StatusTabFragment extends BaseFragment {
     private void initViews() {
 
         initViewPager();
-        loadServiceSpinner();
+        loadServiceCentersSpinner();
+        loadUsersSpinner();
 
 
     }
 
-    private void loadServiceSpinner() {
-        /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+    private void loadUsersSpinner() {
+
+    }
+
+    private void loadServiceCentersSpinner() {
+        // getting service centers list
+        List<ServiceCenterResponse> serviceCenterList = ConnectApplication.getAppContext().getServiceCenterList();
+        List<String> serviceArray = new ArrayList<>(serviceCenterList.size());
+        for (ServiceCenterResponse serviceCenterResponse : serviceCenterList) {
+            serviceArray.add(serviceCenterResponse.getName());
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.view_spinner, serviceArray);
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerService.setAdapter(arrayAdapter);
-        binding.spinnerService.setText(serviceArray[0]);*/
+        binding.spinnerServiceCenters.setAdapter(arrayAdapter);
+        binding.spinnerServiceCenters.setText(serviceArray.get(0));
 
     }
 
@@ -110,6 +128,7 @@ public class StatusTabFragment extends BaseFragment {
         });
 
     }
+
     private void changeTitleFont(int position) {
         for (int i = 0; i < tabTitles.length; i++) {
             View view = binding.tabLayout.getTabAt(i).getCustomView();

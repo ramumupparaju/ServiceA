@@ -20,7 +20,7 @@
                     android:id="@+id/request_textview"
                     style="@style/BothMatch"
                     android:gravity="center"
-                    android:text="No ReturnItems"
+                    android:text="No RequestItems"
                     android:visibility="gone"
                     />
 

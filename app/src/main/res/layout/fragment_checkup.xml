@@ -20,7 +20,7 @@
                     android:id="@+id/checkup_textview"
                     style="@style/BothMatch"
                     android:gravity="center"
-                    android:text="No ReturnItems"
+                    android:text="No CheckUpItems"
                     android:visibility="gone"
                     />
 
