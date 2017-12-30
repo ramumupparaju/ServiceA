@@ -33,7 +33,6 @@ public class LoginDataManagerImpl implements LoginDataManager, AppConstants.Logi
 
         //storing service center details
         sharedPrefsUtils.setIntegerPreference(SERVICE_CENTER_ID,
-                loginResponse.getServiceCenter().getId());
-
+                1);
     }
 }

@@ -20,7 +20,7 @@
                     android:id="@+id/repair_textview"
                     style="@style/BothMatch"
                     android:gravity="center"
-                    android:text="No ReturnItems"
+                    android:text="No RepairItems"
                     android:visibility="gone"
                     />
 

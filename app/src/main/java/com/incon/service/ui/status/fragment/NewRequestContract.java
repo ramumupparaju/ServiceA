@@ -12,7 +12,7 @@ import java.util.List;
 public interface NewRequestContract {
 
     interface View extends BaseView {
-        void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
+        void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
     }
 
     interface Presenter {

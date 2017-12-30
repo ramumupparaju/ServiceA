@@ -454,7 +454,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
 
     @Override
-    public void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
+    public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
 
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();

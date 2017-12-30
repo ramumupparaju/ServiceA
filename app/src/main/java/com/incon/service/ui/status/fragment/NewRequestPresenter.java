@@ -37,7 +37,7 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
         DisposableObserver<List<FetchNewRequestResponse>> observer = new DisposableObserver<List<FetchNewRequestResponse>>() {
             @Override
             public void onNext(List<FetchNewRequestResponse> fetchNewRequestResponses) {
-                getView().fetchNewServiceRequests(fetchNewRequestResponses);
+                getView().loadingNewServiceRequests(fetchNewRequestResponses);
             }
 
             @Override
@@ -54,6 +54,7 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
             }
         };
         AppApiService.getInstance().fetchNewServiceRequestApi(servicerCenterId).subscribe(observer);
+        addDisposable(observer);
     }
 
 }
