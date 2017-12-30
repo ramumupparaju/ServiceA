@@ -1,7 +1,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout style="@style/BothMatch">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/main_container"
@@ -24,27 +27,29 @@
                         android:layout_below="@+id/appbar"
                         app:layout_collapseMode="parallax">
 
-                           <!-- spinner service centers -->
-                           <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                               android:id="@+id/spinner_service_centers"
-                               style="@style/spinnerItemStyle"
-                               android:layout_marginTop="@dimen/margin_10"
-                               android:focusable="true"
-                               app:errorEnabled="true"
-                               app:met_floatingLabel="highlight"
-                               app:met_textColor="@color/colorForgotPasswordHintText"
-                               app:met_textColorHint="@color/colorForgotPasswordHintText" />
-                         <!--  &lt;!&ndash;spinner users&ndash;&gt;
-                           <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                               android:id="@+id/spinner_users"
-                               style="@style/spinnerItemStyle"
-                               android:layout_below="@+id/spinner_service_centers"
-                               android:layout_marginTop="@dimen/margin_10"
-                               android:focusable="true"
-                               app:errorEnabled="true"
-                               app:met_floatingLabel="highlight"
-                               app:met_textColor="@color/colorForgotPasswordHintText"
-                               app:met_textColorHint="@color/colorForgotPasswordHintText" />-->
+                        <!-- spinner service centers -->
+                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                            android:id="@+id/spinner_service_centers"
+                            style="@style/spinnerItemStyle"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:focusable="true"
+                            app:errorEnabled="true"
+                            app:met_floatingLabel="highlight"
+                            app:met_textColor="@color/colorForgotPasswordHintText"
+                            app:met_textColorHint="@color/colorForgotPasswordHintText" />
+
+                      <!--  &lt;!&ndash; spinner user &ndash;&gt;
+                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                            android:id="@+id/spinner_users"
+                            style="@style/spinnerItemStyle"
+                            android:layout_below="@+id/spinner_service_centers"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:focusable="true"
+                            app:errorEnabled="true"
+                            app:met_floatingLabel="highlight"
+                            app:met_textColor="@color/colorForgotPasswordHintText"
+                            app:met_textColorHint="@color/colorForgotPasswordHintText" />-->
+
                         <android.support.design.widget.TabLayout
                             android:id="@+id/tab_layout"
                             style="@style/MatchWrap"
