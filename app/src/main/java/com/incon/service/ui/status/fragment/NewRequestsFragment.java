@@ -44,6 +44,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
+    private AppEditTextDialog assignDialog;
+    private AppEditTextDialog attendingDialog;
     private AppEditTextDialog holdDialog;
     private String merchantComment;
     private PastHistoryDialog pastHistoryDialog;
@@ -261,14 +263,24 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 }
             } else if (firstRowTag == 3) {   // status update
                 if (secondRowTag == 0) {  // accept
-                    showAcceptRejectDialog(true);
+                    bottomOptions = new String[2];
+                    bottomOptions[0] = getString(R.string.bottom_option_assign);
+                    bottomOptions[1] = getString(R.string.bottom_option_attending);
+                    topDrawables = new int[2];
+                    topDrawables[0] = R.drawable.ic_options_feedback;
+                    topDrawables[1] = R.drawable.ic_option_pasthistory;
+
+                   // showAcceptRejectDialog(true);
 
                 } else if (secondRowTag == 1) { // reject
                     showAcceptRejectDialog(false);
 
                 } else if (secondRowTag == 2) { // hold
-                    showHoldDialog();
-                    return;
+                    //showHoldDialog();
+                    bottomOptions = new String[1];
+                    bottomOptions[0] = getString(R.string.bottom_option_assign);
+                    topDrawables = new int[1];
+                    topDrawables[0] = R.drawable.ic_options_feedback;
                 } else { //  edit time
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
@@ -280,6 +292,47 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
+    };
+    private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String unparsedTag = (String) view.getTag();
+            String[] tagArray = unparsedTag.split(COMMA_SEPARATOR);
+
+
+            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
+                    productSelectedPosition);
+            changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, unparsedTag);
+
+            int firstRowTag = Integer.parseInt(tagArray[0]);
+            int secondRowTag = Integer.parseInt(tagArray[1]);
+            int thirdRowTag = Integer.parseInt(tagArray[2]);
+
+
+            if (firstRowTag == 3) {
+
+                if (secondRowTag == 0) {
+
+                    if (thirdRowTag == 0) {
+                        // assign
+                        showAssignDialog();
+
+                    } else if (thirdRowTag == 1) {
+                        // attending
+                        showAttendingDialog();
+
+                    }
+                } else if (secondRowTag == 1) {
+                    //show diloge
+                } else if (secondRowTag == 2) {
+                    showAssignDialog();
+                }
+
+            }
+
+
+        }
+
     };
 
     private void showPastHisoryDialog() {
@@ -361,43 +414,66 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
 
-    private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String unparsedTag = (String) view.getTag();
-            String[] tagArray = unparsedTag.split(COMMA_SEPARATOR);
 
 
-            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
-                    productSelectedPosition);
-            changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, unparsedTag);
-
-            int firstRowTag = Integer.parseInt(tagArray[0]);
-            int secondRowTag = Integer.parseInt(tagArray[1]);
-            int thirdRowTag = Integer.parseInt(tagArray[2]);
-
-
-            if (firstRowTag == 3) {
-
-                if (secondRowTag == 0) {
-
-                    if (thirdRowTag == 0) {
-                        // TODO have set images
-                    } else if (thirdRowTag == 1) {
-                        // TODO have set images
+    private void showAttendingDialog() {
+        attendingDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
                     }
-                } else if (secondRowTag == 1) {
-                    //show diloge
-                } else if (secondRowTag == 2) {
-                    // TODO have set images
-                }
 
-            }
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+
+                                attendingDialog.dismiss();
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                attendingDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_attending) )
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        attendingDialog.showDialog();
+
+    }
+
+    private void showAssignDialog() {
+        assignDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+
+                                assignDialog.dismiss();
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                assignDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_assign) )
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        assignDialog.showDialog();
 
 
-        }
-
-    };
+    }
 
 
     private void showInformationDialog(String title, String messageInfo) {

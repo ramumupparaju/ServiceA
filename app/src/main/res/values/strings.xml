@@ -33,6 +33,7 @@
     <string name="bottom_option_return">Return</string>
     <string name="bottom_option_Call">Call</string>
     <string name="bottom_option_accept">Accept</string>
+    <string name="bottom_option_attending">Attending</string>
     <string name="bottom_option_reject">Reject</string>
     <string name="bottom_option_estimation">Estimation</string>
     <string name="bottom_option_repair_done">Repair done</string>
