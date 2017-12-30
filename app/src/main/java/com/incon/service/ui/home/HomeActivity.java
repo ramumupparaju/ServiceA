@@ -41,6 +41,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     private HomePresenter homePresenter;
     private ActivityHomeBinding binding;
     private ToolBarBinding toolBarBinding;
+    private int userId;
 
     private LinkedHashMap<Integer, Fragment> tabFragments = new LinkedHashMap<>();
 
@@ -66,9 +67,10 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         setBottomNavigationViewListeners();
         handleBottomViewOnKeyBoardUp();
 
-        SharedPrefsUtils.cacheProvider().setBooleanPreference(AppConstants.CachePrefs.IS_SCAN_FIRST, true);
 
         binding.bottomNavigationView.setCurrentItem(TAB_Status);
+
+        userId = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE);
 
         //changed preference as otp verified
         SharedPrefsUtils.loginProvider().setBooleanPreference(AppConstants.LoginPrefs.IS_REGISTERED, false);
@@ -78,6 +80,12 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 //        UpdateManager.register(this);
         initializeToolBar();
         getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
+        //loading default data
+        homePresenter.defaultsApi();
+        // loading  default status data
+        homePresenter.getDefaultStatusData();
+        // loading service centers
+        homePresenter.getServiceCenters(userId);
 
     }
 

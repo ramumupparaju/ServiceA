@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
-import com.incon.service.apimodel.components.fetchdesignations.FetchDesignationsResponse;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAdduserBinding;
@@ -54,8 +53,10 @@ public class AddUserActivity extends BaseActivity implements
     private Animation shakeAnim;
     private MaterialBetterSpinner genderSpinner;
     private ActivityAdduserBinding binding;
-    public List<FetchDesignationsResponse> fetchDesignationsResponseList;
+    public List<DesignationData> fetchDesignationsResponseList;
+    public List<AddUser> usersList;
     private int designationSelectedPos = -1;
+    private int reportingSelectedPos = -1;
     private int serviceCenterId;
 
     @Override
@@ -76,8 +77,12 @@ public class AddUserActivity extends BaseActivity implements
         binding = DataBindingUtil.setContentView(this, getLayoutId());
 
         Intent bundle = getIntent();
-        if (bundle != null)
+        if (bundle != null) {
             addUser = bundle.getParcelableExtra(IntentConstants.USER_DATA);
+            serviceCenterId = bundle.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
+            fetchDesignationsResponseList = bundle.getParcelableArrayListExtra(IntentConstants.DESIGNATION_DATA);
+            usersList = bundle.getParcelableArrayListExtra(IntentConstants.USER_DATA_LIST);
+        }
         if (addUser != null) {
             binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_user));
             binding.buttonSubmit.setText(getString(R.string.action_update));
@@ -86,11 +91,9 @@ public class AddUserActivity extends BaseActivity implements
             binding.toolbar.toolbarTitleTv.setText(getString(R.string.action_add_user));
             binding.toolbar.toolbarRightIv.setVisibility(View.GONE);
             binding.buttonSubmit.setText(getString(R.string.action_submit));
-        addUser = new AddUser();
+            addUser = new AddUser();
         }
-        addUser.setServiceCenterDesignation("Manager"); //todo remove
-        addUser.setServiceCenterRoleId(24);
-        addUser.setReportingId(162);
+
         ServiceCenterResponse serviceCenterResponse = new ServiceCenterResponse();
         addUser.setServiceCenterResponse(serviceCenterResponse);
 
@@ -99,8 +102,6 @@ public class AddUserActivity extends BaseActivity implements
         rootView = binding.getRoot();
 
         //loading data from intent
-        Intent intent = getIntent();
-        serviceCenterId = intent.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
         serviceCenterResponse.setId(serviceCenterId);
 
         initViews();
@@ -134,14 +135,34 @@ public class AddUserActivity extends BaseActivity implements
         shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
         loadGenderSpinnerData();
         loadDesignationsSpinnerData();
+        loadReportingSpinnerData();
         loadValidationErrors();
         setFocusListenersForEditText();
     }
 
+    private void loadReportingSpinnerData() {
+        List<String> userStringArray = new ArrayList<>();
+        for (AddUser fetchDesignationsResponse : usersList) {
+            userStringArray.add(fetchDesignationsResponse.getName());
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                R.layout.view_spinner, userStringArray);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        binding.spinnerReportingUser.setAdapter(arrayAdapter);
+        binding.spinnerReportingUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (reportingSelectedPos != position) {
+                    reportingSelectedPos = position;
+                }
+            }
+        });
+    }
+
     private void loadDesignationsSpinnerData() {
-        //TODO have to enable
-        /*List<String> fetchDesignationList = new ArrayList<>();
-        for (FetchDesignationsResponse fetchDesignationsResponse : fetchDesignationsResponseList) {
+        List<String> fetchDesignationList = new ArrayList<>();
+        for (DesignationData fetchDesignationsResponse : fetchDesignationsResponseList) {
             fetchDesignationList.add(fetchDesignationsResponse.getName());
         }
 
@@ -156,7 +177,7 @@ public class AddUserActivity extends BaseActivity implements
                     designationSelectedPos = position;
                 }
             }
-        });*/
+        });
     }
 
 

@@ -53,6 +53,7 @@ public class DesignationsListAdapter extends RecyclerView.Adapter<DesignationsLi
 
     public void setData(List<DesignationData> designationsList) {
         this.designationsList = designationsList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -69,7 +70,6 @@ public class DesignationsListAdapter extends RecyclerView.Adapter<DesignationsLi
             binding.setVariable(BR.modelResponse, usersListOfServiceCenters);
             binding.executePendingBindings();
         }
-
 
         @Override
         public void onClick(View view) {

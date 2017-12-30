@@ -207,7 +207,9 @@ public interface AppConstants {
         String FROM_FORGOT_PASSWORD_SCREEN = "fromForgotPasswordScreen";
         String ADDRESS_INFO = "addressInfo";
         String SERVICE_CENTER_DATA = "serviceCenterData";
+        String SERVICE_CENTER_ID = "service_center_id";
         String USER_DATA = "userData";
+        String USER_DATA_LIST = "user_data_list";
         String DESIGNATION_DATA = "designationData";
     }
 
@@ -329,6 +331,7 @@ public interface AppConstants {
         int LOCATION_ADDRESS_FROM_LATLNG = 120;
         int PRODUCT_ADD_FRAGMENT = 121;
         int ADD_SERVICE_CENTER = 122;
+        int ADD_USER_DESIGNATION = 123;
 
     }
 

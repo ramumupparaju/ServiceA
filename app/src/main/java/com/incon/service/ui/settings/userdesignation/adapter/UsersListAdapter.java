@@ -53,6 +53,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
 
     public void setData(List<AddUser> usersList) {
         this.usersList = usersList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -65,7 +66,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
         }
 
         public void bind(AddUser usersListOfServiceCenters, int position) {
-            binding.setVariable(BR.modelResponse, usersListOfServiceCenters);
+            binding.setVariable(BR.usersListOfServiceCenters, usersListOfServiceCenters);
             binding.executePendingBindings();
         }
 

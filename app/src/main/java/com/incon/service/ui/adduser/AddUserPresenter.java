@@ -7,7 +7,6 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.fetchdesignations.FetchDesignationsResponse;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;

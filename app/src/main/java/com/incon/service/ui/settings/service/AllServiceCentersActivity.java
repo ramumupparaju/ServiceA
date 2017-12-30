@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.incon.service.AppConstants;
+import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.callbacks.IEditClickCallback;
@@ -70,6 +71,13 @@ public class AllServiceCentersActivity extends BaseActivity implements
         binding.allServiceCentersRecyclerview.addItemDecoration(dividerItemDecoration);
         binding.allServiceCentersRecyclerview.setAdapter(allServiceCentersAdapter);
         binding.allServiceCentersRecyclerview.setLayoutManager(linearLayoutManager);
+
+        List<ServiceCenterResponse> serviceCenterList = ConnectApplication.getAppContext().getServiceCenterList();
+        if (serviceCenterList == null) {
+            allServiceCentersPresenter.serviceCentersList(userId);
+        } else {
+            loadServiceCentersList(serviceCenterList);
+        }
 
     }
 

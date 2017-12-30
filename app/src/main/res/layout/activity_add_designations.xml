@@ -78,7 +78,7 @@
             android:layout_below="@id/input_layout_description"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:checked="true"
+            android:checked="@{addDesignation.isAdmin == 1}"
             android:text="@string/action_is_admin" />
 
         <Button
