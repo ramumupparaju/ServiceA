@@ -14,9 +14,7 @@ public interface NewRequestContract {
     interface View extends BaseView {
         void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
     }
-
     interface Presenter {
         void fetchNewServiceRequests(int userId);
     }
-
 }

@@ -153,14 +153,12 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             int[] topDrawables;
             changeSelectedViews(bottomSheetPurchasedBinding.firstRow, unparsedTag);
             if (tag == 0) { // customer
-                bottomOptions = new String[3];
+                bottomOptions = new String[2];
                 bottomOptions[0] = getString(R.string.bottom_option_call_customer_care);
                 bottomOptions[1] = getString(R.string.bottom_option_location);
-                bottomOptions[2] = getString(R.string.bottom_option_edit);
-                topDrawables = new int[3];
+                topDrawables = new int[2];
                 topDrawables[0] = R.drawable.ic_option_call;
                 topDrawables[1] = R.drawable.ic_option_location;
-                topDrawables[2] = R.drawable.ic_option_service_request;
 
             } else if (tag == 1) { // product
                 bottomOptions = new String[2];
@@ -175,14 +173,16 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
             } else { // status update
-                bottomOptions = new String[3];
+                bottomOptions = new String[4];
                 bottomOptions[0] = getString(R.string.bottom_option_accept);
                 bottomOptions[1] = getString(R.string.bottom_option_reject);
                 bottomOptions[2] = getString(R.string.bottom_option_hold);
-                topDrawables = new int[3];
+                bottomOptions[3] = getString(R.string.bottom_option_edit);
+                topDrawables = new int[4];
                 topDrawables[0] = R.drawable.ic_option_accept_request;
                 topDrawables[1] = R.drawable.ic_option_accept_request;
                 topDrawables[2] = R.drawable.ic_option_hold;
+                topDrawables[3] = R.drawable.ic_option_hold;
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
@@ -221,8 +221,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 } else if (secondRowTag == 1) { // location
                     showLocationDialog();
                     return;
-                } else if (secondRowTag == 2) { // edit time
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
 
             } else if (firstRowTag == 1) { // product
@@ -268,9 +266,13 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 } else if (secondRowTag == 1) { // reject
                     showAcceptRejectDialog(false);
 
-                } else { // hold
+                } else if (secondRowTag == 2) { // hold
                     showHoldDialog();
+                    return;
+                } else { //  edit time
+                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
+
 
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
@@ -327,7 +329,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         holdDialog.showDialog();
-
     }
 
     private void showAcceptRejectDialog(final boolean isAccept) {
@@ -459,7 +460,12 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
-
+        // TODO have to  remove below code
+        if (fetchNewRequestResponsesList.size() == 0) {
+            FetchNewRequestResponse fetchNewRequestResponse = new FetchNewRequestResponse();
+            fetchNewRequestResponse.setCustomer(fetchNewRequestResponse.getCustomer());
+            fetchNewRequestResponsesList.add(fetchNewRequestResponse);
+        }
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.requestTextview.setVisibility(View.VISIBLE);
             dismissSwipeRefresh();
