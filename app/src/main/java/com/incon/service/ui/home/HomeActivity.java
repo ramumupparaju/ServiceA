@@ -62,13 +62,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
         binding.setActivity(this);
         rootView = binding.getRoot();
-        disableAllAnimation(binding.bottomNavigationView);
-        binding.bottomNavigationView.setTextVisibility(true);
-        setBottomNavigationViewListeners();
-        handleBottomViewOnKeyBoardUp();
-
-
-        binding.bottomNavigationView.setCurrentItem(TAB_Status);
 
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE);
 
@@ -192,7 +185,14 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     }
 
     @Override
-    public void serviceCenters(List<ServiceCenterResponse> serviceCentersList) {
+    public void serviceCentersSuccessfully() {
         //TODO have to load users data
+        disableAllAnimation(binding.bottomNavigationView);
+        binding.bottomNavigationView.setTextVisibility(true);
+        setBottomNavigationViewListeners();
+        handleBottomViewOnKeyBoardUp();
+
+        binding.bottomNavigationView.setCurrentItem(TAB_Status);
+
     }
 }

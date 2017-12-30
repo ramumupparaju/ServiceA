@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Pair;
 
 import com.incon.service.ConnectApplication;
+import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
@@ -64,12 +65,14 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements
 
     @Override
     public void getServiceCenters(int userId) {
+        getView().showProgress(appContext.getString(R.string.progress_loading_service_centers));
         AllServiceCentersPresenter allServiceCentersPresenter = new AllServiceCentersPresenter();
         allServiceCentersPresenter.initialize(null);
         allServiceCentersPresenter.setView(new AllServiceCentersContract.View() {
             @Override
             public void loadServiceCentersList(List<ServiceCenterResponse> serviceCenterResponseList) {
                 ConnectApplication.getAppContext().setServiceCenterList(serviceCenterResponseList);
+                getView().serviceCentersSuccessfully();
                 getView().hideProgress();
             }
 
