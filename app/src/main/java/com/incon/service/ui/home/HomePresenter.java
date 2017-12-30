@@ -21,7 +21,6 @@ import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
-
 /**
  * Created on 31 May 2017 11:19 AM.
  */
@@ -95,58 +94,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements
             }
         });
         allServiceCentersPresenter.serviceCentersList(userId);
-
     }
-
-    public void defaultsApi() {
-        RegistrationPresenter registrationPresenter = new RegistrationPresenter();
-        registrationPresenter.initialize(null);
-        registrationPresenter.setView(new RegistrationContract.View() {
-            @Override
-            public void navigateToNext() {
-                // do nothing
-            }
-
-            @Override
-            public void navigateToBack() {
-                // do nothing
-            }
-
-            @Override
-            public void startRegistration(boolean isDataAvailable) {
-
-                if (isDataAvailable) {
-
-                }
-            }
-
-            @Override
-            public void showProgress(String message) {
-                getView().showProgress(message);
-            }
-
-            @Override
-            public void hideProgress() {
-                getView().hideProgress();
-            }
-
-            @Override
-            public void showErrorMessage(String errorMessage) {
-                getView().showErrorMessage(errorMessage);
-            }
-
-            @Override
-            public void handleException(Pair<Integer, String> error) {
-                getView().handleException(error);
-            }
-        });
-        registrationPresenter.defaultsApi();
-    }
-
-
-
-
-
-
 }
 

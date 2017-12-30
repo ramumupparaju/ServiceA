@@ -18,9 +18,8 @@ public interface HomeContract {
 
     interface Presenter {
         void getDefaultStatusData();
+
         void getServiceCenters(int userId);
-
-
     }
 
 }

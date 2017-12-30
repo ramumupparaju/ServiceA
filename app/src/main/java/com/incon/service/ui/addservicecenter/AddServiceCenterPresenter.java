@@ -102,6 +102,4 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
         AppApiService.getInstance().addServiceCenter(userId, addServiceCenter).subscribe(observer);
         addDisposable(observer);
     }
-
-
 }
