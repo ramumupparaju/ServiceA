@@ -10,6 +10,7 @@ import com.incon.service.ui.BaseView;
 public interface AddDesignationsContract {
     interface View extends BaseView {
 
+        void addDesinationSuccessfully();
     }
     interface Presenter {
         void addDesignations(int userId, DesignationData addDesignation);

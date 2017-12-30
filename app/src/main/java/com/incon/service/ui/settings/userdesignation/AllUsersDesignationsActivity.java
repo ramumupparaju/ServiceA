@@ -1,5 +1,6 @@
 package com.incon.service.ui.settings.userdesignation;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -32,10 +33,10 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
     private AllUsersDesignationsPresenter allUsersDesignationsPresenter;
 
     private UsersListAdapter usersListAdapter;
-    private List<AddUser> usersList;
+    private ArrayList<AddUser> usersList;
 
     private DesignationsListAdapter designationsListAdapter;
-    private List<DesignationData> designationsList;
+    private ArrayList<DesignationData> designationsList;
 
 
     private int serviceCenterId;
@@ -60,13 +61,25 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
         initViews();
 
         serviceCenterId = getIntent().getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
+        doUserDesignationsApi();
+    }
+
+    private void doUserDesignationsApi() {
+        allUsersDesignationsPresenter.doUsersDesignationsApi(SharedPrefsUtils.loginProvider().
+                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), serviceCenterId);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        allUsersDesignationsPresenter.doUsersDesignationsApi(SharedPrefsUtils.loginProvider().
-                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), serviceCenterId);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case RequestCodes.ADD_USER_DESIGNATION: {
+                    doUserDesignationsApi();
+                }
+                break;
+            }
+        }
     }
 
     public void onCheckedChanged(boolean checked) {
@@ -122,12 +135,15 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
                 DesignationData designationResponse = designationsList.get(position);
                 Intent intent = new Intent(AllUsersDesignationsActivity.this, AddDesignationsActivity.class);
                 intent.putExtra(IntentConstants.DESIGNATION_DATA, designationResponse);
-                startActivity(intent);
+                intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, serviceCenterId);
+                startActivityForResult(intent, RequestCodes.ADD_USER_DESIGNATION);
             } else {
                 AddUser usersListOfServiceCenters = usersList.get(position);
                 Intent intent = new Intent(AllUsersDesignationsActivity.this, AddUserActivity.class);
+                intent.putParcelableArrayListExtra(IntentConstants.DESIGNATION_DATA, designationsList);
                 intent.putExtra(IntentConstants.USER_DATA, usersListOfServiceCenters);
-                startActivity(intent);
+                intent.putParcelableArrayListExtra(IntentConstants.USER_DATA_LIST, usersList);
+                startActivityForResult(intent, RequestCodes.ADD_USER_DESIGNATION);
             }
         }
     };
@@ -144,7 +160,11 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(AllUsersDesignationsActivity.this, isDesignation ? AddDesignationsActivity.class : AddUserActivity.class);
                 intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, serviceCenterId);
-                startActivity(intent);
+                if (!isDesignation) {
+                    intent.putParcelableArrayListExtra(IntentConstants.DESIGNATION_DATA, designationsList);
+                    intent.putParcelableArrayListExtra(IntentConstants.USER_DATA_LIST, usersList);
+                }
+                startActivityForResult(intent, RequestCodes.ADD_USER_DESIGNATION);
             }
         });
     }
@@ -160,14 +180,11 @@ public class AllUsersDesignationsActivity extends BaseActivity implements
             designationsList = new ArrayList<>();
         }
 
-        this.usersList = usersList;
-        this.designationsList = designationsList;
+        this.usersList = (ArrayList<AddUser>) usersList;
+        this.designationsList = (ArrayList<DesignationData>) designationsList;
 
         usersListAdapter.setData(usersList);
-        usersListAdapter.notifyDataSetChanged();
-
         designationsListAdapter.setData(designationsList);
-        designationsListAdapter.notifyDataSetChanged();
 
         setListUi();
     }

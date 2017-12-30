@@ -1,5 +1,6 @@
 package com.incon.service.ui.adddesignations;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.PorterDuff;
@@ -17,7 +18,6 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddDesignationsBinding;
-import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -56,14 +56,16 @@ public class AddDesignationsActivity extends BaseActivity implements
         binding = DataBindingUtil.setContentView(this, getLayoutId());
 
         Intent bundle = getIntent();
-        if (bundle != null)
+        if (bundle != null) {
             addDesignation = bundle.getParcelableExtra(IntentConstants.DESIGNATION_DATA);
+            serviceCenterId = bundle.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
+        }
         if (addDesignation != null) {
-            binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_user));
+            binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_designation));
             binding.buttonSubmit.setText(getString(R.string.action_update));
             binding.toolbar.toolbarRightIv.setVisibility(View.VISIBLE);
         } else {
-            binding.toolbar.toolbarTitleTv.setText(getString(R.string.action_add_user));
+            binding.toolbar.toolbarTitleTv.setText(getString(R.string.action_add_designation));
             binding.toolbar.toolbarRightIv.setVisibility(View.GONE);
             binding.buttonSubmit.setText(getString(R.string.action_submit));
             addDesignation = new DesignationData();
@@ -73,8 +75,6 @@ public class AddDesignationsActivity extends BaseActivity implements
         binding.setAddDesignationsActivity(this);
 
         //loading data from intent
-        Intent intent = getIntent();
-        serviceCenterId = intent.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
         addDesignation.setServiceCenterId(serviceCenterId);
 
         initViews();
@@ -207,5 +207,11 @@ public class AddDesignationsActivity extends BaseActivity implements
     public void onDestroy() {
         super.onDestroy();
         addDesignationsPresenter.disposeAll();
+    }
+
+    @Override
+    public void addDesinationSuccessfully() {
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 }

@@ -1,5 +1,6 @@
 package com.incon.service.ui.settings.service;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.incon.service.AppConstants;
+import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.callbacks.IEditClickCallback;
@@ -32,6 +35,7 @@ public class AllServiceCentersActivity extends BaseActivity implements
 
     public List<ServiceCenterResponse> serviceCenterResponseList;
     private AllServiceCentersAdapter allServiceCentersAdapter;
+    private int userId;
 
     @Override
     protected int getLayoutId() {
@@ -52,8 +56,8 @@ public class AllServiceCentersActivity extends BaseActivity implements
         initViews();
 
         //fetching servicing centers list to add designations
-        allServiceCentersPresenter.serviceCentersList(SharedPrefsUtils.loginProvider().
-                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
+        userId = SharedPrefsUtils.loginProvider().
+                getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE);
     }
 
     private void initViews() {
@@ -68,6 +72,13 @@ public class AllServiceCentersActivity extends BaseActivity implements
         binding.allServiceCentersRecyclerview.setAdapter(allServiceCentersAdapter);
         binding.allServiceCentersRecyclerview.setLayoutManager(linearLayoutManager);
 
+        List<ServiceCenterResponse> serviceCenterList = ConnectApplication.getAppContext().getServiceCenterList();
+        if (serviceCenterList == null) {
+            allServiceCentersPresenter.serviceCentersList(userId);
+        } else {
+            loadServiceCentersList(serviceCenterList);
+        }
+
     }
 
     //recyclerview click event
@@ -77,7 +88,8 @@ public class AllServiceCentersActivity extends BaseActivity implements
             AddServiceCenter addServiceCenter = getServiceCenterRequestFromResponse(serviceCenterResponseList.get(position));
             Intent intent = new Intent(AllServiceCentersActivity.this, AddServiceCenterActivity.class);
             intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, addServiceCenter);
-            startActivity(intent);
+            startActivityForResult(intent, RequestCodes.ADD_SERVICE_CENTER);
+
         }
 
         @Override
@@ -87,6 +99,19 @@ public class AllServiceCentersActivity extends BaseActivity implements
             startActivity(intent);
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case RequestCodes.ADD_SERVICE_CENTER: {
+                    allServiceCentersPresenter.serviceCentersList(userId);
+                }
+                break;
+            }
+        }
+    }
 
     private AddServiceCenter getServiceCenterRequestFromResponse(ServiceCenterResponse serviceCenterResponse) {
         AddServiceCenter addServiceCenter = new AddServiceCenter();
@@ -105,8 +130,6 @@ public class AllServiceCentersActivity extends BaseActivity implements
         return addServiceCenter;
     }
 
-
-
     private void initializeToolbar() {
         binding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +141,7 @@ public class AllServiceCentersActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AllServiceCentersActivity.this, AddServiceCenterActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, RequestCodes.ADD_SERVICE_CENTER);
             }
         });
     }

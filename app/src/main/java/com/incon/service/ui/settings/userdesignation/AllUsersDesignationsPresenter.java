@@ -38,7 +38,7 @@ public class AllUsersDesignationsPresenter extends BasePresenter<AllUsersDesigna
     public void doUsersDesignationsApi(int userId, int serviceCenterId) {
         getView().showProgress(appContext.getString(R.string.progress_loading_data));
 
-        Observable<List<AddUser>> userListObservable = getUserListObservable(userId);
+        Observable<List<AddUser>> userListObservable = getUserListObservable(serviceCenterId);
         Observable<List<DesignationData>> designationsListObservable = getDesignationListObservable(userId, serviceCenterId);
 
         Observable<String> zip = Observable.zip(userListObservable, designationsListObservable, new BiFunction<List<AddUser>, List<DesignationData>, String>() {
@@ -76,8 +76,8 @@ public class AllUsersDesignationsPresenter extends BasePresenter<AllUsersDesigna
         return AppApiService.getInstance().getDesignationsListUsingServiceCenter(userId, serviceCenterId);
     }
 
-    private Observable<List<AddUser>> getUserListObservable(int userId) {
-        return AppApiService.getInstance().getUsersListOfServiceCenterApi(userId);
+    private Observable<List<AddUser>> getUserListObservable(int serviceCenterId) {
+        return AppApiService.getInstance().getUsersListOfServiceCenterApi(serviceCenterId);
     }
 }
 

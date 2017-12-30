@@ -34,6 +34,7 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
             public void onNext(Object categoriesList) {
+                getView().addDesinationSuccessfully();
                 getView().hideProgress();
             }
 
