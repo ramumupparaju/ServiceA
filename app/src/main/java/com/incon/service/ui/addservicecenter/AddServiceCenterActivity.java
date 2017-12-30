@@ -104,9 +104,11 @@ public class AddServiceCenterActivity extends BaseActivity implements
         loadValidationErrors();
         setFocusForViews();
 
-        fetchCategoryList = ConnectApplication.getAppContext().getFetchCategoriesList();
-        if (fetchCategoryList == null) {
+        List<FetchCategories> categoriesList = ConnectApplication.getAppContext().getFetchCategoriesList();
+        if (categoriesList == null) {
             addServiceCenterPresenter.defaultsApi();
+        } else {
+            loadCategoriesList(categoriesList);
         }
     }
 
@@ -440,6 +442,4 @@ public class AddServiceCenterActivity extends BaseActivity implements
         super.onDestroy();
         addServiceCenterPresenter.disposeAll();
     }
-
-
 }

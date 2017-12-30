@@ -35,7 +35,7 @@ public class AllServiceCentersActivity extends BaseActivity implements
 
     public List<ServiceCenterResponse> serviceCenterResponseList;
     private AllServiceCentersAdapter allServiceCentersAdapter;
-    private int userId;
+    private int userId = DEFAULT_VALUE;
 
     @Override
     protected int getLayoutId() {
