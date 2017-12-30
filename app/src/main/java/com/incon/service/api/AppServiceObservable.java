@@ -77,7 +77,6 @@ public interface AppServiceObservable {
     @GET("service/fetchrequests/{servicerCenterId}/NEW")
     Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(@Path("servicerCenterId") int servicerCenterId);
 
-    // fetch  new service request api
     @GET("service/fetchrequests/{servicerCenterId}/checkup")
     Observable<List<FetchNewRequestResponse>> fetchCheckupRequestApi(@Path("servicerCenterId") int servicerCenterId);
 
