@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Pair;
 
 import com.incon.service.ConnectApplication;
+import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
@@ -18,7 +19,6 @@ import com.incon.service.utils.ErrorMsgUtil;
 import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
-
 
 /**
  * Created on 31 May 2017 11:19 AM.
@@ -63,12 +63,14 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements
 
     @Override
     public void getServiceCenters(int userId) {
+        getView().showProgress(appContext.getString(R.string.progress_loading_service_centers));
         AllServiceCentersPresenter allServiceCentersPresenter = new AllServiceCentersPresenter();
         allServiceCentersPresenter.initialize(null);
         allServiceCentersPresenter.setView(new AllServiceCentersContract.View() {
             @Override
             public void loadServiceCentersList(List<ServiceCenterResponse> serviceCenterResponseList) {
                 ConnectApplication.getAppContext().setServiceCenterList(serviceCenterResponseList);
+                getView().serviceCentersSuccessfully();
                 getView().hideProgress();
             }
 
@@ -93,58 +95,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements
             }
         });
         allServiceCentersPresenter.serviceCentersList(userId);
-
     }
-
-    public void defaultsApi() {
-        RegistrationPresenter registrationPresenter = new RegistrationPresenter();
-        registrationPresenter.initialize(null);
-        registrationPresenter.setView(new RegistrationContract.View() {
-            @Override
-            public void navigateToNext() {
-                // do nothing
-            }
-
-            @Override
-            public void navigateToBack() {
-                // do nothing
-            }
-
-            @Override
-            public void startRegistration(boolean isDataAvailable) {
-
-                if (isDataAvailable) {
-
-                }
-            }
-
-            @Override
-            public void showProgress(String message) {
-                getView().showProgress(message);
-            }
-
-            @Override
-            public void hideProgress() {
-                getView().hideProgress();
-            }
-
-            @Override
-            public void showErrorMessage(String errorMessage) {
-                getView().showErrorMessage(errorMessage);
-            }
-
-            @Override
-            public void handleException(Pair<Integer, String> error) {
-                getView().handleException(error);
-            }
-        });
-        registrationPresenter.defaultsApi();
-    }
-
-
-
-
-
-
 }
 

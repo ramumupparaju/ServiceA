@@ -13,14 +13,13 @@ import java.util.List;
 public interface HomeContract {
 
     interface View extends BaseView {
-        void serviceCenters(List<ServiceCenterResponse> serviceCentersList);
+        void serviceCentersSuccessfully();
     }
 
     interface Presenter {
         void getDefaultStatusData();
+
         void getServiceCenters(int userId);
-
-
     }
 
 }

@@ -15,22 +15,31 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.incon.service.AppUtils;
+import com.incon.service.ConnectApplication;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.fetchcategorie.Brand;
+import com.incon.service.apimodel.components.fetchcategorie.Division;
+import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddserviceCenterBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
+import com.incon.service.dto.registration.ServiceCenter;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -44,6 +53,12 @@ public class AddServiceCenterActivity extends BaseActivity implements
     private AddServiceCenter addServiceCenter;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
+    private List<FetchCategories> fetchCategoryList;
+    private int categorySelectedPos = -1;
+    private int divisionSelectedPos = -1;
+    private int brandSelectedPos = -1;
+    private ServiceCenter serviceCenter;
+    private boolean categoryEditable;
 
     @Override
     protected void initializePresenter() {
@@ -68,16 +83,15 @@ public class AddServiceCenterActivity extends BaseActivity implements
             binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_service_center));
             binding.buttonSubmit.setText(getString(R.string.action_update));
             binding.toolbar.toolbarRightIv.setVisibility(View.VISIBLE);
+            categoryEditable = false;
         } else {
             binding.toolbar.toolbarTitleTv.setText(getString(R.string.action_add_service_center));
             binding.toolbar.toolbarRightIv.setVisibility(View.GONE);
             binding.buttonSubmit.setText(getString(R.string.action_submit));
             addServiceCenter = new AddServiceCenter();
-            // TODO have to check
-            addServiceCenter.setCategoryId(-1);
-            addServiceCenter.setDivisionId(-1);
-            addServiceCenter.setBrandId(-1);
+            categoryEditable = true;
         }
+        addServiceCenter.setCatagoriesEditable(categoryEditable);
         binding.setAddServiceCenter(addServiceCenter);
         binding.setAddServiceCenterActivity(this);
         initViews();
@@ -90,7 +104,111 @@ public class AddServiceCenterActivity extends BaseActivity implements
         loadValidationErrors();
         setFocusForViews();
 
-        addServiceCenterPresenter.defaultsApi();
+        fetchCategoryList = ConnectApplication.getAppContext().getFetchCategoriesList();
+        if (fetchCategoryList == null) {
+            addServiceCenterPresenter.defaultsApi();
+        }
+    }
+
+    public void loadCategoriesList(List<FetchCategories> categoriesList) {
+        fetchCategoryList = categoriesList;
+        loadCategorySpinnerData();
+    }
+
+    private void loadCategorySpinnerData() {
+
+        String[] stringCategoryList = new String[fetchCategoryList.size()];
+        for (int i = 0; i < fetchCategoryList.size(); i++) {
+            stringCategoryList[i] = fetchCategoryList.get(i).getName();
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                R.layout.view_spinner, stringCategoryList);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        binding.spinnerCategory.setAdapter(arrayAdapter);
+        binding.spinnerCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (categorySelectedPos != position) {
+                    FetchCategories fetchCategories = fetchCategoryList.get(position);
+                    serviceCenter.setCategoryId(fetchCategories.getId());
+                    serviceCenter.setCategoryName(fetchCategories.getName());
+                    loadDivisionSpinnerData(fetchCategories.getDivisions());
+                    binding.spinnerDivision.setText("");
+                    categorySelectedPos = position;
+                    binding.spinnerBrand.setVisibility(View.GONE);
+                }
+
+                //For avoiding double tapping issue
+                if (binding.spinnerCategory.getOnItemClickListener() != null) {
+                    binding.spinnerCategory.onItemClick(parent, view, position, id);
+                }
+            }
+        });
+
+    }
+
+    private void loadDivisionSpinnerData(List<Division> divisions) {
+        if (divisions.size() == 0) {
+            binding.spinnerDivision.setVisibility(View.GONE);
+            return;
+        }
+        binding.spinnerDivision.setVisibility(View.VISIBLE);
+        String[] stringDivisionList = new String[divisions.size()];
+        for (int i = 0; i < divisions.size(); i++) {
+            stringDivisionList[i] = divisions.get(i).getName();
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                R.layout.view_spinner, stringDivisionList);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        binding.spinnerDivision.setAdapter(arrayAdapter);
+        binding.spinnerDivision.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (divisionSelectedPos != position) {
+                    divisionSelectedPos = position;
+                    FetchCategories fetchCategories = fetchCategoryList.get(categorySelectedPos);
+                    Division divisions1 = fetchCategories.getDivisions().get(divisionSelectedPos);
+                    serviceCenter.setDivisionId(divisions1.getId());
+                    serviceCenter.setDivisionName(divisions1.getName());
+                    loadBrandSpinnerData(divisions1.getBrands());
+                    binding.spinnerBrand.setText("");
+                }
+
+                //For avoiding double tapping issue
+                if (binding.spinnerDivision.getOnItemClickListener() != null) {
+                    binding.spinnerDivision.onItemClick(parent, view, position, id);
+                }
+            }
+        });
+    }
+
+    private void loadBrandSpinnerData(final List<Brand> brandList) {
+        if (brandList.size() == 0) {
+            binding.spinnerBrand.setVisibility(View.GONE);
+            return;
+        }
+        binding.spinnerBrand.setVisibility(View.VISIBLE);
+        String[] stringDivisionList = new String[brandList.size()];
+        for (int i = 0; i < brandList.size(); i++) {
+            stringDivisionList[i] = brandList.get(i).getName();
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
+                R.layout.view_spinner, stringDivisionList);
+        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
+        binding.spinnerBrand.setAdapter(arrayAdapter);
+        binding.spinnerBrand.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (brandSelectedPos != position) {
+                    serviceCenter.setBrandId(brandList.get(position).getId());
+                    serviceCenter.setBrandName(brandList.get(position).getName());
+                }
+                //For avoiding double tapping issue
+                if (binding.spinnerBrand.getOnItemClickListener() != null) {
+                    binding.spinnerBrand.onItemClick(parent, view, position, id);
+                }
+            }
+        });
     }
 
     private void initializeToolbar() {
@@ -298,25 +416,22 @@ public class AddServiceCenterActivity extends BaseActivity implements
         errorMap.put(AddServiceCenterValidation.CATEGORY_REQ, getString(R.string.error_category_req));
 
         errorMap.put(AddServiceCenterValidation.GSTN_REQ, getString(R.string.error_gstn_req));
-
     }
 
     public void onSubmitClick() {
         if (validateFields()) {
             addServiceCenterPresenter.addingServiceCenter(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addServiceCenter);
-
         }
     }
 
     @Override
     public void loadedDefaultsData(boolean isDataAvailable) {
-
         if (isDataAvailable) {
-
-            //TODO have to initialize spinner data from application class list
+            loadCategoriesList(ConnectApplication.getAppContext().getFetchCategoriesList());
         } else {
             AppUtils.shortToast(this, getString(R.string.error_loading_categories));
+            finish();
         }
     }
 

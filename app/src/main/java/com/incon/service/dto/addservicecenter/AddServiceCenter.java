@@ -54,6 +54,7 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
     private transient String categoryName;
     private transient String divisionName;
     private transient String brandName;
+    private transient boolean categoryEditable;
 
     public AddServiceCenter() {
     }
@@ -188,6 +189,9 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
         notifyChange();
     }
 
+    public void setCatagoriesEditable(boolean categoryEditable) {
+        this.categoryEditable = categoryEditable;
+    }
 
     public Pair<String, Integer> validateAddServiceCenter(String tag) {
 
@@ -257,6 +261,9 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
                     return AppConstants.AddServiceCenterValidation.GSTN_REQ;
                 }
                 break;
+
+//todo have to skip categories, divisions, brands validation
+
 
             default:
                 return AppConstants.VALIDATION_SUCCESS;
@@ -337,4 +344,6 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
             return new AddServiceCenter[size];
         }
     };
+
+
 }
