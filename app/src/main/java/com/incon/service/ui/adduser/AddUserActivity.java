@@ -53,7 +53,7 @@ public class AddUserActivity extends BaseActivity implements
     private Animation shakeAnim;
     private MaterialBetterSpinner genderSpinner;
     private ActivityAdduserBinding binding;
-    public List<DesignationData> fetchDesignationsResponseList;
+    public List<DesignationData> designationDataList;
     public List<AddUser> usersList;
     private int designationSelectedPos = -1;
     private int reportingSelectedPos = -1;
@@ -80,7 +80,7 @@ public class AddUserActivity extends BaseActivity implements
         if (bundle != null) {
             addUser = bundle.getParcelableExtra(IntentConstants.USER_DATA);
             serviceCenterId = bundle.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
-            fetchDesignationsResponseList = bundle.getParcelableArrayListExtra(IntentConstants.DESIGNATION_DATA);
+            designationDataList = bundle.getParcelableArrayListExtra(IntentConstants.DESIGNATION_DATA);
             usersList = bundle.getParcelableArrayListExtra(IntentConstants.USER_DATA_LIST);
         }
         if (addUser != null) {
@@ -141,6 +141,12 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     private void loadReportingSpinnerData() {
+
+        if (usersList.size() == 0) {
+            binding.spinnerReportingUser.setVisibility(View.GONE);
+            return;
+        }
+
         List<String> userStringArray = new ArrayList<>();
         for (AddUser fetchDesignationsResponse : usersList) {
             userStringArray.add(fetchDesignationsResponse.getName());
@@ -162,7 +168,7 @@ public class AddUserActivity extends BaseActivity implements
 
     private void loadDesignationsSpinnerData() {
         List<String> fetchDesignationList = new ArrayList<>();
-        for (DesignationData fetchDesignationsResponse : fetchDesignationsResponseList) {
+        for (DesignationData fetchDesignationsResponse : designationDataList) {
             fetchDesignationList.add(fetchDesignationsResponse.getName());
         }
 
@@ -390,6 +396,16 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     public void onSubmitClick() {
+        if (usersList.size() == 0) {
+            DesignationData designationData = designationDataList.get(designationSelectedPos);
+            if (designationData.getIsAdmin() == BooleanConstants.IS_TRUE) {
+                addUser.setReportingId(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
+            } else {
+                showErrorMessage(getString(R.string.error_invalid_designation));
+                return;
+
+            }
+        }
         if (validateFields()) {
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
