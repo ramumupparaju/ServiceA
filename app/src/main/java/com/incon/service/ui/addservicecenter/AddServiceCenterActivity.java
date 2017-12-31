@@ -128,6 +128,8 @@ public class AddServiceCenterActivity extends BaseActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (categorySelectedPos != position) {
+                    divisionSelectedPos = -1;
+                    brandSelectedPos = -1;
                     FetchCategories fetchCategories = fetchCategoryList.get(position);
                     addServiceCenter.setCategoryId(fetchCategories.getId());
                     addServiceCenter.setCategoryName(fetchCategories.getName());
@@ -432,6 +434,12 @@ public class AddServiceCenterActivity extends BaseActivity implements
             AppUtils.shortToast(this, getString(R.string.error_loading_categories));
             finish();
         }
+    }
+
+    @Override
+    public void serviceCenterAddedSuccessfully() {
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 
     @Override
