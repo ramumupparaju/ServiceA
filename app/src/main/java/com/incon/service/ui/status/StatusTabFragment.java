@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.incon.service.AppConstants;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.custom.view.CustomViewPager;
@@ -19,6 +20,7 @@ import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.StatusTabPagerAdapter;
+import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +63,21 @@ public class StatusTabFragment extends BaseFragment {
     }
 
     private void initViews() {
-
+        int userType = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
+        userType = 8; //todo have to change
         initViewPager();
-        loadServiceCentersSpinner();
-        loadUsersSpinner();
-
-
+        if (userType == UserConstants.SUPER_ADMIN_TYPE) {
+            loadServiceCentersSpinner();
+        } else {
+            binding.spinnerServiceCenters.setVisibility(View.GONE);
+            int isAdmin = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_IS_ADMIN, BooleanConstants.IS_FALSE);
+            if (isAdmin == BooleanConstants.IS_TRUE) {
+                //TODO have to make api call after that have to load data
+                loadUsersSpinner();
+            } else {
+                binding.spinnerUsers.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void loadUsersSpinner() {

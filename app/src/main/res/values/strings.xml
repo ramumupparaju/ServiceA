@@ -9,6 +9,7 @@
         the below Button
     </string>
 
+    <string name="error_empty_designations">Before adding user, please add designations first</string>
     <string name="error_loading_categories">Unable to fetch categories</string>
     <string name="error_no_products_for_favorites">No products found to add favorites</string>
     <string name="info_purchased_status">Status: %1$s</string>
