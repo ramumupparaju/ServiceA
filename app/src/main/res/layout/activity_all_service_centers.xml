@@ -3,11 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="activity"
             type="com.incon.service.ui.settings.service.AllServiceCentersActivity" />
-
     </data>
 
     <RelativeLayout

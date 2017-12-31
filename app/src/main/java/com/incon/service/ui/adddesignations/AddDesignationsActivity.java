@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.incon.service.R;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
+import com.incon.service.callbacks.AlertDialogCallback;
+import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddDesignationsBinding;
 import com.incon.service.ui.BaseActivity;
@@ -38,6 +40,7 @@ public class AddDesignationsActivity extends BaseActivity implements
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
     private int serviceCenterId;
+    private AppAlertVerticalTwoButtonsDialog designationDialog;
 
     @Override
     protected int getLayoutId() {
@@ -98,8 +101,30 @@ public class AddDesignationsActivity extends BaseActivity implements
         });
     }
 
+    // designation delete api
     private void showDeleteDesignationDialog() {
         //TODO have to implemente delete designation
+        designationDialog = new AppAlertVerticalTwoButtonsDialog.AlertDialogBuilder(this, new
+                AlertDialogCallback() {
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                designationDialog.dismiss();
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                addDesignationsPresenter.deleteDesignation(addDesignation.getId());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.dialog_delete))
+                .button1Text(getString(R.string.action_cancel))
+                .button2Text(getString(R.string.action_ok))
+                .build();
+        designationDialog.showDialog();
+        designationDialog.setButtonBlueUnselectBackground();
     }
 
     private void initViews() {
@@ -213,5 +238,14 @@ public class AddDesignationsActivity extends BaseActivity implements
     public void addDesinationSuccessfully() {
         setResult(Activity.RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void desinationDeleteSuccessfully() {
+        if (designationDialog != null && designationDialog.isShowing())
+            designationDialog.dismiss();
+        setResult(Activity.RESULT_OK);
+        finish();
+
     }
 }

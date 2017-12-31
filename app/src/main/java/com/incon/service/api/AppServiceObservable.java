@@ -59,6 +59,9 @@ public interface AppServiceObservable {
     @POST("service/adddesignation/{userId}")
     Observable<DesignationData> addDesignation(@Path("userId") int userId,
                                                @Body DesignationData addDesignation);
+    // delete designation api
+    @GET("service/deletedesignation/{designationId}")
+    Observable<Object> deletedesignationApi(@Path("designationId") int designationId);
 
     // get designations list using service center and user id
     @GET("service/getdesignations/{serviceCenterId}/{userId}")
