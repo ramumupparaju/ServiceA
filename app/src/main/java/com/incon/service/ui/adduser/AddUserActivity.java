@@ -397,7 +397,6 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     public void onSubmitClick() {
-        //TODO have to test
         if (reportingUsersList.size() == 0) {
             DesignationData designationData = designationDataList.get(designationSelectedPos);
             if (designationData.getIsAdmin() == BooleanConstants.IS_TRUE) {
@@ -409,6 +408,7 @@ public class AddUserActivity extends BaseActivity implements
             }
         }
         if (validateFields()) {
+            addUser.setServiceCenterRoleId(designationDataList.get(designationSelectedPos).getId());
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
