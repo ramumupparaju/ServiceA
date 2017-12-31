@@ -72,6 +72,7 @@ public class StatusTabFragment extends BaseFragment {
             binding.spinnerServiceCenters.setVisibility(View.GONE);
             int isAdmin = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_IS_ADMIN, BooleanConstants.IS_FALSE);
             if (isAdmin == BooleanConstants.IS_TRUE) {
+
                 //TODO have to make api call after that have to load data
                 loadUsersSpinner();
             } else {

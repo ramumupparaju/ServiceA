@@ -43,6 +43,7 @@ public class AddUserPresenter extends BasePresenter<AddUserContract.View>
             public void onError(Throwable e) {
                 getView().hideProgress();
                 Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().userAddedSuccessfully();
                 getView().handleException(errorDetails);
             }
 

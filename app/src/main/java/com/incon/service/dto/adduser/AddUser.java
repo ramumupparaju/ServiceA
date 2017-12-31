@@ -52,7 +52,7 @@ public class AddUser extends BaseObservable implements Parcelable {
     @SerializedName("password")
     @Expose
     private String password;
-    @SerializedName("serviceCenterResponse")
+    @SerializedName("serviceCenter")
     @Expose
     private AddServiceCenter serviceCenterResponse;
     @SerializedName("serviceCenterRoleId")
@@ -64,6 +64,8 @@ public class AddUser extends BaseObservable implements Parcelable {
 
     private transient String  serviceCenterName;
     private transient String serviceCenterDesignation;
+    private transient String reportingName;
+
 
     private transient String genderType;
 
@@ -71,6 +73,15 @@ public class AddUser extends BaseObservable implements Parcelable {
     private transient String dateOfBirthToShow;
 
     public AddUser() {
+    }
+    @Bindable
+    public String getReportingName() {
+        return reportingName;
+    }
+
+    public void setReportingName(String reportingName) {
+        this.reportingName = reportingName;
+        notifyChange();
     }
 
     @Bindable
@@ -343,17 +354,17 @@ public class AddUser extends BaseObservable implements Parcelable {
                 break;
 
             case 8:
-               /* boolean serviceCenterNameEmpty = TextUtils.isEmpty(getServiceCenterName());
-                if (emptyValidation && serviceCenterNameEmpty) {
-                    return AppConstants.AddUserValidations.SERVICE_CENTER_NAME;
-                }*/
+                boolean serviceCenterDesignationEmpty = TextUtils.isEmpty(getServiceCenterDesignation());
+                if (emptyValidation && serviceCenterDesignationEmpty) {
+                    return AppConstants.AddUserValidations.SERVICE_CENTER_DESIGNATION;
+                }
                 break;
 
             case 9:
-               /* boolean serviceCenterDesignationEmpty = TextUtils.isEmpty(getServiceCenterDesignation());
-                if (emptyValidation && serviceCenterDesignationEmpty) {
-                    return AppConstants.AddUserValidations.SERVICE_DISIGNATION;
-                }*/
+               boolean repotingPersonEmpty = TextUtils.isEmpty(getReportingName());
+                if (emptyValidation && repotingPersonEmpty) {
+                    return AppConstants.AddUserValidations.REPORTING_PERSON;
+                }
                 break;
 
 

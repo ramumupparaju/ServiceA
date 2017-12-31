@@ -43,7 +43,7 @@
                 android:inputType="textCapWords"
                 android:maxLength="@integer/character_limit_200"
                 android:maxLines="1"
-                android:tag="1"
+                android:tag="0"
                 android:text="@={addDesignation.name}" />
 
         </com.incon.service.custom.view.CustomTextInputLayout>
@@ -66,7 +66,7 @@
                 android:inputType="textCapWords"
                 android:maxLength="@integer/character_limit_200"
                 android:maxLines="1"
-                android:tag="0"
+                android:tag="1"
                 android:text="@={addDesignation.description}" />
 
         </com.incon.service.custom.view.CustomTextInputLayout>

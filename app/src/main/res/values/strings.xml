@@ -300,6 +300,7 @@
     <string name="error_Service_Center_id">Service Center Id is required</string>
     <string name="error_Service_Center_name">Service Center Name is required</string>
     <string name="error_service_center_role_id">Service Center Role Id is required</string>
+    <string name="error_service_center_reporting_person">Service Center Reporting Persong is required</string>
     <string name="error_service_center_desiganation">Service Center Desiganation is
         required
     </string>

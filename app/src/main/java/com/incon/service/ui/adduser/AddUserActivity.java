@@ -54,7 +54,7 @@ public class AddUserActivity extends BaseActivity implements
     private MaterialBetterSpinner genderSpinner;
     private ActivityAdduserBinding binding;
     public List<DesignationData> designationDataList;
-    public List<AddUser> usersList;
+    public List<AddUser> reportingUsersList;
     private int designationSelectedPos = -1;
     private int reportingSelectedPos = -1;
     private int serviceCenterId;
@@ -81,7 +81,7 @@ public class AddUserActivity extends BaseActivity implements
             addUser = bundle.getParcelableExtra(IntentConstants.USER_DATA);
             serviceCenterId = bundle.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
             designationDataList = bundle.getParcelableArrayListExtra(IntentConstants.DESIGNATION_DATA);
-            usersList = bundle.getParcelableArrayListExtra(IntentConstants.USER_DATA_LIST);
+            reportingUsersList = bundle.getParcelableArrayListExtra(IntentConstants.USER_DATA_LIST);
         }
         if (addUser != null) {
             binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_user));
@@ -142,13 +142,13 @@ public class AddUserActivity extends BaseActivity implements
 
     private void loadReportingSpinnerData() {
 
-        if (usersList.size() == 0) {
+        if (reportingUsersList.size() == 0) {
             binding.spinnerReportingUser.setVisibility(View.GONE);
             return;
         }
 
         List<String> userStringArray = new ArrayList<>();
-        for (AddUser fetchDesignationsResponse : usersList) {
+        for (AddUser fetchDesignationsResponse : reportingUsersList) {
             userStringArray.add(fetchDesignationsResponse.getName());
         }
 
@@ -375,8 +375,8 @@ public class AddUserActivity extends BaseActivity implements
                 getString(R.string.error_re_enter_password_does_not_match));
 
         errorMap.put(AddUserValidations.ADDRESS_REQ, getString(R.string.error_address_req));
-        errorMap.put(AddUserValidations.SERVICE_CENTER_NAME, getString(R.string.error_Service_Center_name));
-        errorMap.put(AddUserValidations.SERVICE_DISIGNATION, getString(R.string.error_service_center_desiganation));
+        errorMap.put(AddUserValidations.SERVICE_CENTER_DESIGNATION, getString(R.string.error_service_center_desiganation));
+        errorMap.put(AddUserValidations.REPORTING_PERSON, getString(R.string.error_service_center_reporting_person));
     }
 
     private boolean validateFields() {
@@ -389,6 +389,7 @@ public class AddUserActivity extends BaseActivity implements
         binding.inputLayoutRegisterConfirmPassword.setError(null);
         binding.inputLayoutRegisterAddress.setError(null);
         binding.spinnerServiceCenterDesignation.setError(null);
+        binding.spinnerReportingUser.setError(null);
 
         Pair<String, Integer> validation = binding.getAddUser().validateAddUser(null);
         updateUiAfterValidation(validation.first, validation.second);
@@ -397,7 +398,7 @@ public class AddUserActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         //TODO have to test
-        if (usersList.size() == 0) {
+        if (reportingUsersList.size() == 0) {
             DesignationData designationData = designationDataList.get(designationSelectedPos);
             if (designationData.getIsAdmin() == BooleanConstants.IS_TRUE) {
                 addUser.setReportingId(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
@@ -414,4 +415,9 @@ public class AddUserActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    public void userAddedSuccessfully() {
+        setResult(Activity.RESULT_OK);
+        finish();
+    }
 }

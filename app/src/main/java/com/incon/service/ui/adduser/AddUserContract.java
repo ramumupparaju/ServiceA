@@ -9,6 +9,7 @@ import com.incon.service.ui.BaseView;
 
 public interface AddUserContract {
     interface View extends BaseView {
+        void userAddedSuccessfully();
     }
 
     interface Presenter {

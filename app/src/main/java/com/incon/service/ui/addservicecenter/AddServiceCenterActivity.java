@@ -390,9 +390,6 @@ public class AddServiceCenterActivity extends BaseActivity implements
         errorMap.put(AddServiceCenterValidation.PHONE_MIN_DIGITS,
                 getString(R.string.error_phone_min_digits));
 
-        errorMap.put(AddServiceCenterValidation.GENDER_REQ,
-                getString(R.string.error_gender_req));
-
         errorMap.put(AddServiceCenterValidation.CREATED_DATE_REQ,
                 getString(R.string.error_created_date_req));
 
