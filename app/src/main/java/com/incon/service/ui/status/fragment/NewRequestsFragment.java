@@ -270,7 +270,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     topDrawables[0] = R.drawable.ic_options_feedback;
                     topDrawables[1] = R.drawable.ic_option_pasthistory;
 
-                   // showAcceptRejectDialog(true);
+                    // showAcceptRejectDialog(true);
 
                 } else if (secondRowTag == 1) { // reject
                     showAcceptRejectDialog(false);
@@ -414,8 +414,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
 
-
-
     private void showAttendingDialog() {
         attendingDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
                 TextAlertDialogCallback() {
@@ -437,7 +435,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                                 break;
                         }
                     }
-                }).title(getString(R.string.bottom_option_attending) )
+                }).title(getString(R.string.bottom_option_attending))
                 .leftButtonText(getString(R.string.action_cancel))
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
@@ -466,7 +464,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                                 break;
                         }
                     }
-                }).title(getString(R.string.bottom_option_assign) )
+                }).title(getString(R.string.bottom_option_assign))
                 .leftButtonText(getString(R.string.action_cancel))
                 .rightButtonText(getString(R.string.action_submit))
                 .build();

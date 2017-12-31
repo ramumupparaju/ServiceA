@@ -12,10 +12,10 @@ import android.widget.ArrayAdapter;
 
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.custom.view.CustomViewPager;
 import com.incon.service.databinding.CustomTabBinding;
 import com.incon.service.databinding.FragmentStatusTabBinding;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.StatusTabPagerAdapter;
@@ -75,9 +75,9 @@ public class StatusTabFragment extends BaseFragment {
 
     private void loadServiceCentersSpinner() {
         // getting service centers list
-        List<ServiceCenterResponse> serviceCenterList = ConnectApplication.getAppContext().getServiceCenterList();
+        List<AddServiceCenter> serviceCenterList = ConnectApplication.getAppContext().getServiceCenterList();
         List<String> serviceArray = new ArrayList<>(serviceCenterList.size());
-        for (ServiceCenterResponse serviceCenterResponse : serviceCenterList) {
+        for (AddServiceCenter serviceCenterResponse : serviceCenterList) {
             serviceArray.add(serviceCenterResponse.getName());
         }
 
