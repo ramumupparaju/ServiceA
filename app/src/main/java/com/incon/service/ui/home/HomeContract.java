@@ -1,8 +1,6 @@
 package com.incon.service.ui.home;
 
 
-import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.ui.BaseView;
 
 import java.util.List;

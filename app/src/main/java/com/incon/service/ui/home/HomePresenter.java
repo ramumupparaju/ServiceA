@@ -8,10 +8,8 @@ import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BasePresenter;
-import com.incon.service.ui.register.RegistrationContract;
-import com.incon.service.ui.register.RegistrationPresenter;
 import com.incon.service.ui.settings.service.AllServiceCentersContract;
 import com.incon.service.ui.settings.service.AllServiceCentersPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
@@ -68,7 +66,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements
         allServiceCentersPresenter.initialize(null);
         allServiceCentersPresenter.setView(new AllServiceCentersContract.View() {
             @Override
-            public void loadServiceCentersList(List<ServiceCenterResponse> serviceCenterResponseList) {
+            public void loadServiceCentersList(List<AddServiceCenter> serviceCenterResponseList) {
                 ConnectApplication.getAppContext().setServiceCenterList(serviceCenterResponseList);
                 getView().serviceCentersSuccessfully();
                 getView().hideProgress();

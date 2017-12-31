@@ -6,7 +6,7 @@
 
         <variable
             name="modelResponse"
-            type="com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse" />
+            type="com.incon.service.dto.addservicecenter.AddServiceCenter" />
     </data>
 
     <RelativeLayout

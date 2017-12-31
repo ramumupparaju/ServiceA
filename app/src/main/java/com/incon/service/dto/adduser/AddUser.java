@@ -10,7 +10,7 @@ import android.util.Pair;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.incon.service.AppConstants;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.ValidationUtils;
 
@@ -54,7 +54,7 @@ public class AddUser extends BaseObservable implements Parcelable {
     private String password;
     @SerializedName("serviceCenterResponse")
     @Expose
-    private ServiceCenterResponse serviceCenterResponse;
+    private AddServiceCenter serviceCenterResponse;
     @SerializedName("serviceCenterRoleId")
     @Expose
     private Integer serviceCenterRoleId;
@@ -206,11 +206,11 @@ public class AddUser extends BaseObservable implements Parcelable {
         notifyChange();
     }
 
-    public ServiceCenterResponse getServiceCenterResponse() {
+    public AddServiceCenter getServiceCenterResponse() {
         return serviceCenterResponse;
     }
 
-    public void setServiceCenterResponse(ServiceCenterResponse serviceCenterResponse) {
+    public void setServiceCenterResponse(AddServiceCenter serviceCenterResponse) {
         this.serviceCenterResponse = serviceCenterResponse;
     }
 
@@ -374,7 +374,7 @@ public class AddUser extends BaseObservable implements Parcelable {
         mobileNumber = in.readString();
         name = in.readString();
         password = in.readString();
-        serviceCenterResponse = (ServiceCenterResponse) in.readValue(ServiceCenterResponse.class.getClassLoader());
+        serviceCenterResponse = (AddServiceCenter) in.readValue(AddServiceCenter.class.getClassLoader());
         serviceCenterRoleId = in.readByte() == 0x00 ? null : in.readInt();
         reportingId = in.readByte() == 0x00 ? null : in.readInt();
         serviceCenterName = in.readString();
