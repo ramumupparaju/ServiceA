@@ -74,8 +74,16 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
         // loading  default status data
         homePresenter.getDefaultStatusData();
-        // loading service centers
-        homePresenter.getServiceCenters(userId);
+
+        int userType = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
+        userType = 8; //todo have to change
+        if (userType == UserConstants.SUPER_ADMIN_TYPE) {
+            // loading service centers only if user type is super admin
+            homePresenter.getServiceCenters(userId);
+        }  else {
+            //directly load status screen
+            serviceCentersSuccessfully();
+        }
 
     }
 
