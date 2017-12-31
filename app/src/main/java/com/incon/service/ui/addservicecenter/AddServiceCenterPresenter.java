@@ -75,6 +75,7 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
                 getView().handleException(error);
             }
         });
+        registrationPresenter.defaultsApi();
     }
 
     @Override

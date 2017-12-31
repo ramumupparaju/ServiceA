@@ -17,7 +17,9 @@ import static com.incon.service.AppConstants.VALIDATION_SUCCESS;
  */
 
 public class ServiceCenter extends BaseObservable {
-
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("address")
     @Expose
     private String address;

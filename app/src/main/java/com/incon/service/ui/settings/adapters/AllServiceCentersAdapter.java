@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 
 import com.incon.service.BR;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.servicecenter.ServiceCenterResponse;
 import com.incon.service.callbacks.IEditClickCallback;
 import com.incon.service.databinding.ItemAllServiceCentersBinding;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class AllServiceCentersAdapter extends RecyclerView.Adapter<AllServiceCentersAdapter.ViewHolder> {
 
-    private List<ServiceCenterResponse> serviceCenterResponses = new ArrayList<>();
+    private List<AddServiceCenter> serviceCenterResponses = new ArrayList<>();
     private IEditClickCallback clickCallback;
 
     @Override
@@ -31,7 +31,7 @@ public class AllServiceCentersAdapter extends RecyclerView.Adapter<AllServiceCen
         return new ViewHolder(binding);
     }
 
-    public void setServiceCenterResponses(List<ServiceCenterResponse> serviceCenterResponses) {
+    public void setServiceCenterResponses(List<AddServiceCenter> serviceCenterResponses) {
         this.serviceCenterResponses = serviceCenterResponses;
         notifyDataSetChanged();
     }
@@ -42,7 +42,7 @@ public class AllServiceCentersAdapter extends RecyclerView.Adapter<AllServiceCen
 
     @Override
     public void onBindViewHolder(AllServiceCentersAdapter.ViewHolder holder, int position) {
-        ServiceCenterResponse serviceCenterResponse = serviceCenterResponses.get(position);
+        AddServiceCenter serviceCenterResponse = serviceCenterResponses.get(position);
         holder.bind(serviceCenterResponse, position);
 
     }
@@ -63,7 +63,7 @@ public class AllServiceCentersAdapter extends RecyclerView.Adapter<AllServiceCen
             root.setOnClickListener(this);
         }
 
-        public void bind(ServiceCenterResponse serviceCenterResponse, int position) {
+        public void bind(AddServiceCenter serviceCenterResponse, int position) {
             binding.setVariable(BR.modelResponse, serviceCenterResponse);
             binding.executePendingBindings();
         }
