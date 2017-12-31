@@ -396,6 +396,7 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     public void onSubmitClick() {
+        //TODO have to test
         if (usersList.size() == 0) {
             DesignationData designationData = designationDataList.get(designationSelectedPos);
             if (designationData.getIsAdmin() == BooleanConstants.IS_TRUE) {
