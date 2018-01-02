@@ -9,9 +9,9 @@ import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.dto.adduser.AddUser;
-import com.incon.service.ui.BaseOptionsContract;
-import com.incon.service.ui.BaseOptionsPresenter;
 import com.incon.service.ui.BasePresenter;
+import com.incon.service.ui.status.base.base.BaseOptionsContract;
+import com.incon.service.ui.status.base.base.BaseOptionsPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.List;
@@ -67,7 +67,7 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
         baseOptionsPresenter.initialize(null);
         baseOptionsPresenter.setView(new BaseOptionsContract.View() {
             @Override
-            public void loadUsersListOfServiceCenters(List<AddUser> usersListOfServiceCenters) {
+            public void loadUsersListOfServiceCenters(List<AddUser> userList) {
 
             }
 

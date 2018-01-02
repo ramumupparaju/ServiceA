@@ -1,6 +1,7 @@
 package com.incon.service.ui.status.fragment;
 
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseView;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public interface NewRequestContract {
 
     interface View extends BaseView {
         void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
+        void loadUsersListOfServiceCenters(List<AddUser> usersListOfServiceCenters);
     }
     interface Presenter {
         void fetchNewServiceRequests(int userId);

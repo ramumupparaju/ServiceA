@@ -1,4 +1,4 @@
-package com.incon.service.ui;
+package com.incon.service.ui.status.base.base;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import io.reactivex.observers.DisposableObserver;
  * Created by PC on 1/2/2018.
  */
 
-public class BaseOptionsPresenter  extends BasePresenter<BaseOptionsContract.View> implements
+public class BaseOptionsPresenter extends BasePresenter<BaseOptionsContract.View> implements
         BaseOptionsContract.Presenter {
 
     private static final String TAG = BaseOptionsPresenter.class.getName();
@@ -29,7 +30,6 @@ public class BaseOptionsPresenter  extends BasePresenter<BaseOptionsContract.Vie
         super.initialize(extras);
         appContext = ConnectApplication.getAppContext();
     }
-
 
     @Override
     public void getUsersListOfServiceCenters(int serviceCenterId) {
@@ -58,4 +58,5 @@ public class BaseOptionsPresenter  extends BasePresenter<BaseOptionsContract.Vie
         addDisposable(observer);
 
     }
+
 }

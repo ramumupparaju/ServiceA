@@ -57,6 +57,7 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
     private transient boolean categoryEditable;
 
     public AddServiceCenter() {
+
     }
 
     public Integer getId() {

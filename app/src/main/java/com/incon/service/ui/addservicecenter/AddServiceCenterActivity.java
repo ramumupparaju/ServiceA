@@ -291,6 +291,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
                 case RequestCodes.ADDRESS_LOCATION:
                     addServiceCenter.setAddress(data.getStringExtra(IntentConstants.ADDRESS_COMMA));
                     addServiceCenter.setLocation(data.getStringExtra(IntentConstants.LOCATION_COMMA));
+                    binding.setAddServiceCenter(addServiceCenter);
                     break;
                 default:
                     break;

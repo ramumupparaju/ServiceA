@@ -259,7 +259,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 } else if (secondRowTag == 2) { // close
                     showCloseDialog();
                 } else { // assign
-                    showAssignDialog();
+                showAssignDialog();
                 }
 
             }
@@ -351,6 +351,11 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private void showAssignDialog() {
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
             @Override
+            public void getUsersListFromServiceCenterId(int serviceCenterId) {
+
+            }
+
+            @Override
             public void alertDialogCallback(byte dialogStatus) {
 
                 switch (dialogStatus) {
@@ -366,7 +371,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
 
             }
         }).title(getString(R.string.option_assign))
-                .submitButtonText(getString(R.string.action_submit))
                 .build();
         assignOptionDialog.showDialog();
         assignOptionDialog.setCancelable(true);

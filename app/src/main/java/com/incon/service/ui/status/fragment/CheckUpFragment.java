@@ -48,7 +48,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
-   // private AssignOptionDialog assignOptionDialog;
+  private AssignOptionDialog assignOptionDialog;
     private PastHistoryDialog pastHistoryDialog;
 
     @Override
@@ -313,8 +313,13 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     }
 
 
-/*    private void showAssignDialog() {
+   private void showAssignDialog() {
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+            @Override
+            public void getUsersListFromServiceCenterId(int serviceCenterId) {
+
+            }
+
             @Override
             public void alertDialogCallback(byte dialogStatus) {
 
@@ -331,12 +336,11 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
             }
         }).title(getString(R.string.option_assign))
-                .submitButtonText(getString(R.string.action_submit))
                 .build();
         assignOptionDialog.showDialog();
         assignOptionDialog.setCancelable(true);
 
-    }*/
+    }
 
     private void showCloseDialog() {
         closeDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new

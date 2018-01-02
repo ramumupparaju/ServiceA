@@ -5,4 +5,6 @@ package com.incon.service.callbacks;
  */
 
 public interface AssignOptionCallback extends AlertDialogCallback  {
+    void getUsersListFromServiceCenterId(int serviceCenterId);
+
 }

@@ -33,7 +33,6 @@ import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
-import com.incon.service.ui.BaseOptionsContract;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
@@ -51,7 +50,7 @@ import static com.incon.service.AppUtils.callPhoneNumber;
  * Created by PC on 12/5/2017.
  */
 
-public class NewRequestsFragment extends BaseTabFragment implements NewRequestContract.View{
+public class NewRequestsFragment extends BaseTabFragment implements NewRequestContract.View {
     private FragmentNewrequestBinding binding;
     private View rootView;
     private NewRequestPresenter newRequestPresenter;
@@ -308,6 +307,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
@@ -316,34 +316,34 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     private void showEditTimeDialog() {
 
-      editTimeDialog = new EditTimeDialog.AlertDialogBuilder(getContext(), new EditTimeCallback() {
-          @Override
-          public void alertDialogCallback(byte dialogStatus) {
+        editTimeDialog = new EditTimeDialog.AlertDialogBuilder(getContext(), new EditTimeCallback() {
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
 
-              switch (dialogStatus) {
-                  case AlertDialogCallback.OK:
-                      break;
-                  case AlertDialogCallback.CANCEL:
-                      editTimeDialog.dismiss();
-                      break;
-                  default:
-                      break;
-              }
-          }
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        editTimeDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+            }
 
-          @Override
-          public void dateClicked(String date) {
-              showDatePicker(date);
+            @Override
+            public void dateClicked(String date) {
+                showDatePicker(date);
 
-          }
+            }
 
-          @Override
-          public void timeClicked() {
-              showTimePicker();
+            @Override
+            public void timeClicked() {
+                showTimePicker();
 
-          }
-      }).build();
-      editTimeDialog.showDialog();
+            }
+        }).build();
+        editTimeDialog.showDialog();
 
     }
 
@@ -416,14 +416,15 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             int secondRowTag = Integer.parseInt(tagArray[1]);
             int thirdRowTag = Integer.parseInt(tagArray[2]);
 
-
+            // status update
             if (firstRowTag == 3) {
 
-                if (secondRowTag == 0) {
+                if (secondRowTag == 0) { // accept
 
-                    if (thirdRowTag == 0) {
-                        // assign
-                        showAssignDialog();
+                    if (thirdRowTag == 0) { // assign
+
+                        // showAssignDialog();
+                        loadAssignDialogData();
 
                     } else if (thirdRowTag == 1) {
                         // attending
@@ -433,7 +434,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 } else if (secondRowTag == 1) {
                     //show diloge
                 } else if (secondRowTag == 2) {
-                    showAssignDialog();
+                    // showAssignDialog();
                 }
 
             }
@@ -442,6 +443,14 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         }
 
     };
+
+    private void loadAssignDialogData() {
+        loadUsersDataFromServiceCenterId(serviceCenterResponseList.get(0).getId());
+    }
+
+    private void loadUsersDataFromServiceCenterId(Integer serviceCenterId) {
+        newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
+    }
 
     private void showPastHisoryDialog() {
         pastHistoryDialog = new PastHistoryDialog.AlertDialogBuilder(getContext(), new PassHistoryCallback() {
@@ -551,32 +560,33 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     }
 
-    private void showAssignDialog() {
+    private void showAssignDialog(List<AddUser> userList) {
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+            @Override
+            public void getUsersListFromServiceCenterId(int serviceCenterId) {
+                loadUsersDataFromServiceCenterId(serviceCenterId);
+            }
+
             @Override
             public void alertDialogCallback(byte dialogStatus) {
 
                 switch (dialogStatus) {
                     case AlertDialogCallback.OK:
-
                         break;
                     case AlertDialogCallback.CANCEL:
-
+                        assignOptionDialog.dismiss();
                         break;
                     default:
                         break;
                 }
 
             }
-        }).title(getString(R.string.option_assign))
-                .submitButtonText(getString(R.string.action_submit))
-                .build();
+        }).title(getString(R.string.option_assign)).loadUsersList(userList).build();
         assignOptionDialog.showDialog();
         assignOptionDialog.setCancelable(true);
 
 
     }
-
 
     private void showInformationDialog(String title, String messageInfo) {
         detailsDialog = new AppAlertDialog.AlertDialogBuilder(getActivity(), new
@@ -659,4 +669,13 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
 
+    @Override
+    public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
+        if (assignOptionDialog != null && assignOptionDialog.isShowing()) {
+            assignOptionDialog.setUsersData(usersList);
+        } else {
+            showAssignDialog(usersList);
+        }
+
+    }
 }

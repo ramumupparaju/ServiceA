@@ -1,6 +1,7 @@
-package com.incon.service.ui;
+package com.incon.service.ui.status.base.base;
 
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.ui.BaseView;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public interface BaseOptionsContract {
         void loadUsersListOfServiceCenters(List<AddUser> usersListOfServiceCenters);
 
     }
+
     interface Presenter {
         void getUsersListOfServiceCenters(int serviceCenterId);
     }
