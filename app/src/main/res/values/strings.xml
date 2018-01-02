@@ -335,6 +335,7 @@
     <string name="progress_warranty_registering">Registering warranty...</string>
     <string name="progress_categories">Fetching categories...</string>
     <string name="progress_adding_designation">Adding designation...</string>
+    <string name="progress_delete_designation">Delete designation...</string>
     <string name="progress_adding_user">Adding user...</string>
     <string name="progress_loading_service_centers">Loading service centers...</string>
     <string name="progress_loading_users_list_of_service_centers">Loading users list of service

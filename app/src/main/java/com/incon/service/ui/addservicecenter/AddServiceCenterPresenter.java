@@ -7,14 +7,11 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.ui.register.RegistrationContract;
 import com.incon.service.ui.register.RegistrationPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
-
-import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -85,6 +82,7 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
             public void onNext(Object categoriesList) {
+                getView().serviceCenterAddedSuccessfully();
                 getView().hideProgress();
             }
 
@@ -103,4 +101,5 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
         AppApiService.getInstance().addServiceCenter(userId, addServiceCenter).subscribe(observer);
         addDisposable(observer);
     }
+
 }

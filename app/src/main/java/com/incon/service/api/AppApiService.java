@@ -93,6 +93,7 @@ public class AppApiService implements AppConstants {
     public Observable<List<DefaultStatusData>> getStatusList() {
         return addNetworkCheck(serviceInstance.getStatusList());
     }
+
     // add service center api
     public Observable<LoginResponse> addServiceCenter(
             int userId, AddServiceCenter addServiceCenter) {
@@ -160,6 +161,11 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.getServiceCentersApi(userId));
     }
 
+    // delete designation  api
+    public Observable<Object> deletedesignationApi(int designationId) {
+        return addNetworkCheck(serviceInstance.deletedesignationApi(designationId));
+    }
+
     // fetch  new service request api
     public Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(int servicerCenterId) {
         return addNetworkCheck(serviceInstance.fetchNewServiceRequestApi(servicerCenterId));
@@ -178,8 +184,6 @@ public class AppApiService implements AppConstants {
     public Observable<Object> fetchPaymentServiceRequestApi(int userId) {
         return addNetworkCheck(serviceInstance.fetchPaymentServiceRequestApi(userId));
     }
-
-
 
 
     //warranty registration validate otp api

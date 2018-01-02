@@ -11,8 +11,13 @@ public interface AddDesignationsContract {
     interface View extends BaseView {
 
         void addDesinationSuccessfully();
+
+        void desinationDeleteSuccessfully();
     }
+
     interface Presenter {
         void addDesignations(int userId, DesignationData addDesignation);
+
+        void deleteDesignation(int designationId);
     }
 }
