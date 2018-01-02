@@ -21,7 +21,6 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
     private final Context context;
     private final AssignOptionCallback assignOptionCallback;
     private String[] optionsArray;
-    private String[] optionsArrayTwo;
     private DialogAssignBinding binding;
     private EditText editTextNotes;
     private final String submitButton; // required
@@ -37,10 +36,8 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(context), R.layout.dialog_assign, null, false);
         View contentView = binding.getRoot();
-        editTextNotes = binding.edittextComment;
 
         loadAssignSpinner();
-        loadServiceSpinner();
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(contentView);
@@ -55,20 +52,10 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
                 R.layout.view_spinner, optionsArray);
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerAssign.setAdapter(arrayAdapter);
-        binding.spinnerAssign.setText(optionsArray[0]);
+        binding.spinnerUsers.setAdapter(arrayAdapter);
+        binding.spinnerUsers.setText(optionsArray[0]);
     }
 
-    private void loadServiceSpinner() {
-
-        Context context = binding.getRoot().getContext();
-        optionsArrayTwo = context.getResources().getStringArray(R.array.gender_options_list);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
-                R.layout.view_spinner, optionsArrayTwo);
-        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerService.setAdapter(arrayAdapter);
-        binding.spinnerService.setText(optionsArrayTwo[0]);
-    }
 
     public static class AlertDialogBuilder {
         private final Context context;

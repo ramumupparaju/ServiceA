@@ -16,5 +16,7 @@ public interface NewRequestContract {
     }
     interface Presenter {
         void fetchNewServiceRequests(int userId);
+        void getUsersListOfServiceCenters(int serviceCenterId);
+
     }
 }
