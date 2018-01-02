@@ -53,8 +53,8 @@ public class AddUserActivity extends BaseActivity implements
     private Animation shakeAnim;
     private MaterialBetterSpinner genderSpinner;
     private ActivityAdduserBinding binding;
-    public List<DesignationData> fetchDesignationsResponseList;
-    public List<AddUser> usersList;
+    public List<DesignationData> designationDataList;
+    public List<AddUser> reportingUsersList;
     private int designationSelectedPos = -1;
     private int reportingSelectedPos = -1;
     private int serviceCenterId;
@@ -80,8 +80,8 @@ public class AddUserActivity extends BaseActivity implements
         if (bundle != null) {
             addUser = bundle.getParcelableExtra(IntentConstants.USER_DATA);
             serviceCenterId = bundle.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
-            fetchDesignationsResponseList = bundle.getParcelableArrayListExtra(IntentConstants.DESIGNATION_DATA);
-            usersList = bundle.getParcelableArrayListExtra(IntentConstants.USER_DATA_LIST);
+            designationDataList = bundle.getParcelableArrayListExtra(IntentConstants.DESIGNATION_DATA);
+            reportingUsersList = bundle.getParcelableArrayListExtra(IntentConstants.USER_DATA_LIST);
         }
         if (addUser != null) {
             binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_user));
@@ -141,8 +141,14 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     private void loadReportingSpinnerData() {
+
+        if (reportingUsersList.size() == 0) {
+            binding.spinnerReportingUser.setVisibility(View.GONE);
+            return;
+        }
+
         List<String> userStringArray = new ArrayList<>();
-        for (AddUser fetchDesignationsResponse : usersList) {
+        for (AddUser fetchDesignationsResponse : reportingUsersList) {
             userStringArray.add(fetchDesignationsResponse.getName());
         }
 
@@ -162,7 +168,7 @@ public class AddUserActivity extends BaseActivity implements
 
     private void loadDesignationsSpinnerData() {
         List<String> fetchDesignationList = new ArrayList<>();
-        for (DesignationData fetchDesignationsResponse : fetchDesignationsResponseList) {
+        for (DesignationData fetchDesignationsResponse : designationDataList) {
             fetchDesignationList.add(fetchDesignationsResponse.getName());
         }
 
@@ -369,8 +375,8 @@ public class AddUserActivity extends BaseActivity implements
                 getString(R.string.error_re_enter_password_does_not_match));
 
         errorMap.put(AddUserValidations.ADDRESS_REQ, getString(R.string.error_address_req));
-        errorMap.put(AddUserValidations.SERVICE_CENTER_NAME, getString(R.string.error_Service_Center_name));
-        errorMap.put(AddUserValidations.SERVICE_DISIGNATION, getString(R.string.error_service_center_desiganation));
+        errorMap.put(AddUserValidations.SERVICE_CENTER_DESIGNATION, getString(R.string.error_service_center_desiganation));
+        errorMap.put(AddUserValidations.REPORTING_PERSON, getString(R.string.error_service_center_reporting_person));
     }
 
     private boolean validateFields() {
@@ -383,6 +389,7 @@ public class AddUserActivity extends BaseActivity implements
         binding.inputLayoutRegisterConfirmPassword.setError(null);
         binding.inputLayoutRegisterAddress.setError(null);
         binding.spinnerServiceCenterDesignation.setError(null);
+        binding.spinnerReportingUser.setError(null);
 
         Pair<String, Integer> validation = binding.getAddUser().validateAddUser(null);
         updateUiAfterValidation(validation.first, validation.second);
@@ -390,11 +397,27 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     public void onSubmitClick() {
+        if (reportingUsersList.size() == 0) {
+            DesignationData designationData = designationDataList.get(designationSelectedPos);
+            if (designationData.getIsAdmin() == BooleanConstants.IS_TRUE) {
+                addUser.setReportingId(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
+            } else {
+                showErrorMessage(getString(R.string.error_invalid_designation));
+                return;
+
+            }
+        }
         if (validateFields()) {
+            addUser.setServiceCenterRoleId(designationDataList.get(designationSelectedPos).getId());
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
         }
     }
 
+    @Override
+    public void userAddedSuccessfully() {
+        setResult(Activity.RESULT_OK);
+        finish();
+    }
 }

@@ -27,7 +27,6 @@
             <RelativeLayout
                 style="@style/BothMatch"
                 android:paddingBottom="@dimen/margin_38">
-
                 <include
                     android:id="@+id/toolbar"
                     layout="@layout/tool_bar"
@@ -248,6 +247,7 @@
                     android:layout_marginBottom="@dimen/margin_24"
                     android:focusable="true"
                     android:hint="@string/hint_reporting_person"
+                    android:text="@={addUser.reportingName}"
                     android:tag="9"
                     android:visibility="visible"
                     app:met_floatingLabel="highlight"

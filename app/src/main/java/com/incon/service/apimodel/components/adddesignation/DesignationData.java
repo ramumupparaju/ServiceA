@@ -167,16 +167,16 @@ public class DesignationData extends BaseObservable implements Parcelable {
     private int validateFields(int id, boolean emptyValidation) {
         switch (id) {
             case 0:
-                if (emptyValidation && TextUtils.isEmpty(getDescription())) {
-                    return AppConstants.AddDesignationsValidation.DESCRIPTION;
+                if (emptyValidation && TextUtils.isEmpty(getName())) {
+                    return AppConstants.AddDesignationsValidation.NAME_REQ;
                 }
                 break;
 
 
             case 1:
-                boolean nameEmpty = TextUtils.isEmpty(getName());
-                if (emptyValidation && nameEmpty) {
-                    return AppConstants.AddDesignationsValidation.NAME_REQ;
+                boolean decEmpty = TextUtils.isEmpty(getDescription());
+                if (emptyValidation && decEmpty) {
+                    return AppConstants.AddDesignationsValidation.DESCRIPTION;
                 }
                 break;
 

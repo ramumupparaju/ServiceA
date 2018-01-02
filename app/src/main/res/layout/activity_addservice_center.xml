@@ -94,7 +94,7 @@
                     android:visibility="visible"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
                 <!-- division no -->
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -109,7 +109,7 @@
                     android:visibility="gone"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
                 <!--brand-->
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -125,7 +125,7 @@
                     app:errorEnabled="true"
                     app:met_floatingLabel="highlight"
                     app:met_textColor="@color/colorForgotPasswordHintText"
-                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
 
                 <!-- Email ID -->
@@ -146,7 +146,7 @@
                         android:inputType="textEmailAddress"
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
-                        android:tag="2"
+                        android:tag="5"
                         android:text="@={addServiceCenter.email}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -164,7 +164,7 @@
                         android:id="@+id/edittext_register_address"
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
-                        android:tag="3"
+                        android:tag="6"
                         android:text="@={addServiceCenter.address}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 
@@ -181,8 +181,6 @@
                     android:onClick="@{() -> addServiceCenterActivity.onAddressClick()}" />
 
 
-
-
                 <com.incon.service.custom.view.CustomTextInputLayout
                     android:id="@+id/input_layout_created_date"
                     style="@style/Register_TextInputLayout"
@@ -196,7 +194,7 @@
                         android:id="@+id/edittext_created_date"
                         style="@style/Register_TextInputEditText"
                         android:enabled="false"
-                        android:tag="4"
+                        android:tag="7"
                         android:text="@={addServiceCenter.createdDate}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
                 <!-- dummy view for Offers start date selection -->
@@ -229,7 +227,7 @@
                         android:inputType="textEmailAddress"
                         android:maxLength="@integer/character_limit_200"
                         android:maxLines="1"
-                        android:tag="5"
+                        android:tag="8"
                         android:text="@={addServiceCenter.gstn}" />
                 </com.incon.service.custom.view.CustomTextInputLayout>
 

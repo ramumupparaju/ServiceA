@@ -141,8 +141,6 @@ public class AddDesignationsActivity extends BaseActivity implements
                 getString(R.string.error_name_req));
         errorMap.put(AddDesignationsValidation.DESCRIPTION,
                 getString(R.string.error_desc_req));
-        errorMap.put(AddDesignationsValidation.SERVICE_CENTER_NAME,
-                getString(R.string.error_service_center_name_req));
     }
 
     private void setFocusForViews() {

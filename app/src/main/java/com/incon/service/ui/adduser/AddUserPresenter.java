@@ -36,6 +36,7 @@ public class AddUserPresenter extends BasePresenter<AddUserContract.View>
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
             public void onNext(Object categoriesList) {
+                getView().userAddedSuccessfully();
                 getView().hideProgress();
             }
 

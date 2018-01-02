@@ -130,6 +130,8 @@ public interface AppConstants {
         int CREATED_DATE_REQ = 27;
         int SERVICE_CENTER_NAME = 28;
         int SERVICE_DISIGNATION = 29;
+        int SERVICE_CENTER_DESIGNATION = 30;
+        int REPORTING_PERSON = 31;
     }
 
     interface AddServiceCenterValidation {
