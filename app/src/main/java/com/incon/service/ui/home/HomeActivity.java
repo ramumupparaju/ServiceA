@@ -96,7 +96,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         toolBarBinding = DataBindingUtil.inflate(layoutInflater,
                 R.layout.tool_bar, null, false);
         setSupportActionBar(toolBarBinding.toolbar);
-        setToolbarTitle(getString(R.string.title_history));
+        setToolbarTitle(getString(R.string.title_status));
 
         toolBarBinding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
             @Override
