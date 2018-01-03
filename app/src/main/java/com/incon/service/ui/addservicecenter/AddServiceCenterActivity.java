@@ -33,6 +33,7 @@ import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
+import com.incon.service.utils.ValidationUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.Calendar;
@@ -268,11 +269,18 @@ public class AddServiceCenterActivity extends BaseActivity implements
                     selectedDateTime.set(selectedYear, selectedMonth, selectedDay);
                     String yyyyMMDD = DateUtils.convertDateToOtherFormat(
                             selectedDateTime.getTime(), DateFormatterConstants.FROM_API_MILLIS);
+
+                    if (!ValidationUtils.isCurrentDate(selectedDateTime)) {
+                        showErrorMessage(getString(R.string.error_past_date));
+                        return;
+                    }
                     addServiceCenter.setCreatedDate(yyyyMMDD);
 
                     Pair<String, Integer> validate = binding.getAddServiceCenter().
                             validateAddServiceCenter((String) binding.edittextCreatedDate.getTag());
                     updateUiAfterValidation(validate.first, validate.second);
+
+
                 }
             };
 
