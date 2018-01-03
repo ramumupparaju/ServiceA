@@ -19,18 +19,18 @@
                 android:id="@+id/button1"
                 style="@style/time_slot_buttons"
                 android:layout_marginRight="@dimen/margin_2"
-                android:text="time_10_12"
+                android:text="@string/time_10_12"
                 />
             <Button
                 android:id="@+id/button2"
                 style="@style/time_slot_buttons"
                 android:layout_marginRight="@dimen/margin_2"
-                android:text="time_12_15" />
+                android:text="@string/time_12_15" />
 
             <Button
                 android:id="@+id/button3"
                 style="@style/time_slot_buttons"
-                android:text="time_15_17" />
+                android:text="@string/time_15_17" />
 
         </LinearLayout>
 

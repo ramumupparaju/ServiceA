@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.incon.service.BR;
 import com.incon.service.R;
@@ -31,9 +32,10 @@ public class PastHistoryAdapter extends BaseRecyclerViewAdapter {
         FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
         ((PastHistoryAdapter.ViewHolder) holder).bind(fetchNewRequestResponse, position);
 
+
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder  {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final ItemPastHistoryBinding binding;
 
 

@@ -24,16 +24,6 @@ public interface AppConstants {
         String SERVICE_GROUP = "G";
     }
 
-    interface StatusConstants {
-        String BUY_REQUEST_ACCEPT = "A";
-        String BUY_REQUEST_REJECT = "R";
-        String PENDING = "PEN";
-        String DISPATCHES_ON = "DSN";
-        String DISPATCHED = "DSD";
-        String DELIVERED = "DLD";
-        String INSTALLED = "INS";
-    }
-
     interface BooleanConstants {
         int IS_TRUE = 1;
         int IS_FALSE = 0;
@@ -44,10 +34,6 @@ public interface AppConstants {
         String NONE = "none";
         String NAME = "name";
         String BRAND = "brand";
-    }
-
-    interface WarrantyRegistrationConstants {
-        int MINIMUM_MODELNUMBER_TO_SEARCH = 2;
     }
 
     interface GoogleMapConstants {
@@ -337,6 +323,13 @@ public interface AppConstants {
 
     }
 
+
+    interface ServiceConstants {
+        String TIME_10_12 = "10:00,12:00";
+        String TIME_12_15 = "12:00,15:00";
+        String TIME_15_17 = "15:00,17:00";
+    }
+
     interface TimeConstants {
         String AM_LOWER_CASE = "am";
         String AM_UPPER_CASE = "AM";
@@ -412,47 +405,6 @@ public interface AppConstants {
 
     }
 
-    interface WarrantyregistationValidation {
-        int MODEL = 1;
-        int INVALID_MODEL = 2;
-        int DESCRIPTION = 3;
-        int SERIAL_NO = 4;
-        int BATCH_NO = 5;
-        int MRP_PRICE = 6;
-        int PRICE = 7;
-        int INVOICENUMBER = 8;
-    }
-
-    interface AddNewModelValidation {
-        int MODEL = 1;
-        int INVALID_MODEL = 2;
-        int DESCRIPTION = 3;
-        int CATEGORY = 4;
-        int DIVISION = 5;
-        int BRAND = 6;
-        int MRP_PRICE = 7;
-        int PRICE = 8;
-        int NOTE = 9;
-    }
-
-
-    interface Favorites {
-        String ADDRESS_TYPE_ONE = "1";
-    }
-
-    interface AddOfferValidation {
-        int MODEL = 1;
-        int INVALID_MODEL = 2;
-        int CATEGORY = 3;
-        int DIVISION = 4;
-        int BRAND = 5;
-        int OFFER_START_ON = 6;
-        int OFFER_EXPIRE_ON = 7;
-        int SCAN_START_DATE = 8;
-        int SCAN_END_DATE = 9;
-        int OFFER_PRICE = 10;
-
-    }
 
     public class PushIntentConstants {
         public static final String PUSH_PAYLOAD = "pushPayload";

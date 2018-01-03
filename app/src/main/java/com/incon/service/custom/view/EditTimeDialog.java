@@ -30,8 +30,6 @@ public class EditTimeDialog extends Dialog implements View.OnClickListener {
         this.context = builder.context;
     }
 
-
-
     public void showDialog() {
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(context), R.layout.dialog_edit_time, null, false);
@@ -49,9 +47,11 @@ public class EditTimeDialog extends Dialog implements View.OnClickListener {
         getWindow().setBackgroundDrawableResource(R.drawable.dialog_shadow);
         show();
     }
+
     public void setDateFromPicker(String dobInDD_mm_yyyy) {
         binding.edittextDate.setText(dobInDD_mm_yyyy);
     }
+
     public void setTimeFromPicker(String timeSlot) {
         binding.edittextTime.setText(timeSlot);
     }
@@ -95,7 +95,6 @@ public class EditTimeDialog extends Dialog implements View.OnClickListener {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
             return dialog;
         }
-
 
 
     }

@@ -185,6 +185,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 bottomOptions[1] = getString(R.string.bottom_option_past_history);
                 topDrawables = new int[2];
                 topDrawables[0] = R.drawable.ic_options_features;
+                //TODO have to check
                 topDrawables[1] = R.drawable.ic_option_pasthistory;
             } else if (tag == 2) {  // service center
                 bottomOptions = new String[1];
