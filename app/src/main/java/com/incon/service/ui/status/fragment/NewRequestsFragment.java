@@ -184,7 +184,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 bottomOptions[0] = getString(R.string.bottom_option_warranty_details);
                 bottomOptions[1] = getString(R.string.bottom_option_past_history);
                 topDrawables = new int[2];
-                topDrawables[0] = R.drawable.ic_options_features;
+                topDrawables[0] = R.drawable.ic_option_warranty;
                 //TODO have to check
                 topDrawables[1] = R.drawable.ic_option_pasthistory;
             } else if (tag == 2) {  // service center
@@ -636,12 +636,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 }
             };
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        newRequestPresenter.disposeAll();
-    }
-
 
     @Override
     public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
@@ -649,12 +643,13 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
-        // TODO have to  remove below code
+      // TODO have to  remove below code
         if (fetchNewRequestResponsesList.size() == 0) {
             FetchNewRequestResponse fetchNewRequestResponse = new FetchNewRequestResponse();
             fetchNewRequestResponse.setCustomer(fetchNewRequestResponse.getCustomer());
             fetchNewRequestResponsesList.add(fetchNewRequestResponse);
         }
+
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.requestTextview.setVisibility(View.VISIBLE);
             dismissSwipeRefresh();
@@ -678,5 +673,11 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             showAssignDialog(usersList);
         }
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        newRequestPresenter.disposeAll();
     }
 }

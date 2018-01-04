@@ -60,7 +60,7 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
         getView().showProgress(appContext.getString(R.string.progress_delete_designation));
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
-            public void onNext(Object categoriesList) {
+            public void onNext(Object o) {
                 getView().desinationDeleteSuccessfully();
                 getView().hideProgress();
             }

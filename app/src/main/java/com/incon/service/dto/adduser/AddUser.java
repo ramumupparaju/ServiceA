@@ -24,6 +24,8 @@ import static com.incon.service.AppConstants.VALIDATION_SUCCESS;
  */
 
 public class AddUser extends BaseObservable implements Parcelable {
+
+
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -92,6 +94,15 @@ public class AddUser extends BaseObservable implements Parcelable {
 
     public void setServiceCenterName(String serviceCenterName) {
         this.serviceCenterName = serviceCenterName;
+        notifyChange();
+    }
+    @Bindable
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
         notifyChange();
     }
 

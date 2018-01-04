@@ -103,7 +103,6 @@ public class AddDesignationsActivity extends BaseActivity implements
 
     // designation delete api
     private void showDeleteDesignationDialog() {
-        //TODO have to implemente delete designation
         designationDialog = new AppAlertVerticalTwoButtonsDialog.AlertDialogBuilder(this, new
                 AlertDialogCallback() {
                     @Override
@@ -125,6 +124,7 @@ public class AddDesignationsActivity extends BaseActivity implements
                 .build();
         designationDialog.showDialog();
         designationDialog.setButtonBlueUnselectBackground();
+        designationDialog.setCancelable(true);
     }
 
     private void initViews() {

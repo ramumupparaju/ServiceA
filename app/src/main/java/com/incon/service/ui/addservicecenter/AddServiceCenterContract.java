@@ -12,6 +12,7 @@ public interface AddServiceCenterContract {
 
         void loadedDefaultsData(boolean isDataAvailable);
         void serviceCenterAddedSuccessfully();
+        void serviceCenterDeleteSuccessfully();
 
     }
 
@@ -19,5 +20,6 @@ public interface AddServiceCenterContract {
         void defaultsApi();
 
         void addingServiceCenter(int userId, AddServiceCenter addServiceCenter);
+        void deleteServiceCenter(int serviceCenterId);
     }
 }

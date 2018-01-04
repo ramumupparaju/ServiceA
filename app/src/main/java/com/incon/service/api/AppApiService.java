@@ -166,6 +166,16 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.deletedesignationApi(designationId));
     }
 
+    // delete service center  api
+    public Observable<Object> deleteServiceCenterApi(int serviceCenterId) {
+        return addNetworkCheck(serviceInstance.deleteServiceCenterApi(serviceCenterId));
+    }
+
+    // delete user api
+    public Observable<Object> deleteUserApi(int serviceCenterId) {
+        return addNetworkCheck(serviceInstance.deleteUserApi(serviceCenterId));
+    }
+
     // fetch  new service request api
     public Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(int servicerCenterId) {
         return addNetworkCheck(serviceInstance.fetchNewServiceRequestApi(servicerCenterId));
