@@ -102,6 +102,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+                overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_right);
             }
         });
         toolBarBinding.toolbarRightIv.setOnClickListener(new View.OnClickListener() {

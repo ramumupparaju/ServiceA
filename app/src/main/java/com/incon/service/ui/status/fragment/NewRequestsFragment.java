@@ -643,12 +643,12 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
-      // TODO have to  remove below code
+    /*  // TODO have to  remove below code
         if (fetchNewRequestResponsesList.size() == 0) {
             FetchNewRequestResponse fetchNewRequestResponse = new FetchNewRequestResponse();
             fetchNewRequestResponse.setCustomer(fetchNewRequestResponse.getCustomer());
             fetchNewRequestResponsesList.add(fetchNewRequestResponse);
-        }
+        }*/
 
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.requestTextview.setVisibility(View.VISIBLE);
