@@ -2,6 +2,7 @@ package com.incon.service.dto.updatestatus;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.incon.service.apimodel.components.updatestatus.Status;
 
 /**
  * Created by PC on 1/5/2018.

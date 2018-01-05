@@ -1,4 +1,4 @@
-package com.incon.service.dto.updatestatus;
+package com.incon.service.apimodel.components.updatestatus;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,6 +11,9 @@ public class Status {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("code")
+    @Expose
+    private Object code;
 
     public Integer getId() {
         return id;
@@ -18,5 +21,13 @@ public class Status {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Object getCode() {
+        return code;
+    }
+
+    public void setCode(Object code) {
+        this.code = code;
     }
 }

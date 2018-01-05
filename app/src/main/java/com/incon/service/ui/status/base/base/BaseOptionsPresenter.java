@@ -7,6 +7,7 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BasePresenter;
@@ -64,11 +65,11 @@ public class BaseOptionsPresenter extends BasePresenter<BaseOptionsContract.View
     public void upDateStatus(int userId, UpDateStatus upDateStatus) {
 
         getView().showProgress(appContext.getString(R.string.progress_finding_service_centers));
-        DisposableObserver<Object> observer = new
-                DisposableObserver<Object>() {
+        DisposableObserver<UpDateStatusResponse> observer = new
+                DisposableObserver<UpDateStatusResponse>() {
                     @Override
-                    public void onNext(Object o) {
-                        getView().loadUpDateStatus(o);
+                    public void onNext(UpDateStatusResponse upDateStatusResponse) {
+                        getView().loadUpDateStatus(upDateStatusResponse);
                     }
 
                     @Override
@@ -86,7 +87,6 @@ public class BaseOptionsPresenter extends BasePresenter<BaseOptionsContract.View
 
         AppApiService.getInstance().upDateStatus(userId, upDateStatus).subscribe(observer);
         addDisposable(observer);
-
 
 
     }

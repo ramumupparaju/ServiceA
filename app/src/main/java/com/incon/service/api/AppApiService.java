@@ -10,6 +10,7 @@ import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResp
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
@@ -128,7 +129,7 @@ public class AppApiService implements AppConstants {
     }
 
     // update status api
-    public Observable<Object> upDateStatus(
+    public Observable<UpDateStatusResponse> upDateStatus(
             int userId, UpDateStatus upDateStatus) {
         return addNetworkCheck(serviceInstance.upDateStatus(userId, upDateStatus));
     }

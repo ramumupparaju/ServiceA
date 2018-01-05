@@ -8,6 +8,7 @@ import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResp
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
@@ -124,14 +125,14 @@ public interface AppServiceObservable {
 
     //  update status api
     @POST("service/updateStatus/{userId}")
-    Observable<Object> upDateStatus(@Path(
-            "userId") int userId, @Body UpDateStatus dateStatus);
-
+    Observable<UpDateStatusResponse> upDateStatus(@Path(
+            "userId") int userId, @Body UpDateStatus upDateStatus);
 
     // user profile update api
     @POST("user/updateuser/{userId}")
     Observable<LoginResponse> upDateUserProfile(@Path(
             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
+
 
     @POST("account/sendOtp")
     Observable<SendOtpResponse> sendOtp(@Body HashMap<String, String> email);

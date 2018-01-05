@@ -8,6 +8,7 @@ import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.ui.status.base.base.BaseOptionsContract;
@@ -72,7 +73,7 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
             }
 
             @Override
-            public void loadUpDateStatus(Object o) {
+            public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
 
             }
 

@@ -1,5 +1,6 @@
 package com.incon.service.ui.status.base.base;
 
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BaseView;
@@ -14,7 +15,7 @@ public interface BaseOptionsContract {
     interface View extends BaseView {
         void loadUsersListOfServiceCenters(List<AddUser> usersListOfServiceCenters);
 
-        void loadUpDateStatus(Object o);
+        void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse );
 
     }
 
