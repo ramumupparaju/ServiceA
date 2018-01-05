@@ -69,6 +69,7 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
         baseOptionsPresenter.setView(new BaseOptionsContract.View() {
             @Override
             public void loadUsersListOfServiceCenters(List<AddUser> userList) {
+                getView().loadUsersListOfServiceCenters(userList);
 
             }
 
@@ -101,6 +102,7 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
 
             }
         });
+        baseOptionsPresenter.getUsersListOfServiceCenters(serviceCenterId);
     }
 
 }

@@ -68,6 +68,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId;
     private ArrayList<ServiceCenterResponse> serviceCenterResponseList;
+    private List<AddUser> usersList;
 
     @Override
     protected void initializePresenter() {
@@ -448,12 +449,9 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     };
 
     private void loadAssignDialogData() {
-        loadUsersDataFromServiceCenterId(serviceCenterResponseList.get(0).getId());
-    }
-
-    private void loadUsersDataFromServiceCenterId(Integer serviceCenterId) {
         newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
     }
+
 
     private void showPastHisoryDialog() {
         pastHistoryDialog = new PastHistoryDialog.AlertDialogBuilder(getContext(), new PassHistoryCallback() {
@@ -569,13 +567,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private void showAssignDialog(List<AddUser> userList) {
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
             @Override
-            public void getUsersListFromServiceCenterId(int serviceCenterId) {
-                loadUsersDataFromServiceCenterId(serviceCenterId);
-            }
-
-            @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-
+                //todo API call
             }
 
             @Override
@@ -652,12 +645,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
-    /*  // TODO have to  remove below code
-        if (fetchNewRequestResponsesList.size() == 0) {
-            FetchNewRequestResponse fetchNewRequestResponse = new FetchNewRequestResponse();
-            fetchNewRequestResponse.setCustomer(fetchNewRequestResponse.getCustomer());
-            fetchNewRequestResponsesList.add(fetchNewRequestResponse);
-        }*/
 
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.requestTextview.setVisibility(View.VISIBLE);
@@ -676,11 +663,13 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     @Override
     public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
-        if (assignOptionDialog != null && assignOptionDialog.isShowing()) {
-            assignOptionDialog.setUsersData(usersList);
-        } else {
-            showAssignDialog(usersList);
+
+        if (usersList == null) {
+            usersList = new ArrayList<>();
         }
+
+        this.usersList = usersList;
+        showAssignDialog(usersList);
 
     }
 

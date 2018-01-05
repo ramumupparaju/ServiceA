@@ -324,10 +324,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
     private void showAssignDialog() {
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
-            @Override
-            public void getUsersListFromServiceCenterId(int serviceCenterId) {
-
-            }
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {

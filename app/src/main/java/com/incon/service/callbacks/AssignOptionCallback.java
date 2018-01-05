@@ -7,8 +7,5 @@ import com.incon.service.dto.updatestatus.UpDateStatus;
  */
 
 public interface AssignOptionCallback extends AlertDialogCallback {
-    void getUsersListFromServiceCenterId(int serviceCenterId);
-
     void doUpDateStatusApi(UpDateStatus upDateStatus);
-
 }

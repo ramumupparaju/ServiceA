@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Pair;
 
 import com.incon.service.ConnectApplication;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.ui.status.base.base.BaseOptionsContract;
@@ -37,6 +38,11 @@ public class StatusTabPresenter extends BasePresenter<StatusTabContract.View> im
             public void loadUsersListOfServiceCenters(List<AddUser> userList) {
                 getView().loadUsersListOfServiceCenters(userList);
                 baseOptionsPresenter.disposeAll();
+            }
+
+            @Override
+            public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
+
             }
 
             @Override

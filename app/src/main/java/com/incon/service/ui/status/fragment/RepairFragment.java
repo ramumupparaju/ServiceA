@@ -351,10 +351,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
 
     private void showAssignDialog() {
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
-            @Override
-            public void getUsersListFromServiceCenterId(int serviceCenterId) {
-
-            }
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {

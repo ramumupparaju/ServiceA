@@ -71,6 +71,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 //        UpdateManager.register(this);
         initializeToolBar();
         getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
+
+
         // loading  default status data
         homePresenter.getDefaultStatusData();
 

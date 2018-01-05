@@ -35,8 +35,6 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     private FragmentStatusTabBinding binding;
     private View rootView;
     private StatusTabPresenter newRequestPresenter;
-
-
     private StatusTabPagerAdapter adapter;
     private Typeface defaultTypeFace;
     private Typeface selectedTypeFace;

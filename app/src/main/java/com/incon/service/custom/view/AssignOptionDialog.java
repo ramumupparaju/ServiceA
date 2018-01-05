@@ -70,8 +70,6 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (usersSelectedPos != position) {
                     usersSelectedPos = position;
-                    assignOptionCallback.getUsersListFromServiceCenterId(usersList.get
-                            (usersSelectedPos).getId());
 
                 }
             }
