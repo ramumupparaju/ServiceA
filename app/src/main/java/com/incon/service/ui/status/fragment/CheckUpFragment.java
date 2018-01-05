@@ -26,6 +26,7 @@ import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.AssignOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.databinding.FragmentCheckupBinding;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.status.adapter.CheckUpAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
@@ -98,7 +99,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
         List<DefaultStatusData> defaultStausList = ConnectApplication.getAppContext()
                 .getDefaultStausData();
-        if(defaultStausList == null) {
+        if (defaultStausList == null) {
 
         }
 
@@ -325,6 +326,11 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
             @Override
             public void getUsersListFromServiceCenterId(int serviceCenterId) {
+
+            }
+
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
 
             }
 

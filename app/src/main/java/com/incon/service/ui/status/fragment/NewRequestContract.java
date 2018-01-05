@@ -14,10 +14,13 @@ public interface NewRequestContract {
 
     interface View extends BaseView {
         void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
+
         void loadUsersListOfServiceCenters(List<AddUser> usersListOfServiceCenters);
     }
+
     interface Presenter {
         void fetchNewServiceRequests(int userId);
+
         void getUsersListOfServiceCenters(int serviceCenterId);
 
     }
