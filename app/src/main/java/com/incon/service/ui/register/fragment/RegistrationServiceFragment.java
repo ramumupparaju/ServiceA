@@ -41,7 +41,6 @@ import com.incon.service.ui.register.RegistrationActivity;
 import com.incon.service.ui.termsandcondition.TermsAndConditionActivity;
 import com.incon.service.utils.Logger;
 import com.incon.service.utils.PermissionUtils;
-import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import net.hockeyapp.android.LoginActivity;
@@ -101,11 +100,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
         //here data must be an instance of the registration class
         register = ((RegistrationActivity) getActivity()).getRegistration();
         serviceCenter = new ServiceCenter();
-        //TODO have to remove hard code
-        serviceCenter.setName("shiva");
-        serviceCenter.setContactNo("1234567890");
-        serviceCenter.setEmail("asdj@g.com");
-        serviceCenter.setGstn("12345sdv");
 
 
         binding.setServiceCenter(serviceCenter);

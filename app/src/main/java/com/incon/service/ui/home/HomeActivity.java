@@ -28,7 +28,6 @@ import com.incon.service.utils.SharedPrefsUtils;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 
 public class HomeActivity extends BaseActivity implements HomeContract.View {
 
@@ -76,7 +75,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         homePresenter.getDefaultStatusData();
 
         int userType = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
-        userType = 8; //todo have to change
         if (userType == UserConstants.SUPER_ADMIN_TYPE) {
             // loading service centers only if user type is super admin
             homePresenter.getServiceCenters(userId);
@@ -194,7 +192,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
     @Override
     public void serviceCentersSuccessfully() {
-        //TODO have to handle based on user
         disableAllAnimation(binding.bottomNavigationView);
         binding.bottomNavigationView.setTextVisibility(true);
         setBottomNavigationViewListeners();

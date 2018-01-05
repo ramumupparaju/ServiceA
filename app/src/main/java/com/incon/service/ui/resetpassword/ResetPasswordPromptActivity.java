@@ -83,7 +83,6 @@ public class ResetPasswordPromptActivity extends BaseActivity implements
                                 ResetPasswordPromptActivity.this.finish();
                                 break;
                             case TextAlertDialogCallback.RESEND_OTP:
-//                                TODO have to implement resend otp
                                 resetPasswordPromptPresenter.doResendOtpApi(phoneNumber);
                                 break;
                             default:

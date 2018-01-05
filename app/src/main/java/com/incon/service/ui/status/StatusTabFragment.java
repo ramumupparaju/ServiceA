@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.incon.service.AppConstants;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.custom.view.CustomViewPager;
@@ -64,7 +63,6 @@ public class StatusTabFragment extends BaseFragment {
 
     private void initViews() {
         int userType = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
-        userType = 8; //todo have to change
         initViewPager();
         if (userType == UserConstants.SUPER_ADMIN_TYPE) {
             loadServiceCentersSpinner();
@@ -72,8 +70,6 @@ public class StatusTabFragment extends BaseFragment {
             binding.spinnerServiceCenters.setVisibility(View.GONE);
             int isAdmin = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_IS_ADMIN, BooleanConstants.IS_FALSE);
             if (isAdmin == BooleanConstants.IS_TRUE) {
-
-                //TODO have to make api call after that have to load data
                 loadUsersSpinner();
             } else {
                 binding.spinnerUsers.setVisibility(View.GONE);
