@@ -38,7 +38,7 @@ public class AddressInfo implements Parcelable {
     private String zipCode;
     @SerializedName("createdDate")
     @Expose
-    private Integer createdDate;
+    private String createdDate;
     @SerializedName("createdBy")
     @Expose
     private Integer createdBy;
@@ -106,11 +106,11 @@ public class AddressInfo implements Parcelable {
         this.id = id;
     }
 
-    public Integer getCreatedDate() {
+    public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Integer createdDate) {
+    public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 

@@ -26,6 +26,7 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchcategorie.Brand;
 import com.incon.service.apimodel.components.fetchcategorie.Division;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
+import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
@@ -248,7 +249,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
                                 serviceCenterDeleteDialog.dismiss();
                                 break;
                             case AlertDialogCallback.CANCEL:
-                                  addServiceCenterPresenter.deleteServiceCenter(addServiceCenter.getId());
+                                addServiceCenterPresenter.deleteServiceCenter(addServiceCenter.getId());
                                 break;
                             default:
                                 break;
@@ -456,13 +457,17 @@ public class AddServiceCenterActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
-            if (addServiceCenter != null) {
-                addServiceCenterPresenter.updateServiceCenter(SharedPrefsUtils.loginProvider().
+// TODO have to check code
+          /*  if (addServiceCenter != null) {
+                addServiceCenterPresenter.upDateServiceCenter(SharedPrefsUtils.loginProvider().
                         getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), upDateServiceCenter);
-
             }
+            else {*/
+
             addServiceCenterPresenter.addingServiceCenter(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addServiceCenter);
+            //}
+
         }
     }
 

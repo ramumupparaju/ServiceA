@@ -1,5 +1,6 @@
 package com.incon.service.ui.addservicecenter;
 
+import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.updateservicecenter.UpDateServiceCenter;
@@ -23,7 +24,7 @@ public interface AddServiceCenterContract {
         void defaultsApi();
 
         void addingServiceCenter(int userId, AddServiceCenter addServiceCenter);
-        void updateServiceCenter(int serviceCenterId, UpDateServiceCenter upDateServiceCenter);
+        void upDateServiceCenter(int serviceCenterId, UpDateServiceCenter upDateServiceCenter);
         void deleteServiceCenter(int serviceCenterId);
     }
 }

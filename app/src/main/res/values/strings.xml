@@ -354,6 +354,7 @@
     <string name="progress_update_service_center">UpDate service center...</string>
     <string name="progress_delete_service_center">Delect service center...</string>
     <string name="progress_delete_user">Delect user..</string>
+    <string name="progress_update_user">UpDate user..</string>
     <string name="progress_designations">Loading designations...</string>
     <string name="progress_add_new_model">Adding new model...</string>
     <string name="progress_product_details">Fetching product details...</string>

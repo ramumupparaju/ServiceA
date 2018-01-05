@@ -7,6 +7,7 @@ import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.login.LoginResponse;
+import com.incon.service.apimodel.components.registration.Address;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
@@ -131,14 +132,22 @@ public interface AppServiceObservable {
             "userId") int userId, @Body UpDateStatus upDateStatus);
 
     // user profile update api
-    @POST("user/updateuser/{userId}")
+    @POST("service/updateuser/{userId}")
     Observable<LoginResponse> upDateUserProfile(@Path(
             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
 
-    // user profile update api
+    // TODO delete
+    // update user api (add user)
+
+   /* @POST("user/updateuser/{userId}")
+    Observable<LoginResponse> upDateUserProfile(@Path(
+            "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
+
+*/
+    // update service center api
     @POST("service/updatecenter/{serviceCenterId}")
     Observable<UpDateServiceCenterResponse> upDateServiceCenter(@Path(
-            "userId") int userId, @Body UpDateServiceCenter upDateServiceCenter);
+            "serviceCenterId") int serviceCenterId, @Body UpDateServiceCenter upDateServiceCenter);
 
     @POST("account/sendOtp")
     Observable<SendOtpResponse> sendOtp(@Body HashMap<String, String> email);

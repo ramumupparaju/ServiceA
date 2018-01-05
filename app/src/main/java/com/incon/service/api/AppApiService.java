@@ -131,8 +131,8 @@ public class AppApiService implements AppConstants {
 
     // update service center api
     public Observable<UpDateServiceCenterResponse> upDateServiceCenter(
-            int userId, UpDateServiceCenter upDateServiceCenter) {
-        return addNetworkCheck(serviceInstance.upDateServiceCenter(userId, upDateServiceCenter));
+            int serviceCenterId, UpDateServiceCenter upDateServiceCenter) {
+        return addNetworkCheck(serviceInstance.upDateServiceCenter(serviceCenterId, upDateServiceCenter));
     }
 
     // update status api

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
+import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
@@ -30,6 +31,7 @@ import com.incon.service.databinding.ActivityAdduserBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.registration.AddressInfo;
+import com.incon.service.dto.update.UpDateUserProfile;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
@@ -60,6 +62,7 @@ public class AddUserActivity extends BaseActivity implements
     private int designationSelectedPos = -1;
     private int reportingSelectedPos = -1;
     private int serviceCenterId;
+    private UpDateUserProfile upDateUserProfile;
     private AppAlertVerticalTwoButtonsDialog userDeleteDialog;
 
     @Override
@@ -432,11 +435,22 @@ public class AddUserActivity extends BaseActivity implements
 
             }
         }
+
         if (validateFields()) {
+            // TODO have to check code
+
+      /*      if (addUser != null) {
+                addUserPresenter.upDateUserProfile(SharedPrefsUtils.loginProvider().
+                        getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), upDateUserProfile);
+            }  else {*/
+
             addUser.setServiceCenterRoleId(designationDataList.get(designationSelectedPos).getId());
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
+           // }
+
+
         }
     }
 
@@ -448,6 +462,11 @@ public class AddUserActivity extends BaseActivity implements
 
     @Override
     public void userDeleteSuccessfully() {
+
+    }
+
+    @Override
+    public void loadUpDateUserProfileResponce(LoginResponse loginResponse) {
 
     }
 }

@@ -7,6 +7,7 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
+import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.updateservicecenter.UpDateServiceCenter;
@@ -106,7 +107,7 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
     }
 
     @Override
-    public void updateServiceCenter(int serviceCenterId, UpDateServiceCenter upDateServiceCenter) {
+    public void upDateServiceCenter(int serviceCenterId, UpDateServiceCenter upDateServiceCenter) {
 
         getView().showProgress(appContext.getString(R.string.progress_update_service_center));
 
@@ -164,7 +165,6 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
         addDisposable(observer);
 
     }
-
 
 
 }
