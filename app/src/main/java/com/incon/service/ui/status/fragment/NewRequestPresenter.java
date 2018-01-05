@@ -8,7 +8,10 @@ import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BasePresenter;
+import com.incon.service.ui.status.base.base.BaseOptionsContract;
+import com.incon.service.ui.status.base.base.BaseOptionsPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.List;
@@ -55,6 +58,43 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
         };
         AppApiService.getInstance().fetchNewServiceRequestApi(servicerCenterId).subscribe(observer);
         addDisposable(observer);
+    }
+
+    @Override
+    public void getUsersListOfServiceCenters(int serviceCenterId) {
+
+        BaseOptionsPresenter baseOptionsPresenter = new BaseOptionsPresenter();
+        baseOptionsPresenter.initialize(null);
+        baseOptionsPresenter.setView(new BaseOptionsContract.View() {
+            @Override
+            public void loadUsersListOfServiceCenters(List<AddUser> userList) {
+
+            }
+
+            @Override
+            public void showProgress(String message) {
+                getView().showProgress(message);
+
+            }
+
+            @Override
+            public void hideProgress() {
+                getView().hideProgress();
+
+            }
+
+            @Override
+            public void showErrorMessage(String errorMessage) {
+                getView().showErrorMessage(errorMessage);
+
+            }
+
+            @Override
+            public void handleException(Pair<Integer, String> error) {
+                getView().handleException(error);
+
+            }
+        });
     }
 
 }

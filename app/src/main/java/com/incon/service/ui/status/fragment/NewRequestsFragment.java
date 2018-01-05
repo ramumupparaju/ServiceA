@@ -1,8 +1,10 @@
 package com.incon.service.ui.status.fragment;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,25 +12,37 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.login.ServiceCenterResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
+import com.incon.service.callbacks.AssignOptionCallback;
+import com.incon.service.callbacks.EditTimeCallback;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.PassHistoryCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
+import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
+import com.incon.service.custom.view.AssignOptionDialog;
+import com.incon.service.custom.view.EditTimeDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
+import com.incon.service.custom.view.TimeSlotAlertDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
+import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import static com.incon.service.AppUtils.callPhoneNumber;
 
@@ -44,12 +58,15 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
-    private AppEditTextDialog assignDialog;
     private AppEditTextDialog attendingDialog;
+    private AssignOptionDialog assignOptionDialog;
+    private EditTimeDialog editTimeDialog;
+    private TimeSlotAlertDialog timeSlotAlertDialog;
     private AppEditTextDialog holdDialog;
     private String merchantComment;
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId;
+    private ArrayList<ServiceCenterResponse> serviceCenterResponseList;
 
     @Override
     protected void initializePresenter() {
@@ -167,7 +184,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 bottomOptions[0] = getString(R.string.bottom_option_warranty_details);
                 bottomOptions[1] = getString(R.string.bottom_option_past_history);
                 topDrawables = new int[2];
-                topDrawables[0] = R.drawable.ic_options_features;
+                topDrawables[0] = R.drawable.ic_option_warranty;
+                //TODO have to check
                 topDrawables[1] = R.drawable.ic_option_pasthistory;
             } else if (tag == 2) {  // service center
                 bottomOptions = new String[1];
@@ -281,18 +299,109 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     bottomOptions[0] = getString(R.string.bottom_option_assign);
                     topDrawables = new int[1];
                     topDrawables[0] = R.drawable.ic_options_feedback;
-                } else { //  edit time
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                } else {
+                    //  edit time
+
+                    showEditTimeDialog();
                 }
 
 
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
     };
+
+    private void showEditTimeDialog() {
+
+        editTimeDialog = new EditTimeDialog.AlertDialogBuilder(getContext(), new EditTimeCallback() {
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        editTimeDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void dateClicked(String date) {
+                showDatePicker(date);
+
+            }
+
+            @Override
+            public void timeClicked() {
+                showTimePicker();
+
+            }
+        }).build();
+        editTimeDialog.showDialog();
+
+    }
+
+    private void showTimePicker() {
+        timeSlotAlertDialog = new TimeSlotAlertDialog.AlertDialogBuilder(getContext(), new TimeSlotAlertDialogCallback() {
+            @Override
+            public void selectedTimeSlot(String timeSlot) {
+                editTimeDialog.setTimeFromPicker(timeSlot);
+            }
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+                timeSlotAlertDialog.dismiss();
+
+            }
+        }).build();
+        timeSlotAlertDialog.showDialog();
+    }
+
+    private void showDatePicker(String date) {
+        AppUtils.hideSoftKeyboard(getContext(), getView());
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        String selectedDate = date;
+        if (!TextUtils.isEmpty(selectedDate)) {
+            cal.setTimeInMillis(DateUtils.convertStringFormatToMillis(
+                    selectedDate, DateFormatterConstants.DD_MM_YYYY));
+        }
+
+        int customStyle = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                ? R.style.DatePickerDialogTheme : android.R.style.Theme_DeviceDefault_Light_Dialog;
+        DatePickerDialog datePicker = new DatePickerDialog(getContext(),
+                customStyle,
+                datePickerListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH));
+        datePicker.setCancelable(false);
+        datePicker.show();
+
+    }
+
+    // date Listener
+    private DatePickerDialog.OnDateSetListener datePickerListener =
+            new DatePickerDialog.OnDateSetListener() {
+                // when dialog box is closed, below method will be called.
+                public void onDateSet(DatePicker view, int selectedYear,
+                                      int selectedMonth, int selectedDay) {
+                    Calendar selectedDateTime = Calendar.getInstance();
+                    selectedDateTime.set(selectedYear, selectedMonth, selectedDay);
+
+                    String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
+                            selectedDateTime.getTime(), DateFormatterConstants.DD_MM_YYYY);
+                    editTimeDialog.setDateFromPicker(dobInDD_MM_YYYY);
+
+                }
+            };
+
     private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -308,14 +417,15 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             int secondRowTag = Integer.parseInt(tagArray[1]);
             int thirdRowTag = Integer.parseInt(tagArray[2]);
 
-
+            // status update
             if (firstRowTag == 3) {
 
-                if (secondRowTag == 0) {
+                if (secondRowTag == 0) { // accept
 
-                    if (thirdRowTag == 0) {
-                        // assign
-                        showAssignDialog();
+                    if (thirdRowTag == 0) { // assign
+
+                        // showAssignDialog();
+                        loadAssignDialogData();
 
                     } else if (thirdRowTag == 1) {
                         // attending
@@ -325,7 +435,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 } else if (secondRowTag == 1) {
                     //show diloge
                 } else if (secondRowTag == 2) {
-                    showAssignDialog();
+                    // showAssignDialog();
                 }
 
             }
@@ -334,6 +444,14 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         }
 
     };
+
+    private void loadAssignDialogData() {
+        loadUsersDataFromServiceCenterId(serviceCenterResponseList.get(0).getId());
+    }
+
+    private void loadUsersDataFromServiceCenterId(Integer serviceCenterId) {
+        newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
+    }
 
     private void showPastHisoryDialog() {
         pastHistoryDialog = new PastHistoryDialog.AlertDialogBuilder(getContext(), new PassHistoryCallback() {
@@ -443,36 +561,33 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     }
 
-    private void showAssignDialog() {
-        assignDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
+    private void showAssignDialog(List<AddUser> userList) {
+        assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+            @Override
+            public void getUsersListFromServiceCenterId(int serviceCenterId) {
+                loadUsersDataFromServiceCenterId(serviceCenterId);
+            }
 
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
 
-                                assignDialog.dismiss();
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                assignDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_assign))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        assignDialog.showDialog();
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        assignOptionDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).title(getString(R.string.option_assign)).loadUsersList(userList).build();
+        assignOptionDialog.showDialog();
+        assignOptionDialog.setCancelable(true);
 
 
     }
-
 
     private void showInformationDialog(String title, String messageInfo) {
         detailsDialog = new AppAlertDialog.AlertDialogBuilder(getActivity(), new
@@ -521,12 +636,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 }
             };
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        newRequestPresenter.disposeAll();
-    }
-
 
     @Override
     public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
@@ -534,12 +643,13 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
-        // TODO have to  remove below code
+    /*  // TODO have to  remove below code
         if (fetchNewRequestResponsesList.size() == 0) {
             FetchNewRequestResponse fetchNewRequestResponse = new FetchNewRequestResponse();
             fetchNewRequestResponse.setCustomer(fetchNewRequestResponse.getCustomer());
             fetchNewRequestResponsesList.add(fetchNewRequestResponse);
-        }
+        }*/
+
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.requestTextview.setVisibility(View.VISIBLE);
             dismissSwipeRefresh();
@@ -552,5 +662,22 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     @Override
     public void onSearchClickListerner(String searchableText, String searchType) {
         //TODO have to do filter list
+    }
+
+
+    @Override
+    public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
+        if (assignOptionDialog != null && assignOptionDialog.isShowing()) {
+            assignOptionDialog.setUsersData(usersList);
+        } else {
+            showAssignDialog(usersList);
+        }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        newRequestPresenter.disposeAll();
     }
 }

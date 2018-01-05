@@ -6,12 +6,18 @@ import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import com.incon.service.R;
+import com.incon.service.apimodel.components.login.ServiceCenterResponse;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.databinding.DialogAssignBinding;
+import com.incon.service.dto.adduser.AddUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by MY HOME on 28-Dec-17.
@@ -21,27 +27,26 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
     private final Context context;
     private final AssignOptionCallback assignOptionCallback;
     private String[] optionsArray;
-    private String[] optionsArrayTwo;
     private DialogAssignBinding binding;
     private EditText editTextNotes;
-    private final String submitButton; // required
+    private final List<AddUser> usersList;
+    private final List<ServiceCenterResponse> serviceCentersList;
+
+    private int usersSelectedPos = 0;
 
     public AssignOptionDialog(AlertDialogBuilder builder) {
         super(builder.context);
         this.context = builder.context;
+        this.usersList = builder.usersList;
         this.assignOptionCallback = builder.callback;
-        this.submitButton = builder.submitButton;
+        this.serviceCentersList = builder.serviceCenterResponseList;
     }
 
     public void showDialog() {
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(context), R.layout.dialog_assign, null, false);
         View contentView = binding.getRoot();
-        editTextNotes = binding.edittextComment;
-
-        loadAssignSpinner();
-        loadServiceSpinner();
-
+        loadUsersSpinner();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(contentView);
         setCancelable(false);
@@ -49,32 +54,44 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
         show();
     }
 
-    private void loadAssignSpinner() {
-        Context context = binding.getRoot().getContext();
-        optionsArray = context.getResources().getStringArray(R.array.gender_options_list);
+    private void loadUsersSpinner() {
+        String [] stringUsersList = new String[usersList.size()];
+        for (int i = 0; i < usersList.size(); i++) {
+            stringUsersList[i] = usersList.get(i).getName();
+        }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
                 R.layout.view_spinner, optionsArray);
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerAssign.setAdapter(arrayAdapter);
-        binding.spinnerAssign.setText(optionsArray[0]);
+        binding.spinnerUsers.setAdapter(arrayAdapter);
+        binding.spinnerUsers.setText(stringUsersList[0]); //setting user name with index o
+
+        binding.spinnerUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (usersSelectedPos != position) {
+                    usersSelectedPos = position;
+                    assignOptionCallback.getUsersListFromServiceCenterId(serviceCentersList.get(usersSelectedPos).getId());
+
+                }
+            }
+        });
+
     }
 
-    private void loadServiceSpinner() {
-
-        Context context = binding.getRoot().getContext();
-        optionsArrayTwo = context.getResources().getStringArray(R.array.gender_options_list);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
-                R.layout.view_spinner, optionsArrayTwo);
-        arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
-        binding.spinnerService.setAdapter(arrayAdapter);
-        binding.spinnerService.setText(optionsArrayTwo[0]);
+    public void setUsersData(List<AddUser> usersList) {
+        this.usersList.clear();
+        usersSelectedPos = 0;
+        this.usersList.addAll(usersList);
+        loadUsersSpinner();
     }
+
 
     public static class AlertDialogBuilder {
         private final Context context;
         private final AssignOptionCallback callback;
         private String title;
-        private String submitButton;
+        private List<AddUser> usersList;
+        private ArrayList<ServiceCenterResponse> serviceCenterResponseList;
 
         public AlertDialogBuilder(Context context, AssignOptionCallback callback) {
             this.context = context;
@@ -85,15 +102,21 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
             this.title = title;
             return this;
         }
-        public AlertDialogBuilder submitButtonText(String submitButton) {
-            this.submitButton = submitButton;
-            return this;
-        }
         public AssignOptionDialog build() {
             AssignOptionDialog dialog = new AssignOptionDialog(this);
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
             return dialog;
         }
+        public AlertDialogBuilder loadServiceCentersData(ArrayList<ServiceCenterResponse> serviceCenterResponseList) {
+            this.serviceCenterResponseList = serviceCenterResponseList;
+            return this;
+        }
+        public AlertDialogBuilder loadUsersList(List<AddUser> usersList) {
+            this.usersList = usersList;
+            return this;
+
+        }
+
     }
 
     @Override
@@ -101,5 +124,18 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
         if (assignOptionCallback == null) {
             return;
         }
+
+        switch (view.getId()) {
+            case R.id.button_left:
+                assignOptionCallback.alertDialogCallback(AssignOptionCallback.CANCEL);
+                break;
+            case R.id.button_right:
+                assignOptionCallback.alertDialogCallback(AssignOptionCallback.OK);
+                break;
+            default:
+                break;
+        }
+
+
     }
 }

@@ -24,6 +24,8 @@ import static com.incon.service.AppConstants.VALIDATION_SUCCESS;
  */
 
 public class AddUser extends BaseObservable implements Parcelable {
+
+
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -62,7 +64,7 @@ public class AddUser extends BaseObservable implements Parcelable {
     @Expose
     private Integer reportingId;
 
-    private transient String  serviceCenterName;
+    private transient String serviceCenterName;
     private transient String serviceCenterDesignation;
     private transient String reportingName;
 
@@ -74,6 +76,7 @@ public class AddUser extends BaseObservable implements Parcelable {
 
     public AddUser() {
     }
+
     @Bindable
     public String getReportingName() {
         return reportingName;
@@ -93,6 +96,16 @@ public class AddUser extends BaseObservable implements Parcelable {
         this.serviceCenterName = serviceCenterName;
         notifyChange();
     }
+    @Bindable
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+        notifyChange();
+    }
+
     @Bindable
     public String getServiceCenterDesignation() {
         return serviceCenterDesignation;
@@ -125,6 +138,7 @@ public class AddUser extends BaseObservable implements Parcelable {
                 .MM_DD_YYYY);
         notifyChange();
     }
+
     @Bindable
     public String getAddress() {
         return address;
@@ -143,6 +157,7 @@ public class AddUser extends BaseObservable implements Parcelable {
     public void setCountry(String country) {
         this.country = country;
     }
+
     @Bindable
     public String getDob() {
         return dob;
@@ -152,6 +167,7 @@ public class AddUser extends BaseObservable implements Parcelable {
         this.dob = dob;
         notifyChange();
     }
+
     @Bindable
     public String getEmail() {
         return email;
@@ -187,6 +203,7 @@ public class AddUser extends BaseObservable implements Parcelable {
     public void setLocation(String location) {
         this.location = location;
     }
+
     @Bindable
     public String getMobileNumber() {
         return mobileNumber;
@@ -288,8 +305,7 @@ public class AddUser extends BaseObservable implements Parcelable {
                 boolean numberEmpty = TextUtils.isEmpty(getMobileNumber());
                 if (emptyValidation && numberEmpty) {
                     return AppConstants.AddUserValidations.PHONE_REQ;
-                }
-                else if (!numberEmpty && !ValidationUtils.isPhoneNumberValid(getMobileNumber())) {
+                } else if (!numberEmpty && !ValidationUtils.isPhoneNumberValid(getMobileNumber())) {
                     return AppConstants.AddUserValidations.PHONE_MIN_DIGITS;
                 }
                 break;
@@ -315,8 +331,7 @@ public class AddUser extends BaseObservable implements Parcelable {
                 boolean emailEmpty = TextUtils.isEmpty(getEmail());
                 if (emptyValidation && emailEmpty) {
                     return AppConstants.AddUserValidations.EMAIL_REQ;
-                }
-                else if (!emailEmpty && !ValidationUtils.isValidEmail(getEmail())) {
+                } else if (!emailEmpty && !ValidationUtils.isValidEmail(getEmail())) {
                     return AppConstants.AddUserValidations.EMAIL_NOTVALID;
                 }
 
@@ -359,6 +374,13 @@ public class AddUser extends BaseObservable implements Parcelable {
                     return AppConstants.AddUserValidations.SERVICE_CENTER_DESIGNATION;
                 }
                 break;
+
+         /*   case 9:
+                boolean repotingPersonEmpty = TextUtils.isEmpty(getReportingName());
+                if (emptyValidation && repotingPersonEmpty) {
+                    return AppConstants.AddUserValidations.REPORTING_PERSON;
+                }
+                break;*/
 
             case 9:
                 if (emptyValidation && reportingId == null) {

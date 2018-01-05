@@ -144,6 +144,7 @@ public class RegistrationMapActivity extends BaseActivity implements OnMapReadyC
                 e.printStackTrace();
             }
 
+
             try {
                 addressInfo.setCoordinates(locationAddress.getLatitude() + COMMA_SEPARATOR +
                         locationAddress.getLongitude());

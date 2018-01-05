@@ -136,13 +136,14 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
         imageView.setId(R.id.view_logo);
         LinearLayout.LayoutParams imageViewLayoutParams = new LinearLayout.LayoutParams(dp24, dp24);
         imageView.setLayoutParams(imageViewLayoutParams);
-        imageView.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+        imageView.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_IN);
         linearLayout.addView(imageView);
 
         TextView textView = new TextView(context);
         textView.setId(R.id.view_tv);
-        textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+        textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
         textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        textView.setTextSize(DeviceUtils.convertSpToPixels(4, getActivity()));
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         textView.setLayoutParams(layoutParams);
         linearLayout.addView(textView);

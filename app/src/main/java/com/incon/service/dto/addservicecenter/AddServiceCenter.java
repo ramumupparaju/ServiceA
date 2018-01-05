@@ -57,6 +57,7 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
     private transient boolean categoryEditable;
 
     public AddServiceCenter() {
+
     }
 
     public Integer getId() {
@@ -242,15 +243,13 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
                 }
                 break;
 
-
             //                no nned to validate because for some divisions there are no brands
-            case 4:
+           /* case 4:
                 boolean serviceBrand = TextUtils.isEmpty(getBrandName());
                 if (emptyValidation && serviceBrand) {
                     return AppConstants.RegistrationValidation.BRAND_REQ;
                 }
-                break;
-
+                break;*/
 
             case 5:
                 boolean emailEmpty = TextUtils.isEmpty(getEmail());

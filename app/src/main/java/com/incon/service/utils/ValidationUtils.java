@@ -59,6 +59,16 @@ public class ValidationUtils {
         return false;
     }
 
+    public static boolean isCurrentDate(Calendar curDate) {
+        // current date
+        Calendar currentDate = Calendar.getInstance();
+        if  (curDate.before(currentDate)) {
+            return true;
+        }
+        return false;
+    }
+
+
     public static int calculateAge(Calendar selectedDate) {
         // current date
         Calendar currentDate = Calendar.getInstance();

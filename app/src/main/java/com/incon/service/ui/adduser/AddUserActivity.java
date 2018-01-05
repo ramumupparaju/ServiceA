@@ -23,6 +23,8 @@ import android.widget.TextView;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
+import com.incon.service.callbacks.AlertDialogCallback;
+import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAdduserBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
@@ -58,6 +60,7 @@ public class AddUserActivity extends BaseActivity implements
     private int designationSelectedPos = -1;
     private int reportingSelectedPos = -1;
     private int serviceCenterId;
+    private AppAlertVerticalTwoButtonsDialog userDeleteDialog;
 
     @Override
     protected void initializePresenter() {
@@ -129,6 +132,28 @@ public class AddUserActivity extends BaseActivity implements
 
     private void showDeleteUserDialog() {
         //TODO have to implement delete api
+        userDeleteDialog = new AppAlertVerticalTwoButtonsDialog.AlertDialogBuilder(this, new
+                AlertDialogCallback() {
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                userDeleteDialog.dismiss();
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                  addUserPresenter.deleteUser(addUser.getId());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.dialog_delete))
+                .button1Text(getString(R.string.action_cancel))
+                .button2Text(getString(R.string.action_ok))
+                .build();
+        userDeleteDialog.showDialog();
+        userDeleteDialog.setButtonBlueUnselectBackground();
+        userDeleteDialog.setCancelable(true);
     }
 
     private void initViews() {
@@ -419,5 +444,10 @@ public class AddUserActivity extends BaseActivity implements
     public void userAddedSuccessfully() {
         setResult(Activity.RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void userDeleteSuccessfully() {
+
     }
 }

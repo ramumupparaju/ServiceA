@@ -130,6 +130,7 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
         bottomDrawables[3] = R.drawable.ic_option_delete;
 
         bottomSheetPurchasedBinding.firstRow.setVisibility(View.VISIBLE);
+        bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.secondRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.firstRow.removeAllViews();

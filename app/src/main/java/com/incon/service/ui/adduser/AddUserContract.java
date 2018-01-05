@@ -10,9 +10,11 @@ import com.incon.service.ui.BaseView;
 public interface AddUserContract {
     interface View extends BaseView {
         void userAddedSuccessfully();
+        void userDeleteSuccessfully();
     }
 
     interface Presenter {
         void addingUser(int userId, AddUser addUser);
+        void deleteUser(int serviceCenterId);
     }
 }

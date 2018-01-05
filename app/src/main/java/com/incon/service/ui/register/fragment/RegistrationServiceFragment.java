@@ -305,11 +305,10 @@ public class RegistrationServiceFragment extends BaseFragment implements
 
         if (validateFields()) {
 
-            //TODO have to uncomment image validation code
-           /* if (TextUtils.isEmpty(selectedFilePath)) {
+           if (TextUtils.isEmpty(selectedFilePath)) {
                 showErrorMessage(getString(R.string.error_image_path_upload));
                 return;
-            }*/
+            }
 
             //setting category id
             FetchCategories fetchCategories = fetchCategoryList.get(categorySelectedPos);

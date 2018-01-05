@@ -56,5 +56,36 @@ public class AddUserPresenter extends BasePresenter<AddUserContract.View>
         addDisposable(observer);
 
     }
+
+    @Override
+    public void deleteUser(int serviceCenterId) {
+
+        getView().showProgress(appContext.getString(R.string.progress_delete_user));
+        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
+            @Override
+            public void onNext(Object o) {
+                getView().userDeleteSuccessfully();
+                getView().hideProgress();
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+        AppApiService.getInstance().deleteUserApi(serviceCenterId).subscribe(observer);
+        addDisposable(observer);
+
+    }
+
+
 }
 

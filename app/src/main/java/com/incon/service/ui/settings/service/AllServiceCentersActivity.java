@@ -30,7 +30,6 @@ public class AllServiceCentersActivity extends BaseActivity implements
 
     private AllServiceCentersPresenter allServiceCentersPresenter;
     private ActivityAllServiceCentersBinding binding;
-
     public List<AddServiceCenter> serviceCenterResponseList;
     private AllServiceCentersAdapter allServiceCentersAdapter;
     private int userId = DEFAULT_VALUE;

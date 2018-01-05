@@ -102,4 +102,32 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
         addDisposable(observer);
     }
 
+    @Override
+    public void deleteServiceCenter(int serviceCenterId) {
+        getView().showProgress(appContext.getString(R.string.progress_delete_service_center));
+        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
+            @Override
+            public void onNext(Object o) {
+                getView().serviceCenterDeleteSuccessfully();
+                getView().hideProgress();
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+        AppApiService.getInstance().deleteServiceCenterApi(serviceCenterId).subscribe(observer);
+        addDisposable(observer);
+
+    }
+
 }
