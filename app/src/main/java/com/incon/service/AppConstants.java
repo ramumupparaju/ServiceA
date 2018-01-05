@@ -9,6 +9,7 @@ public interface AppConstants {
     String MULTIPART_FORM_DATA = "image/*";
     String COMMA_SEPARATOR = ",";
     int DEFAULT_VALUE = Integer.MIN_VALUE;
+    String LABEL_ALL = "ALL";
 
     String BUILD_FLAVOR = "moonz_dev";
     int VALIDATION_SUCCESS = 0;

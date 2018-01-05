@@ -345,8 +345,7 @@
     <string name="progress_delete_designation">Delete designation...</string>
     <string name="progress_adding_user">Adding user...</string>
     <string name="progress_loading_service_centers">Loading service centers...</string>
-    <string name="progress_loading_users_list_of_service_centers">Loading users list of service
-        centers...
+    <string name="progress_loading_users_list">Loading users list ...
     </string>
     <string name="progress_loading_data">Loading data...</string>
     <string name="progress_adding_service_center">Adding service center...</string>
