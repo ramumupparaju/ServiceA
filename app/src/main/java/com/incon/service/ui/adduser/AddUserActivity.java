@@ -144,7 +144,7 @@ public class AddUserActivity extends BaseActivity implements
                                 userDeleteDialog.dismiss();
                                 break;
                             case AlertDialogCallback.CANCEL:
-                                  addUserPresenter.deleteUser(addUser.getId());
+                                addUserPresenter.deleteUser(addUser.getId());
                                 break;
                             default:
                                 break;
@@ -448,7 +448,7 @@ public class AddUserActivity extends BaseActivity implements
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
-           // }
+            // }
 
 
         }
