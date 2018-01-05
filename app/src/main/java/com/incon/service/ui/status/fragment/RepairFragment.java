@@ -22,6 +22,7 @@ import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.AssignOptionDialog;
 import com.incon.service.databinding.FragmentRepairBinding;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.status.adapter.RepairAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
@@ -352,6 +353,11 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
             @Override
             public void getUsersListFromServiceCenterId(int serviceCenterId) {
+
+            }
+
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
 
             }
 
