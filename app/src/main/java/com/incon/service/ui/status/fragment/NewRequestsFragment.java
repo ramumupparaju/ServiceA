@@ -33,6 +33,7 @@ import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
@@ -155,6 +156,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
         bottomSheetPurchasedBinding.firstRow.setVisibility(View.VISIBLE);
         bottomSheetPurchasedBinding.secondRow.setVisibility(View.GONE);
+        bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.firstRow.removeAllViews();
         bottomSheetPurchasedBinding.firstRow.setWeightSum(length);
@@ -500,6 +502,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         holdDialog.showDialog();
+        holdDialog.setCancelable(true);
     }
 
     private void showAcceptRejectDialog(final boolean isAccept) {
@@ -529,6 +532,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         acceptRejectDialog.showDialog();
+        acceptRejectDialog.setCancelable(true);
     }
 
 
@@ -558,6 +562,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         attendingDialog.showDialog();
+        attendingDialog.setCancelable(true);
 
     }
 
@@ -566,6 +571,11 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             @Override
             public void getUsersListFromServiceCenterId(int serviceCenterId) {
                 loadUsersDataFromServiceCenterId(serviceCenterId);
+            }
+
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+
             }
 
             @Override
@@ -585,7 +595,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         }).title(getString(R.string.option_assign)).loadUsersList(userList).build();
         assignOptionDialog.showDialog();
         assignOptionDialog.setCancelable(true);
-
 
     }
 

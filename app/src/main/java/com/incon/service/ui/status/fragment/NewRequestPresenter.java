@@ -72,6 +72,11 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
             }
 
             @Override
+            public void loadUpDateStatus(Object o) {
+
+            }
+
+            @Override
             public void showProgress(String message) {
                 getView().showProgress(message);
 

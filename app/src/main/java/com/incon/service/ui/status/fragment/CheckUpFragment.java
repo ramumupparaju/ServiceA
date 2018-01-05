@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.incon.service.AppUtils;
+import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.IClickCallback;
@@ -48,7 +50,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
-  private AssignOptionDialog assignOptionDialog;
+    private AssignOptionDialog assignOptionDialog;
     private PastHistoryDialog pastHistoryDialog;
 
     @Override
@@ -94,6 +96,12 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         binding.checkupRecyclerview.setLayoutManager(linearLayoutManager);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
+        List<DefaultStatusData> defaultStausList = ConnectApplication.getAppContext()
+                .getDefaultStausData();
+        if(defaultStausList == null) {
+
+        }
+
     }
 
 
@@ -278,7 +286,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 } else {  // assign
-                   // showAssignDialog();
+                    // showAssignDialog();
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
             }
@@ -313,7 +321,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     }
 
 
-   private void showAssignDialog() {
+    private void showAssignDialog() {
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
             @Override
             public void getUsersListFromServiceCenterId(int serviceCenterId) {

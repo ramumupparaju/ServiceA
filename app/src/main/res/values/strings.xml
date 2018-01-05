@@ -93,6 +93,7 @@
     <string name="status_feedback">Feedback</string>
     <string name="option_assign">Assign</string>
     <string name="option_past_history">Past History</string>
+    <string name="hint_usres">Users</string>
 
     <!--service center time-->
     <string name="time_10_12">10-12</string>

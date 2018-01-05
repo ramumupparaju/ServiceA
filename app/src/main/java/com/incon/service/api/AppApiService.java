@@ -18,6 +18,7 @@ import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.dto.update.UpDateUserProfile;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.utils.NetworkUtil;
 
 import java.util.HashMap;
@@ -124,6 +125,12 @@ public class AppApiService implements AppConstants {
     public Observable<LoginResponse> upDateUserProfile(
             int userId, UpDateUserProfile upDateUserProfile) {
         return addNetworkCheck(serviceInstance.upDateUserProfile(userId, upDateUserProfile));
+    }
+
+    // update status api
+    public Observable<Object> upDateStatus(
+            int userId, UpDateStatus upDateStatus) {
+        return addNetworkCheck(serviceInstance.upDateStatus(userId, upDateStatus));
     }
 
     //registration request otp

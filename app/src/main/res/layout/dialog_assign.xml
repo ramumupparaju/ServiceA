@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         style="@style/MatchWrap"
@@ -14,36 +14,34 @@
             android:layout_marginTop="@dimen/margin_10"
             android:focusable="true"
             app:errorEnabled="true"
+            android:hint="@string/hint_usres"
             app:met_floatingLabel="highlight"
             app:met_textColor="@color/colorForgotPasswordHintText"
             app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
+        <!--  &lt;!&ndash; edit text comment &ndash;&gt;
+          <com.incon.service.custom.view.CustomTextInputLayout
+              android:id="@+id/input_comment"
+              style="@style/Register_TextInputLayout"
+              android:layout_below="@+id/spinner_users"
+              android:layout_marginTop="10dp"
+              android:hint="@string/user_comment_hint"
+              app:errorEnabled="true"
+              app:fontName="fonts/OpenSans-Regular.ttf"
+              app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
 
-
-
-      <!--  &lt;!&ndash; edit text comment &ndash;&gt;
-        <com.incon.service.custom.view.CustomTextInputLayout
-            android:id="@+id/input_comment"
-            style="@style/Register_TextInputLayout"
-            android:layout_below="@+id/spinner_users"
-            android:layout_marginTop="10dp"
-            android:hint="@string/user_comment_hint"
-            app:errorEnabled="true"
-            app:fontName="fonts/OpenSans-Regular.ttf"
-            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/edittext_comment"
-                style="@style/Register_TextInputEditText"
-                android:focusable="true"
-                android:imeOptions="actionNext"
-                android:inputType="textCapWords"
-                android:maxLength="@integer/character_limit_200"
-                android:maxLines="1"
-                android:paddingEnd="2dp"
-                android:paddingStart="2.1dp"
-                />
-        </com.incon.service.custom.view.CustomTextInputLayout>-->
+              <android.support.design.widget.TextInputEditText
+                  android:id="@+id/edittext_comment"
+                  style="@style/Register_TextInputEditText"
+                  android:focusable="true"
+                  android:imeOptions="actionNext"
+                  android:inputType="textCapWords"
+                  android:maxLength="@integer/character_limit_200"
+                  android:maxLines="1"
+                  android:paddingEnd="2dp"
+                  android:paddingStart="2.1dp"
+                  />
+          </com.incon.service.custom.view.CustomTextInputLayout>-->
 
         <!-- layout for bottom buttons -->
         <include
@@ -51,8 +49,7 @@
             layout="@layout/view_registration_bottom_buttons"
             android:layout_width="match_parent"
             android:layout_height="47dp"
-            android:layout_below="@id/spinner_users" />
-
+            android:layout_below="@id/spinner_users"/>
 
 
     </RelativeLayout>

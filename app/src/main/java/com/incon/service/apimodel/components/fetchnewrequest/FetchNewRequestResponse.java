@@ -29,6 +29,17 @@ public class FetchNewRequestResponse {
     @SerializedName("assignedUser")
     @Expose
     private AssignedUser assignedUser;
+    @SerializedName("productLogoUrl")
+    @Expose
+    private String productLogoUrl;
+
+
+    @SerializedName("productImageUrl")
+    @Expose
+    private String productImageUrl;
+
+    public FetchNewRequestResponse() {
+    }
 
     public CustomerResponse getCustomer() {
         return customer;
@@ -40,6 +51,22 @@ public class FetchNewRequestResponse {
 
     public void setServiceCenter(AddServiceCenter serviceCenter) {
         this.serviceCenter = serviceCenter;
+    }
+
+    public String getProductLogoUrl() {
+        return productLogoUrl;
+    }
+
+    public void setProductLogoUrl(String productLogoUrl) {
+        this.productLogoUrl = productLogoUrl;
+    }
+
+    public String getProductImageUrl() {
+        return productImageUrl;
+    }
+
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl;
     }
 
     private transient boolean isSelected;

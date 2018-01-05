@@ -15,6 +15,7 @@ import com.incon.service.apimodel.components.login.ServiceCenterResponse;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.databinding.DialogAssignBinding;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +27,10 @@ import java.util.List;
 public class AssignOptionDialog extends Dialog implements View.OnClickListener {
     private final Context context;
     private final AssignOptionCallback assignOptionCallback;
-    private String[] optionsArray;
     private DialogAssignBinding binding;
-    private EditText editTextNotes;
     private final List<AddUser> usersList;
     private final List<ServiceCenterResponse> serviceCentersList;
+    private UpDateStatus upDateStatus;
 
     private int usersSelectedPos = 0;
 
@@ -60,7 +60,7 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
             stringUsersList[i] = usersList.get(i).getName();
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
-                R.layout.view_spinner, optionsArray);
+                R.layout.view_spinner, stringUsersList);
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
         binding.spinnerUsers.setAdapter(arrayAdapter);
         binding.spinnerUsers.setText(stringUsersList[0]); //setting user name with index o
@@ -70,7 +70,8 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (usersSelectedPos != position) {
                     usersSelectedPos = position;
-                    assignOptionCallback.getUsersListFromServiceCenterId(serviceCentersList.get(usersSelectedPos).getId());
+                    assignOptionCallback.getUsersListFromServiceCenterId(usersList.get
+                            (usersSelectedPos).getId());
 
                 }
             }
@@ -130,6 +131,7 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
                 assignOptionCallback.alertDialogCallback(AssignOptionCallback.CANCEL);
                 break;
             case R.id.button_right:
+                assignOptionCallback.doUpDateStatusApi(upDateStatus);
                 assignOptionCallback.alertDialogCallback(AssignOptionCallback.OK);
                 break;
             default:

@@ -8,6 +8,7 @@ import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
@@ -56,6 +57,37 @@ public class BaseOptionsPresenter extends BasePresenter<BaseOptionsContract.View
 
         AppApiService.getInstance().getUsersListOfServiceCenterApi(serviceCenterId).subscribe(observer);
         addDisposable(observer);
+
+    }
+
+    @Override
+    public void upDateStatus(int userId, UpDateStatus upDateStatus) {
+
+        getView().showProgress(appContext.getString(R.string.progress_finding_service_centers));
+        DisposableObserver<Object> observer = new
+                DisposableObserver<Object>() {
+                    @Override
+                    public void onNext(Object o) {
+                        getView().loadUpDateStatus(o);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().hideProgress();
+                        Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                        getView().handleException(errorDetails);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        getView().hideProgress();
+                    }
+                };
+
+        AppApiService.getInstance().upDateStatus(userId, upDateStatus).subscribe(observer);
+        addDisposable(observer);
+
+
 
     }
 

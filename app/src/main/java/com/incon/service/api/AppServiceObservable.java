@@ -15,6 +15,7 @@ import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.dto.update.UpDateUserProfile;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -119,6 +120,13 @@ public interface AppServiceObservable {
     // request password otp
     @GET("user/requestotp/{phoneNumber}/password")
     Observable<Object> registerRequestPasswordOtp(@Path("phoneNumber") String phoneNumber);
+
+
+    //  update status api
+    @POST("service/updateStatus/{userId}")
+    Observable<Object> upDateStatus(@Path(
+            "userId") int userId, @Body UpDateStatus dateStatus);
+
 
     // user profile update api
     @POST("user/updateuser/{userId}")
