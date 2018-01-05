@@ -1,5 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout style="@style/BothMatch">
 
@@ -28,7 +28,8 @@
                             android:id="@+id/spinners_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white">
+                            android:background="@color/white"
+                            android:orientation="vertical">
                             <!-- spinner service centers -->
                             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                                 android:id="@+id/spinner_service_centers"
@@ -38,18 +39,17 @@
                                 app:errorEnabled="true"
                                 app:met_floatingLabel="highlight"
                                 app:met_textColor="@color/colorForgotPasswordHintText"
-                                app:met_textColorHint="@color/colorForgotPasswordHintText" />
+                                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
                             <!--spinner users-->
                             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                                 android:id="@+id/spinner_users"
                                 style="@style/spinnerItemStyle"
-                                android:layout_below="@+id/spinner_service_centers"
                                 android:layout_marginTop="@dimen/margin_10"
                                 android:focusable="true"
                                 app:errorEnabled="true"
                                 app:met_floatingLabel="highlight"
                                 app:met_textColor="@color/colorForgotPasswordHintText"
-                                app:met_textColorHint="@color/colorForgotPasswordHintText" />
+                                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
                         </LinearLayout>
 
@@ -67,7 +67,7 @@
                             app:tabIndicatorHeight="@dimen/margin_5"
                             app:tabMode="scrollable"
                             app:tabSelectedTextColor="@color/white"
-                            app:tabTextColor="@color/white" />
+                            app:tabTextColor="@color/white"/>
 
                     </RelativeLayout>
 

@@ -35,11 +35,12 @@ public class BaseOptionsPresenter extends BasePresenter<BaseOptionsContract.View
 
     @Override
     public void getUsersListOfServiceCenters(int serviceCenterId) {
-        getView().showProgress(appContext.getString(R.string.progress_finding_service_centers));
+        getView().showProgress(appContext.getString(R.string.progress_loading_users_list));
         DisposableObserver<List<AddUser>> observer = new
                 DisposableObserver<List<AddUser>>() {
                     @Override
                     public void onNext(List<AddUser> addUsers) {
+                        getView().hideProgress();
                         getView().loadUsersListOfServiceCenters(addUsers);
                     }
 
@@ -52,7 +53,7 @@ public class BaseOptionsPresenter extends BasePresenter<BaseOptionsContract.View
 
                     @Override
                     public void onComplete() {
-                        getView().hideProgress();
+
                     }
                 };
 
