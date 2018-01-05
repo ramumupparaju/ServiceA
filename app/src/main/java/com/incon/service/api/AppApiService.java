@@ -10,6 +10,7 @@ import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResp
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
+import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
@@ -19,6 +20,7 @@ import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.dto.update.UpDateUserProfile;
+import com.incon.service.dto.updateservicecenter.UpDateServiceCenter;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.utils.NetworkUtil;
 
@@ -121,11 +123,16 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.uploadServiceCenterLogo(String.valueOf(serviceCenterId), serviceCenterLogo));
     }
 
-
     // user profile update api
     public Observable<LoginResponse> upDateUserProfile(
             int userId, UpDateUserProfile upDateUserProfile) {
         return addNetworkCheck(serviceInstance.upDateUserProfile(userId, upDateUserProfile));
+    }
+
+    // update service center api
+    public Observable<UpDateServiceCenterResponse> upDateServiceCenter(
+            int userId, UpDateServiceCenter upDateServiceCenter) {
+        return addNetworkCheck(serviceInstance.upDateServiceCenter(userId, upDateServiceCenter));
     }
 
     // update status api

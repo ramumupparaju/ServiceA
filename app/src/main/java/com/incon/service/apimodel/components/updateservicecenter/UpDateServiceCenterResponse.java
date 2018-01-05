@@ -1,14 +1,14 @@
-package com.incon.service.apimodel.components.login;
+package com.incon.service.apimodel.components.updateservicecenter;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.incon.service.dto.registration.AddressInfo;
 
 /**
- * Created by MY HOME on 29-Dec-17.
+ * Created by PC on 1/5/2018.
  */
 
-public class ServiceCenterResponse {
+public class UpDateServiceCenterResponse {
 
     @SerializedName("id")
     @Expose
@@ -21,7 +21,7 @@ public class ServiceCenterResponse {
     private String location;
     @SerializedName("address")
     @Expose
-    private Object address;
+    private String address;
     @SerializedName("categoryId")
     @Expose
     private Integer categoryId;
@@ -42,7 +42,7 @@ public class ServiceCenterResponse {
     private Integer createdBy;
     @SerializedName("createdDate")
     @Expose
-    private Long createdDate;
+    private Integer createdDate;
     @SerializedName("gstn")
     @Expose
     private String gstn;
@@ -77,11 +77,11 @@ public class ServiceCenterResponse {
         this.location = location;
     }
 
-    public Object getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(Object address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -133,11 +133,11 @@ public class ServiceCenterResponse {
         this.createdBy = createdBy;
     }
 
-    public Long getCreatedDate() {
+    public Integer getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Long createdDate) {
+    public void setCreatedDate(Integer createdDate) {
         this.createdDate = createdDate;
     }
 

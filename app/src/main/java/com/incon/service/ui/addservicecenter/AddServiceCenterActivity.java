@@ -26,11 +26,13 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchcategorie.Brand;
 import com.incon.service.apimodel.components.fetchcategorie.Division;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
+import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddserviceCenterBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
+import com.incon.service.dto.updateservicecenter.UpDateServiceCenter;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
@@ -52,6 +54,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
     private AddServiceCenterPresenter addServiceCenterPresenter;
     private ActivityAddserviceCenterBinding binding;
     private AddServiceCenter addServiceCenter;
+    private UpDateServiceCenter upDateServiceCenter;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
     private List<FetchCategories> fetchCategoryList;
@@ -453,6 +456,11 @@ public class AddServiceCenterActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
+            if (addServiceCenter != null) {
+                addServiceCenterPresenter.updateServiceCenter(SharedPrefsUtils.loginProvider().
+                        getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), upDateServiceCenter);
+
+            }
             addServiceCenterPresenter.addingServiceCenter(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addServiceCenter);
         }
@@ -480,6 +488,11 @@ public class AddServiceCenterActivity extends BaseActivity implements
             serviceCenterDeleteDialog.dismiss();
         setResult(RESULT_OK);
         finish();
+
+    }
+
+    @Override
+    public void loadUpDateServiceCenterResponce(UpDateServiceCenterResponse upDateServiceCenterResponse) {
 
     }
 

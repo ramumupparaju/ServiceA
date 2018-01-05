@@ -351,6 +351,7 @@
     </string>
     <string name="progress_loading_data">Loading data...</string>
     <string name="progress_adding_service_center">Adding service center...</string>
+    <string name="progress_update_service_center">UpDate service center...</string>
     <string name="progress_delete_service_center">Delect service center...</string>
     <string name="progress_delete_user">Delect user..</string>
     <string name="progress_designations">Loading designations...</string>
