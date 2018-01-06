@@ -95,6 +95,9 @@
     <string name="option_assign">Assign</string>
     <string name="option_past_history">Past History</string>
     <string name="hint_usres">Users</string>
+    <string name="action_high">High</string>
+    <string name="action_medium">Medium</string>
+    <string name="action_low">Low</string>
 
     <!--service center time-->
     <string name="time_10_12">10-12</string>

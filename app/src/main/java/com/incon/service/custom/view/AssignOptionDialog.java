@@ -3,13 +3,16 @@ package com.incon.service.custom.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
+import com.incon.service.AppConstants;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.login.ServiceCenterResponse;
 import com.incon.service.callbacks.AssignOptionCallback;
@@ -19,6 +22,8 @@ import com.incon.service.dto.updatestatus.UpDateStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.incon.service.AppConstants.COMMA_SEPARATOR;
 
 /**
  * Created by MY HOME on 28-Dec-17.
@@ -87,9 +92,8 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
         this.usersList.clear();
         usersSelectedPos = 0;
         this.usersList.addAll(usersList);
-        // loadUsersSpinner();
+        loadUsersSpinner();
     }
-
 
     public static class AlertDialogBuilder {
         private final Context context;
@@ -150,7 +154,15 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
     }
 
     private boolean validateFields() {
-        upDateStatus.setComments(binding.edittextComment.getText().toString());
-        return true;
+
+        int selectedPriority = binding.radioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton = (RadioButton) findViewById(selectedPriority);
+        {
+            upDateStatus.setComments(binding.edittextComment.getText().toString());
+            upDateStatus.setPriority(Integer.valueOf(radioButton.getTag().toString()));
+            return true;
+
+        }
     }
+
 }

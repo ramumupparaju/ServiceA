@@ -77,7 +77,6 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
             @Override
             public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
                 getView().loadUpDateStatus(upDateStatusResponse);
-                getView().hideProgress();
 
             }
 
@@ -108,7 +107,7 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
         baseOptionsPresenter.getUsersListOfServiceCenters(serviceCenterId);
     }
 
-    /*@Override
+    @Override
     public void upDateStatus(int userId, UpDateStatus upDateStatus) {
         BaseOptionsPresenter baseOptionsPresenter = new BaseOptionsPresenter();
         baseOptionsPresenter.initialize(null);
@@ -147,5 +146,5 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
         baseOptionsPresenter.upDateStatus(userId, upDateStatus);
 
     }
-*/
+
 }

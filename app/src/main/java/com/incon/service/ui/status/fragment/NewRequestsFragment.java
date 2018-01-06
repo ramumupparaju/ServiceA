@@ -73,6 +73,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private int userId;
     private ArrayList<ServiceCenterResponse> serviceCenterResponseList;
     private List<AddUser> usersList;
+    private UpDateStatus upDateStatusList;
 
     @Override
     protected void initializePresenter() {
@@ -108,6 +109,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
         serviceCenterId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.SERVICE_CENTER_ID, DEFAULT_VALUE);
+        userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
+                LoginPrefs.USER_ID, DEFAULT_VALUE);
         newRequestPresenter.fetchNewServiceRequests(serviceCenterId);
     }
 
@@ -456,15 +459,17 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
     }
 
-    private void showAssignDialog(final List<AddUser> userList) {
+    private void showAssignDialog(List<AddUser> userList) {
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
                 // TODO have to check
-                newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
+                //newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
                /* newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().
                         getIntegerPreference(USER_ID, DEFAULT_VALUE), upDateStatus);*/
-               //newRequestPresenter.upDateStatus(userId,upDateStatus);
+             // upDateStatus.setPurchaseId(upDateStatusList.getPurchaseId());
+              // upDateStatus.setRequestid(upDateStatusList.getRequestid());
+               newRequestPresenter.upDateStatus(userId,upDateStatus);
 
             }
             @Override

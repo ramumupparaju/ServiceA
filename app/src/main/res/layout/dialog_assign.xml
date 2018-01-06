@@ -43,13 +43,50 @@
                 />
         </com.incon.service.custom.view.CustomTextInputLayout>
 
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            style="@style/MatchWrap"
+            android:layout_below="@+id/input_comment"
+            android:layout_marginEnd="@dimen/margin_42"
+            android:layout_marginStart="@dimen/margin_42"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                style="@style/zerowrap"
+                android:layout_weight="1"
+                android:tag="1"
+                android:text="@string/action_high"
+                android:textSize="12sp"
+                app:fontName="fonts/OpenSans-Regular.ttf"/>
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                style="@style/zerowrap"
+                android:layout_weight="1"
+                android:checked="true"
+                android:tag="2"
+                android:text="@string/action_medium"
+                android:textSize="12sp"/>
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                style="@style/zerowrap"
+                android:layout_weight="1"
+                android:tag="3"
+                android:text="@string/action_low"
+                android:textSize="12sp"/>
+        </RadioGroup>
+
         <!-- layout for bottom buttons -->
         <include
             android:id="@+id/include_register_bottom_buttons"
             layout="@layout/view_registration_bottom_buttons"
             android:layout_width="match_parent"
             android:layout_height="47dp"
-            android:layout_below="@id/input_comment"/>
+            android:layout_below="@id/radioGroup"/>
 
 
     </RelativeLayout>

@@ -26,7 +26,7 @@ public interface NewRequestContract {
         void fetchNewServiceRequests(int userId);
 
         void getUsersListOfServiceCenters(int serviceCenterId);
-      //  void upDateStatus(int userId, UpDateStatus upDateStatus);
+    void upDateStatus(int userId, UpDateStatus upDateStatus);
 
     }
 }
