@@ -143,7 +143,7 @@ dependencies {
     // material spinner
     compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
     // shimmer
-    compile 'com.facebook.shimmer:shimmer:0.1.0@aar'
+    implementation 'com.github.sharish:ShimmerRecyclerView:v1.1'
     //rounded imageview
     compile 'de.hdodenhof:circleimageview:2.1.0'
     allprojects {

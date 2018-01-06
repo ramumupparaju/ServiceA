@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -101,6 +102,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
     private void initViews() {
+        //binding.requestRecyclerview.show
+
         newRequestsAdapter = new NewRequestsAdapter();
         newRequestsAdapter.setClickCallback(iClickCallback);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);
