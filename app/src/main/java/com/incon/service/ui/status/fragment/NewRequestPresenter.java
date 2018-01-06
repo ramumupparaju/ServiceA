@@ -10,6 +10,7 @@ import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.ui.status.base.base.BaseOptionsContract;
 import com.incon.service.ui.status.base.base.BaseOptionsPresenter;
@@ -75,6 +76,8 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
 
             @Override
             public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
+                getView().loadUpDateStatus(upDateStatusResponse);
+                getView().hideProgress();
 
             }
 
@@ -105,4 +108,44 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
         baseOptionsPresenter.getUsersListOfServiceCenters(serviceCenterId);
     }
 
+    /*@Override
+    public void upDateStatus(int userId, UpDateStatus upDateStatus) {
+        BaseOptionsPresenter baseOptionsPresenter = new BaseOptionsPresenter();
+        baseOptionsPresenter.initialize(null);
+        baseOptionsPresenter.setView(new BaseOptionsContract.View() {
+            @Override
+            public void loadUsersListOfServiceCenters(List<AddUser> usersListOfServiceCenters) {
+
+            }
+
+            @Override
+            public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
+                getView().loadUpDateStatus(upDateStatusResponse);
+
+            }
+
+            @Override
+            public void showProgress(String message) {
+
+            }
+
+            @Override
+            public void hideProgress() {
+
+            }
+
+            @Override
+            public void showErrorMessage(String errorMessage) {
+
+            }
+
+            @Override
+            public void handleException(Pair<Integer, String> error) {
+
+            }
+        });
+        baseOptionsPresenter.upDateStatus(userId, upDateStatus);
+
+    }
+*/
 }

@@ -331,6 +331,11 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             }
 
             @Override
+            public void enteredText(String comment) {
+
+            }
+
+            @Override
             public void alertDialogCallback(byte dialogStatus) {
 
                 switch (dialogStatus) {

@@ -65,7 +65,7 @@ public class BaseOptionsPresenter extends BasePresenter<BaseOptionsContract.View
     @Override
     public void upDateStatus(int userId, UpDateStatus upDateStatus) {
 
-        getView().showProgress(appContext.getString(R.string.progress_finding_service_centers));
+        getView().showProgress(appContext.getString(R.string.progress_updating_status));
         DisposableObserver<UpDateStatusResponse> observer = new
                 DisposableObserver<UpDateStatusResponse>() {
                     @Override

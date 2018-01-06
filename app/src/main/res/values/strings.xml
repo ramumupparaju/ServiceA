@@ -56,6 +56,7 @@
     <string name="hint_time">Time</string>
     <string name="hint_date">Date</string>
     <string name="progress_finding_service_centers">Loading service centers...</string>
+    <string name="progress_updating_status">UpDating Status...</string>
     <string name="bottom_option_main_features">Main Features :</string>
     <string name="bottom_option_warranty">Warranty :</string>
     <string name="bottom_option_warranty_details">Warranty details</string>

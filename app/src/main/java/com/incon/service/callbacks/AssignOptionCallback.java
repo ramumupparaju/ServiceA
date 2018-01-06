@@ -8,4 +8,5 @@ import com.incon.service.dto.updatestatus.UpDateStatus;
 
 public interface AssignOptionCallback extends AlertDialogCallback {
     void doUpDateStatusApi(UpDateStatus upDateStatus);
+    void enteredText(String comment);
 }

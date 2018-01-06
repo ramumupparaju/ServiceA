@@ -19,7 +19,7 @@
             app:met_textColor="@color/colorForgotPasswordHintText"
             app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
-        <!--  &lt;!&ndash; edit text comment &ndash;&gt;
+          <!-- edit text comment -->
           <com.incon.service.custom.view.CustomTextInputLayout
               android:id="@+id/input_comment"
               style="@style/Register_TextInputLayout"
@@ -41,7 +41,7 @@
                   android:paddingEnd="2dp"
                   android:paddingStart="2.1dp"
                   />
-          </com.incon.service.custom.view.CustomTextInputLayout>-->
+          </com.incon.service.custom.view.CustomTextInputLayout>
 
         <!-- layout for bottom buttons -->
         <include
@@ -49,7 +49,7 @@
             layout="@layout/view_registration_bottom_buttons"
             android:layout_width="match_parent"
             android:layout_height="47dp"
-            android:layout_below="@id/spinner_users"/>
+            android:layout_below="@id/input_comment"/>
 
 
     </RelativeLayout>

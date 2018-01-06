@@ -358,6 +358,11 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
             }
 
             @Override
+            public void enteredText(String comment) {
+
+            }
+
+            @Override
             public void alertDialogCallback(byte dialogStatus) {
 
                 switch (dialogStatus) {

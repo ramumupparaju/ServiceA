@@ -18,6 +18,7 @@ import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.login.ServiceCenterResponse;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.EditTimeCallback;
@@ -45,6 +46,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import static com.incon.service.AppConstants.LoginPrefs.USER_ID;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -65,8 +67,10 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private TimeSlotAlertDialog timeSlotAlertDialog;
     private AppEditTextDialog holdDialog;
     private String merchantComment;
+    private String assignComment;
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId;
+    private int userId;
     private ArrayList<ServiceCenterResponse> serviceCenterResponseList;
     private List<AddUser> usersList;
 
@@ -428,7 +432,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     if (thirdRowTag == 0) { // assign
 
                         // showAssignDialog();
-                        loadAssignDialogData();
+                        fetchAssignDialogData();
 
                     } else if (thirdRowTag == 1) {
                         // attending
@@ -448,8 +452,45 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     };
 
-    private void loadAssignDialogData() {
+    private void fetchAssignDialogData() {
         newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
+    }
+
+    private void showAssignDialog(final List<AddUser> userList) {
+        assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                // TODO have to check
+                newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
+               /* newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().
+                        getIntegerPreference(USER_ID, DEFAULT_VALUE), upDateStatus);*/
+               //newRequestPresenter.upDateStatus(userId,upDateStatus);
+
+            }
+            @Override
+            public void enteredText(String commentString) {
+                assignComment = commentString;
+
+            }
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        assignOptionDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).title(getString(R.string.option_assign)).loadUsersList(userList).build();
+        assignOptionDialog.showDialog();
+        assignOptionDialog.setCancelable(true);
+
     }
 
 
@@ -564,32 +605,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     }
 
-    private void showAssignDialog(List<AddUser> userList) {
-        assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
-            @Override
-            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                //todo API call
-            }
-
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-                        break;
-                    case AlertDialogCallback.CANCEL:
-                        assignOptionDialog.dismiss();
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        }).title(getString(R.string.option_assign)).loadUsersList(userList).build();
-        assignOptionDialog.showDialog();
-        assignOptionDialog.setCancelable(true);
-
-    }
 
     private void showInformationDialog(String title, String messageInfo) {
         detailsDialog = new AppAlertDialog.AlertDialogBuilder(getActivity(), new
@@ -670,6 +685,11 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
         this.usersList = usersList;
         showAssignDialog(usersList);
+
+    }
+
+    @Override
+    public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
 
     }
 

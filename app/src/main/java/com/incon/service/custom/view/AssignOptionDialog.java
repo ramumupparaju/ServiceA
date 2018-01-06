@@ -31,6 +31,7 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
     private final List<AddUser> usersList;
     private final List<ServiceCenterResponse> serviceCentersList;
     private UpDateStatus upDateStatus;
+    private EditText editTextNotes;
 
     private int usersSelectedPos = 0;
 
@@ -46,6 +47,11 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(context), R.layout.dialog_assign, null, false);
         View contentView = binding.getRoot();
+        editTextNotes = binding.edittextComment;
+        binding.includeRegisterBottomButtons.buttonLeft.setText(context.getString(R.string.action_cancel));
+        binding.includeRegisterBottomButtons.buttonRight.setText(context.getString(R.string.action_submit));
+        binding.includeRegisterBottomButtons.buttonLeft.setOnClickListener(this);
+        binding.includeRegisterBottomButtons.buttonRight.setOnClickListener(this);
         loadUsersSpinner();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(contentView);
@@ -55,7 +61,7 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
     }
 
     private void loadUsersSpinner() {
-        String [] stringUsersList = new String[usersList.size()];
+        String[] stringUsersList = new String[usersList.size()];
         for (int i = 0; i < usersList.size(); i++) {
             stringUsersList[i] = usersList.get(i).getName();
         }
@@ -81,7 +87,7 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
         this.usersList.clear();
         usersSelectedPos = 0;
         this.usersList.addAll(usersList);
-        loadUsersSpinner();
+        // loadUsersSpinner();
     }
 
 
@@ -101,15 +107,18 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
             this.title = title;
             return this;
         }
+
         public AssignOptionDialog build() {
             AssignOptionDialog dialog = new AssignOptionDialog(this);
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
             return dialog;
         }
+
         public AlertDialogBuilder loadServiceCentersData(ArrayList<ServiceCenterResponse> serviceCenterResponseList) {
             this.serviceCenterResponseList = serviceCenterResponseList;
             return this;
         }
+
         public AlertDialogBuilder loadUsersList(List<AddUser> usersList) {
             this.usersList = usersList;
             return this;
@@ -129,13 +138,19 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
                 assignOptionCallback.alertDialogCallback(AssignOptionCallback.CANCEL);
                 break;
             case R.id.button_right:
-                assignOptionCallback.doUpDateStatusApi(upDateStatus);
-                assignOptionCallback.alertDialogCallback(AssignOptionCallback.OK);
+                //if (validateFields()) {
+                    assignOptionCallback.doUpDateStatusApi(upDateStatus);
+                    assignOptionCallback.alertDialogCallback(AssignOptionCallback.OK);
+               // }
+
                 break;
             default:
                 break;
         }
+    }
 
-
+    private boolean validateFields() {
+        upDateStatus.setComments(binding.edittextComment.getText().toString());
+        return true;
     }
 }
