@@ -132,18 +132,18 @@ public interface AppServiceObservable {
             "userId") int userId, @Body UpDateStatus upDateStatus);
 
     // user profile update api
-    @POST("user/updateuser/{userId}")
+    @POST("service/updateuser/{userId}")
     Observable<LoginResponse> upDateUserProfile(@Path(
             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
 
     // TODO delete
     // update user api (add user)
 
-   /* @POST("user/updateuser/{userId}")
-    Observable<LoginResponse> upDateUserProfile(@Path(
-            "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
+    /* @POST("user/updateuser/{userId}")
+     Observable<LoginResponse> upDateUserProfile(@Path(
+             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
 
-*/
+ */
     // update service center api
     @POST("service/updatecenter/{serviceCenterId}")
     Observable<UpDateServiceCenterResponse> upDateServiceCenter(@Path(

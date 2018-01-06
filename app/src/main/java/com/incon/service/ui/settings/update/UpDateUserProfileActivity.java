@@ -72,6 +72,7 @@ public class UpDateUserProfileActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
+            upDateUserProfile.setGender(String.valueOf(upDateUserProfile.getGender().charAt(0)));
             upDateUserProfilePresenter.upDateUserProfile(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(USER_ID, DEFAULT_VALUE), upDateUserProfile);
         }

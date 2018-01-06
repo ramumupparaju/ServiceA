@@ -139,9 +139,9 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
                 break;
             case R.id.button_right:
                 //if (validateFields()) {
-                    assignOptionCallback.doUpDateStatusApi(upDateStatus);
-                    assignOptionCallback.alertDialogCallback(AssignOptionCallback.OK);
-               // }
+                assignOptionCallback.doUpDateStatusApi(upDateStatus);
+                assignOptionCallback.alertDialogCallback(AssignOptionCallback.OK);
+                // }
 
                 break;
             default:
