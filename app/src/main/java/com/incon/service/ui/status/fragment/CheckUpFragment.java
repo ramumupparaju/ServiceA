@@ -55,16 +55,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private PastHistoryDialog pastHistoryDialog;
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if (isFirstTimeLoading && checkUpPresenter != null) {
-                checkUpPresenter.fetchNewServiceRequests(userId);
-            }
-        }
-    }
-
-    @Override
     protected void initializePresenter() {
         checkUpPresenter = new CheckUpPresenter();
         checkUpPresenter.setView(this);
@@ -103,6 +93,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
         }
 
+        isFirstTimeLoading = true;
     }
 
 

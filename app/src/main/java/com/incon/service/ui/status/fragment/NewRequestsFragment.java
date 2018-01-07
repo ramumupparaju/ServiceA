@@ -114,6 +114,10 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 LoginPrefs.SERVICE_CENTER_ID, DEFAULT_VALUE);
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
                 LoginPrefs.USER_ID, DEFAULT_VALUE);
+    }
+
+    @Override
+    public void doRefresh() {
         newRequestPresenter.fetchNewServiceRequests(serviceCenterId);
     }
 
@@ -132,7 +136,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             }
         });
     }
-
 
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
@@ -470,11 +473,12 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 //newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
                /* newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().
                         getIntegerPreference(USER_ID, DEFAULT_VALUE), upDateStatus);*/
-             // upDateStatus.setPurchaseId(upDateStatusList.getPurchaseId());
-              // upDateStatus.setRequestid(upDateStatusList.getRequestid());
-               newRequestPresenter.upDateStatus(userId,upDateStatus);
+                // upDateStatus.setPurchaseId(upDateStatusList.getPurchaseId());
+                // upDateStatus.setRequestid(upDateStatusList.getRequestid());
+                newRequestPresenter.upDateStatus(userId, upDateStatus);
 
             }
+
             @Override
             public void enteredText(String commentString) {
                 assignComment = commentString;

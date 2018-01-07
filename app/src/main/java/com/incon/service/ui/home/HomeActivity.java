@@ -80,11 +80,18 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         if (userType == UserConstants.SUPER_ADMIN_TYPE) {
             // loading service centers only if user type is super admin
             homePresenter.getServiceCenters(userId);
-        }  else {
+        } else {
             //directly load status screen
             serviceCentersSuccessfully();
         }
+    }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setToolbarTitle(String title) {

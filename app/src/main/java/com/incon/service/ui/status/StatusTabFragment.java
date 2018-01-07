@@ -21,6 +21,7 @@ import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.StatusTabPagerAdapter;
+import com.incon.service.ui.status.base.base.BaseProductOptionsFragment;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     private View rootView;
     private StatusTabPresenter newRequestPresenter;
     private StatusTabPagerAdapter adapter;
+    private int currentTabPosition;
     private Typeface defaultTypeFace;
     private Typeface selectedTypeFace;
     private String[] tabTitles;
@@ -114,7 +116,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (usersSelectedPosition != position) {
                         usersSelectedPosition = position;
-                        // todo           have to load data based on user
+                        refreshFragmentByPosition(usersSelectedPosition);
 
                     }
 
@@ -124,14 +126,20 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                     }
                 }
             });
-
-//       todo     have to load data based on user
+            refreshFragmentByPosition(-1);
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.view_spinner, usersArray);
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
         binding.spinnerUsers.setAdapter(arrayAdapter);
+    }
+
+    private void refreshFragmentByPosition(int usersSelectedPosition) {
+        ((HomeActivity) getActivity()).setUserId(usersSelectedPosition);
+        BaseProductOptionsFragment fragmentFromPosition = (BaseProductOptionsFragment) adapter.getFragmentFromPosition(currentTabPosition);
+        fragmentFromPosition.doRefresh();
+
     }
 
     private void loadServiceCentersSpinner() {
@@ -192,9 +200,9 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-                int position = tab.getPosition();
-                customViewPager.setCurrentItem(position);
-                changeTitleFont(position);
+                currentTabPosition = tab.getPosition();
+                customViewPager.setCurrentItem(currentTabPosition);
+                changeTitleFont(currentTabPosition);
             }
 
             @Override
