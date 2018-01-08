@@ -7,7 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-
+import com.incon.service.AppConstants;
 import com.incon.service.AppUtils;
 import com.incon.service.BuildConfig;
 import com.incon.service.R;
@@ -20,17 +20,19 @@ import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.changepassword.ChangePasswordActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.settings.adapters.SettingsAdapter;
+import com.incon.service.ui.settings.service.AllServiceCentersActivity;
 import com.incon.service.ui.settings.update.UpDateUserProfileActivity;
+import com.incon.service.ui.settings.userdesignation.AllUsersDesignationsActivity;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 
 import static com.incon.service.AppConstants.LoginPrefs.USER_NAME;
+import static com.incon.service.AppConstants.UserConstants.SUPER_ADMIN_TYPE;
 
 
 /**
  * Created on 26 Jul 2017 3:47 PM.
- *
  */
 public class SettingsActivity extends BaseActivity implements SettingsContract.View,
         IClickCallback {
@@ -40,6 +42,9 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     private SettingsAdapter menuAdapter;
     private ArrayList<SettingsItem> menuItems;
     private AppAlertVerticalTwoButtonsDialog dialog;
+    private int position = -1;
+    private int userType;
+    private int isAdmin;
 
     @Override
     protected int getLayoutId() {
@@ -66,6 +71,13 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
             }
         });
 
+        userType = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
+        if (userType == UserConstants.SUPER_ADMIN_TYPE) {
+            isAdmin = BooleanConstants.IS_TRUE;
+        } else {
+            isAdmin = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_IS_ADMIN, BooleanConstants.IS_FALSE);
+        }
+
         initViews();
         initializeAdapter();
         prepareMenuData();
@@ -89,11 +101,12 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
 
     private void prepareMenuData() {
 
-        int[] icons = {R.drawable.ic_menu_change_password,
-                R.drawable.ic_menu_bill_format,
+        int[] icons = {
+                R.drawable.ic_menu_change_password,
+                R.drawable.ic_menu_change_password,
                 R.drawable.ic_menu_timings,
                 R.drawable.ic_menu_contact_details,
-                R.drawable.ic_menu_logout_svg };
+                R.drawable.ic_menu_logout_svg};
         String[] menuTitles = getResources().getStringArray(R.array.side_menu_items_list);
 
         menuItems = new ArrayList<>();
@@ -106,7 +119,17 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
             SettingsItem menuItem = new SettingsItem();
             menuItem.setRowType(SettingsAdapter.ROW_TYPE_ITEM);
             menuItem.setIcon(icons[menuPos]);
-            menuItem.setText(menuTitles[menuPos]);
+            if (menuPos == 0) { //checks user type based on user type we are changing options
+                if (userType == SUPER_ADMIN_TYPE) {
+                    menuItem.setText(menuTitles[menuPos]);
+                } else if (isAdmin == BooleanConstants.IS_TRUE) {
+                    menuItem.setText(getString(R.string.action_service_center));
+                } else {
+                    continue;
+                }
+            } else {
+                menuItem.setText(menuTitles[menuPos]);
+            }
             menuItems.add(menuItem);
         }
     }
@@ -123,24 +146,37 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     }
 
 
-
     @Override
     public void onClickPosition(int position) {
+        this.position = position;
+        if (position != 0) { // based on user type we are changing option click actions
+            if (isAdmin == BooleanConstants.IS_FALSE) {
+                ++position;
+            }
+        }
         switch (position) {
+
             case MenuConstants.PROFILE:
                 Intent userProfileIntent = new Intent(this, UpDateUserProfileActivity.class);
                 startActivity(userProfileIntent);
                 break;
+
+            case MenuConstants.ALL_SERVICE_CENTERS:
+                if (userType == UserConstants.SUPER_ADMIN_TYPE) { // Based on usertype we are launching different activities
+                    Intent addUserIntent = new Intent(this, AllServiceCentersActivity.class);
+                    startActivity(addUserIntent);
+                } else {
+                    Intent intent = new Intent(this, AllUsersDesignationsActivity.class);
+                    intent.putExtra(IntentConstants.SERVICE_CENTER_DATA, SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.SERVICE_CENTER_ID, DEFAULT_VALUE));
+                    startActivity(intent);
+                }
+                break;
+
             case MenuConstants.CHANGE_PWD:
                 Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
                 startActivity(changePasswordIntent);
                 break;
 
-            case MenuConstants.BILLFORMAT:
-                AppUtils.shortToast(SettingsActivity.this, getString(
-                        R.string.title_menu_timings));
-
-                break;
             case MenuConstants.TIMEINGS:
                 AppUtils.shortToast(SettingsActivity.this, getString(
                         R.string.title_menu_timings));
@@ -160,7 +196,7 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
         }
     }
 
-
+    //  logout dialog
     private void showLogoutDialog() {
         dialog = new AppAlertVerticalTwoButtonsDialog.AlertDialogBuilder(this, new
                 AlertDialogCallback() {
@@ -191,5 +227,13 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     protected void onDestroy() {
         super.onDestroy();
         menuPresenter.disposeAll();
+    }
+
+    @Override
+    public void loadDefaultsData() {
+        if (position != -1) {
+            onClickPosition(position);
+        }
+
     }
 }

@@ -16,6 +16,7 @@ import com.incon.service.databinding.ViewRegistrationBottomButtonsBinding;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.register.adapter.RegistrationPagerAdapter;
+import com.incon.service.ui.register.fragment.RegistrationServiceFragment;
 import com.incon.service.ui.register.fragment.RegistrationUserFragment;
 import com.incon.service.utils.DeviceUtils;
 
@@ -41,6 +42,8 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
                             binding.viewpagerRegister.getCurrentItem());
                     if (currentRegistionFragment instanceof RegistrationUserFragment) {
                         ((RegistrationUserFragment) currentRegistionFragment).onClickNext();
+                    }else if (currentRegistionFragment instanceof RegistrationServiceFragment) {
+                        ((RegistrationServiceFragment) currentRegistionFragment).onClickNext();
                     }
                     break;
                 default:
@@ -96,7 +99,7 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
                     public void onGlobalLayout() {
                         int heightDiff = rootView.getRootView().getHeight() - rootView.getHeight();
                         binding.includeRegisterBottomButtons.getRoot().setVisibility(View.VISIBLE);
-                        if (heightDiff > DeviceUtils.convertDpToPx(200)) {
+                        if (heightDiff > DeviceUtils.convertDpToPx( 200)) {
                             // if more than 200 dp, it's probably a keyboard...
                             binding.includeRegisterBottomButtons.getRoot().setVisibility(View.GONE);
                         }
@@ -135,11 +138,11 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
 
     @Override
     public void startRegistration(boolean startRegistration) {
-        if (!startRegistration) {
+        if (startRegistration) {
+            initializePagerAdapter();
+        } else {
             AppUtils.shortToast(this, getString(R.string.error_network));
             finish();
-        } else {
-            initializePagerAdapter();
         }
     }
 

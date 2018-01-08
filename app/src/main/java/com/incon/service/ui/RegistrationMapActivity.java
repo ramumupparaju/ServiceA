@@ -20,6 +20,7 @@ import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.callbacks.ILocationCallbacks;
 import com.incon.service.databinding.ActivityRegistrationMapBinding;
+import com.incon.service.dto.registration.AddressInfo;
 import com.incon.service.utils.AddressFromLatLngAddress;
 import com.incon.service.utils.DeviceLocation;
 import com.jakewharton.rxbinding2.widget.RxTextView;
@@ -38,6 +39,7 @@ public class RegistrationMapActivity extends BaseActivity implements OnMapReadyC
     private Marker marker;
     private String preZipCode;
     private LatLng locationAddress;
+    private AddressInfo addressInfo;
     private AddressFromLatLngAddress addressFromLatLngAddress;
 
 
@@ -58,6 +60,7 @@ public class RegistrationMapActivity extends BaseActivity implements OnMapReadyC
         getSupportFragmentManager().beginTransaction().add(R.id.map_monitor, mapFragment).commit();
         mapFragment.getMapAsync(this);
 
+        addressInfo = new AddressInfo();
         Intent intent = getIntent();
         if (intent != null) {
             String stringExtra = intent.getStringExtra(IntentConstants.LOCATION_COMMA);
@@ -87,6 +90,7 @@ public class RegistrationMapActivity extends BaseActivity implements OnMapReadyC
         dataIntent.putExtra(IntentConstants.ADDRESS_COMMA, addressBuilder.toString());
         dataIntent.putExtra(IntentConstants.LOCATION_COMMA, locationAddress.latitude
                 + COMMA_SEPARATOR + locationAddress.longitude);
+        dataIntent.putExtra(IntentConstants.ADDRESS_INFO, addressInfo);
         setResult(Activity.RESULT_OK, dataIntent);
         finish();
     }
@@ -127,15 +131,57 @@ public class RegistrationMapActivity extends BaseActivity implements OnMapReadyC
         addressFromLatLngAddress.getLocationFromAddress(RegistrationMapActivity.this,
                 binding.edittextPincode.getText().toString(),
                 RequestCodes.LOCATION_LATLNG_FROM_ADDRESS, new LocationHandler());
-
     }
-
     private class LocationHandler extends Handler {
         @Override
         public void handleMessage(Message message) {
             Bundle bundle = message.getData();
             Address locationAddress = bundle.getParcelable(BundleConstants
                     .LOCATION_ADDRESS);
+            try {
+                addressInfo.setCity(locationAddress.getLocality());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            try {
+                addressInfo.setCoordinates(locationAddress.getLatitude() + COMMA_SEPARATOR +
+                        locationAddress.getLongitude());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            try {
+                addressInfo.setCountry(locationAddress.getCountryName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                addressInfo.setZipCode(locationAddress.getPostalCode());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                addressInfo.setState(locationAddress.getAdminArea());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                addressInfo.setLatitude(locationAddress.getLatitude());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                addressInfo.setLongitude(locationAddress.getLongitude());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             if (locationAddress != null) {
                 switch (message.what) {
                     case RequestCodes.LOCATION_ADDRESS_FROM_LATLNG:

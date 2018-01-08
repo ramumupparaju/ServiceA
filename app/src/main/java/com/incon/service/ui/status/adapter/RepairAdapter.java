@@ -6,10 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.databinding.library.baseAdapters.BR;
-import com.incon.service.AppUtils;
+import com.incon.service.BR;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.databinding.ItemRepairFragmentBinding;
 import com.incon.service.ui.BaseRecyclerViewAdapter;
 
@@ -29,8 +28,8 @@ public class RepairAdapter extends BaseRecyclerViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ProductInfoResponse returnHistoryResponse = filteredList.get(position);
-        ((RepairAdapter.ViewHolder) holder).bind(returnHistoryResponse);
+        FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
+        ((RepairAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -42,8 +41,10 @@ public class RepairAdapter extends BaseRecyclerViewAdapter {
             binding.getRoot().setOnClickListener(this);
         }
 
-        public void bind(ProductInfoResponse returnHistoryResponse) {
-
+        public void bind(FetchNewRequestResponse fetchNewRequestResponse) {
+            binding.setVariable(BR.fetchNewRequestResponse, fetchNewRequestResponse);
+            View root = binding.getRoot();
+            binding.executePendingBindings();
         }
 
         @Override

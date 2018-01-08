@@ -7,11 +7,8 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
-
-import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -29,30 +26,29 @@ public class RepairPresenter extends BasePresenter<RepairContract.View> implemen
         super.initialize(extras);
         appContext = ConnectApplication.getAppContext();
     }
+    @Override
+    public void fetchRepairServiceRequests(int userId) {
+        getView().showProgress(appContext.getString(R.string.progress_fetch_repair_service_request));
+        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
+            @Override
+            public void onNext(Object o) {
+                getView().fetchRepairServiceRequests(o);
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+            }
 
-    public void returnHistory(int userId) {
-        getView().showProgress(appContext.getString(R.string.progress_return_history));
-        DisposableObserver<List<ProductInfoResponse>> observer = new
-                DisposableObserver<List<ProductInfoResponse>>() {
-                    @Override
-                    public void onNext(List<ProductInfoResponse> historyResponse) {
-                        getView().loadReturnHistory(historyResponse);
-                    }
+            @Override
+            public void onComplete() {
+                getView().hideProgress();
 
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().hideProgress();
-                        Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
-                        getView().handleException(errorDetails);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        getView().hideProgress();
-                    }
-                };
-        AppApiService.getInstance().returnApi(userId).subscribe(observer);
+            }
+        };
+        AppApiService.getInstance().fetchRepairServiceRequestApi(userId).subscribe(observer);
         addDisposable(observer);
     }
 

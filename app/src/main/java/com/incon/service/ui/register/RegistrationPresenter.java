@@ -9,9 +9,12 @@ import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
 import com.incon.service.apimodel.components.defaults.DefaultsResponse;
+import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 import com.incon.service.utils.OfflineDataManager;
+
+import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -20,27 +23,25 @@ public class RegistrationPresenter extends BasePresenter<RegistrationContract.Vi
 
     private static final String TAG = RegistrationPresenter.class.getName();
     private Context appContext;
-    private OfflineDataManager offlineDataManager;
 
     @Override
     public void initialize(Bundle extras) {
         super.initialize(extras);
         appContext = ConnectApplication.getAppContext();
-        offlineDataManager = new OfflineDataManager();
     }
 
     /**
      * Uploading defaults data for registration
      */
+    //default api implemenatation
     @Override
     public void defaultsApi() {
         getView().showProgress(appContext.getString(R.string.progress_defaults));
-        DisposableObserver<DefaultsResponse> observer = new DisposableObserver<DefaultsResponse>() {
+        DisposableObserver<List<FetchCategories>> observer = new DisposableObserver<List<FetchCategories>>() {
             @Override
-            public void onNext(DefaultsResponse defaultsResponse) {
+            public void onNext(List<FetchCategories> fetchCategoriesList) {
                 getView().hideProgress();
-                offlineDataManager.saveData(defaultsResponse,
-                        DefaultsResponse.class.getName());
+                ConnectApplication.getAppContext().setFetchCategoriesList(fetchCategoriesList);
                 getView().startRegistration(true);
             }
 
@@ -50,10 +51,7 @@ public class RegistrationPresenter extends BasePresenter<RegistrationContract.Vi
                 Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
                 getView().handleException(errorDetails);
                 if (errorDetails.first == AppConstants.ErrorCodes.NO_NETWORK) {
-                    DefaultsResponse defaultsResponse = offlineDataManager
-                            .loadData(DefaultsResponse.class,
-                                    DefaultsResponse.class.getName());
-                    if (defaultsResponse != null) {
+                    if (ConnectApplication.getAppContext().getFetchCategoriesList() != null) {
                         getView().startRegistration(true);
                         return;
                     }
@@ -63,7 +61,6 @@ public class RegistrationPresenter extends BasePresenter<RegistrationContract.Vi
 
             @Override
             public void onComplete() {
-                getView().hideProgress();
             }
         };
         AppApiService.getInstance().defaultsApi().subscribe(observer);

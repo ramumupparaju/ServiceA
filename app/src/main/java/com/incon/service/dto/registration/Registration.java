@@ -20,6 +20,7 @@ import static com.incon.service.AppConstants.VALIDATION_SUCCESS;
 
 public class Registration extends BaseObservable {
 
+
     @SerializedName("address")
     @Expose
     private String address;
@@ -34,7 +35,7 @@ public class Registration extends BaseObservable {
     private String email;
     @SerializedName("gender")
     @Expose
-    private String genderType;
+    private String gender;
     @SerializedName("location")
     @Expose
     private String location;
@@ -47,50 +48,34 @@ public class Registration extends BaseObservable {
     @SerializedName("password")
     @Expose
     private String password;
+    @SerializedName("serviceCenterUserType")
+    @Expose
+    private String serviceCenterUserType;
 
-    private String confirmPassword;
+    @SerializedName("serviceCenter")
+    @Expose
+    private ServiceCenter serviceCenter;
 
+    private transient String genderType;
+    private transient String confirmPassword;
     private transient String dateOfBirthToShow;
 
-    public String getConfirmPassword() {
-        return confirmPassword;
+    public ServiceCenter getServiceCenter() {
+        return serviceCenter;
     }
 
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
+    public void setServiceCenter(ServiceCenter serviceCenter) {
+        this.serviceCenter = serviceCenter;
     }
 
-
+    @Bindable
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        notifyChange();
     }
 
     @Bindable
@@ -103,6 +88,30 @@ public class Registration extends BaseObservable {
         notifyChange();
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -111,30 +120,61 @@ public class Registration extends BaseObservable {
         this.location = location;
     }
 
+    @Bindable
     public String getMobileNumber() {
         return mobileNumber;
     }
 
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
+        notifyChange();
     }
 
+    public String getServiceCenterUserType() {
+        return serviceCenterUserType;
+    }
+
+    public void setServiceCenterUserType(String serviceCenterUserType) {
+        this.serviceCenterUserType = serviceCenterUserType;
+    }
+
+    @Bindable
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+        notifyChange();
+    }
+
+    @Bindable
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+        notifyChange();
     }
 
+    @Bindable
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+        notifyChange();
     }
 
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
 
     @Bindable
     public String getDateOfBirthToShow() {
@@ -264,5 +304,6 @@ public class Registration extends BaseObservable {
         }
         return VALIDATION_SUCCESS;
     }
+
 
 }

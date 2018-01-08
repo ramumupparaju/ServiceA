@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 
-
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.login.LoginResponse;
@@ -73,6 +72,7 @@ public class UpDateUserProfileActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
+            upDateUserProfile.setGender(String.valueOf(upDateUserProfile.getGender().charAt(0)));
             upDateUserProfilePresenter.upDateUserProfile(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(USER_ID, DEFAULT_VALUE), upDateUserProfile);
         }
@@ -156,10 +156,10 @@ public class UpDateUserProfileActivity extends BaseActivity implements
         upDateUserProfile.setGender(sharedPrefsUtils.getStringPreference(
                 USER_GENDER));
 
-        upDateUserProfile.setDob(sharedPrefsUtils.getStringPreference(
+        upDateUserProfile.setDateOfBirthToShow(sharedPrefsUtils.getStringPreference(
                 USER_DOB));
 
-        upDateUserProfile.setEmail(sharedPrefsUtils.getStringPreference(
+        upDateUserProfile.setUserEmail(sharedPrefsUtils.getStringPreference(
                 USER_EMAIL_ID));
 
         upDateUserProfile.setAddress(sharedPrefsUtils.getStringPreference(
@@ -213,7 +213,6 @@ public class UpDateUserProfileActivity extends BaseActivity implements
         arrayAdapter.setDropDownViewResource(R.layout.view_spinner);
         binding.spinnerGender.setAdapter(arrayAdapter);
     }
-
 
     private boolean validateFields() {
         binding.inputLayoutUpDateUserName.setError(null);

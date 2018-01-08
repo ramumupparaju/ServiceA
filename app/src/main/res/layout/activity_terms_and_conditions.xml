@@ -24,7 +24,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="48dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/connect_icon"
+            android:src="@drawable/connect_icon_service"
             />
 
         <WebView

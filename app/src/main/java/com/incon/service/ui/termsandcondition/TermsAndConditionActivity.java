@@ -12,8 +12,6 @@ import com.incon.service.R;
 import com.incon.service.databinding.ActivityTermsAndConditionsBinding;
 import com.incon.service.ui.BaseActivity;
 
-import static com.incon.service.AppConstants.TERMS_CONDITIONS_URL;
-
 
 /**
  * Created on 08 Jun 2017 3:59 PM.

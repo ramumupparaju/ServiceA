@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:background="@drawable/dialog_background"
+
+            >
+
+            <!-- verify title -->
+
+            <TextView
+                android:id="@+id/text_list_title"
+                style="@style/BothWrap"
+                fontPath="fonts/OpenSans-Semibold.ttf"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20.5dp"
+                android:gravity="center_horizontal"
+                android:text="@string/option_past_history"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15.4sp"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pasthistory_recyclerview"
+                android:layout_below="@+id/text_list_title"
+                style="@style/BothMatch"
+                android:layout_marginTop="@dimen/margin_10"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="4dp"
+                android:scrollbarThumbVertical="@drawable/scrollbar"
+                android:scrollbars="vertical"/>
+
+        </RelativeLayout>
+
+
+
+</layout>

@@ -6,10 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.databinding.library.baseAdapters.BR;
-import com.incon.service.AppUtils;
+import com.incon.service.BR;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.databinding.ItemCheckupFragmentBinding;
 import com.incon.service.ui.BaseRecyclerViewAdapter;
 
@@ -17,7 +16,7 @@ import com.incon.service.ui.BaseRecyclerViewAdapter;
  * Created by PC on 12/6/2017.
  */
 
-public class CheckUpAdapter  extends BaseRecyclerViewAdapter {
+public class CheckUpAdapter extends BaseRecyclerViewAdapter {
 
     @Override
     public CheckUpAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,8 +28,8 @@ public class CheckUpAdapter  extends BaseRecyclerViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ProductInfoResponse returnHistoryResponse = filteredList.get(position);
-        ((CheckUpAdapter.ViewHolder) holder).bind(returnHistoryResponse);
+        FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
+        ((CheckUpAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -42,7 +41,10 @@ public class CheckUpAdapter  extends BaseRecyclerViewAdapter {
             binding.getRoot().setOnClickListener(this);
         }
 
-        public void bind(ProductInfoResponse returnHistoryResponse) {
+        public void bind(FetchNewRequestResponse fetchNewRequestResponse) {
+            binding.setVariable(BR.fetchNewRequestResponse, fetchNewRequestResponse);
+            View root = binding.getRoot();
+            binding.executePendingBindings();
 
         }
 

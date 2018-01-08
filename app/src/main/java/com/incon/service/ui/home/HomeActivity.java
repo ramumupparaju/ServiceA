@@ -34,12 +34,12 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     private static final int TAB_Status = 0;
     private static final int TAB_Reports = 1;
     private static final int TAB_FeedBack = 2;
-    private static final int TAB_NOTIFICATIONS = 3;
 
     private View rootView;
     private HomePresenter homePresenter;
     private ActivityHomeBinding binding;
     private ToolBarBinding toolBarBinding;
+    private int userId;
 
     private LinkedHashMap<Integer, Fragment> tabFragments = new LinkedHashMap<>();
 
@@ -60,14 +60,8 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
         binding.setActivity(this);
         rootView = binding.getRoot();
-        disableAllAnimation(binding.bottomNavigationView);
-        binding.bottomNavigationView.setTextVisibility(true);
-        setBottomNavigationViewListeners();
-        handleBottomViewOnKeyBoardUp();
 
-        SharedPrefsUtils.cacheProvider().setBooleanPreference(AppConstants.CachePrefs.IS_SCAN_FIRST, true);
-
-        binding.bottomNavigationView.setCurrentItem(TAB_Status);
+        userId = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE);
 
         //changed preference as otp verified
         SharedPrefsUtils.loginProvider().setBooleanPreference(AppConstants.LoginPrefs.IS_REGISTERED, false);
@@ -78,6 +72,26 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         initializeToolBar();
         getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
 
+
+        // loading  default status data
+        homePresenter.getDefaultStatusData();
+
+        int userType = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
+        if (userType == UserConstants.SUPER_ADMIN_TYPE) {
+            // loading service centers only if user type is super admin
+            homePresenter.getServiceCenters(userId);
+        } else {
+            //directly load status screen
+            serviceCentersSuccessfully();
+        }
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setToolbarTitle(String title) {
@@ -89,22 +103,22 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         toolBarBinding = DataBindingUtil.inflate(layoutInflater,
                 R.layout.tool_bar, null, false);
         setSupportActionBar(toolBarBinding.toolbar);
-        setToolbarTitle(getString(R.string.title_history));
+        setToolbarTitle(getString(R.string.title_status));
 
         toolBarBinding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+                overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_right);
             }
         });
         toolBarBinding.toolbarRightIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // onUserQrCodeClick();
+                // onUserQrCodeClick();
             }
         });
         replaceToolBar(toolBarBinding.toolbar);
-
     }
 
     private FragmentManager.OnBackStackChangedListener backStackChangedListener =
@@ -115,19 +129,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                     currentFragment.setTitle();
                 }
             };
-
-    // generating qr code to user
-    /*public void onUserQrCodeClick() {
-        String userData = SharedPrefsUtils.loginProvider().getStringPreference(
-                AppConstants.LoginPrefs.USER_UUID);
-        if (TextUtils.isEmpty(userData)) {
-            showErrorMessage(getString(R.string.error_uuid));
-            return;
-        }
-        Bundle bundle = new Bundle();
-        bundle.putString(AppConstants.BundleConstants.QRCODE_DATA, userData);
-        replaceFragmentAndAddToStack(UserQrCodeFragment.class, bundle);
-    }*/
 
     public void replaceToolBar(View toolBarView) {
         if (toolBarView == null) {
@@ -160,7 +161,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
             case R.id.action_feedback:
                 aClass = FeedbackFragment.class;
                 break;
-
             case R.id.action_notifications:
                 aClass = NotificationsFragment.class;
                 break;
@@ -185,7 +185,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
                     public void onGlobalLayout() {
                         int heightDiff = rootView.getRootView().getHeight() - rootView.getHeight();
                         binding.bottomNavigationView.setVisibility(View.VISIBLE);
-                        if (heightDiff > DeviceUtils.convertDpToPx(200)) {
+                        if (heightDiff > DeviceUtils.dpToPx(HomeActivity.this, 200)) {
                             // if more than 200 dp, it's probably a keyboard...
                             binding.bottomNavigationView.setVisibility(View.GONE);
                         }
@@ -197,5 +197,16 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         bnve.enableAnimation(false);
         bnve.enableShiftingMode(false);
         bnve.enableItemShiftingMode(false);
+    }
+
+    @Override
+    public void serviceCentersSuccessfully() {
+        disableAllAnimation(binding.bottomNavigationView);
+        binding.bottomNavigationView.setTextVisibility(true);
+        setBottomNavigationViewListeners();
+        handleBottomViewOnKeyBoardUp();
+
+        binding.bottomNavigationView.setCurrentItem(TAB_Status);
+
     }
 }

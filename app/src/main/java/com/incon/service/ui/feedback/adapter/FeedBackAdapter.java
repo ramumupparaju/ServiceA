@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
-import com.incon.service.databinding.ItemCheckupFragmentBinding;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.databinding.ItemFeedbackFragmentBinding;
 import com.incon.service.ui.BaseRecyclerViewAdapter;
-import com.incon.service.ui.status.adapter.CheckUpAdapter;
 
 /**
  * Created by shiva on 12/8/2017.
@@ -29,8 +27,8 @@ public class FeedBackAdapter extends BaseRecyclerViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ProductInfoResponse returnHistoryResponse = filteredList.get(position);
-        ((FeedBackAdapter.ViewHolder) holder).bind(returnHistoryResponse);
+        FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
+        ((FeedBackAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -42,7 +40,7 @@ public class FeedBackAdapter extends BaseRecyclerViewAdapter {
             binding.getRoot().setOnClickListener(this);
         }
 
-        public void bind(ProductInfoResponse returnHistoryResponse) {
+        public void bind(FetchNewRequestResponse fetchNewRequestResponse) {
 
         }
 

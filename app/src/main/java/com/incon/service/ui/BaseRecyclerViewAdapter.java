@@ -2,12 +2,8 @@ package com.incon.service.ui;
 
 import android.support.v7.widget.RecyclerView;
 
-
-import com.incon.service.AppConstants;
-import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,13 +16,13 @@ import java.util.List;
  */
 
 public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public List<ProductInfoResponse> allDataResponseList = new ArrayList<>();
-    public List<ProductInfoResponse> filteredList = new ArrayList<>();
+    public List<FetchNewRequestResponse> filteredList = new ArrayList<>();
+    public List<FetchNewRequestResponse> fetchNewRequestResponseList = new ArrayList<>();
     public IClickCallback clickCallback;
 
-    public Comparator comparator = new Comparator<ProductInfoResponse>() {
+    public Comparator comparator = new Comparator<FetchNewRequestResponse>() {
         @Override
-        public int compare(ProductInfoResponse o1, ProductInfoResponse o2) {
+        public int compare(FetchNewRequestResponse o1, FetchNewRequestResponse o2) {
             try {
                 Date a = null;
                 Date b = null;
@@ -46,14 +42,14 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
         return filteredList.size();
     }
 
-    public ProductInfoResponse getItemFromPosition(int position) {
+    public FetchNewRequestResponse getItemFromPosition(int position) {
         return filteredList.get(position);
     }
 
-    public void setData(List<ProductInfoResponse> returnHistoryResponseList) {
-        this.allDataResponseList = returnHistoryResponseList;
+    public void setData(List<FetchNewRequestResponse> fetchNewRequestResponseList) {
+        this.fetchNewRequestResponseList = fetchNewRequestResponseList;
         filteredList.clear();
-        filteredList.addAll(returnHistoryResponseList);
+        filteredList.addAll(fetchNewRequestResponseList);
         Collections.sort(filteredList, comparator);
         notifyDataSetChanged();
     }
@@ -63,7 +59,7 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
         this.clickCallback = clickCallback;
     }
 
-    public void searchData(String searchableString, String searchType) {
+/*    public void searchData(String searchableString, String searchType) {
         filteredList.clear();
         if (searchType.equalsIgnoreCase(AppConstants.FilterConstants.NAME)) {
             for (ProductInfoResponse returnHistoryResponse
@@ -87,17 +83,17 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
             filteredList.addAll(allDataResponseList);
         }
         notifyDataSetChanged();
-    }
+    }*/
 
     public void clearSelection() {
-        for (ProductInfoResponse returnHistoryResponse : filteredList) {
-            returnHistoryResponse.setSelected(false);
+        for (FetchNewRequestResponse fetchNewRequestResponse : filteredList) {
+            fetchNewRequestResponse.setSelected(false);
         }
         notifyDataSetChanged();
     }
 
     public void clearData() {
-        allDataResponseList.clear();
+        fetchNewRequestResponseList.clear();
         notifyDataSetChanged();
     }
 

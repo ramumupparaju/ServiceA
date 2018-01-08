@@ -30,18 +30,39 @@ android {
 
     useLibrary 'org.apache.http.legacy'
     buildTypes {
+        debug {
+            resValue 'string', 'default_key', "Basic Y29ubmVjdDpzM2NyZXQ="
+
+            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-52-11-96-200.us-west-2.compute.amazonaws.com:9898/connect/\""
+            buildConfigField 'boolean', 'LOG_VALUE', 'true'
+            resValue "string", "app_name", "Connect Service dev"
+        }
+
         release {
-            minifyEnabled false
+            resValue 'string', 'default_key', "Basic Y29ubmVjdDpzM2NyZXQ="
+
+            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-13-126-102-199.ap-south-1.compute.amazonaws.com:8443/connect/\""
+            buildConfigField 'boolean', 'LOG_VALUE', 'true'
+            resValue "string", "app_name", "Connect Service"
+
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     productFlavors {
 
-        moonz_dev {
+        connect_staging {
+            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-52-11-96-200.us-west-2.compute.amazonaws.com:9898/connect/\""
+        }
+        connect_production {
+            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-13-126-102-199.ap-south-1.compute.amazonaws.com:8443/connect/\""
+        }
+
+        /*moonz_dev {
             buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-52-11-96-200.us-west-2.compute.amazonaws.com:9898/connect/\""
             buildConfigField 'boolean', 'LOG_VALUE', 'true'
             resValue "string", "app_name", "Connect Service"
-        }
+        }*/
         /*client_staging {
             buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-52-11-96-200.us-west-2.compute.amazonaws.com:9898/connect/\""
             buildConfigField 'boolean', 'LOG_VALUE', 'false'
@@ -121,6 +142,8 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     // material spinner
     compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
+    // shimmer
+    implementation 'com.github.sharish:ShimmerRecyclerView:v1.1'
     //rounded imageview
     compile 'de.hdodenhof:circleimageview:2.1.0'
     allprojects {
@@ -129,3 +152,5 @@ dependencies {
         }
     }
 }
+// ADD THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'

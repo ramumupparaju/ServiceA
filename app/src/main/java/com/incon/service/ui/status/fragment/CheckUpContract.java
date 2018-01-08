@@ -1,6 +1,6 @@
 package com.incon.service.ui.status.fragment;
 
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.ui.BaseView;
 
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.List;
 public interface CheckUpContract {
 
     interface View extends BaseView {
-        void loadReturnHistory(List<ProductInfoResponse> returnHistoryResponseList);
+        void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
     }
 
     interface Presenter {
-        void returnHistory(int userId);
+        void fetchNewServiceRequests(int userId);
     }
 }

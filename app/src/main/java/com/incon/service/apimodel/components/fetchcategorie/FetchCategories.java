@@ -9,7 +9,7 @@ import java.util.List;
  * Created by PC on 10/17/2017.
  */
 
-public class FetchCategories {
+public class FetchCategories implements Cloneable {
 
     @SerializedName("id")
     @Expose
@@ -44,5 +44,8 @@ public class FetchCategories {
         this.divisions = divisions;
     }
 
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
 

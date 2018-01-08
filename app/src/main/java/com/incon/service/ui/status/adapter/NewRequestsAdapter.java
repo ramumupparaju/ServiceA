@@ -5,14 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.android.databinding.library.baseAdapters.BR;
 import com.incon.service.AppUtils;
+import com.incon.service.BR;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
-import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.databinding.ItemCheckupFragmentBinding;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.databinding.ItemNewRequestFragmentBinding;
 import com.incon.service.ui.BaseRecyclerViewAdapter;
 
@@ -32,10 +29,8 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        /*ProductInfoResponse returnHistoryResponse = filteredList.get(position);
-        ((NewRequestsAdapter.ViewHolder) holder).bind(returnHistoryResponse);*/
-
-
+        FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
+        ((NewRequestsAdapter.ViewHolder) holder).bind(fetchNewRequestResponse, position);
 
     }
 
@@ -49,7 +44,14 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
             binding.getRoot().setOnClickListener(this);
         }
 
-        public void bind(ProductInfoResponse returnHistoryResponse) {
+        public void bind(FetchNewRequestResponse fetchNewRequestResponse, int position) {
+            binding.setVariable(BR.fetchNewRequestResponse, fetchNewRequestResponse);
+            View root = binding.getRoot();
+            AppUtils.loadImageFromApi(binding.brandImageview, fetchNewRequestResponse
+                    .getProductLogoUrl());
+            AppUtils.loadImageFromApi(binding.productImageview, fetchNewRequestResponse
+                    .getProductImageUrl());
+            binding.executePendingBindings();
         }
 
         @Override

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        style="@style/MatchWrap"
+        android:background="@drawable/dialog_background">
+
+
+        <!-- Date picker -->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_layout_date"
+            style="@style/Register_TextInputLayout"
+            android:hint="@string/hint_date"
+            android:layout_marginTop="@dimen/margin_20"
+            app:errorEnabled="true"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_date"
+                style="@style/Register_TextInputEditText"
+                android:enabled="false" />
+        </com.incon.service.custom.view.CustomTextInputLayout>
+
+        <!--dummy view for date click event -->
+        <View
+            android:id="@+id/view_date"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignBottom="@+id/input_layout_date"
+            android:layout_alignEnd="@+id/input_layout_date"
+            android:layout_alignStart="@+id/input_layout_date"
+            android:layout_alignTop="@+id/input_layout_date"
+            android:background="@null" />
+
+        <!-- time picker -->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_layout_time"
+            style="@style/Register_TextInputLayout"
+            android:layout_below="@id/input_layout_date"
+            android:hint="@string/hint_time"
+            app:errorEnabled="true"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_time"
+                style="@style/Register_TextInputEditText"
+                android:enabled="false" />
+        </com.incon.service.custom.view.CustomTextInputLayout>
+
+        <!--dummy view for time click event -->
+        <View
+            android:id="@+id/view_time"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignBottom="@+id/input_layout_time"
+            android:layout_alignEnd="@+id/input_layout_time"
+            android:layout_alignStart="@+id/input_layout_time"
+            android:layout_alignTop="@+id/input_layout_time"
+            android:background="@null" />
+
+
+        <!-- layout for bottom buttons -->
+        <include
+            android:id="@+id/include_register_bottom_buttons"
+            layout="@layout/view_registration_bottom_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_below="@id/input_layout_time"
+            />
+
+    </RelativeLayout>
+</layout>

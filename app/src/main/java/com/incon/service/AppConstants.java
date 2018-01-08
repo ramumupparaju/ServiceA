@@ -9,6 +9,7 @@ public interface AppConstants {
     String MULTIPART_FORM_DATA = "image/*";
     String COMMA_SEPARATOR = ",";
     int DEFAULT_VALUE = Integer.MIN_VALUE;
+    String LABEL_ALL = "ALL";
 
     String BUILD_FLAVOR = "moonz_dev";
     int VALIDATION_SUCCESS = 0;
@@ -19,24 +20,21 @@ public interface AppConstants {
     int DEAULT_VALUE = Integer.MAX_VALUE;
 
 
-    interface StatusConstants {
-        String BUY_REQUEST_ACCEPT = "A";
-        String BUY_REQUEST_REJECT = "R";
-        String PENDING = "PEN";
-        String DISPATCHES_ON = "DSN";
-        String DISPATCHED = "DSD";
-        String DELIVERED = "DLD";
-        String INSTALLED = "INS";
+    interface RegistrationConstants {
+        String SERVICE_INDIVIDUAL = "I";
+        String SERVICE_GROUP = "G";
     }
+
+    interface BooleanConstants {
+        int IS_TRUE = 1;
+        int IS_FALSE = 0;
+    }
+
 
     interface FilterConstants {
         String NONE = "none";
         String NAME = "name";
         String BRAND = "brand";
-    }
-
-    interface WarrantyRegistrationConstants {
-        int MINIMUM_MODELNUMBER_TO_SEARCH = 2;
     }
 
     interface GoogleMapConstants {
@@ -47,6 +45,11 @@ public interface AppConstants {
     interface HttpErrorCodeConstants {
         int ERROR_UNAUTHORIZED = 401;
         int ERROR_FORBIDDEN = 403; // pay load error
+    }
+
+    interface UserConstants {
+        int SUPER_ADMIN_TYPE = 7;
+        int USER_TYPE = 8;
     }
 
     interface PushConstants {
@@ -79,17 +82,84 @@ public interface AppConstants {
         int RE_ENTER_PASSWORD_DOES_NOT_MATCH = 19;
         int DOB_FUTURE_DATE = 14;
         int DOB_PERSON_LIMIT = 15;
-
-
         int CATEGORY_REQ = 21;
         int ADDRESS_REQ = 22;
         int GSTN_REQ = 23;
         int STORE_LOGO = 24;
+        int DIVISION_REQ = 25;
+        int BRAND_REQ = 26;
+        int CREATED_DATE_REQ = 27;
+        int SERVICE_CENTER_ID = 28;
+        int SERVICE_CENTER_ROLE_ID = 29;
+        int CREATED_FUTURE_DATE = 30;
 
         int ZIPCODE_REQ = 9;
         int ZIPCODE_INVALID = 12;
         int TIMEZONE_REQ = 8;
     }
+
+
+    interface AddUserValidations {
+        int NAME_REQ = 1;
+        int PHONE_REQ = 3;
+        int PHONE_MIN_DIGITS = 10;
+        int GENDER_REQ = 17;
+        int DOB_REQ = 13;
+        int EMAIL_REQ = 5;
+        int EMAIL_NOTVALID = 6;
+        int PASSWORD_REQ = 7;
+        int PASSWORD_PATTERN_REQ = 11;
+        int RE_ENTER_PASSWORD_REQ = 18;
+        int RE_ENTER_PASSWORD_DOES_NOT_MATCH = 19;
+        int DOB_FUTURE_DATE = 14;
+        int DOB_PERSON_LIMIT = 15;
+        int ADDRESS_REQ = 22;
+        int CREATED_DATE_REQ = 27;
+        int SERVICE_CENTER_NAME = 28;
+        int SERVICE_DISIGNATION = 29;
+        int SERVICE_CENTER_DESIGNATION = 30;
+        int REPORTING_PERSON = 31;
+    }
+
+    interface AddServiceCenterValidation {
+        int NAME_REQ = 1;
+        int PHONE_REQ = 3;
+        int PHONE_MIN_DIGITS = 10;
+        int GENDER_REQ = 17;
+        int DOB_REQ = 13;
+        int EMAIL_REQ = 5;
+        int EMAIL_NOTVALID = 6;
+        int PASSWORD_REQ = 7;
+        int PASSWORD_PATTERN_REQ = 11;
+        int RE_ENTER_PASSWORD_REQ = 18;
+        int RE_ENTER_PASSWORD_DOES_NOT_MATCH = 19;
+        int DOB_FUTURE_DATE = 14;
+        int DOB_PERSON_LIMIT = 15;
+        int CATEGORY_REQ = 21;
+        int ADDRESS_REQ = 22;
+        int GSTN_REQ = 23;
+        int STORE_LOGO = 24;
+        int DIVISION_REQ = 25;
+        int BRAND_REQ = 26;
+        int CREATED_DATE_REQ = 27;
+        int SERVICE_CENTER_ID = 28;
+        int SERVICE_CENTER_ROLE_ID = 29;
+        int CREATED_FUTURE_DATE = 30;
+
+        int ZIPCODE_REQ = 9;
+        int ZIPCODE_INVALID = 12;
+        int TIMEZONE_REQ = 8;
+    }
+
+
+    interface AddDesignationsValidation {
+        int DESCRIPTION = 1;
+        int NAME_REQ = 2;
+        int SERVICE_CENTER_NAME = 3;
+
+
+    }
+
 
     interface PasswordValidation {
         int NEWPWD_REQ = 1;
@@ -124,6 +194,12 @@ public interface AppConstants {
         String ADDRESS_COMMA = "addressDetails";
         String LOCATION_COMMA = "locationDetails";
         String FROM_FORGOT_PASSWORD_SCREEN = "fromForgotPasswordScreen";
+        String ADDRESS_INFO = "addressInfo";
+        String SERVICE_CENTER_DATA = "serviceCenterData";
+        String SERVICE_CENTER_ID = "service_center_id";
+        String USER_DATA = "userData";
+        String USER_DATA_LIST = "user_data_list";
+        String DESIGNATION_DATA = "designationData";
     }
 
 
@@ -141,7 +217,6 @@ public interface AppConstants {
         int RE_ENTER_PASSWORD_DOES_NOT_MATCH = 19;
         int DOB_FUTURE_DATE = 14;
         int DOB_PERSON_LIMIT = 15;
-
 
         int CATEGORY_REQ = 21;
         int ADDRESS_REQ = 22;
@@ -190,12 +265,16 @@ public interface AppConstants {
         String USER_DOB = "userDob";
         String USER_GENDER = "userGender";
         String USER_ADDRESS = "userAddress";
+        String USER_TYPE = "userType";
+        String USER_IS_ADMIN = "userIsAdmin";
         String USER_CITY = "userCity";
         String USER_STATE = "userState";
         String USER_POSTAL_CODE = "userPostalCode";
         String USER_PASSWORD = "userPassword";
         String USER_CONFIRM_PASSWORD = "userConfirmPassword";
         String USER_UUID = "uuid";
+        String SERVICE_CENTER_ID = "serviceCenterId";
+        String STORE_LOGO = "storeLogo";
 
 
         String IS_REGISTERED = "isRegistered";
@@ -206,6 +285,7 @@ public interface AppConstants {
     }
 
     interface ApiRequestKeyConstants {
+        String HEADER_AUTHORIZATION = "Authorization";
         String BODY_EMAIL = "email";
         String BODY_CUSTOMER_ID = "customerId";
         String BODY_MERCHANT_ID = "merchantId";
@@ -239,7 +319,16 @@ public interface AppConstants {
         int LOCATION_LATLNG_FROM_ADDRESS = 119;
         int LOCATION_ADDRESS_FROM_LATLNG = 120;
         int PRODUCT_ADD_FRAGMENT = 121;
+        int ADD_SERVICE_CENTER = 122;
+        int ADD_USER_DESIGNATION = 123;
 
+    }
+
+
+    interface ServiceConstants {
+        String TIME_10_12 = "10:00,12:00";
+        String TIME_12_15 = "12:00,15:00";
+        String TIME_15_17 = "15:00,17:00";
     }
 
     interface TimeConstants {
@@ -252,8 +341,8 @@ public interface AppConstants {
     interface DateFormatterConstants {
         String FROM_API_MILLIS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         String FROM_API = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-       /* String LOCAL_DATE_DD_MM_YYYY_HH_MM_SS =
-                "dd-MM-yyyy HH:mm:ss"; //14-08-1987 18:30:00*/
+        /* String LOCAL_DATE_DD_MM_YYYY_HH_MM_SS =
+                 "dd-MM-yyyy HH:mm:ss"; //14-08-1987 18:30:00*/
         String LOCAL_DATE_DD_MM_YYYY_HH_MM =
                 "dd-MM-yyyy HH:mm"; //14-08-1987 18:30
         String MMMM_YYYY = "MMMM - yyyy"; //June - 2017
@@ -299,8 +388,8 @@ public interface AppConstants {
 
     interface MenuConstants {
         int PROFILE = 0;
-        int CHANGE_PWD = 1;
-        int BILLFORMAT = 2;
+        int ALL_SERVICE_CENTERS = 1;
+        int CHANGE_PWD = 2;
         int TIMEINGS = 3;
         int CONTACTDETAILS = 4;
         int LOGOUT = 5;
@@ -317,47 +406,6 @@ public interface AppConstants {
 
     }
 
-    interface WarrantyregistationValidation {
-        int MODEL = 1;
-        int INVALID_MODEL = 2;
-        int DESCRIPTION = 3;
-        int SERIAL_NO = 4;
-        int BATCH_NO = 5;
-        int MRP_PRICE = 6;
-        int PRICE = 7;
-        int INVOICENUMBER = 8;
-    }
-
-    interface AddNewModelValidation {
-        int MODEL = 1;
-        int INVALID_MODEL = 2;
-        int DESCRIPTION = 3;
-        int CATEGORY = 4;
-        int DIVISION = 5;
-        int BRAND = 6;
-        int MRP_PRICE = 7;
-        int PRICE = 8;
-        int NOTE = 9;
-    }
-
-
-    interface Favorites {
-        String ADDRESS_TYPE_ONE = "1";
-    }
-
-    interface AddOfferValidation {
-        int MODEL = 1;
-        int INVALID_MODEL = 2;
-        int CATEGORY = 3;
-        int DIVISION = 4;
-        int BRAND = 5;
-        int OFFER_START_ON = 6;
-        int OFFER_EXPIRE_ON = 7;
-        int SCAN_START_DATE = 8;
-        int SCAN_END_DATE = 9;
-        int OFFER_PRICE = 10;
-
-    }
 
     public class PushIntentConstants {
         public static final String PUSH_PAYLOAD = "pushPayload";

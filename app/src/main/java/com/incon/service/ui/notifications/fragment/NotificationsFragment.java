@@ -1,8 +1,8 @@
 package com.incon.service.ui.notifications.fragment;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,29 +14,23 @@ import android.widget.TextView;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.notifications.NotificationsResponse;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.databinding.BottomSheetNotificationsBinding;
-import com.incon.service.databinding.CustomBottomViewBinding;
 import com.incon.service.databinding.FragmentNotificationsBinding;
-import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.notifications.fragment.adapter.NotificationsAdapter;
+import com.incon.service.ui.status.base.base.BaseProductOptionsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by PC on 10/2/2017.
  */
 
-public class NotificationsFragment extends BaseFragment {
+public class NotificationsFragment extends BaseProductOptionsFragment {
     private View rootView;
     private FragmentNotificationsBinding binding;
     private NotificationsAdapter notificationsAdapter;
     private List<NotificationsResponse> notificationsList;
-    private BottomSheetNotificationsBinding bottomSheetNotificationsBinding;
-
-    private BottomSheetDialog bottomSheetDialog;
 
     @Override
     protected void initializePresenter() {
@@ -58,21 +52,28 @@ public class NotificationsFragment extends BaseFragment {
 
 
             loadBottomSheet();
-           // initViews();
+            // initViews();
             rootView = binding.getRoot();
         }
         setTitle();
         return rootView;
     }
 
-    private void loadBottomSheet() {
-        bottomSheetNotificationsBinding = DataBindingUtil.inflate(LayoutInflater.from(
-                getActivity()), R.layout.bottom_sheet_notifications, null, false);
+    @Override
+    public void loadBottomSheet() {
+        super.loadBottomSheet();
+        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                //TODO have to implement
+//                notificationsAdapter.clearSelection();
+            }
+        });
+    }
 
-        bottomSheetDialog = new BottomSheetDialog(getActivity());
-        bottomSheetDialog.setContentView(bottomSheetNotificationsBinding.getRoot());
-        /*dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);*/
+    @Override
+    public void doRefresh() {
+
     }
 
     private void initViews() {
@@ -103,37 +104,13 @@ public class NotificationsFragment extends BaseFragment {
     };
 
     private void createBottomSheetView(int position) {
-
-        bottomSheetNotificationsBinding.sheetTitle.setText("item : " + position);
-
-        bottomSheetNotificationsBinding.topRow.setVisibility(View.GONE);
-        bottomSheetNotificationsBinding.bottomRow.removeAllViews();
-//TODO have to create based on response
-        int noOfViews = new Random().nextInt(4);
-        for (int i = 0; i < noOfViews; i++) {
-            CustomBottomViewBinding customBottomView = getCustomBottomView();
-            customBottomView.viewTv.setText("position :" + i);
-            View bottomRootView = customBottomView.getRoot();
-            bottomRootView.setOnClickListener(bottomViewClickListener);
-            bottomSheetNotificationsBinding.bottomRow.addView(bottomRootView);
-        }
+//        todo create bottom sheet
     }
 
     private View.OnClickListener bottomViewClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            bottomSheetNotificationsBinding.topRow.removeAllViews();
-            bottomSheetNotificationsBinding.topRow.setVisibility(View.VISIBLE);
-            TextView viewById = (TextView) view.findViewById(R.id.view_tv);
-            String bottomClickedText = viewById.getText().toString();
-            int noOfViews = new Random().nextInt(4);
-            for (int i = 0; i < noOfViews; i++) {
-                CustomBottomViewBinding customBottomView = getCustomBottomView();
-                customBottomView.viewTv.setText(bottomClickedText + i);
-                View topRootView = customBottomView.getRoot();
-                topRootView.setOnClickListener(topViewClickListener);
-                bottomSheetNotificationsBinding.topRow.addView(topRootView);
-            }
+            //todo create bottom sheet
         }
     };
 
@@ -145,12 +122,6 @@ public class NotificationsFragment extends BaseFragment {
             showErrorMessage(topClickedText);
         }
     };
-
-    private CustomBottomViewBinding getCustomBottomView() {
-        return DataBindingUtil.inflate(
-                LayoutInflater.from(getActivity()), R.layout.custom_bottom_view, null, false);
-    }
-
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {

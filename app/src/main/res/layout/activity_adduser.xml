@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="addUser"
+            type="com.incon.service.dto.adduser.AddUser" />
+
+        <variable
+            name="addUserActivity"
+            type="com.incon.service.ui.adduser.AddUserActivity" />
+    </data>
+
+    <RelativeLayout style="@style/BothMatch">
+
+        <ScrollView
+            android:id="@+id/scrollview_user_info"
+            style="@style/BothMatch"
+            android:background="@color/white"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="4dp"
+            android:scrollbarThumbVertical="@drawable/scrollbar"
+            android:scrollbars="vertical">
+
+            <RelativeLayout
+                style="@style/BothMatch"
+                android:paddingBottom="@dimen/margin_38">
+                <include
+                    android:id="@+id/toolbar"
+                    layout="@layout/tool_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp" />
+
+
+                <!-- name -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_name"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:hint="@string/register_name_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_name"
+                        style="@style/Register_TextInputEditText"
+                        android:focusable="true"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:maxLength="@integer/character_limit_200"
+                        android:maxLines="1"
+                        android:tag="0"
+                        android:text="@={addUser.name}" />
+
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!-- number -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_number"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_name"
+                    android:hint="@string/login_username_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_number"
+                        style="@style/Register_TextInputEditText"
+                        android:focusable="true"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:tag="1"
+                        android:text="@={addUser.mobileNumber}" />
+
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!-- Gender -->
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinner_gender"
+                    style="@style/spinnerItemStyle"
+                    android:layout_below="@id/input_layout_number"
+                    android:layout_marginBottom="@dimen/margin_24"
+                    android:focusable="true"
+                    android:hint="@string/register_gender_hint"
+                    android:tag="2"
+                    android:text="@={addUser.genderType}"
+                    app:errorEnabled="true"
+                    app:met_floatingLabel="highlight"
+                    app:met_textColor="@color/colorForgotPasswordHintText"
+                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
+
+                <!-- Date of Birth -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_dob"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/spinner_gender"
+                    android:hint="@string/register_dateofbirth_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_dob"
+                        style="@style/Register_TextInputEditText"
+                        android:enabled="false"
+                        android:tag="3"
+                        android:text="@={addUser.dateOfBirthToShow}" />
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!--dummy view for dob click event -->
+                <View
+                    android:id="@+id/view_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_alignBottom="@+id/input_layout_register_dob"
+                    android:layout_alignEnd="@+id/input_layout_register_dob"
+                    android:layout_alignStart="@+id/input_layout_register_dob"
+                    android:layout_alignTop="@+id/input_layout_register_dob"
+                    android:background="@null"
+                    android:onClick="@{() -> addUserActivity.onDobClick()}" />
+
+
+                <!-- Email ID -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_emailid"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_dob"
+                    android:hint="@string/register_emailid_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_emailid"
+                        style="@style/Register_TextInputEditText"
+                        android:focusable="true"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="@integer/character_limit_200"
+                        android:maxLines="1"
+                        android:tag="4"
+                        android:text="@={addUser.email}" />
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+
+                <!-- Password -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_password"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_emailid"
+                    android:hint="@string/register_password_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor"
+                    app:passwordToggleEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_password"
+                        style="@style/Register_TextInputEditText"
+                        android:focusable="true"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPassword"
+                        android:maxLength="@integer/character_limit_200"
+                        android:maxLines="1"
+                        android:tag="5"
+                        android:text="@={addUser.password}" />
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!-- confirm Password -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_confirm_password"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_password"
+                    android:hint="@string/register_reenter_password_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor"
+                    app:passwordToggleEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_reenter_password"
+                        style="@style/Register_TextInputEditText"
+                        android:focusable="true"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:maxLength="@integer/character_limit_200"
+                        android:maxLines="1"
+                        android:tag="6"
+                        android:text="@={addUser.confirmPassword}" />
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!-- Address -->
+                <com.incon.service.custom.view.CustomTextInputLayout
+                    android:id="@+id/input_layout_register_address"
+                    style="@style/Register_TextInputLayout"
+                    android:layout_below="@id/input_layout_register_confirm_password"
+                    android:hint="@string/register_address_hint"
+                    app:errorEnabled="true"
+                    app:fontName="fonts/OpenSans-Regular.ttf"
+                    app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edittext_register_address"
+                        style="@style/Register_TextInputEditText"
+                        android:enabled="false"
+                        android:tag="7"
+                        android:text="@={addUser.address}" />
+                </com.incon.service.custom.view.CustomTextInputLayout>
+
+                <!--Dummy view used for click action-->
+                <View
+                    android:id="@+id/view_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_alignBottom="@+id/input_layout_register_address"
+                    android:layout_alignEnd="@+id/input_layout_register_address"
+                    android:layout_alignStart="@+id/input_layout_register_address"
+                    android:layout_alignTop="@+id/input_layout_register_address"
+                    android:background="@null"
+                    android:onClick="@{() -> addUserActivity.onAddressClick()}" />
+
+                <!-- service_center_designation-->
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinner_service_center_designation"
+                    style="@style/spinnerItemStyle"
+                    android:layout_below="@id/input_layout_register_address"
+                    android:layout_marginBottom="@dimen/margin_24"
+                    android:focusable="true"
+                    android:hint="@string/register__service_center_designation_hint"
+                    android:tag="8"
+                    android:text="@={addUser.serviceCenterDesignation}"
+                    android:visibility="visible"
+                    app:met_floatingLabel="highlight"
+                    app:met_textColor="@color/colorForgotPasswordHintText"
+                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
+
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinner_reporting_user"
+                    style="@style/spinnerItemStyle"
+                    android:layout_below="@id/spinner_service_center_designation"
+                    android:layout_marginBottom="@dimen/margin_24"
+                    android:focusable="true"
+                    android:hint="@string/hint_reporting_person"
+                    android:text="@={addUser.reportingName}"
+                    android:tag="9"
+                    android:visibility="visible"
+                    app:met_floatingLabel="highlight"
+                    app:met_textColor="@color/colorForgotPasswordHintText"
+                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
+
+                <Button
+                    android:id="@+id/button_submit"
+                    style="@style/w150_wrap"
+                    fontPath="fonts/OpenSans-Bold.ttf"
+                    android:layout_below="@id/spinner_reporting_user"
+                    android:layout_marginBottom="@dimen/margin_30"
+                    android:layout_marginLeft="@dimen/margin_110"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:background="@drawable/btn_login_register_roundedcorner"
+                    android:onClick="@{() -> addUserActivity.onSubmitClick()}"
+                    android:text="@string/add_new_submit"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_13" />
+
+
+            </RelativeLayout>
+        </ScrollView>
+
+
+    </RelativeLayout>
+
+</layout>

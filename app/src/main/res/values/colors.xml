@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/tueo_theme</color>
+    <color name="colorPrimary">@color/astral</color>
     <color name="colorPrimaryDark">#2e78a8</color>
     <color name="colorAccent">#c2c2c2</color>
+    <color name="alabaster">#f7f7f7</color>
+    <color name="dull_lavender">@color/astral</color>
+    <color name="nobel">#b3b3b3</color>
 
     <color name="tueo_theme">#42acf0</color>
     <color name="text_color">#9eabb1</color>
@@ -48,7 +51,7 @@
     <color name="pale_grey">#f4f7f9</color>
     <color name="pale_grey_2">#afafaf</color>
     <color name="pale_grey_3">#ffcecdcd</color>
-
+    <color name="mercury">#E6E6E6</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="astral">#2E78A8</color>

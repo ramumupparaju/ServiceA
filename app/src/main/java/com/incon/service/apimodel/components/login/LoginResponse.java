@@ -6,6 +6,7 @@ import com.incon.service.apimodel.base.ApiBaseResponse;
 
 public class LoginResponse extends ApiBaseResponse {
 
+
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -15,19 +16,19 @@ public class LoginResponse extends ApiBaseResponse {
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("address")
+    @Expose
+    private String address;
     @SerializedName("location")
     @Expose
     private String location;
-    @SerializedName("msisdn")
-    @Expose
-    private String msisdn;
     @SerializedName("usertype")
     @Expose
     private Integer usertype;
 
-    @SerializedName("uuid")
+    @SerializedName("serviceCenter")
     @Expose
-    private String uuid;
+    private ServiceCenterResponse serviceCenter;
     @SerializedName("country")
     @Expose
     private String country;
@@ -37,14 +38,43 @@ public class LoginResponse extends ApiBaseResponse {
     @SerializedName("gender")
     @Expose
     private String gender;
+    @SerializedName("serviceCenterUserType")
+    @Expose
+    private String serviceCenterUserType;
     @SerializedName("mobileNumber")
     @Expose
     private String mobileNumber;
-    @SerializedName("address")
+
+
+
+    @SerializedName("uuid")
     @Expose
-    private String address;
+    private String uuid;
+
     private String password;
     private transient String confirmPassword;
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+    public ServiceCenterResponse getServiceCenter() {
+        return serviceCenter;
+    }
+
+    public void setServiceCenter(ServiceCenterResponse serviceCenter) {
+        this.serviceCenter = serviceCenter;
+    }
+
+    public String getServiceCenterUserType() {
+        return serviceCenterUserType;
+    }
+
+    public void setServiceCenterUserType(String serviceCenterUserType) {
+        this.serviceCenterUserType = serviceCenterUserType;
+    }
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -110,14 +140,6 @@ public class LoginResponse extends ApiBaseResponse {
         this.location = location;
     }
 
-    public String getMsisdn() {
-        return msisdn;
-    }
-
-    public void setMsisdn(String msisdn) {
-        this.msisdn = msisdn;
-    }
-
     public Integer getUsertype() {
         return usertype;
     }
@@ -126,14 +148,6 @@ public class LoginResponse extends ApiBaseResponse {
         this.usertype = usertype;
     }
 
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
 
     public String getCountry() {
         return country;

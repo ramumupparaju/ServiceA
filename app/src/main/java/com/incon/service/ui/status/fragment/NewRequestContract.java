@@ -1,9 +1,11 @@
 package com.incon.service.ui.status.fragment;
 
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
+import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BaseView;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,11 +15,18 @@ import java.util.List;
 public interface NewRequestContract {
 
     interface View extends BaseView {
-        void loadReturnHistory(List<ProductInfoResponse> returnHistoryResponseList);
+        void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
+
+        void loadUsersListOfServiceCenters(List<AddUser> usersListOfServiceCenters);
+
+        void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse);
     }
 
     interface Presenter {
-        void returnHistory(int userId);
-    }
+        void fetchNewServiceRequests(int userId);
 
+        void getUsersListOfServiceCenters(int serviceCenterId);
+    void upDateStatus(int userId, UpDateStatus upDateStatus);
+
+    }
 }

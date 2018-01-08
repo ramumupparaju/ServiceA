@@ -7,7 +7,7 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.productinforesponse.ProductInfoResponse;
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.utils.ErrorMsgUtil;
 
@@ -31,29 +31,31 @@ public class CheckUpPresenter extends BasePresenter<CheckUpContract.View> implem
     }
 
 
-    public void returnHistory(int userId) {
-        getView().showProgress(appContext.getString(R.string.progress_return_history));
-        DisposableObserver<List<ProductInfoResponse>> observer = new
-                DisposableObserver<List<ProductInfoResponse>>() {
-                    @Override
-                    public void onNext(List<ProductInfoResponse> historyResponse) {
-                        getView().loadReturnHistory(historyResponse);
-                    }
+    @Override
+    public void fetchNewServiceRequests(int userId) {
+        getView().showProgress(appContext.getString(R.string.progress_fetch_checkup_service_request));
+        DisposableObserver<List<FetchNewRequestResponse>> observer = new DisposableObserver<List<FetchNewRequestResponse>>() {
+            @Override
+            public void onNext(List<FetchNewRequestResponse> fetchNewRequestResponses) {
+                getView().fetchNewServiceRequests(fetchNewRequestResponses);
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().hideProgress();
-                        Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
-                        getView().handleException(errorDetails);
-                    }
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+            }
 
-                    @Override
-                    public void onComplete() {
-                        getView().hideProgress();
-                    }
-                };
-        AppApiService.getInstance().returnApi(userId).subscribe(observer);
+            @Override
+            public void onComplete() {
+                getView().hideProgress();
+
+            }
+        };
+        AppApiService.getInstance().fetchNewServiceRequestApi(userId).subscribe(observer);
         addDisposable(observer);
     }
+
 
 }
