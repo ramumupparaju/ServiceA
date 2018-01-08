@@ -23,10 +23,11 @@ public interface NewRequestContract {
     }
 
     interface Presenter {
-        void fetchNewServiceRequests(int userId);
+        void fetchNewServiceRequests(int servicerCenterId, int userId);
 
         void getUsersListOfServiceCenters(int serviceCenterId);
-    void upDateStatus(int userId, UpDateStatus upDateStatus);
+
+        void upDateStatus(int userId, UpDateStatus upDateStatus);
 
     }
 }

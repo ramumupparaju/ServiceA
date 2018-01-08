@@ -196,6 +196,11 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.fetchNewServiceRequestApi(servicerCenterId));
     }
 
+    // fetch  new service request api using userid
+    public Observable<List<FetchNewRequestResponse>> fetchNewAssignedRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.fetchNewAssignedRequestApi(userId));
+    }
+
     // fetch  approval service request api
     public Observable<Object> fetchApprovalServiceRequestApi(int userId) {
         return addNetworkCheck(serviceInstance.fetchApprovalServiceRequestApi(userId));

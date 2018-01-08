@@ -21,6 +21,7 @@ import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.StatusTabPagerAdapter;
+import com.incon.service.ui.status.base.base.BaseProductOptionsFragment;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -125,7 +126,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                     }
                 }
             });
-            refreshFragmentByPosition(-1);
+            refreshFragmentByPosition(-1); // load all requests based on service center
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
@@ -135,10 +136,9 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     }
 
     private void refreshFragmentByPosition(int usersSelectedPosition) {
-        //TODO have to fix
-        /*((HomeActivity) getActivity()).setUserId(usersSelectedPosition);
+        ((HomeActivity) getActivity()).setUserId(usersSelectedPosition);
         BaseProductOptionsFragment fragmentFromPosition = (BaseProductOptionsFragment) adapter.getFragmentFromPosition(currentTabPosition);
-        fragmentFromPosition.doRefresh();*/
+        fragmentFromPosition.doRefresh();
 
     }
 
@@ -150,6 +150,8 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         for (AddServiceCenter serviceCenterResponse : serviceCenterList) {
             serviceArray.add(serviceCenterResponse.getName());
         }
+
+        ((HomeActivity) getActivity()).setServiceCenterId(serviceCenterList.get(serviceCentersSelectedPosition).getId());
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.view_spinner, serviceArray);
@@ -165,7 +167,9 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                     usersSelectedPosition = -1;
                     usersListOfServiceCenters.clear();
                     loadUsersSpinner(usersListOfServiceCenters);
-                    doAllUsersInServiceCenterApi(serviceCenterList.get(serviceCentersSelectedPosition).getId());
+                    Integer serviceCenterId = serviceCenterList.get(serviceCentersSelectedPosition).getId();
+                    ((HomeActivity) getActivity()).setServiceCenterId(serviceCenterId);
+                    doAllUsersInServiceCenterApi(serviceCenterId);
                 }
 
                 //For avoiding double tapping issue
@@ -249,8 +253,8 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         allUsersData.setName(LABEL_ALL);
         usersListOfServiceCenters.add(0, allUsersData);
         this.usersListOfServiceCenters = usersListOfServiceCenters;
-        loadUsersSpinner(usersListOfServiceCenters);
         initViewPager();
+        loadUsersSpinner(usersListOfServiceCenters);
     }
 
     @Override

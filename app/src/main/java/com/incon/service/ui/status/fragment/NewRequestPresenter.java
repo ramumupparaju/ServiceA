@@ -18,6 +18,7 @@ import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -36,7 +37,7 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
     }
 
     @Override
-    public void fetchNewServiceRequests(int servicerCenterId) {
+    public void fetchNewServiceRequests(int servicerCenterId, int userId) {
         getView().showProgress(appContext.getString(R.string.progress_fetch_new_service_request));
 
         DisposableObserver<List<FetchNewRequestResponse>> observer = new DisposableObserver<List<FetchNewRequestResponse>>() {
@@ -58,7 +59,14 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
 
             }
         };
-        AppApiService.getInstance().fetchNewServiceRequestApi(servicerCenterId).subscribe(observer);
+
+        Observable<List<FetchNewRequestResponse>> listObservable;
+        if (userId == -1) {
+            listObservable = AppApiService.getInstance().fetchNewServiceRequestApi(servicerCenterId);
+        } else {
+            listObservable = AppApiService.getInstance().fetchNewAssignedRequestApi(userId);
+        }
+        listObservable.subscribe(observer);
         addDisposable(observer);
     }
 

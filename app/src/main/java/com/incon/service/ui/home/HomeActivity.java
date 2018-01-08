@@ -40,6 +40,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     private ActivityHomeBinding binding;
     private ToolBarBinding toolBarBinding;
     private int userId;
+    private int serviceCenterId;
 
     private LinkedHashMap<Integer, Fragment> tabFragments = new LinkedHashMap<>();
 
@@ -62,6 +63,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         rootView = binding.getRoot();
 
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE);
+        serviceCenterId = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.SERVICE_CENTER_ID, DEFAULT_VALUE);
 
         //changed preference as otp verified
         SharedPrefsUtils.loginProvider().setBooleanPreference(AppConstants.LoginPrefs.IS_REGISTERED, false);
@@ -84,6 +86,14 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
             //directly load status screen
             serviceCentersSuccessfully();
         }
+    }
+
+    public int getServiceCenterId() {
+        return serviceCenterId;
+    }
+
+    public void setServiceCenterId(int serviceCenterId) {
+        this.serviceCenterId = serviceCenterId;
     }
 
     public int getUserId() {

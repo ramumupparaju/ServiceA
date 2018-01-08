@@ -37,6 +37,7 @@ import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
+import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.DateUtils;
@@ -118,7 +119,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     @Override
     public void doRefresh() {
-        newRequestPresenter.fetchNewServiceRequests(serviceCenterId);
+        HomeActivity activity = (HomeActivity) getActivity();
+        newRequestPresenter.fetchNewServiceRequests(activity.getServiceCenterId(), activity.getUserId());
     }
 
     private void dismissSwipeRefresh() {
@@ -661,7 +663,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 @Override
                 public void onRefresh() {
                     newRequestsAdapter.clearData();
-                    newRequestPresenter.fetchNewServiceRequests(serviceCenterId);
+                    doRefresh();
                 }
             };
 

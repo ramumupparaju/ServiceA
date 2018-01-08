@@ -18,7 +18,7 @@ public interface AppConstants {
     String DELIMITOR = "-";
     int DEFAULT_GOOGLE_MAP_ZOOM_LEVEL = 16;
     int DEAULT_VALUE = Integer.MAX_VALUE;
-
+    int MINUS_ONE = -1;
 
     interface RegistrationConstants {
         String SERVICE_INDIVIDUAL = "I";
