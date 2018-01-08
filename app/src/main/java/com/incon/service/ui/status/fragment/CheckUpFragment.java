@@ -114,6 +114,11 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
     }
 
+    @Override
+    public void doRefresh() {
+
+    }
+
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
         public void onClickPosition(int position) {

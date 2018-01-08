@@ -21,7 +21,6 @@ import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.StatusTabPagerAdapter;
-import com.incon.service.ui.status.base.base.BaseProductOptionsFragment;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -136,9 +135,10 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     }
 
     private void refreshFragmentByPosition(int usersSelectedPosition) {
-        ((HomeActivity) getActivity()).setUserId(usersSelectedPosition);
+        //TODO have to fix
+        /*((HomeActivity) getActivity()).setUserId(usersSelectedPosition);
         BaseProductOptionsFragment fragmentFromPosition = (BaseProductOptionsFragment) adapter.getFragmentFromPosition(currentTabPosition);
-        fragmentFromPosition.doRefresh();
+        fragmentFromPosition.doRefresh();*/
 
     }
 

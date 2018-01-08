@@ -7,7 +7,6 @@ import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.login.LoginResponse;
-import com.incon.service.apimodel.components.registration.Address;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
 import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;

@@ -100,6 +100,11 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
 
     }
 
+    @Override
+    public void doRefresh() {
+
+    }
+
 
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override

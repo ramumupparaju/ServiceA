@@ -96,6 +96,11 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
 
     }
 
+    @Override
+    public void doRefresh() {
+
+    }
+
 
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
