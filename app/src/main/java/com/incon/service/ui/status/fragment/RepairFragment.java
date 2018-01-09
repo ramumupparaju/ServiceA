@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.IClickCallback;
@@ -22,12 +23,15 @@ import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.AssignOptionDialog;
 import com.incon.service.databinding.FragmentRepairBinding;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
+import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.RepairAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.SharedPrefsUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.incon.service.AppUtils.callPhoneNumber;
@@ -41,13 +45,15 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private View rootView;
     private RepairAdapter repairAdapter;
     private RepairPresenter repairPresenter;
-    private int userId;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
     private AssignOptionDialog assignOptionDialog;
     private AppEditTextDialog closeDialog;
     private AppEditTextDialog repairDialog;
     private AppEditTextDialog holdDialog;
+    private int serviceCenterId = DEFAULT_VALUE;
+    private int userId = DEFAULT_VALUE;
+    private List<AddUser> usersList;
 
     @Override
     protected void initializePresenter() {
@@ -80,13 +86,32 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private void initViews() {
         repairAdapter = new RepairAdapter();
         repairAdapter.setClickCallback(iClickCallback);
+        binding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.requestRecyclerview.setAdapter(repairAdapter);
         binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
-        userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
-                LoginPrefs.USER_ID, DEFAULT_VALUE);
-        userId = 1;
-        repairPresenter.fetchRepairServiceRequests(userId);
+    }
+
+    @Override
+    public void doRefresh() {
+        HomeActivity activity = (HomeActivity) getActivity();
+        int tempServiceCenterId = activity.getServiceCenterId();
+        int tempUserId = activity.getUserId();
+
+        if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
+            //no chnages have made, so no need to make api call
+            return;
+        } else {
+            serviceCenterId = tempServiceCenterId;
+            userId = tempUserId;
+        }
+        repairPresenter.fetchRepairServiceRequests(serviceCenterId, userId);
+    }
+
+    private void dismissSwipeRefresh() {
+        if (binding.swiperefresh.isRefreshing()) {
+            binding.swiperefresh.setRefreshing(false);
+        }
     }
 
     @Override
@@ -100,10 +125,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
 
     }
 
-    @Override
-    public void doRefresh() {
-
-    }
 
 
     private IClickCallback iClickCallback = new IClickCallback() {
@@ -413,7 +434,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 @Override
                 public void onRefresh() {
                     repairAdapter.clearData();
-                    repairPresenter.fetchRepairServiceRequests(userId);
 
                 }
             };
@@ -425,36 +445,47 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     }
 
 
-    private void dismissSwipeRefresh() {
-        if (binding.swiperefresh.isRefreshing()) {
-            binding.swiperefresh.setRefreshing(false);
-        }
-    }
 
     @Override
     public void onSearchClickListerner(String searchableText, String searchType) {
         //TODO have to implement search click listener
     }
 
+
     @Override
-    public void fetchRepairServiceRequests(Object o) {
+    public void loadingRepairServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
+
+
+        if (fetchNewRequestResponsesList == null) {
+            fetchNewRequestResponsesList = new ArrayList<>();
+        }
+
+        if (fetchNewRequestResponsesList.size() == 0) {
+            binding.repairTextview.setVisibility(View.VISIBLE);
+            dismissSwipeRefresh();
+        } else {
+            binding.repairTextview.setVisibility(View.GONE);
+            repairAdapter.setData(fetchNewRequestResponsesList);
+            dismissSwipeRefresh();
+        }
+    }
+
+    @Override
+    public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
+
+        if (usersList == null) {
+            usersList = new ArrayList<>();
+        }
+
+        this.usersList = usersList;
+    }
+
+    @Override
+    public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
 
     }
 
 
 
- /*   @Override
-    public void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
 
-        if (fetchNewRequestResponsesList == null) {
-            fetchNewRequestResponsesList = new ArrayList<>();
-        }
-        if (fetchNewRequestResponsesList.size() == 0) {
-            binding.requestTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
-        } else {
-            repairAdapter.setData(fetchNewRequestResponsesList);
-            dismissSwipeRefresh();
-        }
-    }*/
 }

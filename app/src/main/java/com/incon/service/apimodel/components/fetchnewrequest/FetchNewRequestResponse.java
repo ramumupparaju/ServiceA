@@ -3,9 +3,9 @@ package com.incon.service.apimodel.components.fetchnewrequest;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.incon.service.apimodel.components.assigneduser.AssignedUser;
-import com.incon.service.apimodel.components.customer.CustomerResponse;
-import com.incon.service.apimodel.components.productinfo.ProductInfoResponse;
-import com.incon.service.apimodel.components.request.RequestResponse;
+import com.incon.service.apimodel.components.customer.Customer;
+import com.incon.service.apimodel.components.productinfo.Product;
+import com.incon.service.apimodel.components.request.Request;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 
 /**
@@ -15,17 +15,17 @@ import com.incon.service.dto.addservicecenter.AddServiceCenter;
 public class FetchNewRequestResponse {
     @SerializedName("customer")
     @Expose
-    private CustomerResponse customer;
+    private Customer customer;
     @SerializedName("product")
     @Expose
-    private ProductInfoResponse product;
+    private Product product;
 
     @SerializedName("serviceCenter")
     @Expose
     private AddServiceCenter serviceCenter;
     @SerializedName("request")
     @Expose
-    private RequestResponse request;
+    private Request request;
     @SerializedName("assignedUser")
     @Expose
     private AssignedUser assignedUser;
@@ -41,7 +41,7 @@ public class FetchNewRequestResponse {
     public FetchNewRequestResponse() {
     }
 
-    public CustomerResponse getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
@@ -79,24 +79,24 @@ public class FetchNewRequestResponse {
         isSelected = selected;
     }
 
-    public void setCustomer(CustomerResponse customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
-    public ProductInfoResponse getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(ProductInfoResponse product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 
 
-    public RequestResponse getRequest() {
+    public Request getRequest() {
         return request;
     }
 
-    public void setRequest(RequestResponse request) {
+    public void setRequest(Request request) {
         this.request = request;
     }
 

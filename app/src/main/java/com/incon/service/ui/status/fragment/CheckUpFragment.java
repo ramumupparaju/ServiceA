@@ -16,6 +16,7 @@ import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.IClickCallback;
@@ -26,8 +27,10 @@ import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.AssignOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.databinding.FragmentCheckupBinding;
+import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
+import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.CheckUpAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.SharedPrefsUtils;
@@ -46,13 +49,15 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private View rootView;
     private CheckUpAdapter checkUpAdapter;
     private CheckUpPresenter checkUpPresenter;
-    private int userId;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
     private AssignOptionDialog assignOptionDialog;
     private PastHistoryDialog pastHistoryDialog;
+    private int serviceCenterId = DEFAULT_VALUE;
+    private int userId = DEFAULT_VALUE;
+    private List<AddUser> usersList;
 
     @Override
     protected void initializePresenter() {
@@ -82,18 +87,25 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private void initViews() {
         checkUpAdapter = new CheckUpAdapter();
         checkUpAdapter.setClickCallback(iClickCallback);
+        binding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.checkupRecyclerview.setAdapter(checkUpAdapter);
         binding.checkupRecyclerview.setLayoutManager(linearLayoutManager);
-        userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
-                LoginPrefs.USER_ID, DEFAULT_VALUE);
-        List<DefaultStatusData> defaultStausList = ConnectApplication.getAppContext()
-                .getDefaultStausData();
-        if (defaultStausList == null) {
+    }
+    @Override
+    public void doRefresh() {
+        HomeActivity activity = (HomeActivity) getActivity();
+        int tempServiceCenterId = activity.getServiceCenterId();
+        int tempUserId = activity.getUserId();
 
+        if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
+            //no chnages have made, so no need to make api call
+            return;
+        } else {
+            serviceCenterId = tempServiceCenterId;
+            userId = tempUserId;
         }
-
-        isFirstTimeLoading = true;
+        checkUpPresenter.fetchCheckUpServiceRequests(serviceCenterId, userId);
     }
 
 
@@ -114,10 +126,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
     }
 
-    @Override
-    public void doRefresh() {
-
-    }
 
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
@@ -466,7 +474,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 @Override
                 public void onRefresh() {
                     checkUpAdapter.clearData();
-                    checkUpPresenter.fetchNewServiceRequests(userId);
+                    doRefresh();
 
                 }
             };
@@ -483,7 +491,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         //TODO have to implement search
     }
 
-    @Override
+/*    @Override
     public void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
@@ -495,5 +503,39 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             checkUpAdapter.setData(fetchNewRequestResponsesList);
             dismissSwipeRefresh();
         }
+    }*/
+
+    @Override
+    public void loadingCheckUpRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
+if (fetchNewRequestResponsesList == null) {
+    fetchNewRequestResponsesList = new ArrayList<>();
+}
+if (fetchNewRequestResponsesList.size() == 0) {
+    binding.checkupTextview.setVisibility(View.VISIBLE);
+    dismissSwipeRefresh();
+}
+else {
+    binding.checkupTextview.setVisibility(View.GONE);
+    checkUpAdapter.setData(fetchNewRequestResponsesList);
+    dismissSwipeRefresh();
+}
+
     }
+
+    @Override
+    public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
+        if (usersList == null) {
+            usersList = new ArrayList<>();
+        }
+
+        this.usersList = usersList;
+
+    }
+
+    @Override
+    public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
+
+    }
+
+
 }

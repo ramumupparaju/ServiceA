@@ -93,25 +93,50 @@ public interface AppServiceObservable {
     @GET("service/fetchrequests/{servicerCenterId}/NEW")
     Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(@Path("servicerCenterId") int servicerCenterId);
 
-    // fetch  new service request api
+    // assigned requests api
     @GET("service/assignedRequests/{userId}/NEW")
     Observable<List<FetchNewRequestResponse>> fetchNewAssignedRequestApi(@Path("userId") int userId);
 
+    // fetch  check up  api
     @GET("service/fetchrequests/{servicerCenterId}/CHECKUP")
     Observable<List<FetchNewRequestResponse>> fetchCheckupRequestApi(@Path("servicerCenterId") int servicerCenterId);
 
+    // assigned requests api
+    @GET("service/assignedRequests/{userId}/CHECKUP")
+    Observable<List<FetchNewRequestResponse>> fetchCheckUpAssignedRequestApi(@Path("userId") int
+                                                                                 userId);
+
     // fetch  approval  new service request api
-    @GET("service/fetchrequests/{userId}/APPROVAL")
-    Observable<Object> fetchApprovalServiceRequestApi(@Path("userId") int userId);
+    @GET("service/fetchrequests/{servicerCenterId}/APPROVAL")
+    Observable<List<FetchNewRequestResponse>> fetchApprovalServiceRequestApi(@Path("servicerCenterId") int servicerCenterId);
+//connect/service/assignedRequests/1/APPROVAL
+
+
+    // assigned requests api
+    @GET("service/assignedRequests/{userId}/APPROVAL")
+    Observable<List<FetchNewRequestResponse>> fetchApprovalAssignedRequestApi(@Path("userId") int
+                                                                                     userId);
 
     // fetch  repair  new service request api
-    @GET("service/fetchrequests/{userId}/REPAIR")
-    Observable<Object> fetchRepairServiceRequestApi(@Path("userId") int userId);
+    @GET("service/fetchrequests/{servicerCenterId}/REPAIR")
+    Observable<List<FetchNewRequestResponse>> fetchRepairServiceRequestApi(@Path("servicerCenterId") int userId);
 
+
+    // assigned requests api
+    @GET("service/assignedRequests/{userId}/REPAIR")
+    Observable<List<FetchNewRequestResponse>> fetchRepairAssignedRequestApi(@Path("userId") int
+                                                                                      userId);
 
     // fetch  payment  new service request api
-    @GET("service/fetchrequests/{userId}/PAYMENT")
-    Observable<Object> fetchPaymentServiceRequestApi(@Path("userId") int userId);
+    @GET("service/fetchrequests/{servicerCenterId}/PAYMENT")
+    Observable<List<FetchNewRequestResponse>> fetchPaymentServiceRequestApi(@Path("servicerCenterId") int servicerCenterId);
+
+
+    ///service/assignedRequests/1/PAYMENT
+    // assigned requests api
+    @GET("service/assignedRequests/{userId}/PAYMENT")
+    Observable<List<FetchNewRequestResponse>> fetchPaymentAssignedRequestApi(@Path("userId") int
+                                                                                    userId);
 
 
     // service center logo  api

@@ -12,13 +12,17 @@ import android.view.ViewGroup;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.databinding.FragmentPaymentBinding;
+import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.PaymentAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.SharedPrefsUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.incon.service.AppUtils.callPhoneNumber;
@@ -33,9 +37,11 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
     private View rootView;
     private PaymentAdapter paymentAdapter;
     private PaymentPresenter paymentPresenter;
-    private int userId;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
+    private int serviceCenterId = DEFAULT_VALUE;
+    private int userId = DEFAULT_VALUE;
+    private List<AddUser> usersList;
 
     @Override
     protected void initializePresenter() {
@@ -69,14 +75,28 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
     private void initViews() {
         paymentAdapter = new PaymentAdapter();
         paymentAdapter.setClickCallback(iClickCallback);
+        binding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.paymentRecyclerview.setAdapter(paymentAdapter);
         binding.paymentRecyclerview.setLayoutManager(linearLayoutManager);
-        userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
-                LoginPrefs.USER_ID, DEFAULT_VALUE);
-        userId = 1;
-        paymentPresenter.fetchPaymentServiceRequests(userId);
 
+    }
+
+
+    @Override
+    public void doRefresh() {
+        HomeActivity activity = (HomeActivity) getActivity();
+        int tempServiceCenterId = activity.getServiceCenterId();
+        int tempUserId = activity.getUserId();
+
+        if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
+            //no chnages have made, so no need to make api call
+            return;
+        } else {
+            serviceCenterId = tempServiceCenterId;
+            userId = tempUserId;
+        }
+        paymentPresenter.fetchPaymentRequests(serviceCenterId, userId);
     }
 
     private void dismissSwipeRefresh() {
@@ -96,10 +116,6 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
 
     }
 
-    @Override
-    public void doRefresh() {
-
-    }
 
 
     private IClickCallback iClickCallback = new IClickCallback() {
@@ -312,7 +328,7 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                 @Override
                 public void onRefresh() {
                     paymentAdapter.clearData();
-                    paymentPresenter.fetchPaymentServiceRequests(userId);
+                    doRefresh();
 
                 }
             };
@@ -329,24 +345,37 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
         //TODO search click listener
     }
 
+
     @Override
-    public void fetchPaymentServiceRequests(Object o) {
-        // TODO have to set data
-
-    }
-
-  /*  @Override
-    public void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
+    public void loadingPaymentRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
 
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
+
         if (fetchNewRequestResponsesList.size() == 0) {
-            binding.requestTextview.setVisibility(View.VISIBLE);
+            binding.paymentTextview.setVisibility(View.VISIBLE);
             dismissSwipeRefresh();
         } else {
+            binding.paymentTextview.setVisibility(View.GONE);
             paymentAdapter.setData(fetchNewRequestResponsesList);
             dismissSwipeRefresh();
         }
-    }*/
+    }
+
+    @Override
+    public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
+
+        if (usersList == null) {
+            usersList = new ArrayList<>();
+        }
+
+        this.usersList = usersList;
+    }
+
+    @Override
+    public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
+
+    }
+
 }

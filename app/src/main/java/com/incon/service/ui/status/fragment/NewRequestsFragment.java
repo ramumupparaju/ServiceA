@@ -73,6 +73,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private ArrayList<ServiceCenterResponse> serviceCenterResponseList;
     private List<AddUser> usersList;
     private UpDateStatus upDateStatusList;
+    private FetchNewRequestResponse fetchNewRequestResponse;
 
     @Override
     protected void initializePresenter() {
@@ -91,6 +92,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             // handle events from here using android binding
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
+            upDateStatusList = new UpDateStatus();
             initViews();
             loadBottomSheet();
             rootView = binding.getRoot();
@@ -475,11 +477,12 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
                 // TODO have to check
-                //newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
-               /* newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().
-                        getIntegerPreference(USER_ID, DEFAULT_VALUE), upDateStatus);*/
-                // upDateStatus.setPurchaseId(upDateStatusList.getPurchaseId());
-                // upDateStatus.setRequestid(upDateStatusList.getRequestid());
+                // newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
+              //  upDateStatus.setPurchaseId(upDateStatusList.getPurchaseId());
+
+              //  upDateStatus.setRequestid(fetchNewRequestResponse.getRequest().getId());
+                upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition
+                        (productSelectedPosition).getRequest().getId());
                 newRequestPresenter.upDateStatus(userId, upDateStatus);
 
             }
