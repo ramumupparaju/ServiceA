@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -41,14 +40,12 @@ import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.DateUtils;
-import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import static com.incon.service.AppConstants.LoginPrefs.USER_ID;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -71,8 +68,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private String merchantComment;
     private String assignComment;
     private PastHistoryDialog pastHistoryDialog;
-    private int serviceCenterId;
-    private int userId;
+    private int serviceCenterId = DEFAULT_VALUE;
+    private int userId = DEFAULT_VALUE;
     private ArrayList<ServiceCenterResponse> serviceCenterResponseList;
     private List<AddUser> usersList;
     private UpDateStatus upDateStatusList;
@@ -111,16 +108,22 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.requestRecyclerview.setAdapter(newRequestsAdapter);
         binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
-        serviceCenterId = SharedPrefsUtils.loginProvider().getIntegerPreference(
-                LoginPrefs.SERVICE_CENTER_ID, DEFAULT_VALUE);
-        userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
-                LoginPrefs.USER_ID, DEFAULT_VALUE);
     }
 
     @Override
     public void doRefresh() {
         HomeActivity activity = (HomeActivity) getActivity();
-        newRequestPresenter.fetchNewServiceRequests(activity.getServiceCenterId(), activity.getUserId());
+        int tempServiceCenterId = activity.getServiceCenterId();
+        int tempUserId = activity.getUserId();
+
+        if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
+            //no chnages have made, so no need to make api call
+            return;
+        } else {
+            serviceCenterId = tempServiceCenterId;
+            userId = tempUserId;
+        }
+        newRequestPresenter.fetchNewServiceRequests(serviceCenterId, userId);
     }
 
     private void dismissSwipeRefresh() {
@@ -679,6 +682,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             binding.requestTextview.setVisibility(View.VISIBLE);
             dismissSwipeRefresh();
         } else {
+            binding.requestTextview.setVisibility(View.GONE);
             newRequestsAdapter.setData(fetchNewRequestResponsesList);
             dismissSwipeRefresh();
         }

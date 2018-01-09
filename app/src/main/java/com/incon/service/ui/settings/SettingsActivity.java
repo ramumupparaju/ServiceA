@@ -7,7 +7,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.incon.service.AppConstants;
 import com.incon.service.AppUtils;
 import com.incon.service.BuildConfig;
 import com.incon.service.R;
@@ -72,10 +71,10 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
         });
 
         userType = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
-        if (userType == UserConstants.SUPER_ADMIN_TYPE) {
+        if (userType == UserConstants.SUPER_ADMIN_TYPE || userType == UserConstants.ADMIN_TYPE) {
             isAdmin = BooleanConstants.IS_TRUE;
         } else {
-            isAdmin = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_IS_ADMIN, BooleanConstants.IS_FALSE);
+            isAdmin = BooleanConstants.IS_FALSE;
         }
 
         initViews();
