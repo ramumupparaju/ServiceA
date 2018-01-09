@@ -21,6 +21,7 @@ import com.incon.service.apimodel.components.login.ServiceCenterResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
+import com.incon.service.callbacks.AttendingCallback;
 import com.incon.service.callbacks.EditTimeCallback;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.PassHistoryCallback;
@@ -29,6 +30,7 @@ import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.AssignOptionDialog;
+import com.incon.service.custom.view.AttendingOptionDialog;
 import com.incon.service.custom.view.EditTimeDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
@@ -60,13 +62,14 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
-    private AppEditTextDialog attendingDialog;
+    private AttendingOptionDialog attendingDialog;
     private AssignOptionDialog assignOptionDialog;
     private EditTimeDialog editTimeDialog;
     private TimeSlotAlertDialog timeSlotAlertDialog;
     private AppEditTextDialog holdDialog;
     private String merchantComment;
     private String assignComment;
+    private String attendingComment;
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
@@ -596,10 +599,16 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
 
     private void showAttendingDialog() {
-        attendingDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
+        attendingDialog = new AttendingOptionDialog.AlertDialogBuilder(getActivity(), new
+                AttendingCallback() {
+                    @Override
+                    public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+
+                    }
+
                     @Override
                     public void enteredText(String commentString) {
+                        attendingComment = commentString;
                     }
 
                     @Override
@@ -617,8 +626,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                         }
                     }
                 }).title(getString(R.string.bottom_option_attending))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
                 .build();
         attendingDialog.showDialog();
         attendingDialog.setCancelable(true);

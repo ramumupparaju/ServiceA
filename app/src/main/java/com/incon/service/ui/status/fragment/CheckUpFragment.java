@@ -491,19 +491,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         //TODO have to implement search
     }
 
-/*    @Override
-    public void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
-        if (fetchNewRequestResponsesList == null) {
-            fetchNewRequestResponsesList = new ArrayList<>();
-        }
-        if (fetchNewRequestResponsesList.size() == 0) {
-            binding.checkupTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
-        } else {
-            checkUpAdapter.setData(fetchNewRequestResponsesList);
-            dismissSwipeRefresh();
-        }
-    }*/
 
     @Override
     public void loadingCheckUpRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
