@@ -31,7 +31,7 @@ import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
-import com.incon.service.custom.view.AssignOptionDialog;
+import com.incon.service.custom.view.UpdateStatusDialog;
 import com.incon.service.custom.view.AttendingOptionDialog;
 import com.incon.service.custom.view.EditTimeDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
+import static com.incon.service.AppConstants.StatusConstants.ATTENDING;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -65,8 +66,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
-    private AttendingOptionDialog attendingDialog;
-    private AssignOptionDialog assignOptionDialog;
+    private UpdateStatusDialog updateStatusDialog;
     private EditTimeDialog editTimeDialog;
     private TimeSlotAlertDialog timeSlotAlertDialog;
     private AppEditTextDialog holdDialog;
@@ -482,15 +482,12 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
     private void showAssignDialog(List<AddUser> userList) {
-        assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+        updateStatusDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
                 FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
                 Request request = requestResponse.getRequest();
                 upDateStatus.setRequestid(request.getId());
-                upDateStatus.setServiceCenterId(serviceCenterId);
-                upDateStatus.setStatus(new Status(ASSIGNED));
-                upDateStatus.setPurchaseId(request.getWarrantyId());
                 newRequestPresenter.upDateStatus(userId, upDateStatus);
             }
 
@@ -507,17 +504,16 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     case AlertDialogCallback.OK:
                         break;
                     case AlertDialogCallback.CANCEL:
-                        assignOptionDialog.dismiss();
+                        updateStatusDialog.dismiss();
                         break;
                     default:
                         break;
                 }
 
             }
-        }).title(getString(R.string.option_assign)).loadUsersList(userList).build();
-        assignOptionDialog.showDialog();
-        assignOptionDialog.setCancelable(true);
-
+        }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
+        updateStatusDialog.showDialog();
+        updateStatusDialog.setCancelable(true);
     }
 
 
@@ -603,37 +599,10 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
 
     private void showAttendingDialog() {
-        attendingDialog = new AttendingOptionDialog.AlertDialogBuilder(getActivity(), new
-                AttendingCallback() {
-                    @Override
-                    public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-
-                    }
-
-                    @Override
-                    public void enteredText(String commentString) {
-                        attendingComment = commentString;
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-
-                                attendingDialog.dismiss();
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                attendingDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_attending))
-                .build();
-        attendingDialog.showDialog();
-        attendingDialog.setCancelable(true);
-
+        UpDateStatus upDateStatus = new UpDateStatus();
+        upDateStatus.setStatus(new Status(ATTENDING));
+        upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
+        newRequestPresenter.upDateStatus(userId, upDateStatus);
     }
 
 
@@ -722,10 +691,15 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
-        if (assignOptionDialog != null && assignOptionDialog.isShowing()) {
-            assignOptionDialog.dismiss();
+
+        if (updateStatusDialog != null && updateStatusDialog.isShowing()) {
+            updateStatusDialog.dismiss();
         }
 
+        Integer statusId = upDateStatusResponse.getStatus().getId();
+        if (statusId == ASSIGNED || statusId == ATTENDING) {
+            doRefresh(true);
+        }
     }
 
     @Override

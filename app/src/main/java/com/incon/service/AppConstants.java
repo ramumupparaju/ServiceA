@@ -22,6 +22,7 @@ public interface AppConstants {
 
     interface StatusConstants {
         int ASSIGNED = 3;
+        int ATTENDING = 4;
     }
     interface RegistrationConstants {
         String SERVICE_INDIVIDUAL = "I";

@@ -375,19 +375,12 @@ public class AddUser extends BaseObservable implements Parcelable {
                 }
                 break;
 
-         /*   case 9:
+            case 9:
                 boolean repotingPersonEmpty = TextUtils.isEmpty(getReportingName());
                 if (emptyValidation && repotingPersonEmpty) {
                     return AppConstants.AddUserValidations.REPORTING_PERSON;
                 }
-                break;*/
-
-            case 9:
-                if (emptyValidation && reportingId == null) {
-                    return AppConstants.AddUserValidations.REPORTING_PERSON;
-                }
                 break;
-
 
             default:
                 return VALIDATION_SUCCESS;

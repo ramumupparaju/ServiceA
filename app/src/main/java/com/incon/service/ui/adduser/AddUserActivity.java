@@ -190,6 +190,11 @@ public class AddUserActivity extends BaseActivity implements
                 if (reportingSelectedPos != position) {
                     reportingSelectedPos = position;
                 }
+
+                //For avoiding double tapping issue
+                if (binding.spinnerReportingUser.getOnItemClickListener() != null) {
+                    binding.spinnerReportingUser.onItemClick(parent, view, position, id);
+                }
             }
         });
     }
@@ -209,6 +214,11 @@ public class AddUserActivity extends BaseActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (designationSelectedPos != position) {
                     designationSelectedPos = position;
+                }
+
+                //For avoiding double tapping issue
+                if (binding.spinnerServiceCenterDesignation.getOnItemClickListener() != null) {
+                    binding.spinnerServiceCenterDesignation.onItemClick(parent, view, position, id);
                 }
             }
         });
@@ -444,6 +454,7 @@ public class AddUserActivity extends BaseActivity implements
                         getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), upDateUserProfile);
             }  else {*/
 
+            addUser.setReportingId(reportingUsersList.get(reportingSelectedPos).getId());
             addUser.setServiceCenterRoleId(designationDataList.get(designationSelectedPos).getId());
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().

@@ -3,7 +3,6 @@ package com.incon.service.custom.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -12,9 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import com.incon.service.AppConstants;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.login.ServiceCenterResponse;
+import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.databinding.DialogAssignBinding;
 import com.incon.service.dto.adduser.AddUser;
@@ -23,37 +22,34 @@ import com.incon.service.dto.updatestatus.UpDateStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.incon.service.AppConstants.COMMA_SEPARATOR;
-
 /**
  * Created by MY HOME on 28-Dec-17.
  */
 
-public class AssignOptionDialog extends Dialog implements View.OnClickListener {
+public class UpdateStatusDialog extends Dialog implements View.OnClickListener {
     private final Context context;
     private final AssignOptionCallback assignOptionCallback;
     private DialogAssignBinding binding;
     private final List<AddUser> usersList;
     private final List<ServiceCenterResponse> serviceCentersList;
     private UpDateStatus upDateStatus;
-    private EditText editTextNotes;
 
     private int usersSelectedPos = 0;
 
-    public AssignOptionDialog(AlertDialogBuilder builder) {
+    public UpdateStatusDialog(AlertDialogBuilder builder) {
         super(builder.context);
         this.context = builder.context;
         this.usersList = builder.usersList;
         this.assignOptionCallback = builder.callback;
         this.serviceCentersList = builder.serviceCenterResponseList;
         upDateStatus = new UpDateStatus();
+        upDateStatus.setStatus(new Status(builder.statusId));
     }
 
     public void showDialog() {
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(context), R.layout.dialog_assign, null, false);
         View contentView = binding.getRoot();
-        editTextNotes = binding.edittextComment;
         binding.includeRegisterBottomButtons.buttonLeft.setText(context.getString(R.string.action_cancel));
         binding.includeRegisterBottomButtons.buttonRight.setText(context.getString(R.string.action_submit));
         binding.includeRegisterBottomButtons.buttonLeft.setOnClickListener(this);
@@ -99,6 +95,7 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
         private final Context context;
         private final AssignOptionCallback callback;
         private String title;
+        private int statusId;
         private List<AddUser> usersList;
         private ArrayList<ServiceCenterResponse> serviceCenterResponseList;
 
@@ -112,8 +109,8 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
             return this;
         }
 
-        public AssignOptionDialog build() {
-            AssignOptionDialog dialog = new AssignOptionDialog(this);
+        public UpdateStatusDialog build() {
+            UpdateStatusDialog dialog = new UpdateStatusDialog(this);
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
             return dialog;
         }
@@ -126,7 +123,11 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
         public AlertDialogBuilder loadUsersList(List<AddUser> usersList) {
             this.usersList = usersList;
             return this;
+        }
 
+        public AlertDialogBuilder statusId(int statusId) {
+            this.statusId = statusId;
+            return this;
         }
 
     }
@@ -154,13 +155,7 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
     }
 
     private boolean validateFields() {
-
-        int selectedPriority = binding.radioGroup.getCheckedRadioButtonId();
-        RadioButton radioButton = findViewById(selectedPriority);
-
         upDateStatus.setAssignedTo(usersList.get(usersSelectedPos).getId());
-        upDateStatus.setComments(binding.edittextComment.getText().toString());
-        upDateStatus.setPriority(Integer.valueOf(radioButton.getTag().toString()));
         return true;
     }
 

@@ -21,7 +21,7 @@ import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
-import com.incon.service.custom.view.AssignOptionDialog;
+import com.incon.service.custom.view.UpdateStatusDialog;
 import com.incon.service.databinding.FragmentRepairBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -29,7 +29,6 @@ import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.RepairAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
-import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private RepairPresenter repairPresenter;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
-    private AssignOptionDialog assignOptionDialog;
+    private UpdateStatusDialog assignOptionDialog;
     private AppEditTextDialog closeDialog;
     private AppEditTextDialog repairDialog;
     private AppEditTextDialog holdDialog;
@@ -379,7 +378,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     }
 
     private void showAssignDialog() {
-        assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+        assignOptionDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
