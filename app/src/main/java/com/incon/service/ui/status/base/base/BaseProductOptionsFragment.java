@@ -165,5 +165,5 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
         return ((TextView) linearLayout.findViewById(R.id.view_tv));
     }
 
-    public abstract void doRefresh();
+    public abstract void doRefresh(boolean isForceRefresh);
 }

@@ -139,7 +139,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 MINUS_ONE ? usersSelectedPosition : usersListOfServiceCenters.get
                 (usersSelectedPosition).getId());
         BaseProductOptionsFragment fragmentFromPosition = (BaseProductOptionsFragment) adapter.getFragmentFromPosition(currentTabPosition);
-        fragmentFromPosition.doRefresh();
+        fragmentFromPosition.doRefresh(false);
 
     }
 
@@ -208,6 +208,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 currentTabPosition = tab.getPosition();
                 customViewPager.setCurrentItem(currentTabPosition);
                 changeTitleFont(currentTabPosition);
+                refreshFragmentByPosition(usersSelectedPosition);
             }
 
             @Override

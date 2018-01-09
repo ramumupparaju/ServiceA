@@ -93,14 +93,17 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         binding.checkupRecyclerview.setLayoutManager(linearLayoutManager);
     }
     @Override
-    public void doRefresh() {
+    public void doRefresh(boolean isForceRefresh) {
         HomeActivity activity = (HomeActivity) getActivity();
         int tempServiceCenterId = activity.getServiceCenterId();
         int tempUserId = activity.getUserId();
 
         if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
-            //no chnages have made, so no need to make api call
-            return;
+            //no chnages have made, so no need to make api call checks whether pull to refresh or
+            // not
+
+            if (!isForceRefresh)
+                return;
         } else {
             serviceCenterId = tempServiceCenterId;
             userId = tempUserId;
@@ -474,7 +477,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 @Override
                 public void onRefresh() {
                     checkUpAdapter.clearData();
-                    doRefresh();
+                    doRefresh(true);
 
                 }
             };

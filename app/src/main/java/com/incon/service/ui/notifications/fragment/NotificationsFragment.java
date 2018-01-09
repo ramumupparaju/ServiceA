@@ -72,7 +72,7 @@ public class NotificationsFragment extends BaseProductOptionsFragment {
     }
 
     @Override
-    public void doRefresh() {
+    public void doRefresh(boolean isForceRefresh) {
 
     }
 

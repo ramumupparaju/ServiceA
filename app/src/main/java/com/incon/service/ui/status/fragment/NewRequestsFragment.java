@@ -116,14 +116,17 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
     @Override
-    public void doRefresh() {
+    public void doRefresh(boolean isForceRefresh) {
         HomeActivity activity = (HomeActivity) getActivity();
         int tempServiceCenterId = activity.getServiceCenterId();
         int tempUserId = activity.getUserId();
 
         if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
-            //no chnages have made, so no need to make api call
-            return;
+            //no chnages have made, so no need to make api call checks whether pull to refresh or
+            // not
+
+            if (!isForceRefresh)
+                return;
         } else {
             serviceCenterId = tempServiceCenterId;
             userId = tempUserId;
@@ -481,9 +484,9 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
                 // TODO have to check
                 // newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
-              //  upDateStatus.setPurchaseId(upDateStatusList.getPurchaseId());
+                //  upDateStatus.setPurchaseId(upDateStatusList.getPurchaseId());
 
-              //  upDateStatus.setRequestid(fetchNewRequestResponse.getRequest().getId());
+                //  upDateStatus.setRequestid(fetchNewRequestResponse.getRequest().getId());
                 upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition
                         (productSelectedPosition).getRequest().getId());
                 newRequestPresenter.upDateStatus(userId, upDateStatus);
@@ -676,7 +679,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 @Override
                 public void onRefresh() {
                     newRequestsAdapter.clearData();
-                    doRefresh();
+                    doRefresh(true);
                 }
             };
 
