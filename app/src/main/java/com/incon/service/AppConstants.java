@@ -49,6 +49,7 @@ public interface AppConstants {
 
     interface UserConstants {
         int SUPER_ADMIN_TYPE = 7;
+        int ADMIN_TYPE = 9;
         int USER_TYPE = 8;
     }
 
@@ -266,7 +267,6 @@ public interface AppConstants {
         String USER_GENDER = "userGender";
         String USER_ADDRESS = "userAddress";
         String USER_TYPE = "userType";
-        String USER_IS_ADMIN = "userIsAdmin";
         String USER_CITY = "userCity";
         String USER_STATE = "userState";
         String USER_POSTAL_CODE = "userPostalCode";

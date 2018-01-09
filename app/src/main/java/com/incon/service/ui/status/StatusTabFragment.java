@@ -74,20 +74,19 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     }
 
     private void initViews() {
+        binding.spinnerServiceCenters.setVisibility(View.GONE);
+        binding.spinnerUsers.setVisibility(View.GONE);
+
         int userType = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
         if (userType == UserConstants.SUPER_ADMIN_TYPE) {
+            binding.spinnerServiceCenters.setVisibility(View.VISIBLE);
             loadServiceCentersSpinner();
+        } else if (userType == UserConstants.ADMIN_TYPE) {
+            int serviceCenterId = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs
+                    .SERVICE_CENTER_ID, DEFAULT_VALUE);
+            doAllUsersInServiceCenterApi(serviceCenterId);
         } else {
-            binding.spinnerServiceCenters.setVisibility(View.GONE);
-            int isAdmin = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_IS_ADMIN, BooleanConstants.IS_FALSE);
-            if (isAdmin == BooleanConstants.IS_TRUE) {
-                int serviceCenterId = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs
-                        .SERVICE_CENTER_ID, DEFAULT_VALUE);
-                doAllUsersInServiceCenterApi(serviceCenterId);
-            } else {
-                initViewPager();
-                binding.spinnerUsers.setVisibility(View.GONE);
-            }
+            initViewPager();
         }
     }
 
@@ -101,7 +100,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         List<String> usersArray = new ArrayList<>(usersListOfServiceCenters.size());
 
         if (usersListOfServiceCenters == null || usersListOfServiceCenters.size() == 0) {
-            usersSelectedPosition = -1;
+            usersSelectedPosition = MINUS_ONE;
             binding.spinnerUsers.setText("");
             binding.spinnerUsers.setOnItemClickListener(null);
         } else {
@@ -126,7 +125,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                     }
                 }
             });
-            refreshFragmentByPosition(-1); // load all requests based on service center
+            refreshFragmentByPosition(MINUS_ONE); // load all requests based on service center
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
@@ -136,7 +135,9 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     }
 
     private void refreshFragmentByPosition(int usersSelectedPosition) {
-        ((HomeActivity) getActivity()).setUserId(usersSelectedPosition);
+        ((HomeActivity) getActivity()).setUserId(usersSelectedPosition ==
+                MINUS_ONE ? usersSelectedPosition : usersListOfServiceCenters.get
+                (usersSelectedPosition).getId());
         BaseProductOptionsFragment fragmentFromPosition = (BaseProductOptionsFragment) adapter.getFragmentFromPosition(currentTabPosition);
         fragmentFromPosition.doRefresh();
 
