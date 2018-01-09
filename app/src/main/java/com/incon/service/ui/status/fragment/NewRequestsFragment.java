@@ -18,6 +18,8 @@ import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.login.ServiceCenterResponse;
+import com.incon.service.apimodel.components.request.Request;
+import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
@@ -48,6 +50,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -482,15 +485,13 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                // TODO have to check
-                // newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
-                //  upDateStatus.setPurchaseId(upDateStatusList.getPurchaseId());
-
-                //  upDateStatus.setRequestid(fetchNewRequestResponse.getRequest().getId());
-                upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition
-                        (productSelectedPosition).getRequest().getId());
+                FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                upDateStatus.setServiceCenterId(serviceCenterId);
+                upDateStatus.setStatus(new Status(ASSIGNED));
+                upDateStatus.setPurchaseId(request.getWarrantyId());
                 newRequestPresenter.upDateStatus(userId, upDateStatus);
-
             }
 
             @Override
@@ -721,6 +722,9 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
+        if (assignOptionDialog != null && assignOptionDialog.isShowing()) {
+            assignOptionDialog.dismiss();
+        }
 
     }
 

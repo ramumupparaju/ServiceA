@@ -32,7 +32,7 @@ public class UpDateStatusResponse {
     private Object createdBy;
     @SerializedName("createdDate")
     @Expose
-    private Integer createdDate;
+    private Long createdDate;
     @SerializedName("assignedTo")
     @Expose
     private Integer assignedTo;
@@ -126,11 +126,11 @@ public class UpDateStatusResponse {
         this.createdBy = createdBy;
     }
 
-    public Integer getCreatedDate() {
+    public Long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Integer createdDate) {
+    public void setCreatedDate(Long createdDate) {
         this.createdDate = createdDate;
     }
 

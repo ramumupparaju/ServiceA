@@ -79,7 +79,6 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.paymentRecyclerview.setAdapter(paymentAdapter);
         binding.paymentRecyclerview.setLayoutManager(linearLayoutManager);
-
     }
 
 

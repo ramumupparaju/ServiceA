@@ -15,6 +15,10 @@ public class Status {
     @Expose
     private Object code;
 
+    public Status(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

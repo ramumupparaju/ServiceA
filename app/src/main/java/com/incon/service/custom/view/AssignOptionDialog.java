@@ -46,6 +46,7 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
         this.usersList = builder.usersList;
         this.assignOptionCallback = builder.callback;
         this.serviceCentersList = builder.serviceCenterResponseList;
+        upDateStatus = new UpDateStatus();
     }
 
     public void showDialog() {
@@ -81,7 +82,6 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (usersSelectedPos != position) {
                     usersSelectedPos = position;
-
                 }
             }
         });
@@ -142,10 +142,10 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
                 assignOptionCallback.alertDialogCallback(AssignOptionCallback.CANCEL);
                 break;
             case R.id.button_right:
-                //if (validateFields()) {
-                assignOptionCallback.doUpDateStatusApi(upDateStatus);
-                assignOptionCallback.alertDialogCallback(AssignOptionCallback.OK);
-                // }
+                if (validateFields()) {
+                    assignOptionCallback.doUpDateStatusApi(upDateStatus);
+                    assignOptionCallback.alertDialogCallback(AssignOptionCallback.OK);
+                }
 
                 break;
             default:
@@ -156,13 +156,12 @@ public class AssignOptionDialog extends Dialog implements View.OnClickListener {
     private boolean validateFields() {
 
         int selectedPriority = binding.radioGroup.getCheckedRadioButtonId();
-        RadioButton radioButton = (RadioButton) findViewById(selectedPriority);
-        {
-            upDateStatus.setComments(binding.edittextComment.getText().toString());
-            upDateStatus.setPriority(Integer.valueOf(radioButton.getTag().toString()));
-            return true;
+        RadioButton radioButton = findViewById(selectedPriority);
 
-        }
+        upDateStatus.setAssignedTo(usersList.get(usersSelectedPos).getId());
+        upDateStatus.setComments(binding.edittextComment.getText().toString());
+        upDateStatus.setPriority(Integer.valueOf(radioButton.getTag().toString()));
+        return true;
     }
 
 }

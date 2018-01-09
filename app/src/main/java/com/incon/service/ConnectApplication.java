@@ -11,6 +11,7 @@ import com.incon.service.dto.addservicecenter.AddServiceCenter;
 
 import net.hockeyapp.android.CrashManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -27,6 +28,9 @@ public class ConnectApplication extends Application {
     }
 
     public void setServiceCenterList(List<AddServiceCenter> serviceCenterList) {
+        if (serviceCenterList == null) {
+            serviceCenterList = new ArrayList<>();
+        }
         this.serviceCenterList = serviceCenterList;
     }
 

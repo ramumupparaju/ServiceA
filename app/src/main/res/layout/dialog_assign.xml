@@ -2,9 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <LinearLayout
         style="@style/MatchWrap"
         android:background="@drawable/dialog_background"
+        android:orientation="vertical"
         >
 
         <!-- spinner -->
@@ -89,5 +90,5 @@
             android:layout_below="@id/radioGroup"/>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 </layout>

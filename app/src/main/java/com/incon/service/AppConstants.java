@@ -20,6 +20,9 @@ public interface AppConstants {
     int DEAULT_VALUE = Integer.MAX_VALUE;
     int MINUS_ONE = -1;
 
+    interface StatusConstants {
+        int ASSIGNED = 3;
+    }
     interface RegistrationConstants {
         String SERVICE_INDIVIDUAL = "I";
         String SERVICE_GROUP = "G";

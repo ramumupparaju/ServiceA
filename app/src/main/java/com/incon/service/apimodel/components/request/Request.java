@@ -11,12 +11,23 @@ public class Request {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("warrantyId")
+    @Expose
+    private Integer warrantyId;
     @SerializedName("status")
     @Expose
     private String status;
     @SerializedName("comments")
     @Expose
     private String comments;
+
+    public Integer getWarrantyId() {
+        return warrantyId;
+    }
+
+    public void setWarrantyId(Integer warrantyId) {
+        this.warrantyId = warrantyId;
+    }
 
     public Integer getId() {
         return id;
