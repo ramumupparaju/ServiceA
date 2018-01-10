@@ -89,6 +89,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         binding.checkupRecyclerview.setAdapter(checkUpAdapter);
         binding.checkupRecyclerview.setLayoutManager(linearLayoutManager);
     }
+
     @Override
     public void doRefresh(boolean isForceRefresh) {
         HomeActivity activity = (HomeActivity) getActivity();
@@ -284,18 +285,17 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 } else if (secondRowTag == 1) { // note
                     showNoteDialog();
 
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 } else if (secondRowTag == 2) { // close
 
                     showCloseDialog();
 
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 } else {  // assign
                     // showAssignDialog();
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
@@ -494,18 +494,17 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
     @Override
     public void loadingCheckUpRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
-if (fetchNewRequestResponsesList == null) {
-    fetchNewRequestResponsesList = new ArrayList<>();
-}
-if (fetchNewRequestResponsesList.size() == 0) {
-    binding.checkupTextview.setVisibility(View.VISIBLE);
-    dismissSwipeRefresh();
-}
-else {
-    binding.checkupTextview.setVisibility(View.GONE);
-    checkUpAdapter.setData(fetchNewRequestResponsesList);
-    dismissSwipeRefresh();
-}
+        if (fetchNewRequestResponsesList == null) {
+            fetchNewRequestResponsesList = new ArrayList<>();
+        }
+        if (fetchNewRequestResponsesList.size() == 0) {
+            binding.checkupTextview.setVisibility(View.VISIBLE);
+            dismissSwipeRefresh();
+        } else {
+            binding.checkupTextview.setVisibility(View.GONE);
+            checkUpAdapter.setData(fetchNewRequestResponsesList);
+            dismissSwipeRefresh();
+        }
 
     }
 
