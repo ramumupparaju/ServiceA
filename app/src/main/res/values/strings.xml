@@ -23,6 +23,8 @@
     </string>
     <!-- bottom sheet options-->
     <string name="user_comment_hint">Comment</string>
+    <string name="estimation_price">Estimation Price</string>
+    <string name="estimation_time">Estimation Time</string>
     <string name="sample_test">Sample test</string>
     <string name="coming_soon">Coming Soon</string>
     <string name="bottom_option_customer">Customer</string>
@@ -96,6 +98,8 @@
     <string name="option_past_history">Past History</string>
     <string name="hint_usres">Users</string>
     <string name="action_high">High</string>
+    <string name="action_manual_approval">Manual Approval</string>
+    <string name="action_send_for_approval">Send For Approval</string>
     <string name="action_medium">Medium</string>
     <string name="action_low">Low</string>
 

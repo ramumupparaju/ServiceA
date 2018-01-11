@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        style="@style/MatchWrap"
+        android:background="@drawable/dialog_background">
+
+        <!-- estimation price -->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_estimation_price"
+            style="@style/Register_TextInputLayout"
+            android:layout_marginTop="10dp"
+            android:hint="@string/estimation_price"
+            app:errorEnabled="true"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_estimation_price"
+                style="@style/Register_TextInputEditText"
+                android:focusable="true"
+                android:imeOptions="actionNext"
+                android:inputType="textCapWords"
+                android:maxLength="@integer/character_limit_200"
+                android:maxLines="1"
+                android:paddingEnd="2dp"
+                android:paddingStart="2.1dp"/>
+        </com.incon.service.custom.view.CustomTextInputLayout>
+
+        <!-- estimation time -->
+        <com.incon.service.custom.view.CustomTextInputLayout
+            android:id="@+id/input_estimation_time"
+            style="@style/Register_TextInputLayout"
+            android:layout_below="@id/input_estimation_price"
+            android:hint="@string/estimation_time"
+            app:errorEnabled="true"
+            app:fontName="fonts/OpenSans-Regular.ttf"
+            app:hintTextAppearance="@style/TextInputLayout_FloatingTextColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edittext_estimation_time"
+                style="@style/Register_TextInputEditText"
+                android:enabled="false"/>
+        </com.incon.service.custom.view.CustomTextInputLayout>
+
+        <!--dummy view for date click event -->
+        <View
+            android:id="@+id/view_date"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignBottom="@+id/input_estimation_time"
+            android:layout_alignEnd="@+id/input_estimation_time"
+            android:layout_alignStart="@+id/input_estimation_time"
+            android:layout_alignTop="@+id/input_estimation_time"
+            android:background="@null"/>
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            style="@style/MatchWrap"
+            android:layout_below="@+id/input_estimation_time"
+            android:layout_marginEnd="@dimen/margin_42"
+            android:layout_marginStart="@dimen/margin_42"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                style="@style/zerowrap"
+                android:layout_weight="1"
+                android:tag="1"
+                android:text="@string/action_manual_approval"
+                android:textSize="12sp"
+                app:fontName="fonts/OpenSans-Regular.ttf"/>
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                style="@style/zerowrap"
+                android:layout_weight="1"
+                android:checked="true"
+                android:tag="2"
+                android:text="@string/action_send_for_approval"
+                android:textSize="12sp"/>
+
+        </RadioGroup>
+
+        <!-- layout for bottom buttons -->
+        <include
+            android:id="@+id/include_register_bottom_buttons"
+            layout="@layout/view_registration_bottom_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_below="@id/radioGroup"/>
+
+    </RelativeLayout>
+</layout>
