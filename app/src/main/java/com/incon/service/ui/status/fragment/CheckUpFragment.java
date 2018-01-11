@@ -28,7 +28,7 @@ import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.EstimationDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
-import com.incon.service.custom.view.UpdateStatusDialog;
+import com.incon.service.custom.view.StatusDialog;
 import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -60,7 +60,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
-    private UpdateStatusDialog assignOptionDialog;
+    private StatusDialog statusDialog;
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
@@ -422,7 +422,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
 
     private void showAssignDialog() {
-        assignOptionDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+        statusDialog = new StatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
@@ -451,8 +451,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             }
         }).title(getString(R.string.option_assign))
                 .build();
-        assignOptionDialog.showDialog();
-        assignOptionDialog.setCancelable(true);
+        statusDialog.showDialog();
+        statusDialog.setCancelable(true);
 
     }
 

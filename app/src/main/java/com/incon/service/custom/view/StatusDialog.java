@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.RadioButton;
 
 import com.incon.service.R;
 import com.incon.service.apimodel.components.login.ServiceCenterResponse;
@@ -26,7 +24,7 @@ import java.util.List;
  * Created by MY HOME on 28-Dec-17.
  */
 
-public class UpdateStatusDialog extends Dialog implements View.OnClickListener {
+public class StatusDialog extends Dialog implements View.OnClickListener {
     private final Context context;
     private final AssignOptionCallback assignOptionCallback;
     private DialogAssignBinding binding;
@@ -36,7 +34,7 @@ public class UpdateStatusDialog extends Dialog implements View.OnClickListener {
 
     private int usersSelectedPos = 0;
 
-    public UpdateStatusDialog(AlertDialogBuilder builder) {
+    public StatusDialog(AlertDialogBuilder builder) {
         super(builder.context);
         this.context = builder.context;
         this.usersList = builder.usersList;
@@ -109,8 +107,8 @@ public class UpdateStatusDialog extends Dialog implements View.OnClickListener {
             return this;
         }
 
-        public UpdateStatusDialog build() {
-            UpdateStatusDialog dialog = new UpdateStatusDialog(this);
+        public StatusDialog build() {
+            StatusDialog dialog = new StatusDialog(this);
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
             return dialog;
         }

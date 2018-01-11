@@ -33,7 +33,7 @@ import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.EditTimeDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
-import com.incon.service.custom.view.UpdateStatusDialog;
+import com.incon.service.custom.view.StatusDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -64,7 +64,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
-    private UpdateStatusDialog updateStatusDialog;
+    private StatusDialog statusDialog;
     private EditTimeDialog editTimeDialog;
     private TimeSlotAlertDialog timeSlotAlertDialog;
     private AppEditTextDialog holdDialog;
@@ -498,7 +498,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
     private void showAssignDialog(List<AddUser> userList) {
-        updateStatusDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+        statusDialog = new StatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
                 FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
@@ -520,7 +520,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     case AlertDialogCallback.OK:
                         break;
                     case AlertDialogCallback.CANCEL:
-                        updateStatusDialog.dismiss();
+                        statusDialog.dismiss();
                         break;
                     default:
                         break;
@@ -528,8 +528,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
             }
         }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
-        updateStatusDialog.showDialog();
-        updateStatusDialog.setCancelable(true);
+        statusDialog.showDialog();
+        statusDialog.setCancelable(true);
     }
 
 
@@ -708,8 +708,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
 
-        if (updateStatusDialog != null && updateStatusDialog.isShowing()) {
-            updateStatusDialog.dismiss();
+        if (statusDialog != null && statusDialog.isShowing()) {
+            statusDialog.dismiss();
         }
 
         Integer statusId = upDateStatusResponse.getStatus().getId();
