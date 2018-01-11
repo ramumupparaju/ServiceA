@@ -206,16 +206,18 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
             } else { // status update
-                bottomOptions = new String[4];
+                bottomOptions = new String[5];
                 bottomOptions[0] = getString(R.string.bottom_option_estimation);
-                bottomOptions[1] = getString(R.string.bottom_option_note);
-                bottomOptions[2] = getString(R.string.bottom_option_close);
-                bottomOptions[3] = getString(R.string.bottom_option_assign);
-                topDrawables = new int[4];
+                bottomOptions[1] = getString(R.string.bottom_option_hold);
+                bottomOptions[2] = getString(R.string.bottom_option_terminate);
+                bottomOptions[3] = getString(R.string.bottom_option_move_to);
+                bottomOptions[4] = getString(R.string.bottom_option_assign);
+                topDrawables = new int[5];
                 topDrawables[0] = R.drawable.ic_option_accept_request;
                 topDrawables[1] = R.drawable.ic_option_accept_request;
                 topDrawables[2] = R.drawable.ic_option_close;
                 topDrawables[3] = R.drawable.ic_option_assign;
+                topDrawables[4] = R.drawable.ic_option_assign;
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
@@ -292,13 +294,21 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             } else if (firstRowTag == 3) {  //status update
                 if (secondRowTag == 0) {  // estimation
                     showEstimationDialog();
-                } else if (secondRowTag == 1) { // note
-                    showNoteDialog();
+                } else if (secondRowTag == 1) { // hold
+                    showHoldDialog();
 
-                } else if (secondRowTag == 2) { // close
-                    showCloseDialog();
+                } else if (secondRowTag == 2) { // terminate
 
-                } else {  // assign
+                    showTerminateDialog();
+
+                }
+                else if (secondRowTag == 3) { // move to
+
+                    showMoveToDialog();
+
+                }
+
+                else {  // assign
                     // showAssignDialog();
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
@@ -310,6 +320,17 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
     };
+
+    private void showMoveToDialog() {
+
+    }
+
+    private void showTerminateDialog() {
+    }
+
+    private void showHoldDialog() {
+
+    }
 
     private void showEstimationDialog() {
 
@@ -405,7 +426,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
 
     private void showAssignDialog() {
-        assignDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+        assignOptionDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
@@ -434,8 +455,9 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             }
         }).title(getString(R.string.option_assign))
                 .build();
-        assignDialog.showDialog();
-        assignDialog.setCancelable(true);
+        assignOptionDialog.showDialog();
+        assignOptionDialog.setCancelable(true);
+
     }
 
     private void showCloseDialog() {

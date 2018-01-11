@@ -47,6 +47,8 @@
     <string name="bottom_option_repair_done">Repair done</string>
     <string name="bottom_option_paid">Paid</string>
     <string name="bottom_option_hold">Hold</string>
+    <string name="bottom_option_terminate">Terminate</string>
+    <string name="bottom_option_move_to">Move To</string>
     <string name="bottom_option_close">Close</string>
     <string name="bottom_option_call_customer_care">Call customer care</string>
     <string name="bottom_option_find_service_center">Find service center</string>
