@@ -45,8 +45,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static com.incon.service.AppConstants.StatusConstants.APPROVAL;
-import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
-import static com.incon.service.AppConstants.StatusConstants.ATTENDING;
 import static com.incon.service.AppConstants.StatusConstants.REPAIR;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
@@ -65,7 +63,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
     private PastHistoryDialog pastHistoryDialog;
-    private UpdateStatusDialog assignDialog;
+    private UpdateStatusDialog assignOptionDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
     private List<AddUser> usersList;
