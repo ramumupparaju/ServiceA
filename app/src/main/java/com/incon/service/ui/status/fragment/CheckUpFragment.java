@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static com.incon.service.AppConstants.StatusConstants.APPROVAL;
+import static com.incon.service.AppConstants.StatusConstants.MANUAL_APROVED;
 import static com.incon.service.AppConstants.StatusConstants.REPAIR;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
@@ -622,8 +623,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             estimationDialog.dismiss();
         }
 
-        Integer statusId = upDateStatusResponse.getStatus().getId();
-        if (statusId == REPAIR || statusId == APPROVAL) {
+        Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
+        if (statusId == MANUAL_APROVED || statusId == APPROVAL) {
             doRefresh(true);
         }
     }

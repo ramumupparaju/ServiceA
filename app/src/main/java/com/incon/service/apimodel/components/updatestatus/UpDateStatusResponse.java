@@ -2,6 +2,7 @@ package com.incon.service.apimodel.components.updatestatus;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.incon.service.apimodel.components.request.Request;
 
 /**
  * Created by PC on 1/5/2018.
@@ -69,6 +70,18 @@ public class UpDateStatusResponse {
     @SerializedName("purchaseId")
     @Expose
     private Integer purchaseId;
+
+    @SerializedName("request")
+    @Expose
+    private Request request;
+
+    public Request getRequest() {
+        return request;
+    }
+
+    public void setRequest(Request request) {
+        this.request = request;
+    }
 
     public Integer getId() {
         return id;

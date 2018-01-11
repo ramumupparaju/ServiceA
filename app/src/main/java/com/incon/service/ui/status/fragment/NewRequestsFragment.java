@@ -699,7 +699,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             updateStatusDialog.dismiss();
         }
 
-        Integer statusId = upDateStatusResponse.getStatus().getId();
+        Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
         if (statusId == ASSIGNED || statusId == ATTENDING) {
             doRefresh(true);
         }
