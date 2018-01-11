@@ -1,8 +1,10 @@
 package com.incon.service.ui.status.fragment;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
@@ -18,13 +21,15 @@ import com.incon.service.apimodel.components.request.Request;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
+import com.incon.service.callbacks.EstimationDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.PassHistoryCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
-import com.incon.service.custom.view.UpdateStatusDialog;
+import com.incon.service.custom.view.EstimationDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
+import com.incon.service.custom.view.UpdateStatusDialog;
 import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -32,9 +37,12 @@ import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.CheckUpAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
+import com.incon.service.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import static com.incon.service.AppConstants.StatusConstants.APPROVAL;
 import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
@@ -48,6 +56,8 @@ import static com.incon.service.AppUtils.callPhoneNumber;
 public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.View {
     private FragmentCheckupBinding binding;
     private View rootView;
+    private EstimationDialogCallback estimationDialogCallback;
+    private EstimationDialog estimationDialog;
     private CheckUpAdapter checkUpAdapter;
     private CheckUpPresenter checkUpPresenter;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
@@ -313,7 +323,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
             } else if (firstRowTag == 3) {  //status update
                 if (secondRowTag == 0) {  // estimation
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    showEstimationDialog();
                 } else if (secondRowTag == 1) { // note
                     showNoteDialog();
 
@@ -333,6 +343,71 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
     };
+
+    private void showEstimationDialog() {
+
+        estimationDialog = new EstimationDialog.AlertDialogBuilder(getContext(), new EstimationDialogCallback() {
+
+            @Override
+            public void dateClicked(String date) {
+                showDatePickerToEstimate(date);
+            }
+
+
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        estimationDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).build();
+        estimationDialog.showDialog();
+
+    }
+
+    private void showDatePickerToEstimate(String date) {
+
+        AppUtils.hideSoftKeyboard(getContext(), getView());
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        String selectedDate = date;
+        if (!TextUtils.isEmpty(selectedDate)) {
+            cal.setTimeInMillis(DateUtils.convertStringFormatToMillis(
+                    selectedDate, DateFormatterConstants.DD_MM_YYYY));
+        }
+
+        int customStyle = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                ? R.style.DatePickerDialogTheme : android.R.style.Theme_DeviceDefault_Light_Dialog;
+        DatePickerDialog datePicker = new DatePickerDialog(getContext(),
+                customStyle,
+                estimationDatePickerListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH));
+        datePicker.setCancelable(false);
+        datePicker.show();
+    }
+    private DatePickerDialog.OnDateSetListener estimationDatePickerListener =
+            new DatePickerDialog.OnDateSetListener() {
+                // when dialog box is closed, below method will be called.
+                public void onDateSet(DatePicker view, int selectedYear,
+                                      int selectedMonth, int selectedDay) {
+                    Calendar selectedDateTime = Calendar.getInstance();
+                    selectedDateTime.set(selectedYear, selectedMonth, selectedDay);
+
+                    String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
+                            selectedDateTime.getTime(), DateFormatterConstants.DD_MM_YYYY);
+                    estimationDialog.setDateFromPicker(dobInDD_MM_YYYY);
+
+                }
+            };
 
     private void showPastHisoryDialog() {
         pastHistoryDialog = new PastHistoryDialog.AlertDialogBuilder(getContext(), new PassHistoryCallback() {
