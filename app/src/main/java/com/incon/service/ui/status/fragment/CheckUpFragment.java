@@ -17,6 +17,7 @@ import android.widget.DatePicker;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.request.Request;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
@@ -28,7 +29,7 @@ import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.EstimationDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
-import com.incon.service.custom.view.UpdateStatusDialog;
+import com.incon.service.custom.view.StatusDialog;
 import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -43,6 +44,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import static com.incon.service.AppConstants.StatusConstants.APPROVAL;
+import static com.incon.service.AppConstants.StatusConstants.REPAIR;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -301,14 +304,11 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
                     showTerminateDialog();
 
-                }
-                else if (secondRowTag == 3) { // move to
+                } else if (secondRowTag == 3) { // move to
 
                     showMoveToDialog();
 
-                }
-
-                else {  // assign
+                } else {  // assign
                     // showAssignDialog();
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
@@ -388,6 +388,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         datePicker.setCancelable(false);
         datePicker.show();
     }
+
     private DatePickerDialog.OnDateSetListener estimationDatePickerListener =
             new DatePickerDialog.OnDateSetListener() {
                 // when dialog box is closed, below method will be called.

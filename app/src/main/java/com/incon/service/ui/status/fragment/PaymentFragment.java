@@ -118,7 +118,6 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
     }
 
 
-
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
         public void onClickPosition(int position) {
@@ -284,17 +283,13 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                     topDrawables[0] = R.drawable.ic_options_features;
                     topDrawables[1] = R.drawable.ic_option_pasthistory;
                     topDrawables[2] = R.drawable.ic_option_pasthistory;
-                }
-                else  if (secondRowTag == 1) { // hold
+                } else if (secondRowTag == 1) { // hold
                     showHoldDialog();
-                }
-                else  if (secondRowTag == 2) { // terminate
+                } else if (secondRowTag == 2) { // terminate
                     showTerminateDialog();
-                }
-                else  if (secondRowTag == 3) { // move to
+                } else if (secondRowTag == 3) { // move to
                     showMoveToDialog();
-                }
-                else  if (secondRowTag == 4) { // assign
+                } else if (secondRowTag == 4) { // assign
                     showAssignDialog();
                 }
 

@@ -128,7 +128,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     }
 
 
-
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
         public void onClickPosition(int position) {
@@ -200,8 +199,8 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 bottomOptions = new String[6];
                 bottomOptions[0] = getString(R.string.bottom_option_repair_done);
                 bottomOptions[1] = getString(R.string.bottom_option_hold);
-                bottomOptions[2] = getString(R.string.bottom_option_hold);
-                bottomOptions[3] = getString(R.string.bottom_option_hold);
+                bottomOptions[2] = getString(R.string.bottom_option_terminate);
+                bottomOptions[3] = getString(R.string.bottom_option_move_to);
                 bottomOptions[4] = getString(R.string.bottom_option_assign);
                 bottomOptions[5] = getString(R.string.bottom_option_close);
                 topDrawables = new int[6];
@@ -214,9 +213,9 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
-            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
             bottomSheetPurchasedBinding.secondRow.setWeightSum(bottomOptions.length);
+            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, bottomOptions, topDrawables, bottomSheetSecondRowClickListener, unparsedTag);
         }
     };
@@ -241,9 +240,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
 
             // customer
             if (firstRowTag == 0) {
-
                 if (secondRowTag == 0) {    //call customer care
-
                     callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                     return;
                 }
@@ -289,22 +286,15 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                     showRepairDone();
                 } else if (secondRowTag == 1) { // hold
                     showHoldDialog();
-                }
-                else if (secondRowTag == 2) { // terminate
+                } else if (secondRowTag == 2) { // terminate
                     showTerminateDialog();
-                }
-                else if (secondRowTag == 3) { // move to
+                } else if (secondRowTag == 3) { // move to
                     showMoveToDialog();
-                }
-
-                else if (secondRowTag == 4) { // assign
-                    showAssignDialog();
-                }
-                else { // close
+                } else if (secondRowTag == 4) { // assign
+                    //   showAssignDialog();
+                } else { // close
                     showCloseDialog();
-
                 }
-
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
@@ -366,7 +356,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                                 break;
                         }
                     }
-                }).title(getString(R.string.bottom_option_close))
+                }).title(getString(R.string.bottom_option_repair_done))
                 .leftButtonText(getString(R.string.action_cancel))
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
@@ -470,7 +460,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     }
 
 
-
     @Override
     public void onSearchClickListerner(String searchableText, String searchType) {
         //TODO have to implement search click listener
@@ -509,8 +498,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
 
     }
-
-
 
 
 }
