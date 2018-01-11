@@ -29,7 +29,7 @@ import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.EstimationDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
-import com.incon.service.custom.view.UpdateStatusDialog;
+import com.incon.service.custom.view.StatusDialog;
 import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -63,8 +63,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
+    private StatusDialog statusDialog;
     private PastHistoryDialog pastHistoryDialog;
-    private UpdateStatusDialog assignOptionDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
     private List<AddUser> usersList;
@@ -120,6 +120,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         checkUpPresenter.fetchCheckUpServiceRequests(serviceCenterId, userId);
     }
 
+
     private void dismissSwipeRefresh() {
         if (binding.swiperefresh.isRefreshing()) {
             binding.swiperefresh.setRefreshing(false);
@@ -141,6 +142,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
         public void onClickPosition(int position) {
+
             checkUpAdapter.clearSelection();
             FetchNewRequestResponse fetchNewRequestResponse = checkUpAdapter.
                     getItemFromPosition(position);
@@ -300,14 +302,11 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
                     showTerminateDialog();
 
-                }
-                else if (secondRowTag == 3) { // move to
+                } else if (secondRowTag == 3) { // move to
 
                     showMoveToDialog();
 
-                }
-
-                else {  // assign
+                } else {  // assign
                     // showAssignDialog();
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
@@ -425,7 +424,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
 
     private void showAssignDialog() {
-        assignOptionDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+        statusDialog = new StatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
@@ -454,8 +453,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             }
         }).title(getString(R.string.option_assign))
                 .build();
-        assignOptionDialog.showDialog();
-        assignOptionDialog.setCancelable(true);
+        statusDialog.showDialog();
+        statusDialog.setCancelable(true);
 
     }
 
