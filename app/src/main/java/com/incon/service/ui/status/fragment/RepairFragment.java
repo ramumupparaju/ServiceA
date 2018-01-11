@@ -213,6 +213,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
             bottomSheetPurchasedBinding.secondRow.setWeightSum(bottomOptions.length);
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
@@ -298,6 +299,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
+            bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
         }

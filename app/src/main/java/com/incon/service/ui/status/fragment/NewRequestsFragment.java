@@ -17,7 +17,6 @@ import android.widget.DatePicker;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
-import com.incon.service.apimodel.components.login.ServiceCenterResponse;
 import com.incon.service.apimodel.components.request.Request;
 import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
@@ -320,17 +319,11 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
                 } else if (secondRowTag == 2) { // hold
                     showHoldDialog();
-                }
-
-                else if (secondRowTag == 3) { // terminate
+                } else if (secondRowTag == 3) { // terminate
                     showTerminateDialog();
-                }
-                else if (secondRowTag == 4) { // move to
+                } else if (secondRowTag == 4) { // move to
                     showMoveToDialog();
-                }
-
-
-                else {
+                } else {
                     //  edit time
 
                     showEditTimeDialog();
@@ -604,6 +597,14 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
 
     private void showAttendingDialog() {
+        UpDateStatus upDateStatus = new UpDateStatus();
+        upDateStatus.setStatus(new Status(ATTENDING));
+        upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
+        newRequestPresenter.upDateStatus(userId, upDateStatus);
+    }
+
+    private void doAcceptApi() {
+        //todo have to call accept api
         UpDateStatus upDateStatus = new UpDateStatus();
         upDateStatus.setStatus(new Status(ATTENDING));
         upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
