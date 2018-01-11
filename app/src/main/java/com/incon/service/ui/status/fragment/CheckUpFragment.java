@@ -64,8 +64,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
-    private UpdateStatusDialog estimationDialog;
     private PastHistoryDialog pastHistoryDialog;
+    private UpdateStatusDialog assignDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
     private List<AddUser> usersList;
@@ -125,38 +125,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         if (binding.swiperefresh.isRefreshing()) {
             binding.swiperefresh.setRefreshing(false);
         }
-    }
-
-
-    private void showEstimationDialog(List<AddUser> userList) {
-        estimationDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
-            @Override
-            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
-                Request request = requestResponse.getRequest();
-                upDateStatus.setRequestid(request.getId());
-                checkUpPresenter.upDateStatus(userId, upDateStatus);
-            }
-
-            @Override
-            public void enteredText(String commentString) {
-            }
-
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-                        break;
-                    case AlertDialogCallback.CANCEL:
-                        estimationDialog.dismiss();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }).title(getString(R.string.bottom_option_estimation)).build();
-        estimationDialog.showDialog();
-        estimationDialog.setCancelable(true);
     }
 
     @Override
@@ -328,7 +296,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                     showNoteDialog();
 
                 } else if (secondRowTag == 2) { // close
-
                     showCloseDialog();
 
                 } else {  // assign
@@ -353,7 +320,13 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 showDatePickerToEstimate(date);
             }
 
-
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                checkUpPresenter.upDateStatus(userId, upDateStatus);
+            }
 
             @Override
             public void alertDialogCallback(byte dialogStatus) {
@@ -366,15 +339,12 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                     default:
                         break;
                 }
-
             }
         }).build();
         estimationDialog.showDialog();
-
     }
 
     private void showDatePickerToEstimate(String date) {
-
         AppUtils.hideSoftKeyboard(getContext(), getView());
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         String selectedDate = date;
@@ -394,6 +364,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         datePicker.setCancelable(false);
         datePicker.show();
     }
+
     private DatePickerDialog.OnDateSetListener estimationDatePickerListener =
             new DatePickerDialog.OnDateSetListener() {
                 // when dialog box is closed, below method will be called.
@@ -434,7 +405,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
 
     private void showAssignDialog() {
-        estimationDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+        assignDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
@@ -463,9 +434,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             }
         }).title(getString(R.string.option_assign))
                 .build();
-        estimationDialog.showDialog();
-        estimationDialog.setCancelable(true);
-
+        assignDialog.showDialog();
+        assignDialog.setCancelable(true);
     }
 
     private void showCloseDialog() {

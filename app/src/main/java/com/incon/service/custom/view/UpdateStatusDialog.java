@@ -153,7 +153,7 @@ public class UpdateStatusDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-    private boolean validateFields() {
+    private boolean validateFields() { //TODO have to add validations
         upDateStatus.setAssignedTo(usersList.get(usersSelectedPos).getId());
         upDateStatus.setComments(binding.edittextComment.getText().toString());
         return true;
