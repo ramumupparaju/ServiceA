@@ -23,7 +23,6 @@ import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
-import com.incon.service.callbacks.AttendingCallback;
 import com.incon.service.callbacks.EditTimeCallback;
 import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.PassHistoryCallback;
@@ -31,11 +30,10 @@ import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
-import com.incon.service.custom.view.UpdateStatusDialog;
-import com.incon.service.custom.view.AttendingOptionDialog;
 import com.incon.service.custom.view.EditTimeDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
+import com.incon.service.custom.view.UpdateStatusDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -225,16 +223,20 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
             } else { // status update
-                bottomOptions = new String[4];
+                bottomOptions = new String[6];
                 bottomOptions[0] = getString(R.string.bottom_option_accept);
                 bottomOptions[1] = getString(R.string.bottom_option_reject);
                 bottomOptions[2] = getString(R.string.bottom_option_hold);
-                bottomOptions[3] = getString(R.string.bottom_option_edit);
-                topDrawables = new int[4];
+                bottomOptions[3] = getString(R.string.bottom_option_terminate);
+                bottomOptions[4] = getString(R.string.bottom_option_move_to);
+                bottomOptions[5] = getString(R.string.bottom_option_edit);
+                topDrawables = new int[6];
                 topDrawables[0] = R.drawable.ic_option_accept_request;
                 topDrawables[1] = R.drawable.ic_option_accept_request;
                 topDrawables[2] = R.drawable.ic_option_hold;
                 topDrawables[3] = R.drawable.ic_option_hold;
+                topDrawables[4] = R.drawable.ic_option_hold;
+                topDrawables[5] = R.drawable.ic_option_hold;
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
@@ -326,12 +328,18 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     showAcceptRejectDialog(false);
 
                 } else if (secondRowTag == 2) { // hold
-                    //showHoldDialog();
-                    bottomOptions = new String[1];
-                    bottomOptions[0] = getString(R.string.bottom_option_assign);
-                    topDrawables = new int[1];
-                    topDrawables[0] = R.drawable.ic_options_feedback;
-                } else {
+                    showHoldDialog();
+                }
+
+                else if (secondRowTag == 3) { // terminate
+                    showTerminateDialog();
+                }
+                else if (secondRowTag == 4) { // move to
+                    showMoveToDialog();
+                }
+
+
+                else {
                     //  edit time
 
                     showEditTimeDialog();
@@ -346,6 +354,14 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
     };
+
+    private void showMoveToDialog() {
+
+    }
+
+    private void showTerminateDialog() {
+
+    }
 
     private void showEditTimeDialog() {
 
