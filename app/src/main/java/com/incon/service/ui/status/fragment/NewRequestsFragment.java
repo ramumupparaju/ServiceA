@@ -24,12 +24,14 @@ import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.EditTimeCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.MoveToOptionCallback;
 import com.incon.service.callbacks.PassHistoryCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.EditTimeDialog;
+import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
 import com.incon.service.custom.view.StatusDialog;
@@ -60,7 +62,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private View rootView;
     private NewRequestPresenter newRequestPresenter;
     private NewRequestsAdapter newRequestsAdapter;
-
+    private MoveToOptionDialog moveToOptionDialog;
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
     private StatusDialog statusDialog;
@@ -70,6 +72,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
+    private String moveToComment;
 
     @Override
     protected void initializePresenter() {
@@ -343,6 +346,31 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     };
 
     private void showMoveToDialog() {
+        ArrayList<Status> statusList = AppUtils.getSubStatusList(getString(R.string.tab_new_request), ((HomeActivity) getActivity()).getStatusList());
+        moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                newRequestPresenter.upDateStatus(userId, upDateStatus);
+            }
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        moveToOptionDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).loadStatusList(statusList).build();
+        moveToOptionDialog.showDialog();
 
     }
 
@@ -494,9 +522,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 newRequestPresenter.upDateStatus(userId, upDateStatus);
             }
 
-            @Override
-            public void enteredText(String commentString) {
-            }
 
             @Override
             public void alertDialogCallback(byte dialogStatus) {
@@ -605,6 +630,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
         newRequestPresenter.upDateStatus(userId, upDateStatus);
     }
+
 
     private void doAcceptApi() {
         UpDateStatus upDateStatus = new UpDateStatus();

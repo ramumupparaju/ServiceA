@@ -46,7 +46,6 @@ import java.util.TimeZone;
 
 import static com.incon.service.AppConstants.StatusConstants.APPROVAL;
 import static com.incon.service.AppConstants.StatusConstants.MANUAL_APROVED;
-import static com.incon.service.AppConstants.StatusConstants.REPAIR;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -431,10 +430,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
             }
 
-            @Override
-            public void enteredText(String comment) {
-
-            }
 
             @Override
             public void alertDialogCallback(byte dialogStatus) {

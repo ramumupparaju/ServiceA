@@ -77,6 +77,10 @@ public class StatusDialog extends Dialog implements View.OnClickListener {
                 if (usersSelectedPos != position) {
                     usersSelectedPos = position;
                 }
+                //For avoiding double tapping issue
+                if (binding.spinnerUsers.getOnItemClickListener() != null) {
+                    binding.spinnerUsers.onItemClick(parent, view, position, id);
+                }
             }
         });
     }

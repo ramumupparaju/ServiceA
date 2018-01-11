@@ -14,6 +14,7 @@ import android.view.ViewTreeObserver;
 
 import com.incon.service.AppConstants;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.databinding.ActivityHomeBinding;
 import com.incon.service.databinding.ToolBarBinding;
 import com.incon.service.ui.BaseActivity;
@@ -27,6 +28,7 @@ import com.incon.service.utils.DeviceUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class HomeActivity extends BaseActivity implements HomeContract.View {
@@ -41,6 +43,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     private ToolBarBinding toolBarBinding;
     private int userId;
     private int serviceCenterId;
+    private ArrayList<Status> statusList = new ArrayList<>();
 
     private LinkedHashMap<Integer, Fragment> tabFragments = new LinkedHashMap<>();
 
@@ -74,6 +77,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         initializeToolBar();
         getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
 
+        loadedDefaultStatus();
 
         // loading  default status data
         homePresenter.getDefaultStatusData();
@@ -218,5 +222,18 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
         binding.bottomNavigationView.setCurrentItem(TAB_Status);
 
+    }
+
+    public void loadedDefaultStatus() {
+        //TODO have to update ids
+        statusList.add(new Status(27, getString(R.string.tab_new_request)));
+        statusList.add(new Status(28, getString(R.string.tab_checkup)));
+        statusList.add(new Status(29, getString(R.string.tab_approval)));
+        statusList.add(new Status(26, getString(R.string.tab_repair)));
+        statusList.add(new Status(25, getString(R.string.tab_payment)));
+    }
+
+    public ArrayList<Status> getStatusList() {
+        return statusList;
     }
 }

@@ -14,11 +14,23 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.incon.service.apimodel.components.updatestatus.Status;
+
+import java.util.ArrayList;
 
 public class AppUtils {
 
+
     public static void shortToast(Context context, String toastMessage) {
         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    public static ArrayList getSubStatusList(String skippedName, ArrayList<Status> statusArrayList) {
+
+        ArrayList arrayList = new ArrayList();
+        arrayList.addAll(statusArrayList);
+        int indexOf = arrayList.indexOf(new Status(skippedName));
+        return arrayList;
     }
 
     public static void longToast(Context context, String toastMessage) {

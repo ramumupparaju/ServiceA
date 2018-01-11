@@ -15,6 +15,15 @@ public class Status {
     @Expose
     private String code;
 
+    public Status(Integer id, String code) {
+        this.id = id;
+        this.code = code;
+    }
+
+    public Status(String code) {
+        this.code = code;
+    }
+
     public Status(Integer id) {
         this.id = id;
     }
