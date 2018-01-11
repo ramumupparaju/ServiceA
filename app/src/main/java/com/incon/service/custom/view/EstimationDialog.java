@@ -116,7 +116,7 @@ public class EstimationDialog extends Dialog implements View.OnClickListener {
 
         int statusId;
         if (radioText.equalsIgnoreCase(getContext().getString(R.string.action_manual_approval))) {
-            statusId = AppConstants.StatusConstants.REPAIR;
+            statusId = AppConstants.StatusConstants.MANUAL_APROVED;
         } else {
             statusId = AppConstants.StatusConstants.WAIT_APPROVE;
         }

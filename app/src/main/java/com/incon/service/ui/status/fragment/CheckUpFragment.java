@@ -45,13 +45,13 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static com.incon.service.AppConstants.StatusConstants.APPROVAL;
+import static com.incon.service.AppConstants.StatusConstants.MANUAL_APROVED;
 import static com.incon.service.AppConstants.StatusConstants.REPAIR;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
  * Created by PC on 12/5/2017.
  */
-
 public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.View {
     private FragmentCheckupBinding binding;
     private View rootView;
@@ -110,9 +110,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         int tempUserId = activity.getUserId();
 
         if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
-            //no chnages have made, so no need to make api call checks whether pull to refresh or
-            // not
-
+            //no changes have made, so no need to make api call checks whether pull to refresh or // not
             if (!isForceRefresh)
                 return;
         } else {
@@ -360,15 +358,12 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                     default:
                         break;
                 }
-
             }
         }).build();
         estimationDialog.showDialog();
-
     }
 
     private void showDatePickerToEstimate(String date) {
-
         AppUtils.hideSoftKeyboard(getContext(), getView());
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         String selectedDate = date;
@@ -627,8 +622,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             estimationDialog.dismiss();
         }
 
-        Integer statusId = upDateStatusResponse.getStatus().getId();
-        if (statusId == REPAIR || statusId == APPROVAL) {
+        Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
+        if (statusId == MANUAL_APROVED || statusId == APPROVAL) {
             doRefresh(true);
         }
     }
