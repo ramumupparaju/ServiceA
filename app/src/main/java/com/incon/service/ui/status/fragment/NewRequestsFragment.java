@@ -47,6 +47,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import static com.incon.service.AppConstants.StatusConstants.ACCEPT;
 import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
 import static com.incon.service.AppConstants.StatusConstants.ATTENDING;
 import static com.incon.service.AppUtils.callPhoneNumber;
@@ -305,6 +306,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 }
             } else if (firstRowTag == 3) {   // status update
                 if (secondRowTag == 0) {  // accept
+                    // todo have to cal in accept api response
+                    doAcceptApi();
                     bottomOptions = new String[2];
                     bottomOptions[0] = getString(R.string.bottom_option_assign);
                     bottomOptions[1] = getString(R.string.bottom_option_attending);
@@ -604,9 +607,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
     private void doAcceptApi() {
-        //todo have to call accept api
         UpDateStatus upDateStatus = new UpDateStatus();
-        upDateStatus.setStatus(new Status(ATTENDING));
+        upDateStatus.setStatus(new Status(ACCEPT));
         upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
         newRequestPresenter.upDateStatus(userId, upDateStatus);
     }

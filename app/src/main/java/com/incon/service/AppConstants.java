@@ -23,11 +23,13 @@ public interface AppConstants {
     interface StatusConstants {
         int ASSIGNED = 3;
         int ATTENDING = 4;
+        int ACCEPT = 17;
         int APPROVAL = 4; //TODO have to change
         int REPAIR = 4;
         int MANUAL_APROVED = 13;
         int WAIT_APPROVE = 15;
     }
+
     interface RegistrationConstants {
         String SERVICE_INDIVIDUAL = "I";
         String SERVICE_GROUP = "G";
