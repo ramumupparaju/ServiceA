@@ -55,7 +55,6 @@ import static com.incon.service.AppUtils.callPhoneNumber;
 /**
  * Created by PC on 12/5/2017.
  */
-
 public class NewRequestsFragment extends BaseTabFragment implements NewRequestContract.View {
     private FragmentNewrequestBinding binding;
     private View rootView;
@@ -68,16 +67,9 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private EditTimeDialog editTimeDialog;
     private TimeSlotAlertDialog timeSlotAlertDialog;
     private AppEditTextDialog holdDialog;
-    private String merchantComment;
-    private String assignComment;
-    private String attendingComment;
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
-    private ArrayList<ServiceCenterResponse> serviceCenterResponseList;
-    private List<AddUser> usersList;
-    private UpDateStatus upDateStatusList;
-    private FetchNewRequestResponse fetchNewRequestResponse;
 
     @Override
     protected void initializePresenter() {
@@ -96,7 +88,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             // handle events from here using android binding
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
-            upDateStatusList = new UpDateStatus();
             initViews();
             loadBottomSheet();
             rootView = binding.getRoot();
@@ -509,8 +500,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
             @Override
             public void enteredText(String commentString) {
-                assignComment = commentString;
-
             }
 
             @Override
@@ -700,9 +689,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             usersList = new ArrayList<>();
         }
 
-        this.usersList = usersList;
         showAssignDialog(usersList);
-
     }
 
     @Override

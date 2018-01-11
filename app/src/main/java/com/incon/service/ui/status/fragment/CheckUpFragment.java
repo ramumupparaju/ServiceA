@@ -28,7 +28,7 @@ import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.EstimationDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
-import com.incon.service.custom.view.StatusDialog;
+import com.incon.service.custom.view.UpdateStatusDialog;
 import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -341,7 +341,13 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 showDatePickerToEstimate(date);
             }
 
-
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                checkUpPresenter.upDateStatus(userId, upDateStatus);
+            }
 
             @Override
             public void alertDialogCallback(byte dialogStatus) {
@@ -616,6 +622,14 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
 
+        if (estimationDialog != null && estimationDialog.isShowing()) {
+            estimationDialog.dismiss();
+        }
+
+        Integer statusId = upDateStatusResponse.getStatus().getId();
+        if (statusId == REPAIR || statusId == APPROVAL) {
+            doRefresh(true);
+        }
     }
 
 
