@@ -255,7 +255,10 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         allUsersData.setName(LABEL_ALL);
         usersListOfServiceCenters.add(0, allUsersData);
         this.usersListOfServiceCenters = usersListOfServiceCenters;
-        initViewPager();
+
+        if (adapter == null) // prevents double creation of tab items
+            initViewPager();
+
         loadUsersSpinner(usersListOfServiceCenters);
     }
 

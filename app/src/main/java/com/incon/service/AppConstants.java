@@ -23,6 +23,8 @@ public interface AppConstants {
     interface StatusConstants {
         int ASSIGNED = 3;
         int ATTENDING = 4;
+        int APPROVAL = 4; //TODO have to change
+        int REPAIR = 4;
     }
     interface RegistrationConstants {
         String SERVICE_INDIVIDUAL = "I";

@@ -81,7 +81,6 @@ public class UpdateStatusDialog extends Dialog implements View.OnClickListener {
                 }
             }
         });
-
     }
 
     public void setUsersData(List<AddUser> usersList) {
@@ -156,6 +155,7 @@ public class UpdateStatusDialog extends Dialog implements View.OnClickListener {
 
     private boolean validateFields() {
         upDateStatus.setAssignedTo(usersList.get(usersSelectedPos).getId());
+        upDateStatus.setComments(binding.edittextComment.getText().toString());
         return true;
     }
 

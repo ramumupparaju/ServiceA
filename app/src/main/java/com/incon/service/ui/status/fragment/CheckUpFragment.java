@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.request.Request;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
@@ -35,12 +36,15 @@ import com.incon.service.ui.status.base.base.BaseTabFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.incon.service.AppConstants.StatusConstants.APPROVAL;
+import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
+import static com.incon.service.AppConstants.StatusConstants.ATTENDING;
+import static com.incon.service.AppConstants.StatusConstants.REPAIR;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
  * Created by PC on 12/5/2017.
  */
-
 public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.View {
     private FragmentCheckupBinding binding;
     private View rootView;
@@ -50,7 +54,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
-    private UpdateStatusDialog assignOptionDialog;
+    private UpdateStatusDialog estimationDialog;
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
@@ -97,9 +101,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         int tempUserId = activity.getUserId();
 
         if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
-            //no chnages have made, so no need to make api call checks whether pull to refresh or
-            // not
-
+            //no changes have made, so no need to make api call checks whether pull to refresh or // not
             if (!isForceRefresh)
                 return;
         } else {
@@ -109,11 +111,42 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         checkUpPresenter.fetchCheckUpServiceRequests(serviceCenterId, userId);
     }
 
-
     private void dismissSwipeRefresh() {
         if (binding.swiperefresh.isRefreshing()) {
             binding.swiperefresh.setRefreshing(false);
         }
+    }
+
+
+    private void showEstimationDialog(List<AddUser> userList) {
+        estimationDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                checkUpPresenter.upDateStatus(userId, upDateStatus);
+            }
+
+            @Override
+            public void enteredText(String commentString) {
+            }
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        estimationDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }).title(getString(R.string.bottom_option_estimation)).build();
+        estimationDialog.showDialog();
+        estimationDialog.setCancelable(true);
     }
 
     @Override
@@ -131,7 +164,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
         public void onClickPosition(int position) {
-
             checkUpAdapter.clearSelection();
             FetchNewRequestResponse fetchNewRequestResponse = checkUpAdapter.
                     getItemFromPosition(position);
@@ -327,7 +359,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
 
     private void showAssignDialog() {
-        assignOptionDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+        estimationDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
@@ -356,8 +388,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             }
         }).title(getString(R.string.option_assign))
                 .build();
-        assignOptionDialog.showDialog();
-        assignOptionDialog.setCancelable(true);
+        estimationDialog.showDialog();
+        estimationDialog.setCancelable(true);
 
     }
 
@@ -521,6 +553,14 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
 
+        if (estimationDialog != null && estimationDialog.isShowing()) {
+            estimationDialog.dismiss();
+        }
+
+        Integer statusId = upDateStatusResponse.getStatus().getId();
+        if (statusId == REPAIR || statusId == APPROVAL) {
+            doRefresh(true);
+        }
     }
 
 
