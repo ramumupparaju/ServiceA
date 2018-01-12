@@ -34,7 +34,7 @@ import com.incon.service.custom.view.EditTimeDialog;
 import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
-import com.incon.service.custom.view.StatusDialog;
+import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -65,10 +65,11 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private MoveToOptionDialog moveToOptionDialog;
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
-    private StatusDialog statusDialog;
+    private AssignDialog assignDialog;
     private EditTimeDialog editTimeDialog;
     private TimeSlotAlertDialog timeSlotAlertDialog;
     private AppEditTextDialog holdDialog;
+    private AppEditTextDialog terminateDialog;
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
@@ -100,7 +101,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
     private void initViews() {
-        //binding.requestRecyclerview.show
 
         newRequestsAdapter = new NewRequestsAdapter();
         newRequestsAdapter.setClickCallback(iClickCallback);
@@ -310,7 +310,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             } else if (firstRowTag == 3) {   // status update
                 if (secondRowTag == 0) {  // accept
                     // todo have to cal in accept api response
-                    doAcceptApi();
+                   // doAcceptApi();
                     bottomOptions = new String[2];
                     bottomOptions[0] = getString(R.string.bottom_option_assign);
                     bottomOptions[1] = getString(R.string.bottom_option_attending);
@@ -371,10 +371,36 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             }
         }).loadStatusList(statusList).build();
         moveToOptionDialog.showDialog();
+        moveToOptionDialog.setCancelable(true);
 
     }
 
     private void showTerminateDialog() {
+        terminateDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                terminateDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_terminate))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        terminateDialog.showDialog();
+        terminateDialog.setCancelable(true);
+
 
     }
 
@@ -492,6 +518,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
                     } else if (thirdRowTag == 1) {
                         // attending
+
                         showAttendingDialog();
 
                     }
@@ -513,7 +540,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
     private void showAssignDialog(List<AddUser> userList) {
-        statusDialog = new StatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+        assignDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
                 FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
@@ -530,7 +557,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     case AlertDialogCallback.OK:
                         break;
                     case AlertDialogCallback.CANCEL:
-                        statusDialog.dismiss();
+                        assignDialog.dismiss();
                         break;
                     default:
                         break;
@@ -538,8 +565,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
             }
         }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
-        statusDialog.showDialog();
-        statusDialog.setCancelable(true);
+        assignDialog.showDialog();
+        assignDialog.setCancelable(true);
     }
 
 
@@ -724,8 +751,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
 
-        if (statusDialog != null && statusDialog.isShowing()) {
-            statusDialog.dismiss();
+        if (assignDialog != null && assignDialog.isShowing()) {
+            assignDialog.dismiss();
         }
 
         try {

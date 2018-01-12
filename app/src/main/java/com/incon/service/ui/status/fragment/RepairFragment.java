@@ -14,14 +14,18 @@ import android.view.ViewGroup;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.request.Request;
+import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.MoveToOptionCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
-import com.incon.service.custom.view.StatusDialog;
+import com.incon.service.custom.view.AssignDialog;
+import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.databinding.FragmentRepairBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -33,6 +37,8 @@ import com.incon.service.ui.status.base.base.BaseTabFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
+import static com.incon.service.AppConstants.StatusConstants.ATTENDING;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -44,15 +50,16 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private View rootView;
     private RepairAdapter repairAdapter;
     private RepairPresenter repairPresenter;
-    private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
-    private StatusDialog statusDialog;
+    private AssignDialog statusDialog;
+    private MoveToOptionDialog moveToOptionDialog;
     private AppEditTextDialog closeDialog;
     private AppEditTextDialog repairDialog;
     private AppEditTextDialog holdDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
     private List<AddUser> usersList;
+    private AppEditTextDialog terminateDialog;
 
     @Override
     protected void initializePresenter() {
@@ -293,6 +300,8 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                     showMoveToDialog();
                 } else if (secondRowTag == 4) { // assign
                     //   showAssignDialog();
+                    fetchAssignDialogData();
+
                 } else { // close
                     showCloseDialog();
                 }
@@ -305,11 +314,68 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
         }
     };
 
+    private void fetchAssignDialogData() {
+        repairPresenter.getUsersListOfServiceCenters(serviceCenterId);
+
+
+    }
+
     private void showTerminateDialog() {
+        terminateDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                terminateDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_terminate))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        terminateDialog.showDialog();
+        terminateDialog.setCancelable(true);
+
 
     }
 
     private void showMoveToDialog() {
+        ArrayList<Status> statusList = AppUtils.getSubStatusList(getString(R.string.tab_repair), ((HomeActivity) getActivity()).getStatusList());
+        moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                repairPresenter.upDateStatus(userId, upDateStatus);
+            }
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        moveToOptionDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).loadStatusList(statusList).build();
+        moveToOptionDialog.showDialog();
+        moveToOptionDialog.setCancelable(true);
 
     }
 
@@ -337,6 +403,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         holdDialog.showDialog();
+        holdDialog.setCancelable(true);
     }
 
     private void showRepairDone() {
@@ -363,6 +430,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         repairDialog.showDialog();
+        repairDialog.setCancelable(true);
 
     }
 
@@ -390,13 +458,19 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         closeDialog.showDialog();
+        closeDialog.setCancelable(true);
     }
 
-    private void showAssignDialog() {
-        statusDialog = new StatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+    private void showAssignDialog(List<AddUser> userList) {
+        statusDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+
+                FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                repairPresenter.upDateStatus(userId, upDateStatus);
 
             }
 
@@ -409,6 +483,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
 
                         break;
                     case AlertDialogCallback.CANCEL:
+                        statusDialog.dismiss();
 
                         break;
                     default:
@@ -416,8 +491,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 }
 
             }
-        }).title(getString(R.string.option_assign))
-                .build();
+        }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
         statusDialog.showDialog();
         statusDialog.setCancelable(true);
 
@@ -489,11 +563,24 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
             usersList = new ArrayList<>();
         }
 
-        this.usersList = usersList;
+        showAssignDialog(usersList);
     }
 
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
+        if (statusDialog != null && statusDialog.isShowing()) {
+            statusDialog.dismiss();
+        }
+        // todo have to know
+        try {
+            Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
+            if (statusId == ASSIGNED || statusId == ATTENDING) {
+                doRefresh(true);
+            }
+        } catch (Exception e) {
+            //TODO have to handle
+        }
+
 
     }
 

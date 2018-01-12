@@ -18,18 +18,21 @@ import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.request.Request;
+import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.EstimationDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.MoveToOptionCallback;
 import com.incon.service.callbacks.PassHistoryCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.EstimationDialog;
+import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
-import com.incon.service.custom.view.StatusDialog;
+import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -45,6 +48,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static com.incon.service.AppConstants.StatusConstants.APPROVAL;
+import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
 import static com.incon.service.AppConstants.StatusConstants.MANUAL_APROVED;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
@@ -62,11 +66,14 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
-    private StatusDialog statusDialog;
+    private AssignDialog assignDialog;
+    private AppEditTextDialog holdDialog;
+    private AppEditTextDialog terminateDialog;
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
     private List<AddUser> usersList;
+    private MoveToOptionDialog moveToOptionDialog;
 
     @Override
     protected void initializePresenter() {
@@ -307,7 +314,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
                 } else {  // assign
                     // showAssignDialog();
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    fetchAssignDialogData();
                 }
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
@@ -318,14 +325,97 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         }
     };
 
+    private void fetchAssignDialogData() {
+        checkUpPresenter.getUsersListOfServiceCenters(serviceCenterId);
+
+
+    }
+
     private void showMoveToDialog() {
+        ArrayList<Status> statusList = AppUtils.getSubStatusList(getString(R.string.tab_checkup), ((HomeActivity) getActivity()).getStatusList());
+        moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                checkUpPresenter.upDateStatus(userId, upDateStatus);
+            }
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        moveToOptionDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).loadStatusList(statusList).build();
+        moveToOptionDialog.showDialog();
+        moveToOptionDialog.setCancelable(true);
 
     }
 
     private void showTerminateDialog() {
+
+        terminateDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                terminateDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_terminate))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        terminateDialog.showDialog();
+        terminateDialog.setCancelable(true);
+
+
     }
 
     private void showHoldDialog() {
+        holdDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                holdDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_hold))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        holdDialog.showDialog();
+        holdDialog.setCancelable(true);
 
     }
 
@@ -422,11 +512,16 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     }
 
 
-    private void showAssignDialog() {
-        statusDialog = new StatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+    private void showAssignDialog(List<AddUser> userList) {
+        assignDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+
+                FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                checkUpPresenter.upDateStatus(userId, upDateStatus);
 
             }
 
@@ -436,20 +531,18 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
                 switch (dialogStatus) {
                     case AlertDialogCallback.OK:
-
                         break;
                     case AlertDialogCallback.CANCEL:
-
+                        assignDialog.dismiss();
                         break;
                     default:
                         break;
                 }
 
             }
-        }).title(getString(R.string.option_assign))
-                .build();
-        statusDialog.showDialog();
-        statusDialog.setCancelable(true);
+        }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
+        assignDialog.showDialog();
+        assignDialog.setCancelable(true);
 
     }
 
@@ -571,11 +664,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 }
             };
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        checkUpPresenter.disposeAll();
-    }
+
 
 
     @Override
@@ -606,7 +695,8 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             usersList = new ArrayList<>();
         }
 
-        this.usersList = usersList;
+        //this.usersList = usersList;
+        showAssignDialog(usersList);
 
     }
 
@@ -616,12 +706,22 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         if (estimationDialog != null && estimationDialog.isShowing()) {
             estimationDialog.dismiss();
         }
-
-        Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
-        if (statusId == MANUAL_APROVED || statusId == APPROVAL) {
-            doRefresh(true);
+        try {
+            Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
+            if (statusId == MANUAL_APROVED || statusId == APPROVAL) {
+                doRefresh(true);
+            }
+        } catch (Exception e) {
+            //TODO have to handle
         }
+
+
     }
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        checkUpPresenter.disposeAll();
+    }
 }

@@ -13,7 +13,7 @@
             style="@style/spinnerItemStyle"
             android:layout_marginTop="@dimen/margin_10"
             android:focusable="true"
-            android:hint="@string/hint_usres"
+            android:hint="@string/hint_status"
             app:errorEnabled="true"
             app:met_floatingLabel="highlight"
             app:met_textColor="@color/colorForgotPasswordHintText"

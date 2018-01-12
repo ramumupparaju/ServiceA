@@ -24,7 +24,7 @@ import java.util.List;
  * Created by MY HOME on 28-Dec-17.
  */
 
-public class StatusDialog extends Dialog implements View.OnClickListener {
+public class AssignDialog extends Dialog implements View.OnClickListener {
     private final Context context;
     private final AssignOptionCallback assignOptionCallback;
     private DialogAssignBinding binding;
@@ -34,7 +34,7 @@ public class StatusDialog extends Dialog implements View.OnClickListener {
 
     private int usersSelectedPos = 0;
 
-    public StatusDialog(AlertDialogBuilder builder) {
+    public AssignDialog(AlertDialogBuilder builder) {
         super(builder.context);
         this.context = builder.context;
         this.usersList = builder.usersList;
@@ -110,8 +110,8 @@ public class StatusDialog extends Dialog implements View.OnClickListener {
             return this;
         }
 
-        public StatusDialog build() {
-            StatusDialog dialog = new StatusDialog(this);
+        public AssignDialog build() {
+            AssignDialog dialog = new AssignDialog(this);
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
             return dialog;
         }

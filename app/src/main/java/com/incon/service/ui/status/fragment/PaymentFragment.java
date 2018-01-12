@@ -12,11 +12,18 @@ import android.view.ViewGroup;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.request.Request;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
+import com.incon.service.callbacks.AlertDialogCallback;
+import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
+import com.incon.service.custom.view.AppEditTextDialog;
+import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.databinding.FragmentPaymentBinding;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.PaymentAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
@@ -24,6 +31,7 @@ import com.incon.service.ui.status.base.base.BaseTabFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -41,6 +49,9 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
     private List<AddUser> usersList;
+    private AssignDialog assignDialog;
+    private AppEditTextDialog terminateDialog;
+
 
     @Override
     protected void initializePresenter() {
@@ -188,18 +199,12 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
             } else {  // status update
-                bottomOptions = new String[5];
+                bottomOptions = new String[2];
                 bottomOptions[0] = getString(R.string.bottom_option_paid);
-                bottomOptions[1] = getString(R.string.bottom_option_hold);
-                bottomOptions[2] = getString(R.string.bottom_option_terminate);
-                bottomOptions[3] = getString(R.string.bottom_option_move_to);
-                bottomOptions[4] = getString(R.string.bottom_option_assign);
-                topDrawables = new int[5];
+                bottomOptions[1] = getString(R.string.bottom_option_terminate);
+                topDrawables = new int[2];
                 topDrawables[0] = R.drawable.ic_option_accept_request;
                 topDrawables[1] = R.drawable.ic_option_accept_request;
-                topDrawables[2] = R.drawable.ic_option_accept_request;
-                topDrawables[3] = R.drawable.ic_option_accept_request;
-                topDrawables[4] = R.drawable.ic_option_accept_request;
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
@@ -283,15 +288,16 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                     topDrawables[0] = R.drawable.ic_options_features;
                     topDrawables[1] = R.drawable.ic_option_pasthistory;
                     topDrawables[2] = R.drawable.ic_option_pasthistory;
-                } else if (secondRowTag == 1) { // hold
-                    showHoldDialog();
-                } else if (secondRowTag == 2) { // terminate
+                } else if (secondRowTag == 1) { // terminate
                     showTerminateDialog();
-                } else if (secondRowTag == 3) { // move to
-                    showMoveToDialog();
-                } else if (secondRowTag == 4) { // assign
-                    showAssignDialog();
                 }
+                // todo have to know
+
+              /*  else if (secondRowTag == 4) { // assign
+                   // showAssignDialog();
+                    fetchAssignDialogData();
+
+                }*/
 
 
             }
@@ -302,19 +308,69 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
         }
     };
 
-    private void showAssignDialog() {
+    /*private void fetchAssignDialogData() {
+        paymentPresenter.getUsersListOfServiceCenters(serviceCenterId);
 
+
+    }*/
+
+    private void showAssignDialog(List<AddUser> userList) {
+        assignDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                FetchNewRequestResponse requestResponse = paymentAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                paymentPresenter.upDateStatus(userId, upDateStatus);
+            }
+
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        assignDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
+        assignDialog.showDialog();
+        assignDialog.setCancelable(true);
     }
 
-    private void showMoveToDialog() {
-
-    }
 
     private void showTerminateDialog() {
+        terminateDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
 
-    }
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                terminateDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_terminate))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        terminateDialog.showDialog();
+        terminateDialog.setCancelable(true);
 
-    private void showHoldDialog() {
 
     }
 
@@ -404,6 +460,7 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
         }
 
         this.usersList = usersList;
+     //   showAssignDialog(usersList);
     }
 
     @Override

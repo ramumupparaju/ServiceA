@@ -99,6 +99,7 @@
     <string name="option_assign">Assign</string>
     <string name="option_past_history">Past History</string>
     <string name="hint_usres">Users</string>
+    <string name="hint_status">Status List</string>
     <string name="action_high">High</string>
     <string name="action_manual_approval">Manual Approval</string>
     <string name="action_send_for_approval">Send For Approval</string>
