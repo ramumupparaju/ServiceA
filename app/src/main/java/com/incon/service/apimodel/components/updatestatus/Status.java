@@ -13,7 +13,16 @@ public class Status {
     private Integer id;
     @SerializedName("code")
     @Expose
-    private Object code;
+    private String code;
+
+    public Status(Integer id, String code) {
+        this.id = id;
+        this.code = code;
+    }
+
+    public Status(String code) {
+        this.code = code;
+    }
 
     public Status(Integer id) {
         this.id = id;
@@ -27,11 +36,11 @@ public class Status {
         this.id = id;
     }
 
-    public Object getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Object code) {
+    public void setCode(String code) {
         this.code = code;
     }
 }

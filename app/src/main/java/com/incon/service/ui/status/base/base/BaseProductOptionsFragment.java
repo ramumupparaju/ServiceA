@@ -50,7 +50,8 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
             } else {
                 HorizontalScrollView horizontalScrollView = (HorizontalScrollView) childAt;
                 LinearLayout childAt1 = (LinearLayout) horizontalScrollView.getChildAt(0);
-                linearLayout = (LinearLayout) childAt1.getChildAt(0);
+                changeSelectedViews(childAt1, selectedTag);
+                return;
             }
             String tag = (String) linearLayout.getTag();
             boolean isSelectedView = tag.equalsIgnoreCase(selectedTag);
@@ -109,8 +110,7 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
 
     private HorizontalScrollView getcustomHorizontalScroll() {
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(getActivity());
-        horizontalScrollView.setScrollBarSize((int) DeviceUtils.convertPxToDp(4));
-        horizontalScrollView.setHorizontalScrollBarEnabled(true);
+        horizontalScrollView.setHorizontalScrollBarEnabled(false);
         return horizontalScrollView;
     }
 
@@ -131,7 +131,7 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
             llp.weight = 1;
         }
         linearLayout.setLayoutParams(llp);
-        int dp24 = (int) DeviceUtils.convertPxToDp(24);
+        int dp24 = (int) DeviceUtils.convertPxToDp(20);
         AppCompatImageView imageView = new AppCompatImageView(context);
         imageView.setId(R.id.view_logo);
         LinearLayout.LayoutParams imageViewLayoutParams = new LinearLayout.LayoutParams(dp24, dp24);

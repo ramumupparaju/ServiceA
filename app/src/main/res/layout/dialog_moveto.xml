@@ -9,7 +9,7 @@
 
         <!-- spinner -->
         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-            android:id="@+id/spinner_users"
+            android:id="@+id/spinner_options"
             style="@style/spinnerItemStyle"
             android:layout_marginTop="@dimen/margin_10"
             android:focusable="true"

@@ -154,7 +154,6 @@ public class NewRequestPresenter extends BasePresenter<NewRequestContract.View> 
             }
         });
         baseOptionsPresenter.upDateStatus(userId, upDateStatus);
-
     }
 
 }

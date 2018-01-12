@@ -120,7 +120,6 @@ public class CheckUpPresenter extends BasePresenter<CheckUpContract.View> implem
 
     @Override
     public void upDateStatus(int userId, UpDateStatus upDateStatus) {
-
         BaseOptionsPresenter baseOptionsPresenter = new BaseOptionsPresenter();
         baseOptionsPresenter.initialize(null);
         baseOptionsPresenter.setView(new BaseOptionsContract.View() {
@@ -156,7 +155,7 @@ public class CheckUpPresenter extends BasePresenter<CheckUpContract.View> implem
             }
         });
         baseOptionsPresenter.upDateStatus(userId, upDateStatus);
-
-
     }
+
+
 }

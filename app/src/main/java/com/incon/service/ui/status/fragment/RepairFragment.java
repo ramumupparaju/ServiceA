@@ -21,7 +21,7 @@ import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
-import com.incon.service.custom.view.UpdateStatusDialog;
+import com.incon.service.custom.view.StatusDialog;
 import com.incon.service.databinding.FragmentRepairBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -46,7 +46,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private RepairPresenter repairPresenter;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
-    private UpdateStatusDialog assignOptionDialog;
+    private StatusDialog statusDialog;
     private AppEditTextDialog closeDialog;
     private AppEditTextDialog repairDialog;
     private AppEditTextDialog holdDialog;
@@ -128,7 +128,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     }
 
 
-
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
         public void onClickPosition(int position) {
@@ -197,22 +196,27 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
             } else { // status update
-                bottomOptions = new String[4];
+                bottomOptions = new String[6];
                 bottomOptions[0] = getString(R.string.bottom_option_repair_done);
                 bottomOptions[1] = getString(R.string.bottom_option_hold);
-                bottomOptions[2] = getString(R.string.bottom_option_close);
-                bottomOptions[3] = getString(R.string.bottom_option_assign);
-                topDrawables = new int[4];
+                bottomOptions[2] = getString(R.string.bottom_option_terminate);
+                bottomOptions[3] = getString(R.string.bottom_option_move_to);
+                bottomOptions[4] = getString(R.string.bottom_option_assign);
+                bottomOptions[5] = getString(R.string.bottom_option_close);
+                topDrawables = new int[6];
                 topDrawables[0] = R.drawable.ic_option_repair_done;
                 topDrawables[1] = R.drawable.ic_option_hold;
-                topDrawables[2] = R.drawable.ic_option_close;
-                topDrawables[3] = R.drawable.ic_option_assign;
+                topDrawables[2] = R.drawable.ic_option_assign;
+                topDrawables[3] = R.drawable.ic_option_close;
+                topDrawables[4] = R.drawable.ic_option_close;
+                topDrawables[5] = R.drawable.ic_option_close;
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
-            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
+            bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
             bottomSheetPurchasedBinding.secondRow.setWeightSum(bottomOptions.length);
+            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, bottomOptions, topDrawables, bottomSheetSecondRowClickListener, unparsedTag);
         }
     };
@@ -237,9 +241,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
 
             // customer
             if (firstRowTag == 0) {
-
                 if (secondRowTag == 0) {    //call customer care
-
                     callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                     return;
                 }
@@ -285,18 +287,31 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                     showRepairDone();
                 } else if (secondRowTag == 1) { // hold
                     showHoldDialog();
-                } else if (secondRowTag == 2) { // close
+                } else if (secondRowTag == 2) { // terminate
+                    showTerminateDialog();
+                } else if (secondRowTag == 3) { // move to
+                    showMoveToDialog();
+                } else if (secondRowTag == 4) { // assign
+                    //   showAssignDialog();
+                } else { // close
                     showCloseDialog();
-                } else { // assign
-                showAssignDialog();
                 }
-
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
+            bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
         }
     };
+
+    private void showTerminateDialog() {
+
+    }
+
+    private void showMoveToDialog() {
+
+    }
 
     private void showHoldDialog() {
         holdDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
@@ -343,7 +358,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                                 break;
                         }
                     }
-                }).title(getString(R.string.bottom_option_close))
+                }).title(getString(R.string.bottom_option_repair_done))
                 .leftButtonText(getString(R.string.action_cancel))
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
@@ -378,17 +393,13 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     }
 
     private void showAssignDialog() {
-        assignOptionDialog = new UpdateStatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+        statusDialog = new StatusDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
 
             }
 
-            @Override
-            public void enteredText(String comment) {
-
-            }
 
             @Override
             public void alertDialogCallback(byte dialogStatus) {
@@ -407,8 +418,8 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
             }
         }).title(getString(R.string.option_assign))
                 .build();
-        assignOptionDialog.showDialog();
-        assignOptionDialog.setCancelable(true);
+        statusDialog.showDialog();
+        statusDialog.setCancelable(true);
 
     }
 
@@ -445,7 +456,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
         super.onDestroy();
         repairPresenter.disposeAll();
     }
-
 
 
     @Override
@@ -486,8 +496,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
 
     }
-
-
 
 
 }

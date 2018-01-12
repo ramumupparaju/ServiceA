@@ -20,7 +20,6 @@ import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.PaymentAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
-import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +118,6 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
     }
 
 
-
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
         public void onClickPosition(int position) {
@@ -190,10 +188,18 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                 topDrawables = new int[1];
                 topDrawables[0] = R.drawable.ic_option_call;
             } else {  // status update
-                bottomOptions = new String[1];
+                bottomOptions = new String[5];
                 bottomOptions[0] = getString(R.string.bottom_option_paid);
-                topDrawables = new int[1];
+                bottomOptions[1] = getString(R.string.bottom_option_hold);
+                bottomOptions[2] = getString(R.string.bottom_option_terminate);
+                bottomOptions[3] = getString(R.string.bottom_option_move_to);
+                bottomOptions[4] = getString(R.string.bottom_option_assign);
+                topDrawables = new int[5];
                 topDrawables[0] = R.drawable.ic_option_accept_request;
+                topDrawables[1] = R.drawable.ic_option_accept_request;
+                topDrawables[2] = R.drawable.ic_option_accept_request;
+                topDrawables[3] = R.drawable.ic_option_accept_request;
+                topDrawables[4] = R.drawable.ic_option_accept_request;
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
@@ -277,7 +283,16 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
                     topDrawables[0] = R.drawable.ic_options_features;
                     topDrawables[1] = R.drawable.ic_option_pasthistory;
                     topDrawables[2] = R.drawable.ic_option_pasthistory;
+                } else if (secondRowTag == 1) { // hold
+                    showHoldDialog();
+                } else if (secondRowTag == 2) { // terminate
+                    showTerminateDialog();
+                } else if (secondRowTag == 3) { // move to
+                    showMoveToDialog();
+                } else if (secondRowTag == 4) { // assign
+                    showAssignDialog();
                 }
+
 
             }
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
@@ -286,6 +301,22 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
         }
     };
+
+    private void showAssignDialog() {
+
+    }
+
+    private void showMoveToDialog() {
+
+    }
+
+    private void showTerminateDialog() {
+
+    }
+
+    private void showHoldDialog() {
+
+    }
 
     private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
         @Override
