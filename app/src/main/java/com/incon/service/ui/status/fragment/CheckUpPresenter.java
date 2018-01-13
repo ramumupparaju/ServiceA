@@ -120,7 +120,7 @@ public class CheckUpPresenter extends BasePresenter<CheckUpContract.View> implem
 
     @Override
     public void upDateStatus(int userId, UpDateStatus upDateStatus) {
-        BaseOptionsPresenter baseOptionsPresenter = new BaseOptionsPresenter();
+        final BaseOptionsPresenter baseOptionsPresenter = new BaseOptionsPresenter();
         baseOptionsPresenter.initialize(null);
         baseOptionsPresenter.setView(new BaseOptionsContract.View() {
             @Override
@@ -131,27 +131,31 @@ public class CheckUpPresenter extends BasePresenter<CheckUpContract.View> implem
             @Override
             public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
                 getView().loadUpDateStatus(upDateStatusResponse);
-
+                baseOptionsPresenter.disposeAll();
             }
 
             @Override
             public void showProgress(String message) {
+                getView().showProgress(message);
 
             }
 
             @Override
             public void hideProgress() {
+                getView().hideProgress();
 
             }
 
             @Override
             public void showErrorMessage(String errorMessage) {
+                getView().showErrorMessage(errorMessage);
 
             }
 
             @Override
             public void handleException(Pair<Integer, String> error) {
-
+                getView().handleException(error);
+                baseOptionsPresenter.disposeAll();
             }
         });
         baseOptionsPresenter.upDateStatus(userId, upDateStatus);
