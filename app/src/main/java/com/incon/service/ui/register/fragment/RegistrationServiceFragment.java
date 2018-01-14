@@ -490,6 +490,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (brandSelectedPos != position) {
+                    brandSelectedPos = position;
                     serviceCenter.setBrandId(brandList.get(position).getId());
                     serviceCenter.setBrandName(brandList.get(position).getName());
                 }
