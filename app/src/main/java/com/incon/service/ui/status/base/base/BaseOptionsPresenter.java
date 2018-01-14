@@ -40,15 +40,21 @@ public class BaseOptionsPresenter extends BasePresenter<BaseOptionsContract.View
                 DisposableObserver<List<AddUser>>() {
                     @Override
                     public void onNext(List<AddUser> addUsers) {
-                        getView().hideProgress();
-                        getView().loadUsersListOfServiceCenters(addUsers);
+                        BaseOptionsContract.View view = getView();
+                        if (view != null) {
+                            view.hideProgress();
+                            view.loadUsersListOfServiceCenters(addUsers);
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().hideProgress();
+                        BaseOptionsContract.View view = getView();
                         Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
-                        getView().handleException(errorDetails);
+                        if (view != null) {
+                            view.hideProgress();
+                            view.handleException(errorDetails);
+                        }
                     }
 
                     @Override
@@ -87,8 +93,6 @@ public class BaseOptionsPresenter extends BasePresenter<BaseOptionsContract.View
 
         AppApiService.getInstance().upDateStatus(userId, upDateStatus).subscribe(observer);
         addDisposable(observer);
-
-
     }
 
 }

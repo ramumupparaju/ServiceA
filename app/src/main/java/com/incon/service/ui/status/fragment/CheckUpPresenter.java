@@ -131,7 +131,6 @@ public class CheckUpPresenter extends BasePresenter<CheckUpContract.View> implem
             @Override
             public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
                 getView().loadUpDateStatus(upDateStatusResponse);
-                baseOptionsPresenter.disposeAll();
             }
 
             @Override
