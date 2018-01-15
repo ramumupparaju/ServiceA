@@ -57,7 +57,7 @@ public interface AppConstants {
 
     interface HttpErrorCodeConstants {
         int ERROR_UNAUTHORIZED = 401;
-        int ERROR_FORBIDDEN = 403; // pay load error
+        int ERROR_OTP_VALIDATION = 428;
     }
 
     interface UserConstants {

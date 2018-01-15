@@ -50,9 +50,9 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             @Override
             public void onError(Throwable e) {
                 getView().hideProgress();
-                getView().navigateToHomePage(null);
                 Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
                 getView().handleException(errorDetails);
+                getView().navigateToHomePage(null);
             }
 
             @Override
