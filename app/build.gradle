@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 apply plugin: 'checkstyle'
 apply from: 'configuration.gradle'
@@ -16,10 +31,6 @@ android {
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-
-        manifestPlaceholders = [HOCKEYAPP_APP_ID: "2c20d2960d0f4d028c3cd196ff6aa9aa",
-                                hockeyBuildNo   : hockeyBuildNo]
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     //FIXME : handle lint errors
@@ -137,8 +148,6 @@ dependencies {
     // for QR generation
     compile 'com.github.kenglxn.QRGen:android:2.2.0'
 
-    //Hockey analytics
-    compile 'net.hockeyapp.android:HockeySDK:4.1.5'
     // Bottom navigation view
     compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.0'
     // font typeface
@@ -153,6 +162,9 @@ dependencies {
         repositories {
             maven { url "https://jitpack.io" }
         }
+    }
+    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true;
     }
 }
 // ADD THIS AT THE BOTTOM

@@ -9,8 +9,6 @@ import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.utils.SharedPrefsUtils;
 
-import net.hockeyapp.android.LoginActivity;
-
 import static com.incon.service.AppConstants.LoginPrefs.LOGGED_IN;
 
 
