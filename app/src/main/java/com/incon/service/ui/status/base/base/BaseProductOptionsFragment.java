@@ -39,7 +39,7 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
     /**
      * chnaged selected views with primary and remaining as gray
      */
-    public void changeSelectedViews(LinearLayout parentLayout, String selectedTag) {
+    public void changeSelectedViews(LinearLayout parentLayout, int selectedTag) {
 
         for (int i = 0; i < parentLayout.getChildCount(); i++) {
             View childAt = parentLayout.getChildAt(i);
@@ -53,8 +53,8 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
                 changeSelectedViews(childAt1, selectedTag);
                 return;
             }
-            String tag = (String) linearLayout.getTag();
-            boolean isSelectedView = tag.equalsIgnoreCase(selectedTag);
+            int tag = (Integer) linearLayout.getTag();
+            boolean isSelectedView = tag == selectedTag;
             (getBottomImageView(linearLayout)).setColorFilter(getResources().getColor(isSelectedView ? R.color.colorPrimary : R.color.colorAccent), PorterDuff.Mode.SRC_IN);
             (getBottomTextView(linearLayout)).setTextColor(ContextCompat.getColor(getActivity(), isSelectedView ? R.color.colorPrimary : R.color.colorAccent));
         }
@@ -64,13 +64,12 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
     /**
      * if options is grater than 5 we are adding horizontall scrollview else adding in linear layout
      *
-     * @param tag             if it is -1, it firt child not need to add prefix
      * @param parentLayout
      * @param namesArray
      * @param imagesArray
      * @param onClickListener
      */
-    public void setBottomViewOptions(LinearLayout parentLayout, String[] namesArray, int[] imagesArray, View.OnClickListener onClickListener, String tag) {
+    public void setBottomViewOptions(LinearLayout parentLayout, String[] namesArray, int[] imagesArray, int[] tagsArray,View.OnClickListener onClickListener) {
         int length = namesArray.length;
 
         boolean isScrollAdded = length > 5 ? true : false;
@@ -90,8 +89,18 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
             getBottomTextView(customBottomView).setText(namesArray[i]);
             getBottomImageView(customBottomView).setImageResource(imagesArray[i]);
 
+            customBottomView.setTag(tagsArray[i]);
+            customBottomView.setOnClickListener(onClickListener);
+            if (horizontalScrollView != null) {
+                linearLayout.addView(customBottomView);
+            } else {
+                parentLayout.addView(customBottomView);
+            }
 
-            String finalTag;
+
+
+
+           /* String finalTag;
             if (tag.equalsIgnoreCase("-1")) {
                 finalTag = String.valueOf(i);
             } else {
@@ -104,7 +113,7 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
                 linearLayout.addView(customBottomView);
             } else {
                 parentLayout.addView(customBottomView);
-            }
+            }*/
         }
     }
 
