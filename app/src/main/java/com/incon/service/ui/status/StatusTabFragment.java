@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +14,28 @@ import android.widget.ArrayAdapter;
 
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.calendar.CalendarDateModel;
 import com.incon.service.custom.view.CustomViewPager;
+import com.incon.service.custom.view.LinearLayoutPageManager;
 import com.incon.service.databinding.CustomTabBinding;
 import com.incon.service.databinding.FragmentStatusTabBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;
+import com.incon.service.ui.status.adapter.HorizontalCalendarAdapter;
 import com.incon.service.ui.status.adapter.StatusTabPagerAdapter;
 import com.incon.service.ui.status.base.base.BaseProductOptionsFragment;
+import com.incon.service.utils.Logger;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by PC on 12/5/2017.
@@ -46,6 +56,19 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     private int serviceCentersSelectedPosition = -1;
     private List<AddUser> usersListOfServiceCenters;
     private int usersSelectedPosition = -1;
+
+    ////////for displaying horizontal calendar
+    private LinearLayoutPageManager calendarPageManager;
+    private float allPixelsDate;
+    private ArrayList<CalendarDateModel> datesList;
+    private int numberOfDaysToShow = 365;
+    private Integer[] monthIndex = null;
+    private String[] monthsInAllLanguages = null;
+    private Map<String, Integer> months = null;
+    private Integer[] dayIndex = null;
+    private String[] dayInAllLanguages = null;
+    private Map<String, Integer> days = null;
+    ////////////////////////////////////////
 
     @Override
     protected void initializePresenter() {
@@ -88,6 +111,154 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         } else {
             initViewPager();
         }
+        initCalendarView(null);
+    }
+
+    private void initCalendarView(CalendarDateModel calendarDateModel) {
+        getFutureDatesFromCurrentDay(); //getting calendar list
+
+
+        calendarPageManager = new LinearLayoutPageManager(getActivity(), true);
+        binding.calendarRecyclerView.addOnScrollListener(scrollListener);
+        calendarPageManager.setScrollEnabled(true);
+        binding.calendarRecyclerView.setLayoutManager(calendarPageManager);
+        HorizontalCalendarAdapter horizontalCalendarAdapter = new HorizontalCalendarAdapter();
+//        horizontalCalendarAdapter.setClickCallback(calendarClickCallback);
+        horizontalCalendarAdapter.setCalendarDates(datesList);
+        binding.calendarRecyclerView.setAdapter(horizontalCalendarAdapter);
+
+        //setting selected symptomSelectedDate to a horizontal calendar
+        if (calendarDateModel != null) {
+            Logger.d(TAG, calendarDateModel.toString());
+
+        }
+
+    }
+
+    /**
+     * updates selected position to nearest symptomSelectedDate
+     */
+    private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            synchronized (this) {
+                /*if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    scrollListToPositionDate(recyclerView);
+                    if (!isUserUpdatedSomeThing) {
+                        loadLogSymptomsOntheScrolledDate();
+                    } else {
+                        showInputUpdateDialog();
+                    }
+                }*/
+            }
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            //Note: RecyclerView is Reversed
+            allPixelsDate += dx;
+            int lastVisibleItemPosition = calendarPageManager.findFirstVisibleItemPosition();
+            /*CalendarDateModel date = datesList.get(lastVisibleItemPosition + 3);
+
+            String scrolledDate = DateUtils.getDateFromDayMonthYear(date.getYear(),
+                    date.getNameOfMonth(), date.getDayOfMonth());
+
+            symptomsData.setCreatedDate(scrolledDate);
+            Calendar calendar = Calendar.getInstance(DateFormatterConstants.DATE_FORMAT_LOCALE);
+            if (scrolledDate.equalsIgnoreCase(DateUtils.convertDateToOtherFormat(
+                    calendar.getTime(), YYYY_MM_DD))) {
+                binding.dayName.setVisibility(View.VISIBLE);
+            } else {
+                binding.dayName.setVisibility(View.GONE);
+            }*/ //TODO have to call api
+
+        }
+    };
+
+    /* this if most important, if expectedPositionDate < 0
+     recyclerView will return to nearest item*/
+    private void scrollListToPositionDate(RecyclerView recyclerView) {
+        int expectedPositionDate = Math.round((allPixelsDate) / calendarPageManager.getItemSize());
+        float targetScrollPosDate = expectedPositionDate * calendarPageManager.getItemSize();
+        float missingPxDate = targetScrollPosDate - allPixelsDate;
+        if (missingPxDate != 0) {
+            recyclerView.smoothScrollBy((int) missingPxDate, 0);
+        }
+    }
+
+    /**
+     * adds future 3 days to the calendar
+     */
+    private void getFutureDatesFromCurrentDay() {
+        datesList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        for (int i = 0; i < 3; i++) {
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            CalendarDateModel date = new CalendarDateModel();
+            date.setDayOfMonth(day);
+            date.setDayOfWeek(getDays()[calendar.get(Calendar.DAY_OF_WEEK) - 1]);
+            date.setNameOfMonth(getMonths()[calendar.get(Calendar.MONTH)]);
+            date.setYear("" + calendar.get(Calendar.YEAR));
+            datesList.add(date);
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        Collections.reverse(datesList);
+        getPastDatesFromCurrentDay();
+    }
+
+    /**
+     * adds past 365 days to the calendar
+     */
+    private void getPastDatesFromCurrentDay() {
+        Calendar calendar = Calendar.getInstance();
+
+        for (int i = 0; i < numberOfDaysToShow; i++) {
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            CalendarDateModel date = new CalendarDateModel();
+            date.setDayOfMonth(day);
+            date.setDayOfWeek(getDays()[calendar.get(Calendar.DAY_OF_WEEK) - 1]);
+            date.setNameOfMonth(getMonths()[calendar.get(Calendar.MONTH)]);
+            date.setYear("" + calendar.get(Calendar.YEAR));
+            datesList.add(date);
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+    }
+
+    /**
+     * gets the months list
+     */
+    private String[] getMonths() {
+        months = Calendar.getInstance().getDisplayNames(
+                Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+        monthIndex = Arrays.copyOf(
+                months.values().toArray(), months.values().toArray().length, Integer[].class);
+        monthsInAllLanguages = Arrays.copyOf(
+                months.keySet().toArray(), months.keySet().toArray().length, String[].class);
+        String[] months = new String[12];
+        for (int i = 0; i < 12; i++) {
+            months[monthIndex[i]] = monthsInAllLanguages[i].toUpperCase();
+        }
+        return months;
+    }
+
+    /**
+     * gets the days list
+     */
+    private String[] getDays() {
+        days = Calendar.getInstance().getDisplayNames(
+                Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
+        dayIndex = Arrays.copyOf(
+                days.values().toArray(), days.values().toArray().length, Integer[].class);
+        dayInAllLanguages = Arrays.copyOf(
+                days.keySet().toArray(), days.keySet().toArray().length, String[].class);
+        String[] days = new String[7];
+        for (int i = 0; i < 7; i++) {
+            days[dayIndex[i] - 1] = dayInAllLanguages[i].toUpperCase().substring(0, 1);
+        }
+        return days;
     }
 
     private void doAllUsersInServiceCenterApi(int serviceCenterId) {

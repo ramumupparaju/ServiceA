@@ -69,7 +69,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         binding.setActivity(this);
 
 //        LoginUserData loginUserData = new LoginUserData();
-        LoginUserData loginUserData = new LoginUserData("9090909090", "qwerty123");
+        LoginUserData loginUserData = new LoginUserData("9985394889", "qwerty123");
         String phoneNumberPreference = SharedPrefsUtils.loginProvider().
                 getStringPreference(LoginPrefs.USER_PHONE_NUMBER);
         if (!TextUtils.isEmpty(phoneNumberPreference)) {

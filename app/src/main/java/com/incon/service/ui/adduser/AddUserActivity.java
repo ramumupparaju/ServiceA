@@ -171,8 +171,12 @@ public class AddUserActivity extends BaseActivity implements
     private void loadReportingSpinnerData() {
 
         if (reportingUsersList.size() == 0) {
-            binding.spinnerReportingUser.setVisibility(View.GONE);
+            binding.spinnerReportingUser.setFocusable(false);
+            binding.spinnerReportingUser.setFocusableInTouchMode(false);
             return;
+        } else {
+            binding.spinnerReportingUser.setFocusable(true);
+            binding.spinnerReportingUser.setFocusableInTouchMode(true);
         }
 
         List<String> userStringArray = new ArrayList<>();
@@ -214,6 +218,13 @@ public class AddUserActivity extends BaseActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (designationSelectedPos != position) {
                     designationSelectedPos = position;
+                    if (reportingUsersList.size() == 0) {
+                        DesignationData designationData = designationDataList.get(designationSelectedPos);
+                        if (designationData.getIsAdmin() == BooleanConstants.IS_TRUE) {
+                            addUser.setReportingId(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
+                            addUser.setReportingName(SharedPrefsUtils.loginProvider().getStringPreference(LoginPrefs.USER_NAME));
+                        }
+                    }
                 }
 
                 //For avoiding double tapping issue
@@ -435,33 +446,15 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     public void onSubmitClick() {
-        if (reportingUsersList.size() == 0) {
-            DesignationData designationData = designationDataList.get(designationSelectedPos);
-            if (designationData.getIsAdmin() == BooleanConstants.IS_TRUE) {
-                addUser.setReportingId(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
-            } else {
-                showErrorMessage(getString(R.string.error_invalid_designation));
-                return;
-
-            }
+        if (reportingSelectedPos != -1) {
+            addUser.setReportingId(reportingUsersList.get(reportingSelectedPos).getId());
         }
 
         if (validateFields()) {
-            // TODO have to check code
-
-      /*      if (addUser != null) {
-                addUserPresenter.upDateUserProfile(SharedPrefsUtils.loginProvider().
-                        getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), upDateUserProfile);
-            }  else {*/
-
-            addUser.setReportingId(reportingUsersList.get(reportingSelectedPos).getId());
             addUser.setServiceCenterRoleId(designationDataList.get(designationSelectedPos).getId());
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
-            // }
-
-
         }
     }
 
