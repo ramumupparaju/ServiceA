@@ -2,4 +2,36 @@
 <resources>
     <item name="view_tv" type="id" />
     <item name="view_logo" type="id" />
+
+    <item type="id" name="CUSTOMER"/>
+    <item type="id" name="CUSTOMER_CALL_CUSTOMER_CARE"/>
+    <item type="id" name="CUSTOMER_LOCATION"/>
+
+    <item type="id" name="PRODUCT"/>
+    <item type="id" name="PRODUCT_WARRANTY_DETAILS"/>
+    <item type="id" name="PRODUCT_PAST_HISTORY"/>
+
+    <item type="id" name="SERVICE_CENTER"/>
+    <item type="id" name="SERVICE_CENTER_CALL"/>
+
+    <item type="id" name="STATUS_UPDATE"/>
+
+    <item type="id" name="STATUS_UPDATE_ACCEPT"/>
+    <item type="id" name="STATUS_UPDATE_ASSIGN"/>
+    <item type="id" name="STATUS_UPDATE_ATTENDING"/>
+    <item type="id" name="STATUS_UPDATE_REPAIR_DONE"/>
+    <item type="id" name="STATUS_UPDATE_CLOSE"/>
+
+    <item type="id" name="STATUS_UPDATE_REJECT"/>
+    <item type="id" name="STATUS_UPDATE_HOLD"/>
+    <item type="id" name="STATUS_UPDATE_ESTIMATION"/>
+    <item type="id" name="STATUS_UPDATE_TERMINATE"/>
+    <item type="id" name="STATUS_UPDATE_PAID"/>
+    <item type="id" name="STATUS_UPDATE_PAID_CASH"/>
+    <item type="id" name="STATUS_UPDATE_PAID_ONLINE"/>
+    <item type="id" name="STATUS_UPDATE_PAID_CARD"/>
+    <item type="id" name="STATUS_UPDATE_MOVE_TO"/>
+    <item type="id" name="STATUS_UPDATE_EDIT_TIME"/>
+
+
 </resources>
