@@ -105,6 +105,13 @@
                 android:layout_toRightOf="@id/product_imageview"
                 android:textColor="@color/ebony_clay"
                 android:textSize="12.4sp" />
+            <!--Dummy view for showing selection-->
+            <ImageView
+                android:id="@+id/views_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/alpha_corn_flower_red" />
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </layout>

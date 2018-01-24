@@ -2,16 +2,21 @@ package com.incon.service.ui.status;
 
 import android.content.res.AssetManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
+import com.incon.service.AppUtils;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.calendar.CalendarDateModel;
@@ -36,6 +41,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
+
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.model.CalendarEvent;
+import devs.mulham.horizontalcalendar.utils.CalendarEventsPredicate;
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 /**
  * Created by PC on 12/5/2017.
@@ -56,6 +67,8 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     private int serviceCentersSelectedPosition = -1;
     private List<AddUser> usersListOfServiceCenters;
     private int usersSelectedPosition = -1;
+
+    private HorizontalCalendar horizontalCalendar;
 
     ////////for displaying horizontal calendar
     private LinearLayoutPageManager calendarPageManager;
@@ -90,6 +103,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                     inflater, R.layout.fragment_status_tab, container, false);
             rootView = binding.getRoot();
             initViews();
+            initCalender();
         }
         setTitle();
 
@@ -111,10 +125,56 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         } else {
             initViewPager();
         }
-        initCalendarView(null);
+       // initCalendarView(null);
+
+       // initCalender();
     }
 
-    private void initCalendarView(CalendarDateModel calendarDateModel) {
+    private void initCalender() {
+
+          /* start 2 months ago from now */
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.MONTH, -2);
+
+        /* end after 2 months from now */
+        Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.MONTH, 2);
+
+        // Default Date set to Today.
+        final Calendar defaultSelectedDate = Calendar.getInstance();
+
+        horizontalCalendar = new HorizontalCalendar.Builder(rootView, R.id.calendarView)
+                .range(startDate, endDate)
+                .datesNumberOnScreen(5)
+                .configure()
+                .formatTopText("MMM")
+                .formatMiddleText("dd")
+                .formatBottomText("EEE")
+                .showTopText(true)
+                .showBottomText(true)
+                .textColor( Color.WHITE, Color.WHITE)
+                .colorTextTop(Color.WHITE, Color.parseColor("#eb1c24"))
+                .colorTextMiddle(Color.WHITE, Color.parseColor("#eb1c24"))
+                .colorTextBottom(Color.WHITE, Color.parseColor("#eb1c24"))
+                .end()
+                .defaultSelectedDate(defaultSelectedDate)
+                .build();
+
+
+
+        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Calendar date, int position) {
+                String selectedDateStr = DateFormat.format("EEE, MMM d, yyyy", date).toString();
+                AppUtils.shortToast(getActivity(), selectedDateStr + " selected!");
+            }
+
+        });
+    }
+
+
+
+   /* private void initCalendarView(CalendarDateModel calendarDateModel) {
         getFutureDatesFromCurrentDay(); //getting calendar list
 
 
@@ -134,7 +194,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         }
 
     }
-
+*/
     /**
      * updates selected position to nearest symptomSelectedDate
      */
