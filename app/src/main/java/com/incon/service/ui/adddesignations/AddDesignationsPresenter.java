@@ -47,7 +47,6 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
 
             @Override
             public void onComplete() {
-
             }
         };
         AppApiService.getInstance().addDesignation(userId, addDesignation).subscribe(observer);

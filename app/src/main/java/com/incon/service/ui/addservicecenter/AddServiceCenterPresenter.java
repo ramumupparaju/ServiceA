@@ -158,7 +158,7 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
 
             @Override
             public void onComplete() {
-
+                getView().hideProgress();
             }
         };
         AppApiService.getInstance().deleteServiceCenterApi(serviceCenterId).subscribe(observer);

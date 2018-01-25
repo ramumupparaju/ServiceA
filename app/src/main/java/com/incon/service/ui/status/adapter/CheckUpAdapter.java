@@ -49,6 +49,11 @@ public class CheckUpAdapter extends BaseRecyclerViewAdapter {
                     .getProductLogoUrl());
             AppUtils.loadImageFromApi(binding.productImageview, fetchNewRequestResponse
                     .getProductImageUrl());
+            if (fetchNewRequestResponse.isSelected()) {
+                binding.viewsLayout.setVisibility(View.VISIBLE);
+            } else {
+                binding.viewsLayout.setVisibility(View.GONE);
+            }
             binding.executePendingBindings();
 
         }

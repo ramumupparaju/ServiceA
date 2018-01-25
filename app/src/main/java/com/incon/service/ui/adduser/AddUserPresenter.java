@@ -82,6 +82,7 @@ public class AddUserPresenter extends BasePresenter<AddUserContract.View>
 
             @Override
             public void onComplete() {
+                getView().hideProgress();
 
             }
         };
@@ -93,7 +94,7 @@ public class AddUserPresenter extends BasePresenter<AddUserContract.View>
     @Override
     public void upDateUserProfile(int userId, UpDateUserProfile upDateUserProfile) {
         getView().showProgress(appContext.getString(R.string.progress_update_user));
-        UpDateUserProfilePresenter upDateUserProfilePresenter =  new UpDateUserProfilePresenter();
+        UpDateUserProfilePresenter upDateUserProfilePresenter = new UpDateUserProfilePresenter();
         upDateUserProfilePresenter.initialize(null);
         upDateUserProfilePresenter.setView(new UpDateUserProfileContract.View() {
             @Override

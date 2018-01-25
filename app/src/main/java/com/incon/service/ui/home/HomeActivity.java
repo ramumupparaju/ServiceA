@@ -36,6 +36,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     private static final int TAB_Status = 0;
     private static final int TAB_Reports = 1;
     private static final int TAB_FeedBack = 2;
+    private static final int TAB_NOTIFICATIONS = 3;
 
     private View rootView;
     private HomePresenter homePresenter;
