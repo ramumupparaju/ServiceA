@@ -24,12 +24,12 @@ public interface AppConstants {
         int ASSIGNED = 3;
         int ATTENDING = 4;
         int ACCEPT = 17;
-        int APPROVAL = 4; //TODO have to change
-        int REPAIR = 4;
+        int APPROVAL = 4;
         int MANUAL_APROVED = 13;
         int WAIT_APPROVE = 15;
         int NEWREQUEST = 2;
         int CHECKUP = 5;
+        int REPAIR_DONE = 7;
         int PAYMENT = 1;
     }
 

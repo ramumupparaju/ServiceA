@@ -320,7 +320,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             int[] tagsArray = new int[0];
 
 
-
             if (tag == R.id.CUSTOMER_CALL_CUSTOMER_CARE) {
                 callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                 return;
@@ -378,7 +377,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
             }
 
-    // todo have to remove commented code
+            // todo have to remove commented code
            /* // customer
             if (firstRowTag == 0) {
 
@@ -817,7 +816,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
         }
         try {
             Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
-            if (statusId == MANUAL_APROVED || statusId == APPROVAL) {
+            if (statusId == MANUAL_APROVED) {
                 doRefresh(true);
             }
         } catch (Exception e) {
