@@ -47,7 +47,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements
                 getView().hideProgress();
                 Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
                 getView().handleException(errorDetails);
-
             }
 
             @Override

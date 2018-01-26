@@ -71,6 +71,11 @@ public class NotificationsFragment extends BaseProductOptionsFragment {
         });
     }
 
+    @Override
+    public void doRefresh(boolean isForceRefresh) {
+
+    }
+
     private void initViews() {
         binding.swiperefresh.setColorSchemeResources(R.color.colorPrimaryDark);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);

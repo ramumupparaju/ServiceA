@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by MY HOME on 25-Dec-17.
  */
 
-public class ProductInfoResponse extends BaseObservable {
+public class Product extends BaseObservable {
     @SerializedName("name")
     @Expose
     private String name;

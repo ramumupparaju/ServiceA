@@ -5,12 +5,14 @@ import android.content.Context;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
+import com.crashlytics.android.Crashlytics;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 
-import net.hockeyapp.android.CrashManager;
+import io.fabric.sdk.android.Fabric;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -27,6 +29,9 @@ public class ConnectApplication extends Application {
     }
 
     public void setServiceCenterList(List<AddServiceCenter> serviceCenterList) {
+        if (serviceCenterList == null) {
+            serviceCenterList = new ArrayList<>();
+        }
         this.serviceCenterList = serviceCenterList;
     }
 
@@ -49,6 +54,10 @@ public class ConnectApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //enabled crash lytics only for production
+        if (BuildConfig.FLAVOR.equals("connect_production")) {
+            Fabric.with(this, new Crashlytics());
+        }
         context = getApplicationContext();
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
@@ -61,10 +70,6 @@ public class ConnectApplication extends Application {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
-
-        if (BuildConfig.FLAVOR.equals("client_staging")) {
-            CrashManager.register(this);
-        }
     }
 
     @Override

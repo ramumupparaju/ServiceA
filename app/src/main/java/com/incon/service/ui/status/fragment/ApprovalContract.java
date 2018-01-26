@@ -1,6 +1,9 @@
 package com.incon.service.ui.status.fragment;
 
+import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.ui.BaseView;
+
+import java.util.List;
 
 /**
  * Created by PC on 12/6/2017.
@@ -8,10 +11,10 @@ import com.incon.service.ui.BaseView;
 
 public interface ApprovalContract {
     interface View extends BaseView {
-        void fetchApprovalServiceRequests(Object o);
+        void loadingApprovalServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
     }
 
     interface Presenter {
-        void fetchApprovalServiceRequests(int userId);
+        void fetchApprovalServiceRequests(int servicerCenterId,int userId);
     }
 }

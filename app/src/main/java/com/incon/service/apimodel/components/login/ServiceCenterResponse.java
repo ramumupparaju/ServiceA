@@ -2,6 +2,7 @@ package com.incon.service.apimodel.components.login;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.incon.service.dto.registration.AddressInfo;
 
 /**
  * Created by MY HOME on 29-Dec-17.
@@ -47,7 +48,7 @@ public class ServiceCenterResponse {
     private String gstn;
     @SerializedName("addressInfo")
     @Expose
-    private AddressInfoResponse addressInfo;
+    private AddressInfo addressInfo;
     @SerializedName("logoUrl")
     @Expose
     private String logoUrl;
@@ -148,11 +149,11 @@ public class ServiceCenterResponse {
         this.gstn = gstn;
     }
 
-    public AddressInfoResponse getAddressInfo() {
+    public AddressInfo getAddressInfo() {
         return addressInfo;
     }
 
-    public void setAddressInfo(AddressInfoResponse addressInfo) {
+    public void setAddressInfo(AddressInfo addressInfo) {
         this.addressInfo = addressInfo;
     }
 

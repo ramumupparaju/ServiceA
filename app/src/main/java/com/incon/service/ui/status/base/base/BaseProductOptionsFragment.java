@@ -39,7 +39,7 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
     /**
      * chnaged selected views with primary and remaining as gray
      */
-    public void changeSelectedViews(LinearLayout parentLayout, String selectedTag) {
+    public void changeSelectedViews(LinearLayout parentLayout, int selectedTag) {
 
         for (int i = 0; i < parentLayout.getChildCount(); i++) {
             View childAt = parentLayout.getChildAt(i);
@@ -50,10 +50,11 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
             } else {
                 HorizontalScrollView horizontalScrollView = (HorizontalScrollView) childAt;
                 LinearLayout childAt1 = (LinearLayout) horizontalScrollView.getChildAt(0);
-                linearLayout = (LinearLayout) childAt1.getChildAt(0);
+                changeSelectedViews(childAt1, selectedTag);
+                return;
             }
-            String tag = (String) linearLayout.getTag();
-            boolean isSelectedView = tag.equalsIgnoreCase(selectedTag);
+            int tag = (Integer) linearLayout.getTag();
+            boolean isSelectedView = tag == selectedTag;
             (getBottomImageView(linearLayout)).setColorFilter(getResources().getColor(isSelectedView ? R.color.colorPrimary : R.color.colorAccent), PorterDuff.Mode.SRC_IN);
             (getBottomTextView(linearLayout)).setTextColor(ContextCompat.getColor(getActivity(), isSelectedView ? R.color.colorPrimary : R.color.colorAccent));
         }
@@ -63,13 +64,12 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
     /**
      * if options is grater than 5 we are adding horizontall scrollview else adding in linear layout
      *
-     * @param tag             if it is -1, it firt child not need to add prefix
      * @param parentLayout
      * @param namesArray
      * @param imagesArray
      * @param onClickListener
      */
-    public void setBottomViewOptions(LinearLayout parentLayout, String[] namesArray, int[] imagesArray, View.OnClickListener onClickListener, String tag) {
+    public void setBottomViewOptions(LinearLayout parentLayout, String[] namesArray, int[] imagesArray, int[] tagsArray,View.OnClickListener onClickListener) {
         int length = namesArray.length;
 
         boolean isScrollAdded = length > 5 ? true : false;
@@ -89,8 +89,18 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
             getBottomTextView(customBottomView).setText(namesArray[i]);
             getBottomImageView(customBottomView).setImageResource(imagesArray[i]);
 
+            customBottomView.setTag(tagsArray[i]);
+            customBottomView.setOnClickListener(onClickListener);
+            if (horizontalScrollView != null) {
+                linearLayout.addView(customBottomView);
+            } else {
+                parentLayout.addView(customBottomView);
+            }
 
-            String finalTag;
+
+
+
+           /* String finalTag;
             if (tag.equalsIgnoreCase("-1")) {
                 finalTag = String.valueOf(i);
             } else {
@@ -103,14 +113,13 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
                 linearLayout.addView(customBottomView);
             } else {
                 parentLayout.addView(customBottomView);
-            }
+            }*/
         }
     }
 
     private HorizontalScrollView getcustomHorizontalScroll() {
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(getActivity());
-        horizontalScrollView.setScrollBarSize((int) DeviceUtils.convertPxToDp(4));
-        horizontalScrollView.setHorizontalScrollBarEnabled(true);
+        horizontalScrollView.setHorizontalScrollBarEnabled(false);
         return horizontalScrollView;
     }
 
@@ -131,18 +140,19 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
             llp.weight = 1;
         }
         linearLayout.setLayoutParams(llp);
-        int dp24 = (int) DeviceUtils.convertPxToDp(24);
+        int dp24 = (int) DeviceUtils.convertPxToDp(20);
         AppCompatImageView imageView = new AppCompatImageView(context);
         imageView.setId(R.id.view_logo);
         LinearLayout.LayoutParams imageViewLayoutParams = new LinearLayout.LayoutParams(dp24, dp24);
         imageView.setLayoutParams(imageViewLayoutParams);
-        imageView.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+        imageView.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_IN);
         linearLayout.addView(imageView);
 
         TextView textView = new TextView(context);
         textView.setId(R.id.view_tv);
-        textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+        textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
         textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        textView.setTextSize(DeviceUtils.convertSpToPixels(4, getActivity()));
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         textView.setLayoutParams(layoutParams);
         linearLayout.addView(textView);
@@ -164,4 +174,5 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
         return ((TextView) linearLayout.findViewById(R.id.view_tv));
     }
 
+    public abstract void doRefresh(boolean isForceRefresh);
 }

@@ -10,6 +10,8 @@ import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResp
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
+import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.custom.exception.NoConnectivityException;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
@@ -18,6 +20,8 @@ import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.dto.update.UpDateUserProfile;
+import com.incon.service.dto.updateservicecenter.UpDateServiceCenter;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.utils.NetworkUtil;
 
 import java.util.HashMap;
@@ -93,6 +97,7 @@ public class AppApiService implements AppConstants {
     public Observable<List<DefaultStatusData>> getStatusList() {
         return addNetworkCheck(serviceInstance.getStatusList());
     }
+
     // add service center api
     public Observable<LoginResponse> addServiceCenter(
             int userId, AddServiceCenter addServiceCenter) {
@@ -118,11 +123,22 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.uploadServiceCenterLogo(String.valueOf(serviceCenterId), serviceCenterLogo));
     }
 
-
     // user profile update api
     public Observable<LoginResponse> upDateUserProfile(
             int userId, UpDateUserProfile upDateUserProfile) {
         return addNetworkCheck(serviceInstance.upDateUserProfile(userId, upDateUserProfile));
+    }
+
+    // update service center api
+    public Observable<UpDateServiceCenterResponse> upDateServiceCenter(
+            int serviceCenterId, UpDateServiceCenter upDateServiceCenter) {
+        return addNetworkCheck(serviceInstance.upDateServiceCenter(serviceCenterId, upDateServiceCenter));
+    }
+
+    // update status api
+    public Observable<UpDateStatusResponse> upDateStatus(
+            int userId, UpDateStatus upDateStatus) {
+        return addNetworkCheck(serviceInstance.upDateStatus(userId, upDateStatus));
     }
 
     //registration request otp
@@ -160,26 +176,67 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.getServiceCentersApi(userId));
     }
 
+    // delete designation  api
+    public Observable<Object> deletedesignationApi(int designationId) {
+        return addNetworkCheck(serviceInstance.deletedesignationApi(designationId));
+    }
+
+    // delete service center  api
+    public Observable<Object> deleteServiceCenterApi(int serviceCenterId) {
+        return addNetworkCheck(serviceInstance.deleteServiceCenterApi(serviceCenterId));
+    }
+
+    // delete user api
+    public Observable<Object> deleteUserApi(int serviceCenterId) {
+        return addNetworkCheck(serviceInstance.deleteUserApi(serviceCenterId));
+    }
+
     // fetch  new service request api
     public Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(int servicerCenterId) {
         return addNetworkCheck(serviceInstance.fetchNewServiceRequestApi(servicerCenterId));
     }
+    // fetch  check up request api
+    public Observable<List<FetchNewRequestResponse>> fetchCheckupRequestApi(int servicerCenterId) {
+        return addNetworkCheck(serviceInstance.fetchCheckupRequestApi(servicerCenterId));
+    }
+
+
+    // fetch  new service request api using userid
+    public Observable<List<FetchNewRequestResponse>> fetchNewAssignedRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.fetchNewAssignedRequestApi(userId));
+    }
+ // fetch  check up assigned request using userid
+    public Observable<List<FetchNewRequestResponse>> fetchCheckUpAssignedRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.fetchCheckUpAssignedRequestApi(userId));
+    }
+
+    // fetch  check up assigned request using userid
+    public Observable<List<FetchNewRequestResponse>> fetchApprovalAssignedRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.fetchApprovalAssignedRequestApi(userId));
+    }
+    // fetch  repair assigned request using userid
+    public Observable<List<FetchNewRequestResponse>> fetchRepairAssignedRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.fetchRepairAssignedRequestApi(userId));
+    }
+
+    // fetch  payment assigned request using userid
+    public Observable<List<FetchNewRequestResponse>> fetchPaymentAssignedRequestApi(int userId) {
+        return addNetworkCheck(serviceInstance.fetchPaymentAssignedRequestApi(userId));
+    }
 
     // fetch  approval service request api
-    public Observable<Object> fetchApprovalServiceRequestApi(int userId) {
-        return addNetworkCheck(serviceInstance.fetchApprovalServiceRequestApi(userId));
+    public Observable<List<FetchNewRequestResponse>> fetchApprovalServiceRequestApi(int servicerCenterId) {
+        return addNetworkCheck(serviceInstance.fetchApprovalServiceRequestApi(servicerCenterId));
     }
 
     // fetch  repair service request api
-    public Observable<Object> fetchRepairServiceRequestApi(int userId) {
+    public Observable<List<FetchNewRequestResponse>> fetchRepairServiceRequestApi(int userId) {
         return addNetworkCheck(serviceInstance.fetchRepairServiceRequestApi(userId));
     }   // fetch  repair service request api
 
-    public Observable<Object> fetchPaymentServiceRequestApi(int userId) {
+    public Observable<List<FetchNewRequestResponse>> fetchPaymentServiceRequestApi(int userId) {
         return addNetworkCheck(serviceInstance.fetchPaymentServiceRequestApi(userId));
     }
-
-
 
 
     //warranty registration validate otp api

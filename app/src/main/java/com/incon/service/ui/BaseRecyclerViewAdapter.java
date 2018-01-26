@@ -62,7 +62,7 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
 /*    public void searchData(String searchableString, String searchType) {
         filteredList.clear();
         if (searchType.equalsIgnoreCase(AppConstants.FilterConstants.NAME)) {
-            for (ProductInfoResponse returnHistoryResponse
+            for (Product returnHistoryResponse
                     : allDataResponseList) {
                 if (returnHistoryResponse.getProductName() != null
                         && returnHistoryResponse.getProductName().toLowerCase().startsWith(
@@ -71,7 +71,7 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
                 }
             }
         } else if (searchType.equalsIgnoreCase(AppConstants.FilterConstants.BRAND)) {
-            for (ProductInfoResponse returnHistoryResponse
+            for (Product returnHistoryResponse
                     : allDataResponseList) {
                 if (returnHistoryResponse.getBrandName() != null && returnHistoryResponse
                         .getBrandName().toLowerCase().startsWith(

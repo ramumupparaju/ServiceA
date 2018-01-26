@@ -9,6 +9,7 @@ public interface AppConstants {
     String MULTIPART_FORM_DATA = "image/*";
     String COMMA_SEPARATOR = ",";
     int DEFAULT_VALUE = Integer.MIN_VALUE;
+    String LABEL_ALL = "ALL";
 
     String BUILD_FLAVOR = "moonz_dev";
     int VALIDATION_SUCCESS = 0;
@@ -17,21 +18,24 @@ public interface AppConstants {
     String DELIMITOR = "-";
     int DEFAULT_GOOGLE_MAP_ZOOM_LEVEL = 16;
     int DEAULT_VALUE = Integer.MAX_VALUE;
+    int MINUS_ONE = -1;
 
+    interface StatusConstants {
+        int ASSIGNED = 3;
+        int ATTENDING = 4;
+        int ACCEPT = 17;
+        int APPROVAL = 4; //TODO have to change
+        int REPAIR = 4;
+        int MANUAL_APROVED = 13;
+        int WAIT_APPROVE = 15;
+        int NEWREQUEST = 2;
+        int CHECKUP = 5;
+        int PAYMENT = 1;
+    }
 
     interface RegistrationConstants {
         String SERVICE_INDIVIDUAL = "I";
         String SERVICE_GROUP = "G";
-    }
-
-    interface StatusConstants {
-        String BUY_REQUEST_ACCEPT = "A";
-        String BUY_REQUEST_REJECT = "R";
-        String PENDING = "PEN";
-        String DISPATCHES_ON = "DSN";
-        String DISPATCHED = "DSD";
-        String DELIVERED = "DLD";
-        String INSTALLED = "INS";
     }
 
     interface BooleanConstants {
@@ -46,10 +50,6 @@ public interface AppConstants {
         String BRAND = "brand";
     }
 
-    interface WarrantyRegistrationConstants {
-        int MINIMUM_MODELNUMBER_TO_SEARCH = 2;
-    }
-
     interface GoogleMapConstants {
         int GEOCODER_MAX_ADDRESS_RESULTS = 1;
         float DEFAULT_ZOOM_LEVEL = 12.0f;
@@ -57,11 +57,12 @@ public interface AppConstants {
 
     interface HttpErrorCodeConstants {
         int ERROR_UNAUTHORIZED = 401;
-        int ERROR_FORBIDDEN = 403; // pay load error
+        int ERROR_OTP_VALIDATION = 428;
     }
 
     interface UserConstants {
         int SUPER_ADMIN_TYPE = 7;
+        int ADMIN_TYPE = 9;
         int USER_TYPE = 8;
     }
 
@@ -130,6 +131,8 @@ public interface AppConstants {
         int CREATED_DATE_REQ = 27;
         int SERVICE_CENTER_NAME = 28;
         int SERVICE_DISIGNATION = 29;
+        int SERVICE_CENTER_DESIGNATION = 30;
+        int REPORTING_PERSON = 31;
     }
 
     interface AddServiceCenterValidation {
@@ -277,7 +280,6 @@ public interface AppConstants {
         String USER_GENDER = "userGender";
         String USER_ADDRESS = "userAddress";
         String USER_TYPE = "userType";
-        String USER_IS_ADMIN = "userIsAdmin";
         String USER_CITY = "userCity";
         String USER_STATE = "userState";
         String USER_POSTAL_CODE = "userPostalCode";
@@ -333,6 +335,13 @@ public interface AppConstants {
         int ADD_SERVICE_CENTER = 122;
         int ADD_USER_DESIGNATION = 123;
 
+    }
+
+
+    interface ServiceConstants {
+        String TIME_10_12 = "10:00,12:00";
+        String TIME_12_15 = "12:00,15:00";
+        String TIME_15_17 = "15:00,17:00";
     }
 
     interface TimeConstants {
@@ -410,47 +419,6 @@ public interface AppConstants {
 
     }
 
-    interface WarrantyregistationValidation {
-        int MODEL = 1;
-        int INVALID_MODEL = 2;
-        int DESCRIPTION = 3;
-        int SERIAL_NO = 4;
-        int BATCH_NO = 5;
-        int MRP_PRICE = 6;
-        int PRICE = 7;
-        int INVOICENUMBER = 8;
-    }
-
-    interface AddNewModelValidation {
-        int MODEL = 1;
-        int INVALID_MODEL = 2;
-        int DESCRIPTION = 3;
-        int CATEGORY = 4;
-        int DIVISION = 5;
-        int BRAND = 6;
-        int MRP_PRICE = 7;
-        int PRICE = 8;
-        int NOTE = 9;
-    }
-
-
-    interface Favorites {
-        String ADDRESS_TYPE_ONE = "1";
-    }
-
-    interface AddOfferValidation {
-        int MODEL = 1;
-        int INVALID_MODEL = 2;
-        int CATEGORY = 3;
-        int DIVISION = 4;
-        int BRAND = 5;
-        int OFFER_START_ON = 6;
-        int OFFER_EXPIRE_ON = 7;
-        int SCAN_START_DATE = 8;
-        int SCAN_END_DATE = 9;
-        int OFFER_PRICE = 10;
-
-    }
 
     public class PushIntentConstants {
         public static final String PUSH_PAYLOAD = "pushPayload";

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.incon.service.AppUtils;
 import com.incon.service.BR;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -46,6 +47,16 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
         public void bind(FetchNewRequestResponse fetchNewRequestResponse, int position) {
             binding.setVariable(BR.fetchNewRequestResponse, fetchNewRequestResponse);
             View root = binding.getRoot();
+            AppUtils.loadImageFromApi(binding.brandImageview, fetchNewRequestResponse
+                    .getProductLogoUrl());
+            AppUtils.loadImageFromApi(binding.productImageview, fetchNewRequestResponse
+                    .getProductImageUrl());
+
+            if (fetchNewRequestResponse.isSelected()) {
+                binding.viewsLayout.setVisibility(View.VISIBLE);
+            } else {
+                binding.viewsLayout.setVisibility(View.GONE);
+            }
             binding.executePendingBindings();
         }
 

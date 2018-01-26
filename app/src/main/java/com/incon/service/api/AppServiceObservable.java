@@ -8,6 +8,8 @@ import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResp
 import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.registration.SendOtpResponse;
+import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.apimodel.components.validateotp.ValidateWarrantyOtpResponse;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
@@ -15,6 +17,8 @@ import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
 import com.incon.service.dto.registration.Registration;
 import com.incon.service.dto.update.UpDateUserProfile;
+import com.incon.service.dto.updateservicecenter.UpDateServiceCenter;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +64,19 @@ public interface AppServiceObservable {
     Observable<DesignationData> addDesignation(@Path("userId") int userId,
                                                @Body DesignationData addDesignation);
 
+    // delete designation api
+    @POST("service/deletedesignation/{designationId}")
+    Observable<Object> deletedesignationApi(@Path("designationId") int designationId);
+
+    // delete service center
+
+    @POST("service/deleteservicecenter/{serviceCenterId}")
+    Observable<Object> deleteServiceCenterApi(@Path("serviceCenterId") int serviceCenterId);
+
+    // delete user
+    @POST("service/deleteuser/{serviceCenterId}")
+    Observable<Object> deleteUserApi(@Path("serviceCenterId") int serviceCenterId);
+
     // get designations list using service center and user id
     @GET("service/getdesignations/{serviceCenterId}/{userId}")
     Observable<List<DesignationData>> getDesignationsListUsingServiceCenter(@Path("userId") int userId, @Path("serviceCenterId") int serviceCenterId);
@@ -76,21 +93,50 @@ public interface AppServiceObservable {
     @GET("service/fetchrequests/{servicerCenterId}/NEW")
     Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(@Path("servicerCenterId") int servicerCenterId);
 
-    @GET("service/fetchrequests/{servicerCenterId}/checkup")
+    // assigned requests api
+    @GET("service/assignedRequests/{userId}/NEW")
+    Observable<List<FetchNewRequestResponse>> fetchNewAssignedRequestApi(@Path("userId") int userId);
+
+    // fetch  check up  api
+    @GET("service/fetchrequests/{servicerCenterId}/CHECKUP")
     Observable<List<FetchNewRequestResponse>> fetchCheckupRequestApi(@Path("servicerCenterId") int servicerCenterId);
 
+    // assigned requests api
+    @GET("service/assignedRequests/{userId}/CHECKUP")
+    Observable<List<FetchNewRequestResponse>> fetchCheckUpAssignedRequestApi(@Path("userId") int
+                                                                                 userId);
+
     // fetch  approval  new service request api
-    @GET("service/fetchrequests/{userId}/APPROVAL")
-    Observable<Object> fetchApprovalServiceRequestApi(@Path("userId") int userId);
+    @GET("service/fetchrequests/{servicerCenterId}/APPROVAL")
+    Observable<List<FetchNewRequestResponse>> fetchApprovalServiceRequestApi(@Path("servicerCenterId") int servicerCenterId);
+//connect/service/assignedRequests/1/APPROVAL
+
+
+    // assigned requests api
+    @GET("service/assignedRequests/{userId}/APPROVAL")
+    Observable<List<FetchNewRequestResponse>> fetchApprovalAssignedRequestApi(@Path("userId") int
+                                                                                     userId);
 
     // fetch  repair  new service request api
-    @GET("service/fetchrequests/{userId}/REPAIR")
-    Observable<Object> fetchRepairServiceRequestApi(@Path("userId") int userId);
+    @GET("service/fetchrequests/{servicerCenterId}/REPAIR")
+    Observable<List<FetchNewRequestResponse>> fetchRepairServiceRequestApi(@Path("servicerCenterId") int userId);
 
+
+    // assigned requests api
+    @GET("service/assignedRequests/{userId}/REPAIR")
+    Observable<List<FetchNewRequestResponse>> fetchRepairAssignedRequestApi(@Path("userId") int
+                                                                                      userId);
 
     // fetch  payment  new service request api
-    @GET("service/fetchrequests/{userId}/PAYMENT")
-    Observable<Object> fetchPaymentServiceRequestApi(@Path("userId") int userId);
+    @GET("service/fetchrequests/{servicerCenterId}/PAYMENT")
+    Observable<List<FetchNewRequestResponse>> fetchPaymentServiceRequestApi(@Path("servicerCenterId") int servicerCenterId);
+
+
+    ///service/assignedRequests/1/PAYMENT
+    // assigned requests api
+    @GET("service/assignedRequests/{userId}/PAYMENT")
+    Observable<List<FetchNewRequestResponse>> fetchPaymentAssignedRequestApi(@Path("userId") int
+                                                                                    userId);
 
 
     // service center logo  api
@@ -107,10 +153,29 @@ public interface AppServiceObservable {
     @GET("user/requestotp/{phoneNumber}/password")
     Observable<Object> registerRequestPasswordOtp(@Path("phoneNumber") String phoneNumber);
 
+
+    //  update status api
+    @POST("service/updateStatus/{userId}")
+    Observable<UpDateStatusResponse> upDateStatus(@Path(
+            "userId") int userId, @Body UpDateStatus upDateStatus);
+
     // user profile update api
-    @POST("user/updateuser/{userId}")
+    @POST("service/updateuser/{userId}")
     Observable<LoginResponse> upDateUserProfile(@Path(
             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
+
+    // TODO delete
+    // update user api (add user)
+
+    /* @POST("user/updateuser/{userId}")
+     Observable<LoginResponse> upDateUserProfile(@Path(
+             "userId") int userId, @Body UpDateUserProfile upDateUserProfile);
+
+ */
+    // update service center api
+    @POST("service/updatecenter/{serviceCenterId}")
+    Observable<UpDateServiceCenterResponse> upDateServiceCenter(@Path(
+            "serviceCenterId") int serviceCenterId, @Body UpDateServiceCenter upDateServiceCenter);
 
     @POST("account/sendOtp")
     Observable<SendOtpResponse> sendOtp(@Body HashMap<String, String> email);

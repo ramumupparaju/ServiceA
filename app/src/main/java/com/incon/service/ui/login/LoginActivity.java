@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -51,13 +52,24 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     @Override
+    public void handleException(Pair<Integer, String> error) {
+        if (error.first == HttpErrorCodeConstants.ERROR_OTP_VALIDATION) {
+            SharedPrefsUtils.loginProvider().setStringPreference(
+                    LoginPrefs.USER_PHONE_NUMBER, binding.edittextUsername.getText().toString());
+            showOtpDialog();
+        } else {
+            super.handleException(error);
+        }
+    }
+
+    @Override
     protected void onCreateView(Bundle saveInstanceState) {
         // handle events from here using android binding
         binding = DataBindingUtil.setContentView(this, getLayoutId());
         binding.setActivity(this);
 
 //        LoginUserData loginUserData = new LoginUserData();
-        LoginUserData loginUserData = new LoginUserData("9090909090", "qwerty1234");
+        LoginUserData loginUserData = new LoginUserData("9985394889", "qwerty123");
         String phoneNumberPreference = SharedPrefsUtils.loginProvider().
                 getStringPreference(LoginPrefs.USER_PHONE_NUMBER);
         if (!TextUtils.isEmpty(phoneNumberPreference)) {
@@ -215,6 +227,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         // screens
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -232,6 +245,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
         loginPresenter.disposeAll();
     }
 }

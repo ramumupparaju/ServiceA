@@ -57,6 +57,7 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
     private transient boolean categoryEditable;
 
     public AddServiceCenter() {
+
     }
 
     public Integer getId() {
@@ -197,7 +198,7 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
 
         int fieldId = AppConstants.VALIDATION_FAILURE;
         if (tag == null) {
-            for (int i = 0; i <= 5; i++) {
+            for (int i = 0; i <= 8; i++) {
                 fieldId = validateFields(i, true);
                 if (fieldId != AppConstants.VALIDATION_SUCCESS) {
                     tag = i + "";
@@ -228,8 +229,29 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
                 }
                 break;
 
-
             case 2:
+                boolean serviceCategory = TextUtils.isEmpty(getCategoryName());
+                if (emptyValidation && serviceCategory) {
+                    return AppConstants.AddServiceCenterValidation.CATEGORY_REQ;
+                }
+                break;
+
+            case 3:
+                boolean serviceDivision = TextUtils.isEmpty(getDivisionName());
+                if (emptyValidation && serviceDivision) {
+                    return AppConstants.AddServiceCenterValidation.DIVISION_REQ;
+                }
+                break;
+
+            //                no nned to validate because for some divisions there are no brands
+           /* case 4:
+                boolean serviceBrand = TextUtils.isEmpty(getBrandName());
+                if (emptyValidation && serviceBrand) {
+                    return AppConstants.RegistrationValidation.BRAND_REQ;
+                }
+                break;*/
+
+            case 5:
                 boolean emailEmpty = TextUtils.isEmpty(getEmail());
                 if (emptyValidation && emailEmpty) {
                     return AppConstants.AddServiceCenterValidation.EMAIL_REQ;
@@ -239,7 +261,7 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
                 break;
 
 
-            case 3:
+            case 6:
                 boolean userAddress = TextUtils.isEmpty(getAddress());
                 if (emptyValidation && userAddress) {
                     return AppConstants.AddServiceCenterValidation.ADDRESS_REQ;
@@ -247,7 +269,7 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
                 break;
 
 
-            case 4:
+            case 7:
                 boolean createdDateEmpty = TextUtils.isEmpty(getCreatedDate());
                 if (emptyValidation && createdDateEmpty) {
                     return AppConstants.AddServiceCenterValidation.CREATED_DATE_REQ;
@@ -255,7 +277,7 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
                 break;
 
 
-            case 5:
+            case 8:
                 boolean gstnEmpty = TextUtils.isEmpty(getGstn());
                 if (emptyValidation && gstnEmpty) {
                     return AppConstants.AddServiceCenterValidation.GSTN_REQ;

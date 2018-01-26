@@ -1,6 +1,9 @@
 package com.incon.service.ui.status.fragment;
 
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
+import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BaseView;
 
 import java.util.List;
@@ -12,10 +15,19 @@ import java.util.List;
 public interface CheckUpContract {
 
     interface View extends BaseView {
-        void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
+        void loadingCheckUpRequests(List<FetchNewRequestResponse> fetchNewRequestResponses);
+
+        void loadUsersListOfServiceCenters(List<AddUser> usersListOfServiceCenters);
+
+        void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse);
     }
 
     interface Presenter {
-        void fetchNewServiceRequests(int userId);
+        void fetchCheckUpServiceRequests(int servicerCenterId, int userId);
+
+        void getUsersListOfServiceCenters(int serviceCenterId);
+
+        void upDateStatus(int userId, UpDateStatus upDateStatus);
+
     }
 }

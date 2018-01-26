@@ -47,10 +47,36 @@ public class AddDesignationsPresenter extends BasePresenter<AddDesignationsContr
 
             @Override
             public void onComplete() {
-
             }
         };
         AppApiService.getInstance().addDesignation(userId, addDesignation).subscribe(observer);
+        addDisposable(observer);
+    }
+
+    @Override
+    public void deleteDesignation(int designationId) {
+
+        getView().showProgress(appContext.getString(R.string.progress_delete_designation));
+        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
+            @Override
+            public void onNext(Object o) {
+                getView().desinationDeleteSuccessfully();
+                getView().hideProgress();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+        AppApiService.getInstance().deletedesignationApi(designationId).subscribe(observer);
         addDisposable(observer);
     }
 

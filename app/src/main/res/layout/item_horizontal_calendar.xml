@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        style="@style/WrapMatch"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_15"
+        android:paddingTop="@dimen/margin_3">
+
+        <TextView
+            android:id="@+id/day_of_month"
+            style="@style/BothWrap"
+            fontPath="fonts/OpenSans-Bold.ttf"
+            android:layout_below="@+id/week_day"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_17" />
+
+        <TextView
+            android:id="@+id/week_day"
+            style="@style/BothWrap"
+            fontPath="fonts/OpenSans-Regular.ttf"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/picton_blue"
+            android:textSize="@dimen/text_size_12" />
+    </RelativeLayout>
+</layout>

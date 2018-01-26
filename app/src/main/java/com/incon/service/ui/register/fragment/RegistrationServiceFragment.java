@@ -36,15 +36,14 @@ import com.incon.service.dto.registration.ServiceCenter;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.RegistrationMapActivity;
+import com.incon.service.ui.home.HomeActivity;
+import com.incon.service.ui.login.LoginActivity;
 import com.incon.service.ui.notifications.PushPresenter;
 import com.incon.service.ui.register.RegistrationActivity;
 import com.incon.service.ui.termsandcondition.TermsAndConditionActivity;
 import com.incon.service.utils.Logger;
 import com.incon.service.utils.PermissionUtils;
-import com.incon.service.utils.SharedPrefsUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
-
-import net.hockeyapp.android.LoginActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -101,11 +100,6 @@ public class RegistrationServiceFragment extends BaseFragment implements
         //here data must be an instance of the registration class
         register = ((RegistrationActivity) getActivity()).getRegistration();
         serviceCenter = new ServiceCenter();
-        //TODO have to remove hard code
-        serviceCenter.setName("shiva");
-        serviceCenter.setContactNo("1234567890");
-        serviceCenter.setEmail("asdj@g.com");
-        serviceCenter.setGstn("12345sdv");
 
 
         binding.setServiceCenter(serviceCenter);
@@ -305,11 +299,10 @@ public class RegistrationServiceFragment extends BaseFragment implements
 
         if (validateFields()) {
 
-            //TODO have to uncomment image validation code
-           /* if (TextUtils.isEmpty(selectedFilePath)) {
+           if (TextUtils.isEmpty(selectedFilePath)) {
                 showErrorMessage(getString(R.string.error_image_path_upload));
                 return;
-            }*/
+            }
 
             //setting category id
             FetchCategories fetchCategories = fetchCategoryList.get(categorySelectedPos);
@@ -374,6 +367,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
         registrationServicePresenter.register(register);
     }
 
+    @Override
     public void navigateToHomeScreen() {
         PushPresenter pushPresenter = new PushPresenter();
         pushPresenter.pushRegisterApi();
@@ -382,7 +376,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
             dialog.dismiss();
         }
         Intent intent = new Intent(getActivity(),
-                LoginActivity.class);
+                HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent
                 .FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -406,8 +400,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
 
     @Override
     public void navigateToLoginScreen() {
-        Intent loginIntent = new Intent(getActivity(), com.incon.service.ui.login.LoginActivity
-                .class);
+        Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
         startActivity(loginIntent);
 
     }
@@ -497,6 +490,7 @@ public class RegistrationServiceFragment extends BaseFragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (brandSelectedPos != position) {
+                    brandSelectedPos = position;
                     serviceCenter.setBrandId(brandList.get(position).getId());
                     serviceCenter.setBrandName(brandList.get(position).getName());
                 }

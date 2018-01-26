@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        style="@style/BothMatch"
+        android:background="@drawable/dialog_shadow"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_10">
+
+        <LinearLayout
+            android:id="@+id/buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="center"
+            android:padding="@dimen/margin_4"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/button1"
+                style="@style/time_slot_buttons"
+                android:layout_marginRight="@dimen/margin_2"
+                android:text="@string/time_10_12"
+                />
+            <Button
+                android:id="@+id/button2"
+                style="@style/time_slot_buttons"
+                android:layout_marginRight="@dimen/margin_2"
+                android:text="@string/time_12_15" />
+
+            <Button
+                android:id="@+id/button3"
+                style="@style/time_slot_buttons"
+                android:text="@string/time_15_17" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/dialog_submit_button"
+            style="@style/style_submit_button"
+            fontPath="fonts/OpenSans-Bold.ttf"
+            android:layout_marginLeft="@dimen/margin_30"
+            android:layout_marginRight="@dimen/margin_30"
+            android:layout_marginTop="@dimen/margin_3"
+            android:text="@string/action_save" />
+
+    </LinearLayout>
+
+</layout>

@@ -2,41 +2,27 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <LinearLayout
         style="@style/MatchWrap"
         android:background="@drawable/dialog_background"
-        >
+        android:orientation="vertical">
 
         <!-- spinner -->
         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-            android:id="@+id/spinner_assign"
+            android:id="@+id/spinner_users"
             style="@style/spinnerItemStyle"
             android:layout_marginTop="@dimen/margin_10"
             android:focusable="true"
+            android:hint="@string/hint_usres"
             app:errorEnabled="true"
             app:met_floatingLabel="highlight"
             app:met_textColor="@color/colorForgotPasswordHintText"
-            app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-
-
-        <!-- spinner -->
-        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-            android:id="@+id/spinner_service"
-            style="@style/spinnerItemStyle"
-            android:layout_below="@+id/spinner_assign"
-            android:layout_marginTop="@dimen/margin_10"
-            android:focusable="true"
-            app:errorEnabled="true"
-            app:met_floatingLabel="highlight"
-            app:met_textColor="@color/colorForgotPasswordHintText"
-            app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-
+            app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
         <!-- edit text comment -->
         <com.incon.service.custom.view.CustomTextInputLayout
             android:id="@+id/input_comment"
             style="@style/Register_TextInputLayout"
-            android:layout_below="@+id/spinner_service"
             android:layout_marginTop="10dp"
             android:hint="@string/user_comment_hint"
             app:errorEnabled="true"
@@ -52,20 +38,16 @@
                 android:maxLength="@integer/character_limit_200"
                 android:maxLines="1"
                 android:paddingEnd="2dp"
-                android:paddingStart="2.1dp"
-                />
+                android:paddingStart="2.1dp" />
         </com.incon.service.custom.view.CustomTextInputLayout>
 
-        <Button
-            android:layout_below="@+id/input_comment"
-            android:id="@+id/dialog_second_button"
-            style="@style/style_submit_button"
-            fontPath="fonts/OpenSans-Bold.ttf"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="18dp"
-            android:layout_marginLeft="@dimen/margin_30"
-            android:layout_marginRight="@dimen/margin_30"
-            android:text="@string/action_submit"/>
+        <!-- layout for bottom buttons -->
+        <include
+            android:id="@+id/include_register_bottom_buttons"
+            layout="@layout/view_registration_bottom_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="47dp" />
 
-    </RelativeLayout>
+
+    </LinearLayout>
 </layout>

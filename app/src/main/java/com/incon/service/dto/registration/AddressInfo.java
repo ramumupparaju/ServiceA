@@ -12,7 +12,9 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class AddressInfo implements Parcelable {
-
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("city")
     @Expose
     private String city;
@@ -34,6 +36,12 @@ public class AddressInfo implements Parcelable {
     @SerializedName("zipCode")
     @Expose
     private String zipCode;
+    @SerializedName("createdDate")
+    @Expose
+    private String createdDate;
+    @SerializedName("createdBy")
+    @Expose
+    private Integer createdBy;
 
     public String getCity() {
         return city;
@@ -89,6 +97,29 @@ public class AddressInfo implements Parcelable {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Integer getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Integer createdBy) {
+        this.createdBy = createdBy;
     }
 
     public AddressInfo() {

@@ -26,13 +26,19 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchcategorie.Brand;
 import com.incon.service.apimodel.components.fetchcategorie.Division;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
+import com.incon.service.apimodel.components.login.LoginResponse;
+import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
+import com.incon.service.callbacks.AlertDialogCallback;
+import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAddserviceCenterBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
+import com.incon.service.dto.updateservicecenter.UpDateServiceCenter;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
+import com.incon.service.utils.ValidationUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.Calendar;
@@ -49,6 +55,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
     private AddServiceCenterPresenter addServiceCenterPresenter;
     private ActivityAddserviceCenterBinding binding;
     private AddServiceCenter addServiceCenter;
+    private UpDateServiceCenter upDateServiceCenter;
     private HashMap<Integer, String> errorMap;
     private Animation shakeAnim;
     private List<FetchCategories> fetchCategoryList;
@@ -56,6 +63,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
     private int divisionSelectedPos = -1;
     private int brandSelectedPos = -1;
     private boolean categoryEditable;
+    private AppAlertVerticalTwoButtonsDialog serviceCenterDeleteDialog;
 
     @Override
     protected void initializePresenter() {
@@ -128,6 +136,8 @@ public class AddServiceCenterActivity extends BaseActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (categorySelectedPos != position) {
+                    divisionSelectedPos = -1;
+                    brandSelectedPos = -1;
                     FetchCategories fetchCategories = fetchCategoryList.get(position);
                     addServiceCenter.setCategoryId(fetchCategories.getId());
                     addServiceCenter.setCategoryName(fetchCategories.getName());
@@ -229,6 +239,29 @@ public class AddServiceCenterActivity extends BaseActivity implements
     }
 
     private void showDeleteServiceCenterDialog() {
+        //TODO have to implement delete api
+        serviceCenterDeleteDialog = new AppAlertVerticalTwoButtonsDialog.AlertDialogBuilder(this, new
+                AlertDialogCallback() {
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                serviceCenterDeleteDialog.dismiss();
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                addServiceCenterPresenter.deleteServiceCenter(addServiceCenter.getId());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.dialog_delete))
+                .button1Text(getString(R.string.action_cancel))
+                .button2Text(getString(R.string.action_ok))
+                .build();
+        serviceCenterDeleteDialog.showDialog();
+        serviceCenterDeleteDialog.setButtonBlueUnselectBackground();
+        serviceCenterDeleteDialog.setCancelable(true);
 
     }
 
@@ -266,11 +299,18 @@ public class AddServiceCenterActivity extends BaseActivity implements
                     selectedDateTime.set(selectedYear, selectedMonth, selectedDay);
                     String yyyyMMDD = DateUtils.convertDateToOtherFormat(
                             selectedDateTime.getTime(), DateFormatterConstants.FROM_API_MILLIS);
+
+                    if (!ValidationUtils.isCurrentDate(selectedDateTime)) {
+                        showErrorMessage(getString(R.string.error_past_date));
+                        return;
+                    }
                     addServiceCenter.setCreatedDate(yyyyMMDD);
 
                     Pair<String, Integer> validate = binding.getAddServiceCenter().
                             validateAddServiceCenter((String) binding.edittextCreatedDate.getTag());
                     updateUiAfterValidation(validate.first, validate.second);
+
+
                 }
             };
 
@@ -289,6 +329,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
                 case RequestCodes.ADDRESS_LOCATION:
                     addServiceCenter.setAddress(data.getStringExtra(IntentConstants.ADDRESS_COMMA));
                     addServiceCenter.setLocation(data.getStringExtra(IntentConstants.LOCATION_COMMA));
+                    binding.setAddServiceCenter(addServiceCenter);
                     break;
                 default:
                     break;
@@ -390,9 +431,6 @@ public class AddServiceCenterActivity extends BaseActivity implements
         errorMap.put(AddServiceCenterValidation.PHONE_MIN_DIGITS,
                 getString(R.string.error_phone_min_digits));
 
-        errorMap.put(AddServiceCenterValidation.GENDER_REQ,
-                getString(R.string.error_gender_req));
-
         errorMap.put(AddServiceCenterValidation.CREATED_DATE_REQ,
                 getString(R.string.error_created_date_req));
 
@@ -419,8 +457,17 @@ public class AddServiceCenterActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
+            // TODO have to check code
+          /*  if (addServiceCenter != null) {
+                addServiceCenterPresenter.upDateServiceCenter(SharedPrefsUtils.loginProvider().
+                        getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), upDateServiceCenter);
+            }
+            else {*/
+
             addServiceCenterPresenter.addingServiceCenter(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addServiceCenter);
+            //}
+
         }
     }
 
@@ -432,6 +479,26 @@ public class AddServiceCenterActivity extends BaseActivity implements
             AppUtils.shortToast(this, getString(R.string.error_loading_categories));
             finish();
         }
+    }
+
+    @Override
+    public void serviceCenterAddedSuccessfully() {
+        setResult(Activity.RESULT_OK);
+        finish();
+    }
+
+    @Override
+    public void serviceCenterDeleteSuccessfully() {
+        if (serviceCenterDeleteDialog != null && serviceCenterDeleteDialog.isShowing())
+            serviceCenterDeleteDialog.dismiss();
+        setResult(RESULT_OK);
+        finish();
+
+    }
+
+    @Override
+    public void loadUpDateServiceCenterResponce(UpDateServiceCenterResponse upDateServiceCenterResponse) {
+
     }
 
     @Override

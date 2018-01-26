@@ -1,10 +1,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+    <RelativeLayout style="@style/BothMatch">
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/main_container"
@@ -27,35 +24,55 @@
                         android:layout_below="@+id/appbar"
                         app:layout_collapseMode="parallax">
 
-                        <!-- spinner service centers -->
-                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                            android:id="@+id/spinner_service_centers"
-                            style="@style/spinnerItemStyle"
-                            android:layout_marginTop="@dimen/margin_10"
-                            android:focusable="true"
-                            app:errorEnabled="true"
-                            app:met_floatingLabel="highlight"
-                            app:met_textColor="@color/colorForgotPasswordHintText"
-                            app:met_textColorHint="@color/colorForgotPasswordHintText" />
+                        <LinearLayout
+                            android:id="@+id/spinners_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical">
+                            <!-- spinner service centers -->
+                            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                                android:id="@+id/spinner_service_centers"
+                                style="@style/spinnerItemStyle"
+                                android:layout_marginTop="@dimen/margin_10"
+                                android:focusable="true"
+                                app:errorEnabled="true"
+                                app:met_floatingLabel="highlight"
+                                app:met_textColor="@color/colorForgotPasswordHintText"
+                                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+                            <!--spinner users-->
+                            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                                android:id="@+id/spinner_users"
+                                style="@style/spinnerItemStyle"
+                                android:layout_marginTop="@dimen/margin_10"
+                                android:focusable="true"
+                                app:errorEnabled="true"
+                                app:met_floatingLabel="highlight"
+                                app:met_textColor="@color/colorForgotPasswordHintText"
+                                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
-                      <!--  &lt;!&ndash; spinner user &ndash;&gt;
-                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                            android:id="@+id/spinner_users"
-                            style="@style/spinnerItemStyle"
-                            android:layout_below="@+id/spinner_service_centers"
-                            android:layout_marginTop="@dimen/margin_10"
-                            android:focusable="true"
-                            app:errorEnabled="true"
-                            app:met_floatingLabel="highlight"
-                            app:met_textColor="@color/colorForgotPasswordHintText"
-                            app:met_textColorHint="@color/colorForgotPasswordHintText" />-->
+                           <!-- <android.support.v7.widget.RecyclerView
+                                android:background="#eb1c24"
+                                android:id="@+id/calendar_recycler_view"
+                                style="@style/MatchWrap"/>-->
+
+                            <devs.mulham.horizontalcalendar.HorizontalCalendarView
+                                android:id="@+id/calendarView"
+                                style="@style/MatchWrap"
+                                android:background="@color/colorcalendar"
+                                app:selectorColor="@color/colorcalendar"
+                                app:selectedDateBackground="@drawable/bg_select_calender"
+                                app:sizeBottomText="14sp"
+                                app:sizeMiddleText="20sp"/>
+
+                        </LinearLayout>
 
                         <android.support.design.widget.TabLayout
                             android:id="@+id/tab_layout"
                             style="@style/MatchWrap"
+                            android:layout_below="@+id/spinners_layout"
                             android:layout_gravity="fill"
-                            android:layout_below="@+id/spinner_service_centers"
-                            android:background="@color/colorPrimaryDark"
+                            android:background="@color/colorTab"
                             android:fillViewport="true"
                             android:minHeight="?attr/actionBarSize"
                             android:theme="@style/AppTheme"
@@ -64,7 +81,7 @@
                             app:tabIndicatorHeight="@dimen/margin_5"
                             app:tabMode="scrollable"
                             app:tabSelectedTextColor="@color/white"
-                            app:tabTextColor="@color/white" />
+                            app:tabTextColor="@color/white"/>
 
                     </RelativeLayout>
 

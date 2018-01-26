@@ -23,11 +23,15 @@ import android.widget.TextView;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.adddesignation.DesignationData;
+import com.incon.service.apimodel.components.login.LoginResponse;
+import com.incon.service.callbacks.AlertDialogCallback;
+import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
 import com.incon.service.custom.view.CustomTextInputLayout;
 import com.incon.service.databinding.ActivityAdduserBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.registration.AddressInfo;
+import com.incon.service.dto.update.UpDateUserProfile;
 import com.incon.service.ui.BaseActivity;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.utils.DateUtils;
@@ -53,11 +57,13 @@ public class AddUserActivity extends BaseActivity implements
     private Animation shakeAnim;
     private MaterialBetterSpinner genderSpinner;
     private ActivityAdduserBinding binding;
-    public List<DesignationData> fetchDesignationsResponseList;
-    public List<AddUser> usersList;
+    public List<DesignationData> designationDataList;
+    public List<AddUser> reportingUsersList;
     private int designationSelectedPos = -1;
     private int reportingSelectedPos = -1;
     private int serviceCenterId;
+    private UpDateUserProfile upDateUserProfile;
+    private AppAlertVerticalTwoButtonsDialog userDeleteDialog;
 
     @Override
     protected void initializePresenter() {
@@ -80,8 +86,8 @@ public class AddUserActivity extends BaseActivity implements
         if (bundle != null) {
             addUser = bundle.getParcelableExtra(IntentConstants.USER_DATA);
             serviceCenterId = bundle.getIntExtra(IntentConstants.SERVICE_CENTER_DATA, DEFAULT_VALUE);
-            fetchDesignationsResponseList = bundle.getParcelableArrayListExtra(IntentConstants.DESIGNATION_DATA);
-            usersList = bundle.getParcelableArrayListExtra(IntentConstants.USER_DATA_LIST);
+            designationDataList = bundle.getParcelableArrayListExtra(IntentConstants.DESIGNATION_DATA);
+            reportingUsersList = bundle.getParcelableArrayListExtra(IntentConstants.USER_DATA_LIST);
         }
         if (addUser != null) {
             binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_user));
@@ -129,6 +135,28 @@ public class AddUserActivity extends BaseActivity implements
 
     private void showDeleteUserDialog() {
         //TODO have to implement delete api
+        userDeleteDialog = new AppAlertVerticalTwoButtonsDialog.AlertDialogBuilder(this, new
+                AlertDialogCallback() {
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                userDeleteDialog.dismiss();
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                addUserPresenter.deleteUser(addUser.getId());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.dialog_delete))
+                .button1Text(getString(R.string.action_cancel))
+                .button2Text(getString(R.string.action_ok))
+                .build();
+        userDeleteDialog.showDialog();
+        userDeleteDialog.setButtonBlueUnselectBackground();
+        userDeleteDialog.setCancelable(true);
     }
 
     private void initViews() {
@@ -141,8 +169,18 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     private void loadReportingSpinnerData() {
+
+        if (reportingUsersList.size() == 0) {
+            binding.spinnerReportingUser.setFocusable(false);
+            binding.spinnerReportingUser.setFocusableInTouchMode(false);
+            return;
+        } else {
+            binding.spinnerReportingUser.setFocusable(true);
+            binding.spinnerReportingUser.setFocusableInTouchMode(true);
+        }
+
         List<String> userStringArray = new ArrayList<>();
-        for (AddUser fetchDesignationsResponse : usersList) {
+        for (AddUser fetchDesignationsResponse : reportingUsersList) {
             userStringArray.add(fetchDesignationsResponse.getName());
         }
 
@@ -156,13 +194,18 @@ public class AddUserActivity extends BaseActivity implements
                 if (reportingSelectedPos != position) {
                     reportingSelectedPos = position;
                 }
+
+                //For avoiding double tapping issue
+                if (binding.spinnerReportingUser.getOnItemClickListener() != null) {
+                    binding.spinnerReportingUser.onItemClick(parent, view, position, id);
+                }
             }
         });
     }
 
     private void loadDesignationsSpinnerData() {
         List<String> fetchDesignationList = new ArrayList<>();
-        for (DesignationData fetchDesignationsResponse : fetchDesignationsResponseList) {
+        for (DesignationData fetchDesignationsResponse : designationDataList) {
             fetchDesignationList.add(fetchDesignationsResponse.getName());
         }
 
@@ -175,6 +218,18 @@ public class AddUserActivity extends BaseActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (designationSelectedPos != position) {
                     designationSelectedPos = position;
+                    if (reportingUsersList.size() == 0) {
+                        DesignationData designationData = designationDataList.get(designationSelectedPos);
+                        if (designationData.getIsAdmin() == BooleanConstants.IS_TRUE) {
+                            addUser.setReportingId(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
+                            addUser.setReportingName(SharedPrefsUtils.loginProvider().getStringPreference(LoginPrefs.USER_NAME));
+                        }
+                    }
+                }
+
+                //For avoiding double tapping issue
+                if (binding.spinnerServiceCenterDesignation.getOnItemClickListener() != null) {
+                    binding.spinnerServiceCenterDesignation.onItemClick(parent, view, position, id);
                 }
             }
         });
@@ -369,8 +424,8 @@ public class AddUserActivity extends BaseActivity implements
                 getString(R.string.error_re_enter_password_does_not_match));
 
         errorMap.put(AddUserValidations.ADDRESS_REQ, getString(R.string.error_address_req));
-        errorMap.put(AddUserValidations.SERVICE_CENTER_NAME, getString(R.string.error_Service_Center_name));
-        errorMap.put(AddUserValidations.SERVICE_DISIGNATION, getString(R.string.error_service_center_desiganation));
+        errorMap.put(AddUserValidations.SERVICE_CENTER_DESIGNATION, getString(R.string.error_service_center_desiganation));
+        errorMap.put(AddUserValidations.REPORTING_PERSON, getString(R.string.error_service_center_reporting_person));
     }
 
     private boolean validateFields() {
@@ -383,6 +438,7 @@ public class AddUserActivity extends BaseActivity implements
         binding.inputLayoutRegisterConfirmPassword.setError(null);
         binding.inputLayoutRegisterAddress.setError(null);
         binding.spinnerServiceCenterDesignation.setError(null);
+        binding.spinnerReportingUser.setError(null);
 
         Pair<String, Integer> validation = binding.getAddUser().validateAddUser(null);
         updateUiAfterValidation(validation.first, validation.second);
@@ -390,11 +446,31 @@ public class AddUserActivity extends BaseActivity implements
     }
 
     public void onSubmitClick() {
+        if (reportingSelectedPos != -1) {
+            addUser.setReportingId(reportingUsersList.get(reportingSelectedPos).getId());
+        }
+
         if (validateFields()) {
+            addUser.setServiceCenterRoleId(designationDataList.get(designationSelectedPos).getId());
             addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
             addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
         }
     }
 
+    @Override
+    public void userAddedSuccessfully() {
+        setResult(Activity.RESULT_OK);
+        finish();
+    }
+
+    @Override
+    public void userDeleteSuccessfully() {
+
+    }
+
+    @Override
+    public void loadUpDateUserProfileResponce(LoginResponse loginResponse) {
+
+    }
 }

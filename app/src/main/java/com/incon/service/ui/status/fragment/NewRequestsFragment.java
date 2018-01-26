@@ -1,8 +1,10 @@
 package com.incon.service.ui.status.fragment;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,46 +12,68 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.request.Request;
+import com.incon.service.apimodel.components.updatestatus.Status;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
+import com.incon.service.callbacks.AssignOptionCallback;
+import com.incon.service.callbacks.EditTimeCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.MoveToOptionCallback;
 import com.incon.service.callbacks.PassHistoryCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
+import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
+import com.incon.service.custom.view.EditTimeDialog;
+import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
+import com.incon.service.custom.view.TimeSlotAlertDialog;
+import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
+import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
+import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
-import com.incon.service.utils.SharedPrefsUtils;
+import com.incon.service.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
+import static com.incon.service.AppConstants.StatusConstants.ACCEPT;
+import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
+import static com.incon.service.AppConstants.StatusConstants.ATTENDING;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
  * Created by PC on 12/5/2017.
  */
-
 public class NewRequestsFragment extends BaseTabFragment implements NewRequestContract.View {
     private FragmentNewrequestBinding binding;
     private View rootView;
     private NewRequestPresenter newRequestPresenter;
     private NewRequestsAdapter newRequestsAdapter;
-
+    private MoveToOptionDialog moveToOptionDialog;
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
-    private AppEditTextDialog assignDialog;
-    private AppEditTextDialog attendingDialog;
+    private AssignDialog assignDialog;
+    private EditTimeDialog editTimeDialog;
+    private TimeSlotAlertDialog timeSlotAlertDialog;
     private AppEditTextDialog holdDialog;
-    private String merchantComment;
+    private AppEditTextDialog terminateDialog;
     private PastHistoryDialog pastHistoryDialog;
-    private int serviceCenterId;
+    private int serviceCenterId = DEFAULT_VALUE;
+    private int userId = DEFAULT_VALUE;
+    private String moveToComment;
 
     @Override
     protected void initializePresenter() {
@@ -77,15 +101,32 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
     private void initViews() {
+
         newRequestsAdapter = new NewRequestsAdapter();
         newRequestsAdapter.setClickCallback(iClickCallback);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.requestRecyclerview.setAdapter(newRequestsAdapter);
         binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
-        serviceCenterId = SharedPrefsUtils.loginProvider().getIntegerPreference(
-                LoginPrefs.SERVICE_CENTER_ID, DEFAULT_VALUE);
-        newRequestPresenter.fetchNewServiceRequests(serviceCenterId);
+    }
+
+    @Override
+    public void doRefresh(boolean isForceRefresh) {
+        HomeActivity activity = (HomeActivity) getActivity();
+        int tempServiceCenterId = activity.getServiceCenterId();
+        int tempUserId = activity.getUserId();
+
+        if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
+            //no chnages have made, so no need to make api call checks whether pull to refresh or
+            // not
+
+            if (!isForceRefresh)
+                return;
+        } else {
+            serviceCenterId = tempServiceCenterId;
+            userId = tempUserId;
+        }
+        newRequestPresenter.fetchNewServiceRequests(serviceCenterId, userId);
     }
 
     private void dismissSwipeRefresh() {
@@ -104,7 +145,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         });
     }
 
-
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
         public void onClickPosition(int position) {
@@ -114,34 +154,44 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             fetchNewRequestResponse.setSelected(true);
             newRequestsAdapter.notifyDataSetChanged();
             productSelectedPosition = position;
-            createBottomSheetFirstRow(position);
+            createBottomSheetFirstRow();
             bottomSheetDialog.show();
         }
     };
 
-    private void createBottomSheetFirstRow(int position) {
+    private void createBottomSheetFirstRow() {
         int length;
-        int[] bottomDrawables;
-        String[] bottomNames;
+        int[] drawablesArray;
+        String[] textArray;
+        int[] tagsArray;
         length = 4;
-        bottomNames = new String[4];
-        bottomNames[0] = getString(R.string.bottom_option_customer);
-        bottomNames[1] = getString(R.string.bottom_option_product);
-        bottomNames[2] = getString(R.string.bottom_option_service_center);
-        bottomNames[3] = getString(R.string.bottom_option_status_update);
 
-        bottomDrawables = new int[4];
-        bottomDrawables[0] = R.drawable.ic_option_customer;
-        bottomDrawables[1] = R.drawable.ic_option_product;
-        bottomDrawables[2] = R.drawable.ic_option_find_service_center;
-        bottomDrawables[3] = R.drawable.ic_option_service_support;
+        textArray = new String[length];
+        textArray[0] = getString(R.string.bottom_option_customer);
+        textArray[1] = getString(R.string.bottom_option_product);
+        textArray[2] = getString(R.string.bottom_option_service_center);
+        textArray[3] = getString(R.string.bottom_option_status_update);
+
+        tagsArray = new int[length];
+        tagsArray[0] = R.id.CUSTOMER;
+        tagsArray[1] = R.id.PRODUCT;
+        tagsArray[2] = R.id.SERVICE_CENTER;
+        tagsArray[3] = R.id.STATUS_UPDATE;
+
+
+        drawablesArray = new int[length];
+        drawablesArray[0] = R.drawable.ic_option_customer;
+        drawablesArray[1] = R.drawable.ic_option_product;
+        drawablesArray[2] = R.drawable.ic_option_find_service_center;
+        drawablesArray[3] = R.drawable.ic_option_service_support;
 
         bottomSheetPurchasedBinding.firstRow.setVisibility(View.VISIBLE);
         bottomSheetPurchasedBinding.secondRow.setVisibility(View.GONE);
+        bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.firstRow.removeAllViews();
         bottomSheetPurchasedBinding.firstRow.setWeightSum(length);
-        setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, bottomNames, bottomDrawables, bottomSheetFirstRowClickListener, "-1");
+        setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, textArray, drawablesArray, tagsArray, bottomSheetFirstRowClickListener);
 
     }
 
@@ -149,49 +199,124 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private View.OnClickListener bottomSheetFirstRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String unparsedTag = (String) view.getTag();
-            Integer tag = Integer.valueOf(unparsedTag);
-            String[] bottomOptions;
-            int[] topDrawables;
-            changeSelectedViews(bottomSheetPurchasedBinding.firstRow, unparsedTag);
-            if (tag == 0) { // customer
-                bottomOptions = new String[2];
-                bottomOptions[0] = getString(R.string.bottom_option_call_customer_care);
-                bottomOptions[1] = getString(R.string.bottom_option_location);
-                topDrawables = new int[2];
-                topDrawables[0] = R.drawable.ic_option_call;
-                topDrawables[1] = R.drawable.ic_option_location;
+
+            Integer tag = (Integer) view.getTag();
+            String[] textArray = new String[0];
+            int[] drawablesArray = new int[0];
+            int[] tagsArray = new int[0];
+
+            changeSelectedViews(bottomSheetPurchasedBinding.firstRow, tag);
+
+            if (tag == R.id.CUSTOMER) {
+                int length = 2;
+                textArray = new String[length];
+                textArray[0] = getString(R.string.bottom_option_call_customer_care);
+                textArray[1] = getString(R.string.bottom_option_location);
+
+                tagsArray = new int[length];
+                tagsArray[0] = R.id.CUSTOMER_CALL_CUSTOMER_CARE;
+                tagsArray[1] = R.id.CUSTOMER_LOCATION;
+
+                drawablesArray = new int[length];
+                drawablesArray[0] = R.drawable.ic_option_call;
+                drawablesArray[1] = R.drawable.ic_option_location;
+            } else if (tag == R.id.PRODUCT) {
+                int length = 2;
+                textArray = new String[length];
+                textArray[0] = getString(R.string.bottom_option_warranty_details);
+                textArray[1] = getString(R.string.bottom_option_past_history);
+
+                tagsArray = new int[length];
+                tagsArray[0] = R.id.PRODUCT_WARRANTY_DETAILS;
+                tagsArray[1] = R.id.PRODUCT_PAST_HISTORY;
+
+                drawablesArray = new int[length];
+                drawablesArray[0] = R.drawable.ic_option_warranty;
+                //TODO have to check
+                drawablesArray[1] = R.drawable.ic_option_pasthistory;
+            } else if (tag == R.id.SERVICE_CENTER) {
+                int length = 1;
+                textArray = new String[length];
+                textArray[0] = getString(R.string.bottom_option_Call);
+
+                tagsArray = new int[length];
+                tagsArray[0] = R.id.SERVICE_CENTER_CALL;
+
+                drawablesArray = new int[length];
+                drawablesArray[0] = R.drawable.ic_option_call;
+            } else if (tag == R.id.STATUS_UPDATE) {
+                int length = 6;
+                textArray = new String[length];
+                textArray[0] = getString(R.string.bottom_option_accept);
+                textArray[1] = getString(R.string.bottom_option_reject);
+                textArray[2] = getString(R.string.bottom_option_hold);
+                textArray[3] = getString(R.string.bottom_option_terminate);
+                textArray[4] = getString(R.string.bottom_option_move_to);
+                textArray[5] = getString(R.string.bottom_option_edit);
+
+                tagsArray = new int[length];
+                tagsArray[0] = R.id.STATUS_UPDATE_ACCEPT;
+                tagsArray[1] = R.id.STATUS_UPDATE_REJECT;
+                tagsArray[2] = R.id.STATUS_UPDATE_HOLD;
+                tagsArray[3] = R.id.STATUS_UPDATE_TERMINATE;
+                tagsArray[4] = R.id.STATUS_UPDATE_MOVE_TO;
+                tagsArray[5] = R.id.STATUS_UPDATE_EDIT_TIME;
+
+                drawablesArray = new int[length];
+                drawablesArray[0] = R.drawable.ic_option_accept_request;
+                drawablesArray[1] = R.drawable.ic_option_accept_request;
+                drawablesArray[2] = R.drawable.ic_option_hold;
+                drawablesArray[3] = R.drawable.ic_option_hold;
+                drawablesArray[4] = R.drawable.ic_option_hold;
+                drawablesArray[5] = R.drawable.ic_option_hold;
+
+            }
+
+            // TODO have to remove commented code
+           /* if (tag == 0) { // customer
+                textArray = new String[2];
+                textArray[0] = getString(R.string.bottom_option_call_customer_care);
+                textArray[1] = getString(R.string.bottom_option_location);
+                drawablesArray = new int[2];
+                drawablesArray[0] = R.drawable.ic_option_call;
+                drawablesArray[1] = R.drawable.ic_option_location;
 
             } else if (tag == 1) { // product
-                bottomOptions = new String[2];
-                bottomOptions[0] = getString(R.string.bottom_option_warranty_details);
-                bottomOptions[1] = getString(R.string.bottom_option_past_history);
-                topDrawables = new int[2];
-                topDrawables[0] = R.drawable.ic_options_features;
-                topDrawables[1] = R.drawable.ic_option_pasthistory;
+                textArray = new String[2];
+                textArray[0] = getString(R.string.bottom_option_warranty_details);
+                textArray[1] = getString(R.string.bottom_option_past_history);
+                drawablesArray = new int[2];
+                drawablesArray[0] = R.drawable.ic_option_warranty;
+                //TODO have to check
+                drawablesArray[1] = R.drawable.ic_option_pasthistory;
             } else if (tag == 2) {  // service center
-                bottomOptions = new String[1];
-                bottomOptions[0] = getString(R.string.bottom_option_Call);
-                topDrawables = new int[1];
-                topDrawables[0] = R.drawable.ic_option_call;
+                textArray = new String[1];
+                textArray[0] = getString(R.string.bottom_option_Call);
+                drawablesArray = new int[1];
+                drawablesArray[0] = R.drawable.ic_option_call;
             } else { // status update
-                bottomOptions = new String[4];
-                bottomOptions[0] = getString(R.string.bottom_option_accept);
-                bottomOptions[1] = getString(R.string.bottom_option_reject);
-                bottomOptions[2] = getString(R.string.bottom_option_hold);
-                bottomOptions[3] = getString(R.string.bottom_option_edit);
-                topDrawables = new int[4];
-                topDrawables[0] = R.drawable.ic_option_accept_request;
-                topDrawables[1] = R.drawable.ic_option_accept_request;
-                topDrawables[2] = R.drawable.ic_option_hold;
-                topDrawables[3] = R.drawable.ic_option_hold;
+                textArray = new String[6];
+                textArray[0] = getString(R.string.bottom_option_accept);
+                textArray[1] = getString(R.string.bottom_option_reject);
+                textArray[2] = getString(R.string.bottom_option_hold);
+                textArray[3] = getString(R.string.bottom_option_terminate);
+                textArray[4] = getString(R.string.bottom_option_move_to);
+                textArray[5] = getString(R.string.bottom_option_edit);
+                drawablesArray = new int[6];
+                drawablesArray[0] = R.drawable.ic_option_accept_request;
+                drawablesArray[1] = R.drawable.ic_option_accept_request;
+                drawablesArray[2] = R.drawable.ic_option_hold;
+                drawablesArray[3] = R.drawable.ic_option_hold;
+                drawablesArray[4] = R.drawable.ic_option_hold;
+                drawablesArray[5] = R.drawable.ic_option_hold;
             }
+            */
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
-            bottomSheetPurchasedBinding.secondRow.setWeightSum(bottomOptions.length);
-            setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, bottomOptions, topDrawables, bottomSheetSecondRowClickListener, unparsedTag);
+            bottomSheetPurchasedBinding.secondRow.setWeightSum(textArray.length);
+            setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray,tagsArray, bottomSheetSecondRowClickListener);
         }
     };
 
@@ -200,20 +325,99 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private View.OnClickListener bottomSheetSecondRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String unparsedTag = (String) view.getTag();
-            String[] tagArray = unparsedTag.split(COMMA_SEPARATOR);
+            Integer tag = (Integer) view.getTag();
+            // String[] tagArray = unparsedTag.split(COMMA_SEPARATOR);
 
             FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
                     productSelectedPosition);
-            changeSelectedViews(bottomSheetPurchasedBinding.secondRow, unparsedTag);
+            changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
+            String[] textArray = new String[0];
+            int[] drawablesArray = new int[0];
+            int[] tagsArray = new int[0];
 
-            String[] bottomOptions = new String[0];
-            int[] topDrawables = new int[0];
+            if (tag == R.id.CUSTOMER_CALL_CUSTOMER_CARE) {
+                callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
+                return;
+            } else if (tag == R.id.CUSTOMER_LOCATION) {
+                showLocationDialog();
+                return;
 
-            int firstRowTag = Integer.parseInt(tagArray[0]);
-            int secondRowTag = Integer.parseInt(tagArray[1]);
+            } else if (tag == R.id.PRODUCT_WARRANTY_DETAILS) {
+                AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+
+                // TODO have to get details from back end
+
+                   /* String purchasedDate = DateUtils.convertMillisToStringFormat(
+                itemFromPosition.getPurchasedDate(), DateFormatterConstants.DD_MM_YYYY);
+                String warrantyEndDate = DateUtils.convertMillisToStringFormat(
+                        itemFromPosition.getWarrantyEndDate(), DateFormatterConstants.DD_MM_YYYY);
+                long noOfDays = DateUtils.convertDifferenceDateIndays(
+                        itemFromPosition.getWarrantyEndDate(), System.currentTimeMillis());
+                String warrantyConditions = itemFromPosition.getWarrantyConditions();
+                showInformationDialog(getString(
+                        R.string.bottom_option_warranty), getString(
+                        R.string.purchased_warranty_status_now)
+                        + noOfDays + " Days Left "
+                        + "\n"
+                        + getString(
+                        R.string.purchased_purchased_date)
+                        + purchasedDate
+                        + "\n"
+                        + getString(
+                        R.string.purchased_warranty_covers_date)
+                        + warrantyConditions
+                        + "\n"
+                        + getString(
+                        R.string.purchased_warranty_ends_on) + warrantyEndDate);
+                return;*/
+
+            } else if (tag == R.id.PRODUCT_PAST_HISTORY) {
+                showPastHisoryDialog();
+                return;
+
+            } else if (tag == R.id.SERVICE_CENTER_CALL) {
+                callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
+                return;
+
+            } else if (tag == R.id.STATUS_UPDATE_ACCEPT) {
+
+                // todo have to cal in accept api response
+                // doAcceptApi();
+                int length = 2;
+                textArray = new String[length];
+                textArray[0] = getString(R.string.bottom_option_assign);
+                textArray[1] = getString(R.string.bottom_option_attending);
+
+                tagsArray = new int[length];
+                tagsArray[0] = R.id.STATUS_UPDATE_ASSIGN;
+                tagsArray[1] = R.id.STATUS_UPDATE_ATTENDING;
 
 
+                drawablesArray = new int[length];
+                drawablesArray[0] = R.drawable.ic_options_feedback;
+                drawablesArray[1] = R.drawable.ic_option_pasthistory;
+
+                // showAcceptRejectDialog(true);
+
+            } else if (tag == R.id.STATUS_UPDATE_REJECT) {
+                showAcceptRejectDialog(false);
+
+            } else if (tag == R.id.STATUS_UPDATE_HOLD) {
+                showHoldDialog();
+
+            } else if (tag == R.id.STATUS_UPDATE_TERMINATE) {
+                showTerminateDialog();
+
+            } else if (tag == R.id.STATUS_UPDATE_MOVE_TO) {
+                showMoveToDialog();
+
+            } else if (tag == R.id.STATUS_UPDATE_EDIT_TIME) {
+                showEditTimeDialog();
+
+            }
+            // TODO have to remove commented code
+
+           /*
             if (firstRowTag == 0) { // customer
 
                 if (secondRowTag == 0) {  //call customer care
@@ -230,7 +434,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 if (secondRowTag == 0) { // warranty details
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                     // TODO have to get details from back end
-                    /*String purchasedDate = DateUtils.convertMillisToStringFormat(
+                    *//*String purchasedDate = DateUtils.convertMillisToStringFormat(
                             itemFromPosition.getPurchasedDate(), DateFormatterConstants.DD_MM_YYYY);
                     String warrantyEndDate = DateUtils.convertMillisToStringFormat(
                             itemFromPosition.getWarrantyEndDate(), DateFormatterConstants.DD_MM_YYYY);
@@ -253,7 +457,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                             + getString(
                             R.string.purchased_warranty_ends_on) + warrantyEndDate);
                     return;
-*/
+*//*
                 } else if (secondRowTag == 1) { // past history
                     showPastHisoryDialog();
                 }
@@ -263,6 +467,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 }
             } else if (firstRowTag == 3) {   // status update
                 if (secondRowTag == 0) {  // accept
+                    // todo have to cal in accept api response
+                   // doAcceptApi();
                     bottomOptions = new String[2];
                     bottomOptions[0] = getString(R.string.bottom_option_assign);
                     bottomOptions[1] = getString(R.string.bottom_option_attending);
@@ -270,70 +476,267 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     topDrawables[0] = R.drawable.ic_options_feedback;
                     topDrawables[1] = R.drawable.ic_option_pasthistory;
 
-                   // showAcceptRejectDialog(true);
+                    // showAcceptRejectDialog(true);
 
                 } else if (secondRowTag == 1) { // reject
                     showAcceptRejectDialog(false);
 
                 } else if (secondRowTag == 2) { // hold
-                    //showHoldDialog();
-                    bottomOptions = new String[1];
-                    bottomOptions[0] = getString(R.string.bottom_option_assign);
-                    topDrawables = new int[1];
-                    topDrawables[0] = R.drawable.ic_options_feedback;
-                } else { //  edit time
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+                    showHoldDialog();
+                } else if (secondRowTag == 3) { // terminate
+                    showTerminateDialog();
+                } else if (secondRowTag == 4) { // move to
+                    showMoveToDialog();
+                } else {
+                    //  edit time
+
+                    showEditTimeDialog();
                 }
 
 
             }
+
+            */
+
+
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
-            bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
-            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, bottomOptions, topDrawables, bottomSheetThirdRowClickListener, unparsedTag);
+            bottomSheetPurchasedBinding.thirdRow.setWeightSum(textArray.length);
+            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, textArray, tagsArray, drawablesArray, bottomSheetThirdRowClickListener);
         }
     };
+
+    private void showMoveToDialog() {
+        ArrayList<Status> statusList = AppUtils.getSubStatusList(getString(R.string.tab_new_request), ((HomeActivity) getActivity()).getStatusList());
+        moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                newRequestPresenter.upDateStatus(userId, upDateStatus);
+            }
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        moveToOptionDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).loadStatusList(statusList).build();
+        moveToOptionDialog.showDialog();
+        moveToOptionDialog.setCancelable(true);
+
+    }
+
+    private void showTerminateDialog() {
+        terminateDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                terminateDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_terminate))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        terminateDialog.showDialog();
+        terminateDialog.setCancelable(true);
+
+
+    }
+
+    private void showEditTimeDialog() {
+
+        editTimeDialog = new EditTimeDialog.AlertDialogBuilder(getContext(), new EditTimeCallback() {
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        editTimeDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void dateClicked(String date) {
+                showDatePicker(date);
+
+            }
+
+            @Override
+            public void timeClicked() {
+                showTimePicker();
+
+            }
+        }).build();
+        editTimeDialog.showDialog();
+
+    }
+
+    private void showTimePicker() {
+        timeSlotAlertDialog = new TimeSlotAlertDialog.AlertDialogBuilder(getContext(), new TimeSlotAlertDialogCallback() {
+            @Override
+            public void selectedTimeSlot(String timeSlot) {
+                editTimeDialog.setTimeFromPicker(timeSlot);
+            }
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+                timeSlotAlertDialog.dismiss();
+
+            }
+        }).build();
+        timeSlotAlertDialog.showDialog();
+    }
+
+    private void showDatePicker(String date) {
+        AppUtils.hideSoftKeyboard(getContext(), getView());
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        String selectedDate = date;
+        if (!TextUtils.isEmpty(selectedDate)) {
+            cal.setTimeInMillis(DateUtils.convertStringFormatToMillis(
+                    selectedDate, DateFormatterConstants.DD_MM_YYYY));
+        }
+
+        int customStyle = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                ? R.style.DatePickerDialogTheme : android.R.style.Theme_DeviceDefault_Light_Dialog;
+        DatePickerDialog datePicker = new DatePickerDialog(getContext(),
+                customStyle,
+                datePickerListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH));
+        datePicker.setCancelable(false);
+        datePicker.show();
+
+    }
+
+    // date Listener
+    private DatePickerDialog.OnDateSetListener datePickerListener =
+            new DatePickerDialog.OnDateSetListener() {
+                // when dialog box is closed, below method will be called.
+                public void onDateSet(DatePicker view, int selectedYear,
+                                      int selectedMonth, int selectedDay) {
+                    Calendar selectedDateTime = Calendar.getInstance();
+                    selectedDateTime.set(selectedYear, selectedMonth, selectedDay);
+
+                    String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
+                            selectedDateTime.getTime(), DateFormatterConstants.DD_MM_YYYY);
+                    editTimeDialog.setDateFromPicker(dobInDD_MM_YYYY);
+
+                }
+            };
+
     private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String unparsedTag = (String) view.getTag();
-            String[] tagArray = unparsedTag.split(COMMA_SEPARATOR);
-
-
+            Integer tag = (Integer) view.getTag();
             FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
                     productSelectedPosition);
-            changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, unparsedTag);
+            changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, tag);
 
-            int firstRowTag = Integer.parseInt(tagArray[0]);
+            String[] textArray = new String[0];
+            int[] drawablesArray = new int[0];
+            int[] tagsArray = new int[0];
+            if (tag == R.id.STATUS_UPDATE_ASSIGN) {
+                fetchAssignDialogData();
+            } else if (tag == R.id.STATUS_UPDATE_ATTENDING) {
+                showAttendingDialog();
+            }
+
+            /*int firstRowTag = Integer.parseInt(tagArray[0]);
             int secondRowTag = Integer.parseInt(tagArray[1]);
             int thirdRowTag = Integer.parseInt(tagArray[2]);
 
-
+            // status update
             if (firstRowTag == 3) {
 
-                if (secondRowTag == 0) {
+                if (secondRowTag == 0) { // accept
 
-                    if (thirdRowTag == 0) {
-                        // assign
-                        showAssignDialog();
+                    if (thirdRowTag == 0) { // assign
+
+                        // showAssignDialog();
+                        fetchAssignDialogData();
 
                     } else if (thirdRowTag == 1) {
                         // attending
+
                         showAttendingDialog();
 
                     }
                 } else if (secondRowTag == 1) {
                     //show diloge
                 } else if (secondRowTag == 2) {
-                    showAssignDialog();
+                    // showAssignDialog();
                 }
 
-            }
+            }*/
 
 
         }
 
     };
+
+    private void fetchAssignDialogData() {
+        newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
+    }
+
+    private void showAssignDialog(List<AddUser> userList) {
+        assignDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                newRequestPresenter.upDateStatus(userId, upDateStatus);
+            }
+
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        assignDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
+        assignDialog.showDialog();
+        assignDialog.setCancelable(true);
+    }
+
 
     private void showPastHisoryDialog() {
         pastHistoryDialog = new PastHistoryDialog.AlertDialogBuilder(getContext(), new PassHistoryCallback() {
@@ -382,6 +785,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         holdDialog.showDialog();
+        holdDialog.setCancelable(true);
     }
 
     private void showAcceptRejectDialog(final boolean isAccept) {
@@ -411,68 +815,23 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         acceptRejectDialog.showDialog();
+        acceptRejectDialog.setCancelable(true);
     }
-
-
 
 
     private void showAttendingDialog() {
-        attendingDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-
-                                attendingDialog.dismiss();
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                attendingDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_attending) )
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        attendingDialog.showDialog();
-
+        UpDateStatus upDateStatus = new UpDateStatus();
+        upDateStatus.setStatus(new Status(ATTENDING));
+        upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
+        newRequestPresenter.upDateStatus(userId, upDateStatus);
     }
 
-    private void showAssignDialog() {
-        assignDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
 
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-
-                                assignDialog.dismiss();
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                assignDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_assign) )
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        assignDialog.showDialog();
-
-
+    private void doAcceptApi() {
+        UpDateStatus upDateStatus = new UpDateStatus();
+        upDateStatus.setStatus(new Status(ACCEPT));
+        upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
+        newRequestPresenter.upDateStatus(userId, upDateStatus);
     }
 
 
@@ -519,15 +878,9 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 @Override
                 public void onRefresh() {
                     newRequestsAdapter.clearData();
-                    newRequestPresenter.fetchNewServiceRequests(serviceCenterId);
+                    doRefresh(true);
                 }
             };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        newRequestPresenter.disposeAll();
-    }
 
 
     @Override
@@ -536,16 +889,12 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
-        // TODO have to  remove below code
-        if (fetchNewRequestResponsesList.size() == 0) {
-            FetchNewRequestResponse fetchNewRequestResponse = new FetchNewRequestResponse();
-            fetchNewRequestResponse.setCustomer(fetchNewRequestResponse.getCustomer());
-            fetchNewRequestResponsesList.add(fetchNewRequestResponse);
-        }
+
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.requestTextview.setVisibility(View.VISIBLE);
             dismissSwipeRefresh();
         } else {
+            binding.requestTextview.setVisibility(View.GONE);
             newRequestsAdapter.setData(fetchNewRequestResponsesList);
             dismissSwipeRefresh();
         }
@@ -554,5 +903,40 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     @Override
     public void onSearchClickListerner(String searchableText, String searchType) {
         //TODO have to do filter list
+    }
+
+
+    @Override
+    public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
+
+        if (usersList == null) {
+            usersList = new ArrayList<>();
+        }
+
+        showAssignDialog(usersList);
+    }
+
+    @Override
+    public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
+
+        if (assignDialog != null && assignDialog.isShowing()) {
+            assignDialog.dismiss();
+        }
+
+        try {
+            Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
+            if (statusId == ASSIGNED || statusId == ATTENDING) {
+                doRefresh(true);
+            }
+        } catch (Exception e) {
+            //TODO have to handle
+        }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        newRequestPresenter.disposeAll();
     }
 }

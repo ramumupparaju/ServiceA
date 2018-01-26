@@ -7,14 +7,14 @@ import android.util.Pair;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.api.AppApiService;
-import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
+import com.incon.service.apimodel.components.login.LoginResponse;
+import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
+import com.incon.service.dto.updateservicecenter.UpDateServiceCenter;
 import com.incon.service.ui.BasePresenter;
 import com.incon.service.ui.register.RegistrationContract;
 import com.incon.service.ui.register.RegistrationPresenter;
 import com.incon.service.utils.ErrorMsgUtil;
-
-import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -85,6 +85,7 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
         DisposableObserver<Object> observer = new DisposableObserver<Object>() {
             @Override
             public void onNext(Object categoriesList) {
+                getView().serviceCenterAddedSuccessfully();
                 getView().hideProgress();
             }
 
@@ -102,5 +103,68 @@ public class AddServiceCenterPresenter extends BasePresenter<AddServiceCenterCon
         };
         AppApiService.getInstance().addServiceCenter(userId, addServiceCenter).subscribe(observer);
         addDisposable(observer);
+
     }
+
+    @Override
+    public void upDateServiceCenter(int serviceCenterId, UpDateServiceCenter upDateServiceCenter) {
+
+        getView().showProgress(appContext.getString(R.string.progress_update_service_center));
+
+        DisposableObserver<UpDateServiceCenterResponse> observer = new
+                DisposableObserver<UpDateServiceCenterResponse>() {
+                    @Override
+                    public void onNext(UpDateServiceCenterResponse upDateServiceCenterResponse) {
+                        getView().hideProgress();
+                        getView().loadUpDateServiceCenterResponce(upDateServiceCenterResponse);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().hideProgress();
+                        Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                        getView().handleException(errorDetails);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                };
+        AppApiService.getInstance().upDateServiceCenter(serviceCenterId, upDateServiceCenter).
+                subscribe(observer);
+        addDisposable(observer);
+
+
+    }
+
+    @Override
+    public void deleteServiceCenter(int serviceCenterId) {
+        getView().showProgress(appContext.getString(R.string.progress_delete_service_center));
+        DisposableObserver<Object> observer = new DisposableObserver<Object>() {
+            @Override
+            public void onNext(Object o) {
+                getView().serviceCenterDeleteSuccessfully();
+                getView().hideProgress();
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().hideProgress();
+                Pair<Integer, String> errorDetails = ErrorMsgUtil.getErrorDetails(e);
+                getView().handleException(errorDetails);
+            }
+
+            @Override
+            public void onComplete() {
+                getView().hideProgress();
+            }
+        };
+        AppApiService.getInstance().deleteServiceCenterApi(serviceCenterId).subscribe(observer);
+        addDisposable(observer);
+
+    }
+
+
 }

@@ -14,6 +14,7 @@ import android.view.ViewTreeObserver;
 
 import com.incon.service.AppConstants;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.databinding.ActivityHomeBinding;
 import com.incon.service.databinding.ToolBarBinding;
 import com.incon.service.ui.BaseActivity;
@@ -27,20 +28,23 @@ import com.incon.service.utils.DeviceUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 public class HomeActivity extends BaseActivity implements HomeContract.View {
 
     private static final int TAB_Status = 0;
     private static final int TAB_Reports = 1;
     private static final int TAB_FeedBack = 2;
+    private static final int TAB_NOTIFICATIONS = 3;
 
     private View rootView;
     private HomePresenter homePresenter;
     private ActivityHomeBinding binding;
     private ToolBarBinding toolBarBinding;
     private int userId;
+    private int serviceCenterId;
+    private ArrayList<Status> statusList = new ArrayList<>();
 
     private LinkedHashMap<Integer, Fragment> tabFragments = new LinkedHashMap<>();
 
@@ -63,6 +67,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         rootView = binding.getRoot();
 
         userId = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE);
+        serviceCenterId = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.SERVICE_CENTER_ID, DEFAULT_VALUE);
 
         //changed preference as otp verified
         SharedPrefsUtils.loginProvider().setBooleanPreference(AppConstants.LoginPrefs.IS_REGISTERED, false);
@@ -72,11 +77,36 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 //        UpdateManager.register(this);
         initializeToolBar();
         getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
+
+        loadedDefaultStatus();
+
         // loading  default status data
         homePresenter.getDefaultStatusData();
-        // loading service centers
-        homePresenter.getServiceCenters(userId);
 
+        int userType = SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
+        if (userType == UserConstants.SUPER_ADMIN_TYPE) {
+            // loading service centers only if user type is super admin
+            homePresenter.getServiceCenters(userId);
+        } else {
+            //directly load status screen
+            serviceCentersSuccessfully();
+        }
+    }
+
+    public int getServiceCenterId() {
+        return serviceCenterId;
+    }
+
+    public void setServiceCenterId(int serviceCenterId) {
+        this.serviceCenterId = serviceCenterId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setToolbarTitle(String title) {
@@ -88,12 +118,13 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         toolBarBinding = DataBindingUtil.inflate(layoutInflater,
                 R.layout.tool_bar, null, false);
         setSupportActionBar(toolBarBinding.toolbar);
-        setToolbarTitle(getString(R.string.title_history));
+        setToolbarTitle(getString(R.string.title_status));
 
         toolBarBinding.toolbarLeftIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+                overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_right);
             }
         });
         toolBarBinding.toolbarRightIv.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +216,6 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
     @Override
     public void serviceCentersSuccessfully() {
-        //TODO have to handle based on user
         disableAllAnimation(binding.bottomNavigationView);
         binding.bottomNavigationView.setTextVisibility(true);
         setBottomNavigationViewListeners();
@@ -193,5 +223,18 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
         binding.bottomNavigationView.setCurrentItem(TAB_Status);
 
+    }
+
+    public void loadedDefaultStatus() {
+        //TODO have to update ids
+        statusList.add(new Status(2, getString(R.string.tab_new_request)));
+        statusList.add(new Status(5, getString(R.string.tab_checkup)));
+        statusList.add(new Status(15, getString(R.string.tab_approval)));
+        statusList.add(new Status(1, getString(R.string.tab_repair)));
+        statusList.add(new Status(27, getString(R.string.tab_payment)));
+    }
+
+    public ArrayList<Status> getStatusList() {
+        return statusList;
     }
 }

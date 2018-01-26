@@ -14,21 +14,31 @@ import android.view.ViewGroup;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.request.Request;
+import com.incon.service.apimodel.components.updatestatus.Status;
+import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.MoveToOptionCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
-import com.incon.service.custom.view.AssignOptionDialog;
+import com.incon.service.custom.view.AssignDialog;
+import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.databinding.FragmentRepairBinding;
+import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
+import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.RepairAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
-import com.incon.service.utils.SharedPrefsUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
+import static com.incon.service.AppConstants.StatusConstants.ATTENDING;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -40,13 +50,16 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private View rootView;
     private RepairAdapter repairAdapter;
     private RepairPresenter repairPresenter;
-    private int userId;
-    private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
-    private AssignOptionDialog assignOptionDialog;
+    private AssignDialog statusDialog;
+    private MoveToOptionDialog moveToOptionDialog;
     private AppEditTextDialog closeDialog;
     private AppEditTextDialog repairDialog;
     private AppEditTextDialog holdDialog;
+    private int serviceCenterId = DEFAULT_VALUE;
+    private int userId = DEFAULT_VALUE;
+    private List<AddUser> usersList;
+    private AppEditTextDialog terminateDialog;
 
     @Override
     protected void initializePresenter() {
@@ -79,13 +92,35 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private void initViews() {
         repairAdapter = new RepairAdapter();
         repairAdapter.setClickCallback(iClickCallback);
+        binding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.requestRecyclerview.setAdapter(repairAdapter);
         binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
-        userId = SharedPrefsUtils.loginProvider().getIntegerPreference(
-                LoginPrefs.USER_ID, DEFAULT_VALUE);
-        userId = 1;
-        repairPresenter.fetchRepairServiceRequests(userId);
+    }
+
+    @Override
+    public void doRefresh(boolean isForceRefresh) {
+        HomeActivity activity = (HomeActivity) getActivity();
+        int tempServiceCenterId = activity.getServiceCenterId();
+        int tempUserId = activity.getUserId();
+
+        if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
+            //no chnages have made, so no need to make api call checks whether pull to refresh or
+            // not
+
+            if (!isForceRefresh)
+                return;
+        } else {
+            serviceCenterId = tempServiceCenterId;
+            userId = tempUserId;
+        }
+        repairPresenter.fetchRepairServiceRequests(serviceCenterId, userId);
+    }
+
+    private void dismissSwipeRefresh() {
+        if (binding.swiperefresh.isRefreshing()) {
+            binding.swiperefresh.setRefreshing(false);
+        }
     }
 
     @Override
@@ -109,34 +144,41 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
             fetchNewRequestResponse.setSelected(true);
             repairAdapter.notifyDataSetChanged();
             productSelectedPosition = position;
-            createBottomSheetFirstRow(position);
+            createBottomSheetFirstRow();
             bottomSheetDialog.show();
         }
     };
 
-    private void createBottomSheetFirstRow(int position) {
+    private void createBottomSheetFirstRow() {
         int length;
-        int[] bottomDrawables;
-        String[] bottomNames;
+        int[] drawablesArray;
+        String[] textArray;
         length = 4;
-        bottomNames = new String[4];
-        bottomNames[0] = getString(R.string.bottom_option_customer);
-        bottomNames[1] = getString(R.string.bottom_option_product);
-        bottomNames[2] = getString(R.string.bottom_option_service_center);
-        bottomNames[3] = getString(R.string.bottom_option_status_update);
+        int[] tagsArray;
+        textArray = new String[length];
+        textArray[0] = getString(R.string.bottom_option_customer);
+        textArray[1] = getString(R.string.bottom_option_product);
+        textArray[2] = getString(R.string.bottom_option_service_center);
+        textArray[3] = getString(R.string.bottom_option_status_update);
 
-        bottomDrawables = new int[4];
-        bottomDrawables[0] = R.drawable.ic_option_customer;
-        bottomDrawables[1] = R.drawable.ic_option_product;
-        bottomDrawables[2] = R.drawable.ic_option_find_service_center;
-        bottomDrawables[3] = R.drawable.ic_option_delete;
+        tagsArray = new int[length];
+        tagsArray[0] = R.id.CUSTOMER;
+        tagsArray[1] = R.id.PRODUCT;
+        tagsArray[2] = R.id.SERVICE_CENTER;
+        tagsArray[3] = R.id.STATUS_UPDATE;
+
+        drawablesArray = new int[length];
+        drawablesArray[0] = R.drawable.ic_option_customer;
+        drawablesArray[1] = R.drawable.ic_option_product;
+        drawablesArray[2] = R.drawable.ic_option_find_service_center;
+        drawablesArray[3] = R.drawable.ic_option_delete;
 
         bottomSheetPurchasedBinding.firstRow.setVisibility(View.VISIBLE);
         bottomSheetPurchasedBinding.secondRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.firstRow.removeAllViews();
         bottomSheetPurchasedBinding.firstRow.setWeightSum(length);
-        setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, bottomNames, bottomDrawables, bottomSheetFirstRowClickListener, "-1");
+        setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, textArray, drawablesArray, tagsArray, bottomSheetFirstRowClickListener);
 
     }
 
@@ -144,47 +186,119 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private View.OnClickListener bottomSheetFirstRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String unparsedTag = (String) view.getTag();
-            Integer tag = Integer.valueOf(unparsedTag);
-            String[] bottomOptions;
-            int[] topDrawables;
-            changeSelectedViews(bottomSheetPurchasedBinding.firstRow, unparsedTag);
-            if (tag == 0) {  // customer
-                bottomOptions = new String[1];
-                bottomOptions[0] = getString(R.string.bottom_option_call_customer_care);
-                topDrawables = new int[1];
-                topDrawables[0] = R.drawable.ic_option_call;
+            Integer tag = (Integer) view.getTag();
+            String[] textArray = new String[0];
+            int[] drawablesArray = new int[0];
+            int[] tagsArray = new int[0];
 
-            } else if (tag == 1) { // product
-                bottomOptions = new String[2];
-                bottomOptions[0] = getString(R.string.bottom_option_warranty_details);
-                bottomOptions[1] = getString(R.string.bottom_option_past_history);
-                topDrawables = new int[2];
-                topDrawables[0] = R.drawable.ic_options_features;
-                topDrawables[1] = R.drawable.ic_option_pasthistory;
-            } else if (tag == 2) { // service center
-                bottomOptions = new String[1];
-                bottomOptions[0] = getString(R.string.bottom_option_Call);
-                topDrawables = new int[1];
-                topDrawables[0] = R.drawable.ic_option_call;
-            } else { // status update
-                bottomOptions = new String[4];
-                bottomOptions[0] = getString(R.string.bottom_option_repair_done);
-                bottomOptions[1] = getString(R.string.bottom_option_hold);
-                bottomOptions[2] = getString(R.string.bottom_option_close);
-                bottomOptions[3] = getString(R.string.bottom_option_assign);
-                topDrawables = new int[4];
-                topDrawables[0] = R.drawable.ic_option_repair_done;
-                topDrawables[1] = R.drawable.ic_option_hold;
-                topDrawables[2] = R.drawable.ic_option_close;
-                topDrawables[3] = R.drawable.ic_option_assign;
+            changeSelectedViews(bottomSheetPurchasedBinding.firstRow, tag);
+
+
+            if (tag == R.id.CUSTOMER) {
+                int length = 1;
+                textArray = new String[length];
+                textArray[0] = getString(R.string.bottom_option_call_customer_care);
+
+                tagsArray = new int[length];
+                tagsArray[0] = R.id.CUSTOMER_CALL_CUSTOMER_CARE;
+
+                drawablesArray = new int[length];
+                drawablesArray[0] = R.drawable.ic_option_call;
+            } else if (tag == R.id.PRODUCT) {
+                int length = 2;
+                textArray = new String[length];
+                textArray[0] = getString(R.string.bottom_option_warranty_details);
+                textArray[1] = getString(R.string.bottom_option_past_history);
+
+                tagsArray = new int[length];
+                tagsArray[0] = R.id.PRODUCT_WARRANTY_DETAILS;
+                tagsArray[1] = R.id.PRODUCT_PAST_HISTORY;
+
+                drawablesArray = new int[length];
+                drawablesArray[0] = R.drawable.ic_option_warranty;
+                drawablesArray[1] = R.drawable.ic_option_pasthistory;
+            } else if (tag == R.id.SERVICE_CENTER) {
+                int length = 1;
+                textArray = new String[length];
+                textArray[0] = getString(R.string.bottom_option_Call);
+
+                tagsArray = new int[length];
+                tagsArray[0] = R.id.SERVICE_CENTER_CALL;
+
+                drawablesArray = new int[length];
+                drawablesArray[0] = R.drawable.ic_option_call;
+            } else if (tag == R.id.STATUS_UPDATE) {
+                int length = 6;
+                textArray = new String[length];
+                textArray[0] = getString(R.string.bottom_option_repair_done);
+                textArray[1] = getString(R.string.bottom_option_hold);
+                textArray[2] = getString(R.string.bottom_option_terminate);
+                textArray[3] = getString(R.string.bottom_option_move_to);
+                textArray[4] = getString(R.string.bottom_option_assign);
+                textArray[5] = getString(R.string.bottom_option_close);
+
+                tagsArray = new int[length];
+                tagsArray[0] = R.id.STATUS_UPDATE_REPAIR_DONE;
+                tagsArray[1] = R.id.STATUS_UPDATE_HOLD;
+                tagsArray[2] = R.id.STATUS_UPDATE_TERMINATE;
+                tagsArray[3] = R.id.STATUS_UPDATE_MOVE_TO;
+                tagsArray[4] = R.id.STATUS_UPDATE_ASSIGN;
+                tagsArray[5] = R.id.STATUS_UPDATE_CLOSE;
+
+                drawablesArray = new int[length];
+                drawablesArray[0] = R.drawable.ic_option_accept_request;
+                drawablesArray[1] = R.drawable.ic_option_accept_request;
+                drawablesArray[2] = R.drawable.ic_option_hold;
+                drawablesArray[3] = R.drawable.ic_option_hold;
+                drawablesArray[4] = R.drawable.ic_option_hold;
+                drawablesArray[5] = R.drawable.ic_option_hold;
+
             }
 
+
+          /*  if (tag == 0) {  // customer
+                textArray = new String[1];
+                textArray[0] = getString(R.string.bottom_option_call_customer_care);
+                drawablesArray = new int[1];
+                drawablesArray[0] = R.drawable.ic_option_call;
+
+            } else if (tag == 1) { // product
+                textArray = new String[2];
+                textArray[0] = getString(R.string.bottom_option_warranty_details);
+                textArray[1] = getString(R.string.bottom_option_past_history);
+                drawablesArray = new int[2];
+                drawablesArray[0] = R.drawable.ic_options_features;
+                drawablesArray[1] = R.drawable.ic_option_pasthistory;
+            } else if (tag == 2) { // service center
+                textArray = new String[1];
+                textArray[0] = getString(R.string.bottom_option_Call);
+                drawablesArray = new int[1];
+                drawablesArray[0] = R.drawable.ic_option_call;
+            } else { // status update
+                textArray = new String[6];
+                textArray[0] = getString(R.string.bottom_option_repair_done);
+                textArray[1] = getString(R.string.bottom_option_hold);
+                textArray[2] = getString(R.string.bottom_option_terminate);
+                textArray[3] = getString(R.string.bottom_option_move_to);
+                textArray[4] = getString(R.string.bottom_option_assign);
+                textArray[5] = getString(R.string.bottom_option_close);
+                drawablesArray = new int[6];
+                drawablesArray[0] = R.drawable.ic_option_repair_done;
+                drawablesArray[1] = R.drawable.ic_option_hold;
+                drawablesArray[2] = R.drawable.ic_option_assign;
+                drawablesArray[3] = R.drawable.ic_option_close;
+                drawablesArray[4] = R.drawable.ic_option_close;
+                drawablesArray[5] = R.drawable.ic_option_close;
+            }
+            */
+
+
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
-            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
+            bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
-            bottomSheetPurchasedBinding.secondRow.setWeightSum(bottomOptions.length);
-            setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, bottomOptions, topDrawables, bottomSheetSecondRowClickListener, unparsedTag);
+            bottomSheetPurchasedBinding.secondRow.setWeightSum(textArray.length);
+            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
+            setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
         }
     };
 
@@ -193,24 +307,82 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     private View.OnClickListener bottomSheetSecondRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String unparsedTag = (String) view.getTag();
-            String[] tagArray = unparsedTag.split(COMMA_SEPARATOR);
+            Integer tag = (Integer) view.getTag();
 
             FetchNewRequestResponse itemFromPosition = repairAdapter.getItemFromPosition(
                     productSelectedPosition);
-            changeSelectedViews(bottomSheetPurchasedBinding.secondRow, unparsedTag);
+            changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
+            String[] textArray = new String[0];
+            int[] drawablesArray = new int[0];
+            int[] tagsArray = new int[0];
 
-            String[] bottomOptions = new String[0];
-            int[] topDrawables = new int[0];
+            if (tag == R.id.CUSTOMER_CALL_CUSTOMER_CARE) {
+                callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
+                return;
+            } else if (tag == R.id.PRODUCT_WARRANTY_DETAILS) {
+                AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
 
-            int firstRowTag = Integer.parseInt(tagArray[0]);
-            int secondRowTag = Integer.parseInt(tagArray[1]);
+                // TODO have to get details from back end
 
-            // customer
+                   /* String purchasedDate = DateUtils.convertMillisToStringFormat(
+                itemFromPosition.getPurchasedDate(), DateFormatterConstants.DD_MM_YYYY);
+                String warrantyEndDate = DateUtils.convertMillisToStringFormat(
+                        itemFromPosition.getWarrantyEndDate(), DateFormatterConstants.DD_MM_YYYY);
+                long noOfDays = DateUtils.convertDifferenceDateIndays(
+                        itemFromPosition.getWarrantyEndDate(), System.currentTimeMillis());
+                String warrantyConditions = itemFromPosition.getWarrantyConditions();
+                showInformationDialog(getString(
+                        R.string.bottom_option_warranty), getString(
+                        R.string.purchased_warranty_status_now)
+                        + noOfDays + " Days Left "
+                        + "\n"
+                        + getString(
+                        R.string.purchased_purchased_date)
+                        + purchasedDate
+                        + "\n"
+                        + getString(
+                        R.string.purchased_warranty_covers_date)
+                        + warrantyConditions
+                        + "\n"
+                        + getString(
+                        R.string.purchased_warranty_ends_on) + warrantyEndDate);
+                return;*/
+
+            } else if (tag == R.id.PRODUCT_PAST_HISTORY) {
+                AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+
+                //  showPastHisoryDialog();
+                // return;
+
+            } else if (tag == R.id.SERVICE_CENTER_CALL) {
+                callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
+                return;
+
+            } else if (tag == R.id.STATUS_UPDATE_REPAIR_DONE) {
+                showRepairDone();
+
+            } else if (tag == R.id.STATUS_UPDATE_HOLD) {
+                showHoldDialog();
+
+            } else if (tag == R.id.STATUS_UPDATE_TERMINATE) {
+                showTerminateDialog();
+
+            } else if (tag == R.id.STATUS_UPDATE_MOVE_TO) {
+                showMoveToDialog();
+
+            } else if (tag == R.id.STATUS_UPDATE_ASSIGN) {
+                //   showAssignDialog();
+                fetchAssignDialogData();
+
+            }else if (tag == R.id.STATUS_UPDATE_CLOSE) {
+                showCloseDialog();
+
+            }
+
+
+          /*  // customer
             if (firstRowTag == 0) {
-
                 if (secondRowTag == 0) {    //call customer care
-
                     callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                     return;
                 }
@@ -220,7 +392,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 if (secondRowTag == 0) { // warrenty details
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                     // TODO have to get details from back end
-                    /*String purchasedDate = DateUtils.convertMillisToStringFormat(
+                    *//*String purchasedDate = DateUtils.convertMillisToStringFormat(
                             itemFromPosition.getPurchasedDate(), DateFormatterConstants.DD_MM_YYYY);
                     String warrantyEndDate = DateUtils.convertMillisToStringFormat(
                             itemFromPosition.getWarrantyEndDate(), DateFormatterConstants.DD_MM_YYYY);
@@ -243,7 +415,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                             + getString(
                             R.string.purchased_warranty_ends_on) + warrantyEndDate);
                     return;
-*/
+*//*
                 } else if (secondRowTag == 1) { // history
                     AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
                 }
@@ -256,18 +428,93 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                     showRepairDone();
                 } else if (secondRowTag == 1) { // hold
                     showHoldDialog();
-                } else if (secondRowTag == 2) { // close
+                } else if (secondRowTag == 2) { // terminate
+                    showTerminateDialog();
+                } else if (secondRowTag == 3) { // move to
+                    showMoveToDialog();
+                } else if (secondRowTag == 4) { // assign
+                    //   showAssignDialog();
+                    fetchAssignDialogData();
+
+                } else { // close
                     showCloseDialog();
-                } else { // assign
-                    showAssignDialog();
+                }
+            }
+
+            */
+
+            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
+            bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.GONE);
+            bottomSheetPurchasedBinding.thirdRow.removeAllViews();
+            bottomSheetPurchasedBinding.thirdRow.setWeightSum(textArray.length);
+        }
+    };
+
+    private void fetchAssignDialogData() {
+        repairPresenter.getUsersListOfServiceCenters(serviceCenterId);
+
+
+    }
+
+    private void showTerminateDialog() {
+        terminateDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                terminateDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_terminate))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        terminateDialog.showDialog();
+        terminateDialog.setCancelable(true);
+
+
+    }
+
+    private void showMoveToDialog() {
+        ArrayList<Status> statusList = AppUtils.getSubStatusList(getString(R.string.tab_repair), ((HomeActivity) getActivity()).getStatusList());
+        moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+                FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                repairPresenter.upDateStatus(userId, upDateStatus);
+            }
+
+            @Override
+            public void alertDialogCallback(byte dialogStatus) {
+                switch (dialogStatus) {
+                    case AlertDialogCallback.OK:
+                        break;
+                    case AlertDialogCallback.CANCEL:
+                        moveToOptionDialog.dismiss();
+                        break;
+                    default:
+                        break;
                 }
 
             }
-            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
-            bottomSheetPurchasedBinding.thirdRow.removeAllViews();
-            bottomSheetPurchasedBinding.thirdRow.setWeightSum(bottomOptions.length);
-        }
-    };
+        }).loadStatusList(statusList).build();
+        moveToOptionDialog.showDialog();
+        moveToOptionDialog.setCancelable(true);
+
+    }
 
     private void showHoldDialog() {
         holdDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
@@ -293,6 +540,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         holdDialog.showDialog();
+        holdDialog.setCancelable(true);
     }
 
     private void showRepairDone() {
@@ -314,11 +562,12 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                                 break;
                         }
                     }
-                }).title(getString(R.string.bottom_option_close))
+                }).title(getString(R.string.bottom_option_repair_done))
                 .leftButtonText(getString(R.string.action_cancel))
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         repairDialog.showDialog();
+        repairDialog.setCancelable(true);
 
     }
 
@@ -346,10 +595,23 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
         closeDialog.showDialog();
+        closeDialog.setCancelable(true);
     }
 
-    private void showAssignDialog() {
-        assignOptionDialog = new AssignOptionDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+    private void showAssignDialog(List<AddUser> userList) {
+        statusDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
+
+            @Override
+            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
+
+                FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
+                repairPresenter.upDateStatus(userId, upDateStatus);
+
+            }
+
+
             @Override
             public void alertDialogCallback(byte dialogStatus) {
 
@@ -358,6 +620,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
 
                         break;
                     case AlertDialogCallback.CANCEL:
+                        statusDialog.dismiss();
 
                         break;
                     default:
@@ -365,11 +628,9 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 }
 
             }
-        }).title(getString(R.string.option_assign))
-                .submitButtonText(getString(R.string.action_submit))
-                .build();
-        assignOptionDialog.showDialog();
-        assignOptionDialog.setCancelable(true);
+        }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
+        statusDialog.showDialog();
+        statusDialog.setCancelable(true);
 
     }
 
@@ -397,7 +658,6 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
                 @Override
                 public void onRefresh() {
                     repairAdapter.clearData();
-                    repairPresenter.fetchRepairServiceRequests(userId);
 
                 }
             };
@@ -409,36 +669,57 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     }
 
 
-    private void dismissSwipeRefresh() {
-        if (binding.swiperefresh.isRefreshing()) {
-            binding.swiperefresh.setRefreshing(false);
-        }
-    }
-
     @Override
     public void onSearchClickListerner(String searchableText, String searchType) {
         //TODO have to implement search click listener
     }
 
+
     @Override
-    public void fetchRepairServiceRequests(Object o) {
+    public void loadingRepairServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
 
-    }
-
-
-
- /*   @Override
-    public void fetchNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
 
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
+
         if (fetchNewRequestResponsesList.size() == 0) {
-            binding.requestTextview.setVisibility(View.VISIBLE);
+            binding.repairTextview.setVisibility(View.VISIBLE);
             dismissSwipeRefresh();
         } else {
+            binding.repairTextview.setVisibility(View.GONE);
             repairAdapter.setData(fetchNewRequestResponsesList);
             dismissSwipeRefresh();
         }
-    }*/
+    }
+
+    @Override
+    public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
+
+        if (usersList == null) {
+            usersList = new ArrayList<>();
+        }
+
+        showAssignDialog(usersList);
+    }
+
+    @Override
+    public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
+        if (statusDialog != null && statusDialog.isShowing()) {
+            statusDialog.dismiss();
+        }
+        // todo have to know
+        try {
+            Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
+            if (statusId == ASSIGNED || statusId == ATTENDING) {
+                doRefresh(true);
+            }
+        } catch (Exception e) {
+            //TODO have to handle
+        }
+
+
+    }
+
+
 }

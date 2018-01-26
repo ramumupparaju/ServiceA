@@ -18,9 +18,6 @@ import com.incon.service.R;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.utils.SharedPrefsUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.Map;
 
 import static com.incon.service.AppConstants.LoginPrefs.LOGGED_IN;
@@ -39,7 +36,7 @@ public class ConnectFirebaseMessagingService extends FirebaseMessagingService
         super.onMessageReceived(remoteMessage);
 
         //Calling method to generate notification
-        sendNotification(remoteMessage.getData());
+        sendNotification(remoteMessage.getNotification());
 
         Bundle bundle = new Bundle();
         for (Map.Entry<String, String> entry : remoteMessage.getData().entrySet()) {
@@ -48,26 +45,11 @@ public class ConnectFirebaseMessagingService extends FirebaseMessagingService
 
     }
 
-    private void sendNotification(Map<String, String> messageBody) {
+    private void sendNotification(RemoteMessage.Notification messageBody) {
 
-        String title = messageBody.get("title");
-        String description = messageBody.get("body");
-        String payload = messageBody.get("payload");
-        int notificationId = Integer.parseInt(messageBody.get("notId"));
-        String pushType = null;
-        int alertId = AppConstants.DEAULT_VALUE;
-        int accountId = -1;
-        try {
-            JSONObject jsonObject = new JSONObject(payload);
-            pushType = jsonObject.getString("type");
-            JSONObject data = jsonObject.getJSONObject("data");
-            if (data != null) {
-                alertId = data.optInt("alertId");
-                accountId = data.optInt("accountId");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        String title = messageBody.getTitle();
+        String description = messageBody.getBody();
+        int notificationId = 0;
 
         Context context = getApplicationContext();
         Intent intent = new Intent(context, HomeActivity.class);
@@ -117,7 +99,7 @@ public class ConnectFirebaseMessagingService extends FirebaseMessagingService
                 getBooleanPreference(LOGGED_IN, false);
         // checks if loggedin user and notification user matches
         if (isLoggedIn) {
-            sendLocalBroadcast(payload);
+//            sendLocalBroadcast(payload);
         }
     }
 
