@@ -350,6 +350,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                         + warrantyConditions
                         + "\n"
                         + getString(
+
                         R.string.purchased_warranty_ends_on) + warrantyEndDate);
                 return;*/
             } else if (tag == R.id.PRODUCT_PAST_HISTORY) {
