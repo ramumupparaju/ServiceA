@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.incon.service.AppConstants;
 import com.incon.service.AppUtils;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
@@ -149,8 +150,8 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 .range(startDate, endDate)
                 .datesNumberOnScreen(7)
                 .configure()
-                .formatMiddleText("dd")
-                .formatBottomText("EEE")
+                .formatMiddleText(DateFormatterConstants.DD)
+                .formatBottomText(DateFormatterConstants.EEE)
                 .showTopText(false)
                 .showBottomText(true)
                 .textColor( Color.WHITE, Color.WHITE)
@@ -165,8 +166,9 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-                String selectedDateStr = DateFormat.format("EEE, MMM d, yyyy", date).toString();
-                AppUtils.shortToast(getActivity(), selectedDateStr + " selected!");
+                //String selectedDateStr = DateFormat.format(DateFormatterConstants.EEE, DateFormatterConstants.MMMM_DD, DateFormatterConstants.YYYY, date).toString();
+
+               // AppUtils.shortToast(getActivity(), selectedDateStr + " selected!");
             }
 
         });
