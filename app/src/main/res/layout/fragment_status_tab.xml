@@ -1,5 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout style="@style/BothMatch">
 
@@ -39,7 +39,7 @@
                                 app:errorEnabled="true"
                                 app:met_floatingLabel="highlight"
                                 app:met_textColor="@color/colorForgotPasswordHintText"
-                                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+                                app:met_textColorHint="@color/colorForgotPasswordHintText" />
                             <!--spinner users-->
                             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                                 android:id="@+id/spinner_users"
@@ -49,21 +49,16 @@
                                 app:errorEnabled="true"
                                 app:met_floatingLabel="highlight"
                                 app:met_textColor="@color/colorForgotPasswordHintText"
-                                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-
-                           <!-- <android.support.v7.widget.RecyclerView
-                                android:background="#eb1c24"
-                                android:id="@+id/calendar_recycler_view"
-                                style="@style/MatchWrap"/>-->
+                                app:met_textColorHint="@color/colorForgotPasswordHintText" />
 
                             <devs.mulham.horizontalcalendar.HorizontalCalendarView
                                 android:id="@+id/calendarView"
                                 style="@style/MatchWrap"
                                 android:background="@color/colorcalendar"
-                                app:selectorColor="@color/colorcalendar"
                                 app:selectedDateBackground="@drawable/bg_select_calender"
+                                app:selectorColor="@color/colorcalendar"
                                 app:sizeBottomText="14sp"
-                                app:sizeMiddleText="20sp"/>
+                                app:sizeMiddleText="20sp" />
 
                         </LinearLayout>
 
@@ -81,7 +76,7 @@
                             app:tabIndicatorHeight="@dimen/margin_5"
                             app:tabMode="scrollable"
                             app:tabSelectedTextColor="@color/white"
-                            app:tabTextColor="@color/white"/>
+                            app:tabTextColor="@color/white" />
 
                     </RelativeLayout>
 
