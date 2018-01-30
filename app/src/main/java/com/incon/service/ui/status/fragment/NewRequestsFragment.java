@@ -30,13 +30,14 @@ import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
+import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.custom.view.EditTimeDialog;
 import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
-import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.home.HomeActivity;
@@ -57,10 +58,10 @@ import static com.incon.service.AppUtils.callPhoneNumber;
 /**
  * Created by PC on 12/5/2017.
  */
-public class NewRequestsFragment extends BaseTabFragment implements NewRequestContract.View {
+public class NewRequestsFragment extends BaseTabFragment implements ServiceCenterContract.View {
     private FragmentNewrequestBinding binding;
     private View rootView;
-    private NewRequestPresenter newRequestPresenter;
+    private ServiceCenterPresenter newRequestPresenter;
     private NewRequestsAdapter newRequestsAdapter;
     private MoveToOptionDialog moveToOptionDialog;
     private AppAlertDialog detailsDialog;
@@ -73,11 +74,10 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     private PastHistoryDialog pastHistoryDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
-    private String moveToComment;
 
     @Override
     protected void initializePresenter() {
-        newRequestPresenter = new NewRequestPresenter();
+        newRequestPresenter = new ServiceCenterPresenter();
         newRequestPresenter.setView(this);
         setBasePresenter(newRequestPresenter);
     }
@@ -101,6 +101,8 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
     }
 
     private void initViews() {
+        serviceRequest = new ServiceRequest();
+        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.NEW.name());
 
         newRequestsAdapter = new NewRequestsAdapter();
         newRequestsAdapter.setClickCallback(iClickCallback);
@@ -117,16 +119,17 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
         int tempUserId = activity.getUserId();
 
         if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
-            //no chnages have made, so no need to make api call checks whether pull to refresh or
-            // not
-
+            //no chnages have made, so no need to make api call checks whether pull to refresh or not
             if (!isForceRefresh)
                 return;
         } else {
             serviceCenterId = tempServiceCenterId;
             userId = tempUserId;
         }
-        newRequestPresenter.fetchNewServiceRequests(serviceCenterId, userId);
+        serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
+        serviceRequest.setFromDate(fromDate);
+        serviceRequest.setToDate(toDate);
+        newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
     private void dismissSwipeRefresh() {

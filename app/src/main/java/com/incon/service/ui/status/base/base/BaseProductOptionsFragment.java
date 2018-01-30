@@ -19,7 +19,6 @@ import com.incon.service.R;
 import com.incon.service.databinding.CustomBottomSheetBinding;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.utils.DeviceUtils;
-import com.incon.service.utils.Logger;
 
 public abstract class BaseProductOptionsFragment extends BaseFragment {
 
@@ -27,6 +26,24 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
     public BottomSheetDialog bottomSheetDialog;
     public CustomBottomSheetBinding bottomSheetPurchasedBinding;
     public int productSelectedPosition = -1;
+    public long fromDate;
+    public long toDate;
+
+    public long getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(long fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public long getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(long toDate) {
+        this.toDate = toDate;
+    }
 
     // load bottom sheet
     public void loadBottomSheet() {

@@ -16,6 +16,7 @@ import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
 import com.incon.service.dto.registration.Registration;
+import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.update.UpDateUserProfile;
 import com.incon.service.dto.updateservicecenter.UpDateServiceCenter;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -90,12 +91,8 @@ public interface AppServiceObservable {
     Observable<List<AddServiceCenter>> getServiceCentersApi(@Path("userId") int userId);
 
     // fetch  service request api
-    @GET("service/fetchrequests/{servicerCenterId}/{requestType}")
-    Observable<List<FetchNewRequestResponse>> serviceRequestUsingServiceCenterIdApi(@Path("servicerCenterId") int servicerCenterId, @Path("requestType") String requestType);
-
-    // fetch  service request api
-    @GET("service/fetchrequests/{userId}/{requestType}")
-    Observable<List<FetchNewRequestResponse>> serviceRequestUsingUserIdApi(@Path("userId") int userId, @Path("requestType") String requestType);
+    @GET("service/fetchrequests")
+    Observable<List<FetchNewRequestResponse>> serviceRequestApi(@Body ServiceRequest serviceRequest);
 
     // fetch  new service request api
     @GET("service/fetchrequests/{servicerCenterId}/NEW")

@@ -245,6 +245,9 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 MINUS_ONE ? usersSelectedPosition : usersListOfServiceCenters.get
                 (usersSelectedPosition).getId());
         BaseProductOptionsFragment fragmentFromPosition = (BaseProductOptionsFragment) adapter.getFragmentFromPosition(currentTabPosition);
+        Calendar selectedDate = horizontalCalendar.getSelectedDate();
+        fragmentFromPosition.setFromDate(selectedDate.getTimeInMillis());
+        fragmentFromPosition.setToDate(selectedDate.getTimeInMillis());
         fragmentFromPosition.doRefresh(false);
 
     }
