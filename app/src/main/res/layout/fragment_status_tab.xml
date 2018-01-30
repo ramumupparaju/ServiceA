@@ -1,5 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout style="@style/BothMatch">
 
@@ -39,7 +39,7 @@
                                 app:errorEnabled="true"
                                 app:met_floatingLabel="highlight"
                                 app:met_textColor="@color/colorForgotPasswordHintText"
-                                app:met_textColorHint="@color/colorForgotPasswordHintText" />
+                                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
                             <!--spinner users-->
                             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                                 android:id="@+id/spinner_users"
@@ -49,7 +49,35 @@
                                 app:errorEnabled="true"
                                 app:met_floatingLabel="highlight"
                                 app:met_textColor="@color/colorForgotPasswordHintText"
-                                app:met_textColorHint="@color/colorForgotPasswordHintText" />
+                                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <!--months picker-->
+                                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                                    android:id="@+id/months_picker"
+                                    style="@style/spinnerItemStyle"
+                                    android:layout_marginTop="@dimen/margin_10"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="false"
+                                    app:errorEnabled="true"
+                                    app:met_floatingLabel="highlight"
+                                    app:met_textColor="@color/colorForgotPasswordHintText"
+                                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+
+                                <!--dummy view for time click event -->
+                                <View
+                                    android:id="@+id/view_months"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_alignBottom="@+id/months_picker"
+                                    android:layout_alignEnd="@+id/months_picker"
+                                    android:layout_alignStart="@+id/months_picker"
+                                    android:layout_alignTop="@+id/months_picker"
+                                    android:background="@null"/>
+                            </RelativeLayout>
+
 
                             <devs.mulham.horizontalcalendar.HorizontalCalendarView
                                 android:id="@+id/calendarView"
@@ -58,7 +86,7 @@
                                 app:selectedDateBackground="@drawable/bg_select_calender"
                                 app:selectorColor="@color/colorcalendar"
                                 app:sizeBottomText="14sp"
-                                app:sizeMiddleText="20sp" />
+                                app:sizeMiddleText="20sp"/>
 
                         </LinearLayout>
 
@@ -76,7 +104,7 @@
                             app:tabIndicatorHeight="@dimen/margin_5"
                             app:tabMode="scrollable"
                             app:tabSelectedTextColor="@color/white"
-                            app:tabTextColor="@color/white" />
+                            app:tabTextColor="@color/white"/>
 
                     </RelativeLayout>
 

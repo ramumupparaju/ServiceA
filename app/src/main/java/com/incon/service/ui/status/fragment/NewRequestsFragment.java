@@ -649,7 +649,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
                             selectedDateTime.getTime(), DateFormatterConstants.DD_MM_YYYY);
                     editTimeDialog.setDateFromPicker(dobInDD_MM_YYYY);
-
                 }
             };
 

@@ -8,6 +8,7 @@ public interface AppConstants {
     String WEB_IMAGE = "http";
     String MULTIPART_FORM_DATA = "image/*";
     String COMMA_SEPARATOR = ",";
+    String HYPHEN_SEPARATOR = "-";
     int DEFAULT_VALUE = Integer.MIN_VALUE;
     String LABEL_ALL = "ALL";
 

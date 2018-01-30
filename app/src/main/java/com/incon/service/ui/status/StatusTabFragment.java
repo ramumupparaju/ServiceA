@@ -1,53 +1,43 @@
 package com.incon.service.ui.status;
 
+import android.app.DatePickerDialog;
 import android.content.res.AssetManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
+import android.widget.DatePicker;
 
-import com.incon.service.AppConstants;
 import com.incon.service.AppUtils;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
-import com.incon.service.apimodel.components.calendar.CalendarDateModel;
 import com.incon.service.custom.view.CustomViewPager;
-import com.incon.service.custom.view.LinearLayoutPageManager;
 import com.incon.service.databinding.CustomTabBinding;
 import com.incon.service.databinding.FragmentStatusTabBinding;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;
-import com.incon.service.ui.status.adapter.HorizontalCalendarAdapter;
 import com.incon.service.ui.status.adapter.StatusTabPagerAdapter;
 import com.incon.service.ui.status.base.base.BaseProductOptionsFragment;
-import com.incon.service.utils.Logger;
+import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
+import java.util.TimeZone;
 
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
-import devs.mulham.horizontalcalendar.model.CalendarEvent;
-import devs.mulham.horizontalcalendar.utils.CalendarEventsPredicate;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 /**
@@ -71,19 +61,6 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     private int usersSelectedPosition = -1;
 
     private HorizontalCalendar horizontalCalendar;
-
-    ////////for displaying horizontal calendar
-    private LinearLayoutPageManager calendarPageManager;
-    private float allPixelsDate;
-    private ArrayList<CalendarDateModel> datesList;
-    private int numberOfDaysToShow = 365;
-    private Integer[] monthIndex = null;
-    private String[] monthsInAllLanguages = null;
-    private Map<String, Integer> months = null;
-    private Integer[] dayIndex = null;
-    private String[] dayInAllLanguages = null;
-    private Map<String, Integer> days = null;
-    ////////////////////////////////////////
 
     @Override
     protected void initializePresenter() {
@@ -127,20 +104,17 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         } else {
             initViewPager();
         }
-       // initCalendarView(null);
-
-       // initCalender();
     }
 
     private void initCalender() {
 
           /* start 2 months ago from now */
         Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.MONTH, -2);
+        startDate.add(Calendar.YEAR, -100);
 
         /* end after 2 months from now */
         Calendar endDate = Calendar.getInstance();
-        endDate.add(Calendar.MONTH, 2);
+        endDate.add(Calendar.YEAR, 100);
 
         // Default Date set to Today.
         final Calendar defaultSelectedDate = Calendar.getInstance();
@@ -152,9 +126,9 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 .configure()
                 .formatMiddleText(DateFormatterConstants.DD)
                 .formatBottomText(DateFormatterConstants.EEE)
-                .showTopText(false)
+                .showTopText(true)
                 .showBottomText(true)
-                .textColor( Color.WHITE, Color.WHITE)
+                .textColor(Color.WHITE, Color.WHITE)
                 .colorTextMiddle(Color.WHITE, selectionCalendar)
                 .colorTextBottom(Color.WHITE, selectionCalendar)
                 .end()
@@ -162,16 +136,65 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 .build();
 
 
-
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
                 //String selectedDateStr = DateFormat.format(DateFormatterConstants.EEE, DateFormatterConstants.MMMM_DD, DateFormatterConstants.YYYY, date).toString();
 
-               // AppUtils.shortToast(getActivity(), selectedDateStr + " selected!");
+                // AppUtils.shortToast(getActivity(), selectedDateStr + " selected!");
             }
 
         });
+
+
+        String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
+                defaultSelectedDate.getTime(), DateFormatterConstants.DD_MM_YYYY);
+        binding.monthsPicker.setText(DateUtils.getMonthName(dobInDD_MM_YYYY.split(HYPHEN_SEPARATOR)[1]));
+        binding.viewMonths.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar selectedDateTime = horizontalCalendar.getSelectedDate();
+                String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
+                        selectedDateTime.getTime(), DateFormatterConstants.DD_MM_YYYY);
+                showDatePicker(dobInDD_MM_YYYY);
+            }
+        });
+    }
+
+    private void showDatePicker(String date) {
+        AppUtils.hideSoftKeyboard(getContext(), getView());
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        String selectedDate = date;
+        if (!TextUtils.isEmpty(selectedDate)) {
+            cal.setTimeInMillis(DateUtils.convertStringFormatToMillis(
+                    selectedDate, DateFormatterConstants.DD_MM_YYYY));
+        }
+
+        int customStyle = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                ? R.style.DatePickerDialogTheme : android.R.style.Theme_DeviceDefault_Light_Dialog;
+        DatePickerDialog datePicker = new DatePickerDialog(getContext(),
+                customStyle,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int selectedYear,
+                                          int selectedMonth, int selectedDay) {
+                        Calendar selectedDateTime = Calendar.getInstance();
+                        selectedDateTime.set(selectedYear, selectedMonth, selectedDay);
+
+                        String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
+                                selectedDateTime.getTime(), DateFormatterConstants.DD_MM_YYYY);
+                        binding.monthsPicker.setText(DateUtils.getMonthName(dobInDD_MM_YYYY.split(HYPHEN_SEPARATOR)[1]));
+                        horizontalCalendar.selectDate(selectedDateTime, true);
+
+                        //TODO HAVE to make api call
+                    }
+                },
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH));
+        datePicker.setCancelable(false);
+        datePicker.show();
+
     }
 
     private void doAllUsersInServiceCenterApi(int serviceCenterId) {

@@ -17,18 +17,18 @@ public class DateUtils implements AppConstants.DateFormatterConstants {
 
     static {
 
-        monthNames.put("01", "Jan");
-        monthNames.put("02", "Feb");
-        monthNames.put("03", "Mar");
-        monthNames.put("04", "Apr");
+        monthNames.put("01", "January");
+        monthNames.put("02", "February");
+        monthNames.put("03", "March");
+        monthNames.put("04", "April");
         monthNames.put("05", "May");
         monthNames.put("06", "June");
         monthNames.put("07", "July");
-        monthNames.put("08", "Aug");
-        monthNames.put("09", "Sep");
-        monthNames.put("10", "Oct");
-        monthNames.put("11", "Nov");
-        monthNames.put("12", "Dec");
+        monthNames.put("08", "August");
+        monthNames.put("09", "Septempber");
+        monthNames.put("10", "October");
+        monthNames.put("11", "November");
+        monthNames.put("12", "December");
     }
 
     /**
