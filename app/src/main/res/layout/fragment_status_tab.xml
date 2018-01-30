@@ -51,38 +51,20 @@
                                 app:met_textColor="@color/colorForgotPasswordHintText"
                                 app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-                                <!--months picker-->
-                                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                                    android:id="@+id/months_picker"
-                                    style="@style/spinnerItemStyle"
-                                    android:layout_marginTop="@dimen/margin_10"
-                                    android:focusable="true"
-                                    android:focusableInTouchMode="false"
-                                    app:errorEnabled="true"
-                                    app:met_floatingLabel="highlight"
-                                    app:met_textColor="@color/colorForgotPasswordHintText"
-                                    app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-
-                                <!--dummy view for time click event -->
-                                <View
-                                    android:id="@+id/view_months"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_alignBottom="@+id/months_picker"
-                                    android:layout_alignEnd="@+id/months_picker"
-                                    android:layout_alignStart="@+id/months_picker"
-                                    android:layout_alignTop="@+id/months_picker"
-                                    android:background="@null"/>
-                            </RelativeLayout>
-
+                            <TextView
+                                android:id="@+id/view_months"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/margin_5"
+                                android:drawableEnd="@drawable/ic_filter"
+                                android:layout_gravity="center"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_22"/>
 
                             <devs.mulham.horizontalcalendar.HorizontalCalendarView
                                 android:id="@+id/calendarView"
                                 style="@style/MatchWrap"
-                                android:background="@color/colorcalendar"
+                                android:background="@color/picton_blue"
                                 app:selectedDateBackground="@drawable/bg_select_calender"
                                 app:selectorColor="@color/colorcalendar"
                                 app:sizeBottomText="14sp"

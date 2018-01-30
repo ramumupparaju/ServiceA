@@ -126,11 +126,11 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 .configure()
                 .formatMiddleText(DateFormatterConstants.DD)
                 .formatBottomText(DateFormatterConstants.EEE)
-                .showTopText(true)
+                .showTopText(false)
                 .showBottomText(true)
                 .textColor(Color.WHITE, Color.WHITE)
-                .colorTextMiddle(Color.WHITE, selectionCalendar)
-                .colorTextBottom(Color.WHITE, selectionCalendar)
+                .colorTextMiddle(Color.WHITE, Color.WHITE)
+                .colorTextBottom(Color.WHITE, Color.WHITE)
                 .end()
                 .defaultSelectedDate(defaultSelectedDate)
                 .build();
@@ -149,7 +149,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
 
         String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
                 defaultSelectedDate.getTime(), DateFormatterConstants.DD_MM_YYYY);
-        binding.monthsPicker.setText(DateUtils.getMonthName(dobInDD_MM_YYYY.split(HYPHEN_SEPARATOR)[1]));
+        binding.viewMonths.setText(DateUtils.getMonthName(dobInDD_MM_YYYY.split(HYPHEN_SEPARATOR)[1]));
         binding.viewMonths.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -183,8 +183,8 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
 
                         String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
                                 selectedDateTime.getTime(), DateFormatterConstants.DD_MM_YYYY);
-                        binding.monthsPicker.setText(DateUtils.getMonthName(dobInDD_MM_YYYY.split(HYPHEN_SEPARATOR)[1]));
-                        horizontalCalendar.selectDate(selectedDateTime, true);
+                        binding.viewMonths.setText(DateUtils.getMonthName(dobInDD_MM_YYYY.split(HYPHEN_SEPARATOR)[1]));
+                        horizontalCalendar.selectDate(selectedDateTime, false);
 
                         //TODO HAVE to make api call
                     }
