@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +29,7 @@ import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.StatusTabPagerAdapter;
 import com.incon.service.ui.status.base.base.BaseProductOptionsFragment;
 import com.incon.service.utils.DateUtils;
+import com.incon.service.utils.Logger;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -119,7 +119,6 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         // Default Date set to Today.
         final Calendar defaultSelectedDate = Calendar.getInstance();
 
-        int selectionCalendar = ContextCompat.getColor(getActivity(), R.color.colorcalendar);
         horizontalCalendar = new HorizontalCalendar.Builder(rootView, R.id.calendarView)
                 .range(startDate, endDate)
                 .datesNumberOnScreen(7)
@@ -139,9 +138,9 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-                //String selectedDateStr = DateFormat.format(DateFormatterConstants.EEE, DateFormatterConstants.MMMM_DD, DateFormatterConstants.YYYY, date).toString();
-
-                // AppUtils.shortToast(getActivity(), selectedDateStr + " selected!");
+                String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
+                        date.getTime(), DateFormatterConstants.DD_MM_YYYY);
+                Logger.e("HorizontalCalendarListener" , "dobInDD_MM_YYYY :  " + dobInDD_MM_YYYY);
             }
 
         });

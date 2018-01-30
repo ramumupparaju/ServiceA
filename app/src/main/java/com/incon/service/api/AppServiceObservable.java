@@ -89,6 +89,14 @@ public interface AppServiceObservable {
     @GET("service/getservicecenters/{userId}")
     Observable<List<AddServiceCenter>> getServiceCentersApi(@Path("userId") int userId);
 
+    // fetch  service request api
+    @GET("service/fetchrequests/{servicerCenterId}/{requestType}")
+    Observable<List<FetchNewRequestResponse>> serviceRequestUsingServiceCenterIdApi(@Path("servicerCenterId") int servicerCenterId, @Path("requestType") String requestType);
+
+    // fetch  service request api
+    @GET("service/fetchrequests/{userId}/{requestType}")
+    Observable<List<FetchNewRequestResponse>> serviceRequestUsingUserIdApi(@Path("userId") int userId, @Path("requestType") String requestType);
+
     // fetch  new service request api
     @GET("service/fetchrequests/{servicerCenterId}/NEW")
     Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(@Path("servicerCenterId") int servicerCenterId);

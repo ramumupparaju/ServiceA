@@ -192,9 +192,20 @@ public class AppApiService implements AppConstants {
     }
 
     // fetch  new service request api
+    public Observable<List<FetchNewRequestResponse>> serviceRequestUsingServiceCenterIdApi(int servicerCenterId, String requestType) {
+        return addNetworkCheck(serviceInstance.serviceRequestUsingServiceCenterIdApi(servicerCenterId, requestType));
+    }
+
+    // fetch  check up request api
+    public Observable<List<FetchNewRequestResponse>> serviceRequestUsingUserIdApi(int servicerCenterId, String requestType) {
+        return addNetworkCheck(serviceInstance.serviceRequestUsingUserIdApi(servicerCenterId, requestType));
+    }
+
+    // fetch  new service request api
     public Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(int servicerCenterId) {
         return addNetworkCheck(serviceInstance.fetchNewServiceRequestApi(servicerCenterId));
     }
+
     // fetch  check up request api
     public Observable<List<FetchNewRequestResponse>> fetchCheckupRequestApi(int servicerCenterId) {
         return addNetworkCheck(serviceInstance.fetchCheckupRequestApi(servicerCenterId));
@@ -205,7 +216,8 @@ public class AppApiService implements AppConstants {
     public Observable<List<FetchNewRequestResponse>> fetchNewAssignedRequestApi(int userId) {
         return addNetworkCheck(serviceInstance.fetchNewAssignedRequestApi(userId));
     }
- // fetch  check up assigned request using userid
+
+    // fetch  check up assigned request using userid
     public Observable<List<FetchNewRequestResponse>> fetchCheckUpAssignedRequestApi(int userId) {
         return addNetworkCheck(serviceInstance.fetchCheckUpAssignedRequestApi(userId));
     }
@@ -214,6 +226,7 @@ public class AppApiService implements AppConstants {
     public Observable<List<FetchNewRequestResponse>> fetchApprovalAssignedRequestApi(int userId) {
         return addNetworkCheck(serviceInstance.fetchApprovalAssignedRequestApi(userId));
     }
+
     // fetch  repair assigned request using userid
     public Observable<List<FetchNewRequestResponse>> fetchRepairAssignedRequestApi(int userId) {
         return addNetworkCheck(serviceInstance.fetchRepairAssignedRequestApi(userId));
