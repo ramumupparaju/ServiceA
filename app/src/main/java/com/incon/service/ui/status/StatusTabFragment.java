@@ -28,6 +28,8 @@ import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.StatusTabPagerAdapter;
 import com.incon.service.ui.status.base.base.BaseProductOptionsFragment;
+import com.incon.service.ui.status.fragment.ApprovalFragment;
+import com.incon.service.ui.status.fragment.NewRequestsFragment;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.Logger;
 import com.incon.service.utils.SharedPrefsUtils;
@@ -108,7 +110,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
 
     private void initCalender() {
 
-          /* start 2 months ago from now */
+          /* start 2 months ago from now */ //TODO have to confirm calendar
         Calendar startDate = Calendar.getInstance();
         startDate.add(Calendar.YEAR, -100);
 
@@ -140,7 +142,8 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
             public void onDateSelected(Calendar date, int position) {
                 String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
                         date.getTime(), DateFormatterConstants.DD_MM_YYYY);
-                Logger.e("HorizontalCalendarListener" , "dobInDD_MM_YYYY :  " + dobInDD_MM_YYYY);
+                Logger.e("HorizontalCalendarListener", "dobInDD_MM_YYYY :  " + dobInDD_MM_YYYY);
+                refreshFragmentByPosition(usersSelectedPosition, true);
             }
 
         });
@@ -184,8 +187,6 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                                 selectedDateTime.getTime(), DateFormatterConstants.DD_MM_YYYY);
                         binding.viewMonths.setText(DateUtils.getMonthName(dobInDD_MM_YYYY.split(HYPHEN_SEPARATOR)[1]));
                         horizontalCalendar.selectDate(selectedDateTime, false);
-
-                        //TODO HAVE to make api call
                     }
                 },
                 cal.get(Calendar.YEAR),
@@ -221,7 +222,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (usersSelectedPosition != position) {
                         usersSelectedPosition = position;
-                        refreshFragmentByPosition(usersSelectedPosition);
+                        refreshFragmentByPosition(usersSelectedPosition, false);
 
                     }
 
@@ -231,7 +232,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                     }
                 }
             });
-            refreshFragmentByPosition(MINUS_ONE); // load all requests based on service center
+            refreshFragmentByPosition(MINUS_ONE, false); // load all requests based on service center
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
@@ -240,11 +241,18 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         binding.spinnerUsers.setAdapter(arrayAdapter);
     }
 
-    private void refreshFragmentByPosition(int usersSelectedPosition) {
+    /**
+     * @param usersSelectedPosition
+     * @param isCalendarChanged     based on this we ignore for some fragments new requests and approval (no need of calendar for these fragments)
+     */
+    private void refreshFragmentByPosition(int usersSelectedPosition, boolean isCalendarChanged) {
         ((HomeActivity) getActivity()).setUserId(usersSelectedPosition ==
                 MINUS_ONE ? usersSelectedPosition : usersListOfServiceCenters.get
                 (usersSelectedPosition).getId());
         BaseProductOptionsFragment fragmentFromPosition = (BaseProductOptionsFragment) adapter.getFragmentFromPosition(currentTabPosition);
+        if (isCalendarChanged && (fragmentFromPosition instanceof NewRequestsFragment || fragmentFromPosition instanceof ApprovalFragment)) {
+            return;
+        }
         Calendar selectedDate = horizontalCalendar.getSelectedDate();
         fragmentFromPosition.setFromDate(selectedDate.getTimeInMillis());
         fragmentFromPosition.setToDate(selectedDate.getTimeInMillis());
@@ -317,7 +325,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 currentTabPosition = tab.getPosition();
                 customViewPager.setCurrentItem(currentTabPosition);
                 changeTitleFont(currentTabPosition);
-                refreshFragmentByPosition(usersSelectedPosition);
+                refreshFragmentByPosition(usersSelectedPosition, false);
             }
 
             @Override

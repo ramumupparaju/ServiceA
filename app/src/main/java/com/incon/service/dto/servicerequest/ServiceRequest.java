@@ -8,6 +8,9 @@ public class ServiceRequest {
     @SerializedName("serviceIds")
     @Expose
     private String serviceIds;
+    @SerializedName("assignedUser")
+    @Expose
+    private Integer assignedUser;
     @SerializedName("status")
     @Expose
     private String status;
@@ -17,6 +20,14 @@ public class ServiceRequest {
     @SerializedName("toDate")
     @Expose
     private Long toDate;
+
+    public Integer getAssignedUser() {
+        return assignedUser;
+    }
+
+    public void setAssignedUser(Integer assignedUser) {
+        this.assignedUser = assignedUser;
+    }
 
     public String getServiceIds() {
         return serviceIds;

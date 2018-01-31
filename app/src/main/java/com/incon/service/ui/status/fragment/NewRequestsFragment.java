@@ -126,9 +126,18 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
             serviceCenterId = tempServiceCenterId;
             userId = tempUserId;
         }
-        serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
-        serviceRequest.setFromDate(fromDate);
-        serviceRequest.setToDate(toDate);
+
+        if (serviceCenterId == -1 || serviceCenterId == DEFAULT_VALUE) {
+            serviceRequest.setServiceIds(null);
+        } else {
+            serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
+        }
+
+        if (userId == -1 || userId == DEFAULT_VALUE) {
+            serviceRequest.setAssignedUser(null);
+        } else {
+            serviceRequest.setAssignedUser(userId);
+        }
         newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
