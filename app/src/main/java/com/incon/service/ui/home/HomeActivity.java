@@ -226,12 +226,11 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     }
 
     public void loadedDefaultStatus() {
-        //TODO have to update ids
-        statusList.add(new Status(2, getString(R.string.tab_new_request)));
-        statusList.add(new Status(5, getString(R.string.tab_checkup)));
-        statusList.add(new Status(15, getString(R.string.tab_approval)));
-        statusList.add(new Status(1, getString(R.string.tab_repair)));
-        statusList.add(new Status(27, getString(R.string.tab_payment)));
+        statusList.add(new Status(StatusConstants.ACCEPT, getString(R.string.tab_new_request)));
+        statusList.add(new Status(StatusConstants.ATTENDING, getString(R.string.tab_checkup)));
+        statusList.add(new Status(StatusConstants.WAIT_APPROVE, getString(R.string.tab_approval)));
+        statusList.add(new Status(StatusConstants.MANUAL_APROVED, getString(R.string.tab_repair)));
+        statusList.add(new Status(StatusConstants.REPAIR_DONE, getString(R.string.tab_payment)));
     }
 
     public ArrayList<Status> getStatusList() {

@@ -24,12 +24,12 @@ public interface AppConstants {
         int ASSIGNED = 3;
         int ATTENDING = 4;
         int ACCEPT = 17;
-        int APPROVAL = 4; //TODO have to change
-        int REPAIR = 4;
+        int APPROVAL = 4;
         int MANUAL_APROVED = 13;
         int WAIT_APPROVE = 15;
         int NEWREQUEST = 2;
         int CHECKUP = 5;
+        int REPAIR_DONE = 7;
         int PAYMENT = 1;
     }
 
@@ -362,7 +362,10 @@ public interface AppConstants {
         String DD_E_MMMM_YYYY = "dd-E-MMMM-yyyy"; //14-Thursday-Jun-1987
         String MM_DD_YYYY = "MM/dd/yyyy"; //14-Thursday-Jun-1987
         String DD_MM_YYYY = "dd-MM-yyyy"; //14-08-1987
-        String MMMM_DD = "MMMM-dd"; //14-08-1987
+        String DD = "dd"; //14
+        String EEE = "EEE";
+        String YYYY = "yyyy";
+        String MMMM_DD = "MMMM dd"; //14-08-1987
         String DD_MMMM = "dd MMMM"; //14 July
         String DD_SLASH_MM_SLASH_YYYY = "dd/MM/yyyy"; //14/07/2017
         //Mon, 10 Jul 2017 10:08:20 GM
