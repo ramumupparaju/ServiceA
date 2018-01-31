@@ -29,12 +29,13 @@ import com.incon.service.callbacks.PassHistoryCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
+import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.custom.view.EstimationDialog;
 import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
-import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.home.HomeActivity;
@@ -47,7 +48,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import static com.incon.service.AppConstants.StatusConstants.APPROVAL;
 import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
 import static com.incon.service.AppConstants.StatusConstants.MANUAL_APROVED;
 import static com.incon.service.AppUtils.callPhoneNumber;
@@ -55,29 +55,28 @@ import static com.incon.service.AppUtils.callPhoneNumber;
 /**
  * Created by PC on 12/5/2017.
  */
-public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.View {
+public class CheckUpFragment extends BaseTabFragment implements ServiceCenterContract.View {
     private FragmentCheckupBinding binding;
     private View rootView;
-    private EstimationDialogCallback estimationDialogCallback;
-    private EstimationDialog estimationDialog;
+    private ServiceCenterPresenter checkUpPresenter;
     private CheckUpAdapter checkUpAdapter;
-    private CheckUpPresenter checkUpPresenter;
+    private int serviceCenterId = DEFAULT_VALUE;
+    private int userId = DEFAULT_VALUE;
+    private MoveToOptionDialog moveToOptionDialog;
+    private AppEditTextDialog terminateDialog;
+    private AppEditTextDialog holdDialog;
+
+    private EstimationDialog estimationDialog;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
     private AssignDialog assignDialog;
-    private AppEditTextDialog holdDialog;
-    private AppEditTextDialog terminateDialog;
     private PastHistoryDialog pastHistoryDialog;
-    private int serviceCenterId = DEFAULT_VALUE;
-    private int userId = DEFAULT_VALUE;
-    private List<AddUser> usersList;
-    private MoveToOptionDialog moveToOptionDialog;
 
     @Override
     protected void initializePresenter() {
-        checkUpPresenter = new CheckUpPresenter();
+        checkUpPresenter = new ServiceCenterPresenter();
         checkUpPresenter.setView(this);
         setBasePresenter(checkUpPresenter);
     }
@@ -101,6 +100,9 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
     }
 
     private void initViews() {
+        serviceRequest = new ServiceRequest();
+        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.CHECKUP.name());
+
         checkUpAdapter = new CheckUpAdapter();
         checkUpAdapter.setClickCallback(iClickCallback);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);
@@ -123,7 +125,22 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
             serviceCenterId = tempServiceCenterId;
             userId = tempUserId;
         }
-        checkUpPresenter.fetchCheckUpServiceRequests(serviceCenterId, userId);
+
+        if (serviceCenterId == -1 || serviceCenterId == DEFAULT_VALUE) {
+            serviceRequest.setServiceIds(null);
+        } else {
+            serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
+        }
+
+        if (userId == -1 || userId == DEFAULT_VALUE) {
+            serviceRequest.setAssignedUser(null);
+        } else {
+            serviceRequest.setAssignedUser(userId);
+        }
+
+        serviceRequest.setFromDate(fromDate);
+        serviceRequest.setToDate(toDate);
+        checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
 
@@ -260,44 +277,6 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
                 drawablesArray[4] = R.drawable.ic_option_hold;
 
             }
-
-
-            // todo have to remove commented code
-
-            /*if (tag == 0) {  // customer
-                bottomOptions = new String[1];
-                bottomOptions[0] = getString(R.string.bottom_option_call_customer_care);
-                topDrawables = new int[1];
-                topDrawables[0] = R.drawable.ic_option_call;
-
-            } else if (tag == 1) { // product
-                bottomOptions = new String[2];
-                bottomOptions[0] = getString(R.string.bottom_option_warranty_details);
-                bottomOptions[1] = getString(R.string.bottom_option_past_history);
-                topDrawables = new int[2];
-                topDrawables[0] = R.drawable.ic_options_features;
-                topDrawables[1] = R.drawable.ic_option_pasthistory;
-            } else if (tag == 2) { // service center
-                bottomOptions = new String[1];
-                bottomOptions[0] = getString(R.string.bottom_option_Call);
-                topDrawables = new int[1];
-                topDrawables[0] = R.drawable.ic_option_call;
-            } else { // status update
-                bottomOptions = new String[5];
-                bottomOptions[0] = getString(R.string.bottom_option_estimation);
-                bottomOptions[1] = getString(R.string.bottom_option_hold);
-                bottomOptions[2] = getString(R.string.bottom_option_terminate);
-                bottomOptions[3] = getString(R.string.bottom_option_move_to);
-                bottomOptions[4] = getString(R.string.bottom_option_assign);
-                topDrawables = new int[5];
-                topDrawables[0] = R.drawable.ic_option_accept_request;
-                topDrawables[1] = R.drawable.ic_option_accept_request;
-                topDrawables[2] = R.drawable.ic_option_close;
-                topDrawables[3] = R.drawable.ic_option_assign;
-                topDrawables[4] = R.drawable.ic_option_assign;
-            }
-            */
-
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
@@ -782,7 +761,7 @@ public class CheckUpFragment extends BaseTabFragment implements CheckUpContract.
 
 
     @Override
-    public void loadingCheckUpRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
+    public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }

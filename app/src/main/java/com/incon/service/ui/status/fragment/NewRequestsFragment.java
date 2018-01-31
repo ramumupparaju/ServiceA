@@ -63,17 +63,19 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
     private View rootView;
     private ServiceCenterPresenter newRequestPresenter;
     private NewRequestsAdapter newRequestsAdapter;
+    private int serviceCenterId = DEFAULT_VALUE;
+    private int userId = DEFAULT_VALUE;
     private MoveToOptionDialog moveToOptionDialog;
+    private AppEditTextDialog terminateDialog;
+    private AppEditTextDialog holdDialog;
+
+
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
     private AssignDialog assignDialog;
     private EditTimeDialog editTimeDialog;
     private TimeSlotAlertDialog timeSlotAlertDialog;
-    private AppEditTextDialog holdDialog;
-    private AppEditTextDialog terminateDialog;
     private PastHistoryDialog pastHistoryDialog;
-    private int serviceCenterId = DEFAULT_VALUE;
-    private int userId = DEFAULT_VALUE;
 
     @Override
     protected void initializePresenter() {
@@ -114,6 +116,7 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
 
     @Override
     public void doRefresh(boolean isForceRefresh) {
+        dismissSwipeRefresh();
         HomeActivity activity = (HomeActivity) getActivity();
         int tempServiceCenterId = activity.getServiceCenterId();
         int tempUserId = activity.getUserId();
@@ -747,11 +750,9 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
 
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.requestTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
         } else {
             binding.requestTextview.setVisibility(View.GONE);
             newRequestsAdapter.setData(fetchNewRequestResponsesList);
-            dismissSwipeRefresh();
         }
     }
 

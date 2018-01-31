@@ -28,6 +28,7 @@ import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.databinding.FragmentRepairBinding;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.home.HomeActivity;
@@ -45,25 +46,25 @@ import static com.incon.service.AppUtils.callPhoneNumber;
  * Created by PC on 12/5/2017.
  */
 
-public class RepairFragment extends BaseTabFragment implements RepairContract.View {
+public class RepairFragment extends BaseTabFragment implements ServiceCenterContract.View {
     private FragmentRepairBinding binding;
     private View rootView;
+    private ServiceCenterPresenter repairPresenter;
     private RepairAdapter repairAdapter;
-    private RepairPresenter repairPresenter;
-    private AppAlertDialog detailsDialog;
-    private AssignDialog statusDialog;
-    private MoveToOptionDialog moveToOptionDialog;
-    private AppEditTextDialog closeDialog;
-    private AppEditTextDialog repairDialog;
-    private AppEditTextDialog holdDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
-    private List<AddUser> usersList;
+    private MoveToOptionDialog moveToOptionDialog;
     private AppEditTextDialog terminateDialog;
+    private AppEditTextDialog holdDialog;
+
+    private AppAlertDialog detailsDialog;
+    private AssignDialog statusDialog;
+    private AppEditTextDialog closeDialog;
+    private AppEditTextDialog repairDialog;
 
     @Override
     protected void initializePresenter() {
-        repairPresenter = new RepairPresenter();
+        repairPresenter = new ServiceCenterPresenter();
         repairPresenter.setView(this);
         setBasePresenter(repairPresenter);
     }
@@ -90,6 +91,9 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
     }
 
     private void initViews() {
+        serviceRequest = new ServiceRequest();
+        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.REPAIR.name());
+
         repairAdapter = new RepairAdapter();
         repairAdapter.setClickCallback(iClickCallback);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);
@@ -114,7 +118,22 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
             serviceCenterId = tempServiceCenterId;
             userId = tempUserId;
         }
-        repairPresenter.fetchRepairServiceRequests(serviceCenterId, userId);
+
+        if (serviceCenterId == -1 || serviceCenterId == DEFAULT_VALUE) {
+            serviceRequest.setServiceIds(null);
+        } else {
+            serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
+        }
+
+        if (userId == -1 || userId == DEFAULT_VALUE) {
+            serviceRequest.setAssignedUser(null);
+        } else {
+            serviceRequest.setAssignedUser(userId);
+        }
+
+        serviceRequest.setFromDate(fromDate);
+        serviceRequest.setToDate(toDate);
+        repairPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
     private void dismissSwipeRefresh() {
@@ -676,7 +695,7 @@ public class RepairFragment extends BaseTabFragment implements RepairContract.Vi
 
 
     @Override
-    public void loadingRepairServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
+    public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
 
 
         if (fetchNewRequestResponsesList == null) {
