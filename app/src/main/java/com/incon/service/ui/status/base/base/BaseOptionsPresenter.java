@@ -68,6 +68,7 @@ public class BaseOptionsPresenter extends BasePresenter<BaseOptionsContract.View
 
     }
 
+    //TODO have to remove
     @Override
     public void upDateStatus(int userId, UpDateStatus upDateStatus) {
         getView().showProgress(appContext.getString(R.string.progress_updating_status));

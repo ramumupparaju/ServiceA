@@ -8,6 +8,7 @@ public interface AppConstants {
     String WEB_IMAGE = "http";
     String MULTIPART_FORM_DATA = "image/*";
     String COMMA_SEPARATOR = ",";
+    String HYPHEN_SEPARATOR = "-";
     int DEFAULT_VALUE = Integer.MIN_VALUE;
     String LABEL_ALL = "ALL";
 
@@ -17,7 +18,6 @@ public interface AppConstants {
     int VALIDATION_ZIPCODE_LENGTH = 5;
     String DELIMITOR = "-";
     int DEFAULT_GOOGLE_MAP_ZOOM_LEVEL = 16;
-    int DEAULT_VALUE = Integer.MAX_VALUE;
     int MINUS_ONE = -1;
 
     interface StatusConstants {
