@@ -113,6 +113,8 @@
                     android:textColor="@color/ebony_clay"
                     android:textSize="12.4sp"/>
 
+                <!--emp name-->
+
             </RelativeLayout>
             <!--Dummy view for showing selection-->
             <ImageView
