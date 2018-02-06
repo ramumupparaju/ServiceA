@@ -55,7 +55,7 @@ public class MoveToOptionDialog  extends Dialog implements View.OnClickListener 
     private void loadMoveToSpinner() {
         String[] tabArrayList = new String[statusList.size()];
         for (int i = 0; i < statusList.size(); i++) {
-            tabArrayList[i] = String.valueOf(statusList.get(i).getId());
+            tabArrayList[i] = String.valueOf(statusList.get(i).getCode());
         }
         Context context = binding.getRoot().getContext();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,

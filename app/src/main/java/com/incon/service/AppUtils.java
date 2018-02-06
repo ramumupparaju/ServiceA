@@ -40,6 +40,14 @@ public class AppUtils {
         return arrayList;
     }
 
+    public static ArrayList getSubStatusList(int skippedTag, ArrayList<Status> statusArrayList) {
+        ArrayList arrayList = new ArrayList();
+        arrayList.addAll(statusArrayList);
+        int indexOf = arrayList.indexOf(new Status(skippedTag));
+        arrayList.remove(indexOf);
+        return arrayList;
+    }
+
     public static void longToast(Context context, String toastMessage) {
         Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
     }

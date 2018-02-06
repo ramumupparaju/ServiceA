@@ -261,6 +261,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     }
 
     private void loadServiceCentersSpinner() {
+        //TODO have to handle service centers empty list
         serviceCentersSelectedPosition = 0;
         // getting service centers list
         serviceCenterList = ConnectApplication.getAppContext().getServiceCenterList();

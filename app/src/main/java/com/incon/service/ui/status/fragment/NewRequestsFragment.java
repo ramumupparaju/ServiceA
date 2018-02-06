@@ -399,7 +399,7 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
     };
 
     private void showMoveToDialog() {
-        ArrayList<Status> statusList = AppUtils.getSubStatusList(getString(R.string.tab_new_request), ((HomeActivity) getActivity()).getStatusList());
+        ArrayList<Status> statusList = AppUtils.getSubStatusList(StatusConstants.ACCEPT, ((HomeActivity) getActivity()).getStatusList());
         moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
@@ -750,8 +750,10 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
 
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.requestTextview.setVisibility(View.VISIBLE);
+            binding.requestRecyclerview.setVisibility(View.GONE);
         } else {
             binding.requestTextview.setVisibility(View.GONE);
+            binding.requestRecyclerview.setVisibility(View.VISIBLE);
             newRequestsAdapter.setData(fetchNewRequestResponsesList);
         }
     }
