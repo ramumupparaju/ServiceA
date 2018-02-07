@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -73,6 +74,8 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
     private AppEditTextDialog closeDialog;
     private AssignDialog assignDialog;
     private PastHistoryDialog pastHistoryDialog;
+    private ShimmerFrameLayout shimmerFrameLayout;
+
 
     @Override
     protected void initializePresenter() {
@@ -91,9 +94,11 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
             // handle events from here using android binding
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_checkup,
                     container, false);
+            rootView = binding.getRoot();
+            shimmerFrameLayout = rootView.findViewById(R.id
+                    .effect_shimmer);
             initViews();
             loadBottomSheet();
-            rootView = binding.getRoot();
         }
         setTitle();
         return rootView;
@@ -140,7 +145,16 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
 
         serviceRequest.setFromDate(fromDate);
         serviceRequest.setToDate(toDate);
+        getServiceRequestApi();
+       // checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+    }
+
+    private void getServiceRequestApi() {
+        binding.checkupRecyclerview.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
         checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+
     }
 
 
@@ -767,11 +781,14 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
         }
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.checkupTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
+            binding.checkupRecyclerview.setVisibility(View.GONE);
         } else {
             binding.checkupTextview.setVisibility(View.GONE);
+            binding.checkupRecyclerview.setVisibility(View.VISIBLE);
             checkUpAdapter.setData(fetchNewRequestResponsesList);
-            dismissSwipeRefresh();
+
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.GONE);
         }
 
     }

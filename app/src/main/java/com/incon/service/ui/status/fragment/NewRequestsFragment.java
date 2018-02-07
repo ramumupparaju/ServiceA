@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -76,6 +77,7 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
     private EditTimeDialog editTimeDialog;
     private TimeSlotAlertDialog timeSlotAlertDialog;
     private PastHistoryDialog pastHistoryDialog;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     @Override
     protected void initializePresenter() {
@@ -94,9 +96,11 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
             // handle events from here using android binding
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
+            rootView = binding.getRoot();
+            shimmerFrameLayout = rootView.findViewById(R.id
+                    .effect_shimmer);
             initViews();
             loadBottomSheet();
-            rootView = binding.getRoot();
         }
         setTitle();
         return rootView;
@@ -105,7 +109,6 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
     private void initViews() {
         serviceRequest = new ServiceRequest();
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.NEW.name());
-
         newRequestsAdapter = new NewRequestsAdapter();
         newRequestsAdapter.setClickCallback(iClickCallback);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);
@@ -141,7 +144,17 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
         } else {
             serviceRequest.setAssignedUser(userId);
         }
+
+        getServiceRequestApi();
+        //newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+    }
+
+    private void getServiceRequestApi() {
+        binding.requestRecyclerview.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
         newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+
     }
 
     private void dismissSwipeRefresh() {
@@ -167,7 +180,6 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
             FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.
                     getItemFromPosition(position);
             fetchNewRequestResponse.setSelected(true);
-            newRequestsAdapter.notifyDataSetChanged();
             productSelectedPosition = position;
             createBottomSheetFirstRow();
             bottomSheetDialog.show();
@@ -755,6 +767,9 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
             binding.requestTextview.setVisibility(View.GONE);
             binding.requestRecyclerview.setVisibility(View.VISIBLE);
             newRequestsAdapter.setData(fetchNewRequestResponsesList);
+
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.GONE);
         }
     }
 

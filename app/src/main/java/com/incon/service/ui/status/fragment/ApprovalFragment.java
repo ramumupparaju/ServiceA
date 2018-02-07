@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -34,6 +35,7 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
     private ServiceCenterPresenter approvalPresenter;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     @Override
     protected void initializePresenter() {
@@ -54,6 +56,9 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
             // handle events from here using android binding
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_approval,
                     container, false);
+            rootView = binding.getRoot();
+            shimmerFrameLayout = rootView.findViewById(R.id
+                    .effect_shimmer);
             initViews();
             rootView = binding.getRoot();
         }
@@ -98,8 +103,16 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
         } else {
             serviceRequest.setAssignedUser(userId);
         }
-        approvalPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_approval_service_request));
+        getServiceRequestApi();
+        //approvalPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_approval_service_request));
 
+    }
+
+    private void getServiceRequestApi() {
+        binding.apprvalRecyclerview.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
+        approvalPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_approval_service_request));
     }
 
     private void dismissSwipeRefresh() {
@@ -149,11 +162,14 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
 
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.apprvalTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
+            binding.apprvalRecyclerview.setVisibility(View.GONE);
         } else {
             binding.apprvalTextview.setVisibility(View.GONE);
+            binding.apprvalRecyclerview.setVisibility(View.VISIBLE);
             approvalAdapter.setData(fetchNewRequestResponsesList);
-            dismissSwipeRefresh();
+
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.GONE);
         }
     }
 

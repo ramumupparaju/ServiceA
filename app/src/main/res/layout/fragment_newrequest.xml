@@ -1,56 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
+    <RelativeLayout
         style="@style/BothMatch"
-        >
+        android:background="@color/mercury">
 
-        <RelativeLayout
-            style="@style/BothMatch"
-            android:background="@color/mercury">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
+            style="@style/BothMatch">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <!--   <com.facebook.shimmer.ShimmerFrameLayout
-                   android:id="@+id/effect_shimmer"
-                   style="@style/BothMatch">
+                <TextView
+                    android:id="@+id/request_textview"
+                    style="@style/BothMatch"
+                    android:gravity="center"
+                    android:text="No New Request Items"
+                    android:visibility="gone" />
 
-                   <LinearLayout
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:orientation="vertical">
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/effect_shimmer"
+                    style="@style/BothMatch">
 
-                       <include layout="@layout/item_shimmer_view"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                       <include layout="@layout/item_shimmer_view"/>
+                        <include layout="@layout/item_shimmer_view" />
 
-                       <include layout="@layout/item_shimmer_view"/>
+                        <include layout="@layout/item_shimmer_view" />
 
-                       <include layout="@layout/item_shimmer_view"/>
+                        <include layout="@layout/item_shimmer_view" />
 
-                   </LinearLayout>
-               </com.facebook.shimmer.ShimmerFrameLayout>-->
+                        <include layout="@layout/item_shimmer_view" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/request_recyclerview"
-                style="@style/MatchWrap"
-                android:layout_marginTop="@dimen/margin_10"
-                android:fadeScrollbars="false"
-                android:scrollbarSize="4dp"
-                android:scrollbarThumbVertical="@drawable/scrollbar"
-                android:scrollbars="vertical"/>
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
-            <TextView
-                android:id="@+id/request_textview"
-                style="@style/BothWrap"
-                android:layout_centerInParent="true"
-                android:text="No RequestItems"
-                android:textColor="@color/black"
-                android:visibility="gone"
-                />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/request_recyclerview"
+                    style="@style/MatchWrap"
+                    android:fadeScrollbars="false"
+                    android:scrollbarSize="4dp"
+                    android:scrollbarThumbVertical="@drawable/scrollbar"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
 
-        </RelativeLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
 </layout>

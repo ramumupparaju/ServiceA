@@ -29,8 +29,7 @@
     <color name="colorWarningMsg">#565656</color>
     <color name="colorTab">#f44446</color>
     <color name="colorcalendar">#eb1c24</color>
-    <!--// TODO hava to change test colore -->
-    <color name="alpha_corn_flower_red">#8842acf0</color>
+    <color name="alpha_corn_flower_red">#88eb1c24</color>
 
     <color name="colorRegisterTypeUncheckedBorder">#62717a</color>
     <color name="colorVerifyBackground">#373737</color>

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -61,6 +62,7 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
     private AssignDialog statusDialog;
     private AppEditTextDialog closeDialog;
     private AppEditTextDialog repairDialog;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     @Override
     protected void initializePresenter() {
@@ -80,6 +82,9 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
             // handle events from here using android binding
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_repair,
                     container, false);
+            rootView = binding.getRoot();
+            shimmerFrameLayout = rootView.findViewById(R.id
+                    .effect_shimmer);
 
             initViews();
             loadBottomSheet();
@@ -133,7 +138,17 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
 
         serviceRequest.setFromDate(fromDate);
         serviceRequest.setToDate(toDate);
+
+        getServiceRequestApi();
+       // repairPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+    }
+
+    private void getServiceRequestApi() {
+        binding.requestRecyclerview.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
         repairPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+
     }
 
     private void dismissSwipeRefresh() {
@@ -704,11 +719,14 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
 
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.repairTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
+            binding.requestRecyclerview.setVisibility(View.GONE);
         } else {
             binding.repairTextview.setVisibility(View.GONE);
+            binding.requestRecyclerview.setVisibility(View.VISIBLE);
             repairAdapter.setData(fetchNewRequestResponsesList);
-            dismissSwipeRefresh();
+
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.GONE);
         }
     }
 

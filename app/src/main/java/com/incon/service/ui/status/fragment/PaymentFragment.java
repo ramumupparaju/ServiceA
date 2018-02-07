@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -51,6 +52,8 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
 
     private AssignDialog assignDialog;
     private AppAlertDialog detailsDialog;
+    private ShimmerFrameLayout shimmerFrameLayout;
+
 
 
     @Override
@@ -72,11 +75,13 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
             // handle events from here using android binding
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_payment,
                     container, false);
+            rootView = binding.getRoot();
+            shimmerFrameLayout = rootView.findViewById(R.id
+                    .effect_shimmer);
 
             initViews();
             loadBottomSheet();
 
-            rootView = binding.getRoot();
         }
         setTitle();
         return rootView;
@@ -123,7 +128,14 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
         } else {
             serviceRequest.setAssignedUser(userId);
         }
+        getServiceRequestApi();
+       // paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+    }
 
+    private void getServiceRequestApi() {
+        binding.paymentRecyclerview.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
         paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
@@ -567,11 +579,14 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
 
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.paymentTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
+            binding.paymentRecyclerview.setVisibility(View.GONE);
         } else {
             binding.paymentTextview.setVisibility(View.GONE);
+            binding.paymentRecyclerview.setVisibility(View.VISIBLE);
             paymentAdapter.setData(fetchNewRequestResponsesList);
-            dismissSwipeRefresh();
+
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.GONE);
         }
     }
 

@@ -51,24 +51,31 @@
                                 app:met_textColor="@color/colorForgotPasswordHintText"
                                 app:met_textColorHint="@color/colorForgotPasswordHintText"/>
 
-                            <TextView
-                                android:id="@+id/view_months"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/margin_5"
-                                android:drawableEnd="@drawable/ic_filter"
-                                android:layout_gravity="center"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_22"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:background="@color/red">
+                                <TextView
+                                    android:id="@+id/view_months"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/margin_5"
+                                    android:drawableEnd="@drawable/ic_filter"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_22"/>
 
-                            <devs.mulham.horizontalcalendar.HorizontalCalendarView
-                                android:id="@+id/calendarView"
-                                style="@style/MatchWrap"
-                                android:background="@color/picton_blue"
-                                app:selectedDateBackground="@drawable/bg_select_calender"
-                                app:selectorColor="@color/colorcalendar"
-                                app:sizeBottomText="14sp"
-                                app:sizeMiddleText="20sp"/>
+                                <devs.mulham.horizontalcalendar.HorizontalCalendarView
+                                    android:id="@+id/calendarView"
+                                    style="@style/MatchWrap"
+                                    app:selectedDateBackground="@drawable/bg_select_calender"
+                                    app:selectorColor="@color/red"
+                                    app:sizeBottomText="14sp"
+                                    app:sizeMiddleText="20sp"/>
+                            </LinearLayout>
+
+
 
                         </LinearLayout>
 

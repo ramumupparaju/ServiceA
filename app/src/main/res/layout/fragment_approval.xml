@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         style="@style/BothMatch"
-        android:background="@color/white">
+        android:background="@color/mercury">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swiperefresh"
-            style="@style/BothMatch"
-            >
+            style="@style/BothMatch">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -19,18 +17,36 @@
                     android:id="@+id/apprval_textview"
                     style="@style/BothMatch"
                     android:gravity="center"
-                    android:text="No ReturnItems"
-                    android:visibility="gone"
-                    />
+                    android:text="No Apprval Items"
+                    android:visibility="gone" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/effect_shimmer"
+                    style="@style/BothMatch">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include layout="@layout/item_shimmer_view" />
+
+                        <include layout="@layout/item_shimmer_view" />
+
+                        <include layout="@layout/item_shimmer_view" />
+
+                        <include layout="@layout/item_shimmer_view" />
+
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/apprval_recyclerview"
                     style="@style/MatchWrap"
-                    android:layout_marginTop="@dimen/margin_10"
                     android:fadeScrollbars="false"
                     android:scrollbarSize="4dp"
                     android:scrollbarThumbVertical="@drawable/scrollbar"
-                    android:scrollbars="vertical"/>
+                    android:scrollbars="vertical" />
             </LinearLayout>
 
         </android.support.v4.widget.SwipeRefreshLayout>

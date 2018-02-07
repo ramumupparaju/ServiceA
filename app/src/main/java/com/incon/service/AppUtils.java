@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -76,9 +78,15 @@ public class AppUtils {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.ic_placeholder);
         requestOptions.error(R.drawable.ic_placeholder);
-        Glide.with(imageView.getContext())
+
+        Context context = imageView.getContext();
+        GlideUrl glideUrl = new GlideUrl(BuildConfig.SERVICE_ENDPOINT + url, new LazyHeaders.Builder()
+                .addHeader(AppConstants.ApiRequestKeyConstants.HEADER_AUTHORIZATION, context.getString(R.string.default_key))
+                .build());
+
+        Glide.with(context)
                 .setDefaultRequestOptions(requestOptions)
-                .load(BuildConfig.SERVICE_ENDPOINT + url)
+                .load(glideUrl)
                 .into(imageView);
     }
 
