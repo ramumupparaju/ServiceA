@@ -99,8 +99,8 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
             rootView = binding.getRoot();
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
-            initViews();
             loadBottomSheet();
+            initViews();
         }
         setTitle();
         return rootView;
