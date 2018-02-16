@@ -129,9 +129,9 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 .formatBottomText(DateFormatterConstants.EEE)
                 .showTopText(false)
                 .showBottomText(true)
-                .textColor(Color.WHITE, Color.WHITE)
-                .colorTextMiddle(Color.WHITE, Color.WHITE)
-                .colorTextBottom(Color.WHITE, Color.WHITE)
+                .textColor(Color.WHITE, Color.RED)
+                .colorTextMiddle(Color.WHITE, Color.RED)
+                .colorTextBottom(Color.WHITE, Color.RED)
                 .end()
                 .defaultSelectedDate(defaultSelectedDate)
                 .build();
