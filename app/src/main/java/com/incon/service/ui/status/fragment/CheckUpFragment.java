@@ -107,7 +107,6 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
     private void initViews() {
         serviceRequest = new ServiceRequest();
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.CHECKUP.name());
-
         checkUpAdapter = new CheckUpAdapter();
         checkUpAdapter.setClickCallback(iClickCallback);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);
@@ -118,6 +117,7 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
 
     @Override
     public void doRefresh(boolean isForceRefresh) {
+        dismissSwipeRefresh();
         HomeActivity activity = (HomeActivity) getActivity();
         int tempServiceCenterId = activity.getServiceCenterId();
         int tempUserId = activity.getUserId();
@@ -776,6 +776,7 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
 
     @Override
     public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
+
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
