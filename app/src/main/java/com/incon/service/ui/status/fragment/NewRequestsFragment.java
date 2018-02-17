@@ -503,7 +503,7 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(textArray.length);
-            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, textArray, tagsArray, drawablesArray, bottomSheetThirdRowClickListener);
+            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, textArray, drawablesArray,tagsArray, bottomSheetThirdRowClickListener);
         }
     };
 
