@@ -16,7 +16,7 @@ public class Request {
     private Integer warrantyId;
     @SerializedName("status")
     @Expose
-    private String status;
+    private Integer status;
     @SerializedName("comments")
     @Expose
     private String comments;
@@ -37,11 +37,11 @@ public class Request {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

@@ -21,6 +21,7 @@ public interface AppConstants {
     int MINUS_ONE = -1;
 
     interface StatusConstants {
+        int COMPLAINT = 2;
         int ASSIGNED = 3;
         int ATTENDING = 4;
         int ACCEPT = 17;
@@ -31,6 +32,14 @@ public interface AppConstants {
         int CHECKUP = 5;
         int REPAIR_DONE = 7;
         int PAYMENT = 1;
+        int REJECT = 10;
+        int TERMINATE = 11;
+        int HOLD = 12;
+        int NEW_REQ_HOLD = 28;
+        int CHECKUP_HOLD = 29;
+        int APPROVAL_HOLD = 30;
+        int REPAIR_HOLD = 31;
+        int PAYMENT_HOLD = 32;
     }
 
     interface RegistrationConstants {

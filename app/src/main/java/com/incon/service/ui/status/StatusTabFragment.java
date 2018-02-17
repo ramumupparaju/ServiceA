@@ -143,6 +143,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
                         date.getTime(), DateFormatterConstants.DD_MM_YYYY);
                 Logger.e("HorizontalCalendarListener", "dobInDD_MM_YYYY :  " + dobInDD_MM_YYYY);
+                binding.viewMonths.setText(DateUtils.getMonthName(dobInDD_MM_YYYY.split(HYPHEN_SEPARATOR)[1]));
                 refreshFragmentByPosition(usersSelectedPosition, true);
             }
 

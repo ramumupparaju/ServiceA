@@ -70,6 +70,11 @@ android {
 
             buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://13.126.102.199/connect/\""
         }
+        connect_live {
+            resValue "string", "app_name", "Connect Service live"
+
+            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"https://connect.incontechnologies.in/api/\""
+        }
 
         /*moonz_dev {
             buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-52-11-96-200.us-west-2.compute.amazonaws.com:9898/connect/\""

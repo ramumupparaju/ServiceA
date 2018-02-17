@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.incon.service.AppConstants;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -29,7 +30,6 @@ import com.incon.service.callbacks.MoveToOptionCallback;
 import com.incon.service.callbacks.PassHistoryCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
-import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.custom.view.EditTimeDialog;
@@ -45,6 +45,7 @@ import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.DateUtils;
+import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,12 +68,9 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
     private MoveToOptionDialog moveToOptionDialog;
-    private AppEditTextDialog terminateDialog;
-    private AppEditTextDialog holdDialog;
 
 
-    private AppAlertDialog detailsDialog;
-    private AppEditTextDialog acceptRejectDialog;
+    private AppEditTextDialog updateStatusDialog;
     private AssignDialog assignDialog;
     private EditTimeDialog editTimeDialog;
     private TimeSlotAlertDialog timeSlotAlertDialog;
@@ -169,6 +167,8 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
         bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
+                newRequestsAdapter.clearSelection();
+
             }
         });
     }
@@ -232,6 +232,8 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
             int[] drawablesArray = new int[0];
             int[] tagsArray = new int[0];
 
+            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
+                    productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.firstRow, tag);
 
             if (tag == R.id.CUSTOMER) {
@@ -272,31 +274,65 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
                 drawablesArray = new int[length];
                 drawablesArray[0] = R.drawable.ic_option_call;
             } else if (tag == R.id.STATUS_UPDATE) {
+
                 int length = 6;
+                int status = itemFromPosition.getRequest().getStatus();
+                if (status != StatusConstants.COMPLAINT) {
+                    length = 7;
+                }
                 textArray = new String[length];
-                textArray[0] = getString(R.string.bottom_option_accept);
-                textArray[1] = getString(R.string.bottom_option_reject);
-                textArray[2] = getString(R.string.bottom_option_hold);
-                textArray[3] = getString(R.string.bottom_option_terminate);
-                textArray[4] = getString(R.string.bottom_option_move_to);
-                textArray[5] = getString(R.string.bottom_option_edit);
+                if (status == StatusConstants.COMPLAINT) {
+                    textArray[0] = getString(R.string.bottom_option_accept);
+                    textArray[1] = getString(R.string.bottom_option_reject);
+                    textArray[2] = getString(R.string.bottom_option_hold);
+                    textArray[3] = getString(R.string.bottom_option_terminate);
+                    textArray[4] = getString(R.string.bottom_option_move_to);
+                    textArray[5] = getString(R.string.bottom_option_edit);
 
-                tagsArray = new int[length];
-                tagsArray[0] = R.id.STATUS_UPDATE_ACCEPT;
-                tagsArray[1] = R.id.STATUS_UPDATE_REJECT;
-                tagsArray[2] = R.id.STATUS_UPDATE_HOLD;
-                tagsArray[3] = R.id.STATUS_UPDATE_TERMINATE;
-                tagsArray[4] = R.id.STATUS_UPDATE_MOVE_TO;
-                tagsArray[5] = R.id.STATUS_UPDATE_EDIT_TIME;
+                    tagsArray = new int[length];
+                    tagsArray[0] = R.id.STATUS_UPDATE_ACCEPT;
+                    tagsArray[1] = R.id.STATUS_UPDATE_REJECT;
+                    tagsArray[2] = R.id.STATUS_UPDATE_HOLD;
+                    tagsArray[3] = R.id.STATUS_UPDATE_TERMINATE;
+                    tagsArray[4] = R.id.STATUS_UPDATE_MOVE_TO;
+                    tagsArray[5] = R.id.STATUS_UPDATE_EDIT_TIME;
 
-                drawablesArray = new int[length];
-                drawablesArray[0] = R.drawable.ic_option_accept_request;
-                drawablesArray[1] = R.drawable.ic_option_accept_request;
-                drawablesArray[2] = R.drawable.ic_option_hold;
-                drawablesArray[3] = R.drawable.ic_option_hold;
-                drawablesArray[4] = R.drawable.ic_option_hold;
-                drawablesArray[5] = R.drawable.ic_option_hold;
+                    drawablesArray = new int[length];
+                    drawablesArray[0] = R.drawable.ic_option_accept_request;
+                    drawablesArray[1] = R.drawable.ic_option_accept_request;
+                    drawablesArray[2] = R.drawable.ic_option_hold;
+                    drawablesArray[3] = R.drawable.ic_option_hold;
+                    drawablesArray[4] = R.drawable.ic_option_hold;
+                    drawablesArray[5] = R.drawable.ic_option_hold;
 
+                } else {
+
+                    textArray[0] = getString(R.string.bottom_option_assign);
+                    textArray[1] = getString(R.string.bottom_option_attending);
+                    textArray[2] = getString(R.string.bottom_option_reject);
+                    textArray[3] = getString(R.string.bottom_option_hold);
+                    textArray[4] = getString(R.string.bottom_option_terminate);
+                    textArray[5] = getString(R.string.bottom_option_move_to);
+                    textArray[6] = getString(R.string.bottom_option_edit);
+
+                    tagsArray = new int[length];
+                    tagsArray[0] = R.id.STATUS_UPDATE_ASSIGN;
+                    tagsArray[1] = R.id.STATUS_UPDATE_ATTENDING;
+                    tagsArray[2] = R.id.STATUS_UPDATE_REJECT;
+                    tagsArray[3] = R.id.STATUS_UPDATE_HOLD;
+                    tagsArray[4] = R.id.STATUS_UPDATE_TERMINATE;
+                    tagsArray[5] = R.id.STATUS_UPDATE_MOVE_TO;
+                    tagsArray[6] = R.id.STATUS_UPDATE_EDIT_TIME;
+
+                    drawablesArray = new int[length];
+                    drawablesArray[0] = R.drawable.ic_option_accept_request;
+                    drawablesArray[1] = R.drawable.ic_option_accept_request;
+                    drawablesArray[2] = R.drawable.ic_option_accept_request;
+                    drawablesArray[3] = R.drawable.ic_option_accept_request;
+                    drawablesArray[4] = R.drawable.ic_option_hold;
+                    drawablesArray[5] = R.drawable.ic_option_hold;
+                    drawablesArray[6] = R.drawable.ic_option_hold;
+                }
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
@@ -367,33 +403,23 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
                 return;
 
             } else if (tag == R.id.STATUS_UPDATE_ACCEPT) {
-
                 // todo have to cal in accept api response
-                // doAcceptApi();
-                int length = 2;
-                textArray = new String[length];
-                textArray[0] = getString(R.string.bottom_option_assign);
-                textArray[1] = getString(R.string.bottom_option_attending);
+                doAcceptApi();
 
-                tagsArray = new int[length];
-                tagsArray[0] = R.id.STATUS_UPDATE_ASSIGN;
-                tagsArray[1] = R.id.STATUS_UPDATE_ATTENDING;
+            } else if (tag == R.id.STATUS_UPDATE_ASSIGN) {
+                fetchAssignDialogData();
 
-
-                drawablesArray = new int[length];
-                drawablesArray[0] = R.drawable.ic_options_feedback;
-                drawablesArray[1] = R.drawable.ic_option_pasthistory;
-
-                // showAcceptRejectDialog(true);
+            } else if (tag == R.id.STATUS_UPDATE_ATTENDING) {
+                showAttendingDialog();
 
             } else if (tag == R.id.STATUS_UPDATE_REJECT) {
-                showAcceptRejectDialog(false);
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_REJECT);
 
             } else if (tag == R.id.STATUS_UPDATE_HOLD) {
-                showHoldDialog();
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_HOLD);
 
             } else if (tag == R.id.STATUS_UPDATE_TERMINATE) {
-                showTerminateDialog();
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_TERMINATE);
 
             } else if (tag == R.id.STATUS_UPDATE_MOVE_TO) {
                 showMoveToDialog();
@@ -418,7 +444,7 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
                 FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
                 Request request = requestResponse.getRequest();
                 upDateStatus.setRequestid(request.getId());
-                newRequestPresenter.upDateStatus(userId, upDateStatus);
+                newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
             }
 
             @Override
@@ -438,33 +464,6 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
         moveToOptionDialog.showDialog();
         moveToOptionDialog.setCancelable(true);
 
-    }
-
-    private void showTerminateDialog() {
-        terminateDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                terminateDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_terminate))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        terminateDialog.showDialog();
-        terminateDialog.setCancelable(true);
     }
 
     private void showEditTimeDialog() {
@@ -561,14 +560,7 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
                     productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, tag);
 
-            String[] textArray = new String[0];
-            int[] drawablesArray = new int[0];
-            int[] tagsArray = new int[0];
-            if (tag == R.id.STATUS_UPDATE_ASSIGN) {
-                fetchAssignDialogData();
-            } else if (tag == R.id.STATUS_UPDATE_ATTENDING) {
-                showAttendingDialog();
-            }
+
         }
 
     };
@@ -584,7 +576,7 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
                 FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
                 Request request = requestResponse.getRequest();
                 upDateStatus.setRequestid(request.getId());
-                newRequestPresenter.upDateStatus(userId, upDateStatus);
+                newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
             }
 
 
@@ -631,61 +623,47 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
         pastHistoryDialog.setCancelable(true);
     }
 
-    private void showHoldDialog() {
-        holdDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+    private void showUpdateStatusDialog(final int dialogType) {
+
+        final UpDateStatus upDateStatus = new UpDateStatus();
+        upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
+        String dialogTitle = "";
+        if (dialogType == R.id.STATUS_UPDATE_REJECT) {
+            dialogTitle = getString(R.string.bottom_option_reject);
+            upDateStatus.setStatus(new Status(StatusConstants.REJECT));
+        } else if (dialogType == R.id.STATUS_UPDATE_HOLD) {
+            dialogTitle = getString(R.string.bottom_option_hold);
+            upDateStatus.setStatus(new Status(StatusConstants.NEW_REQ_HOLD));
+        } else if (dialogType == R.id.STATUS_UPDATE_TERMINATE) {
+            dialogTitle = getString(R.string.bottom_option_hold);
+            upDateStatus.setStatus(new Status(StatusConstants.TERMINATE));
+        }
+        updateStatusDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
                 TextAlertDialogCallback() {
                     @Override
                     public void enteredText(String commentString) {
+                        upDateStatus.setComments(commentString);
                     }
 
                     @Override
                     public void alertDialogCallback(byte dialogStatus) {
                         switch (dialogStatus) {
                             case AlertDialogCallback.OK:
+                                newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, AppConstants.DEFAULT_VALUE), upDateStatus);
                                 break;
                             case AlertDialogCallback.CANCEL:
-                                holdDialog.dismiss();
+                                updateStatusDialog.dismiss();
                                 break;
                             default:
                                 break;
                         }
                     }
-                }).title(getString(R.string.bottom_option_hold))
+                }).title(dialogTitle)
                 .leftButtonText(getString(R.string.action_cancel))
                 .rightButtonText(getString(R.string.action_submit))
                 .build();
-        holdDialog.showDialog();
-        holdDialog.setCancelable(true);
-    }
-
-    private void showAcceptRejectDialog(final boolean isAccept) {
-        acceptRejectDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-
-                                acceptRejectDialog.dismiss();
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                acceptRejectDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(isAccept ? getString(R.string.bottom_option_accept) : getString(
-                R.string.bottom_option_reject))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        acceptRejectDialog.showDialog();
-        acceptRejectDialog.setCancelable(true);
+        updateStatusDialog.showDialog();
+        updateStatusDialog.setCancelable(true);
     }
 
 
@@ -693,7 +671,7 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
         UpDateStatus upDateStatus = new UpDateStatus();
         upDateStatus.setStatus(new Status(ATTENDING));
         upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-        newRequestPresenter.upDateStatus(userId, upDateStatus);
+        newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
     }
 
 
@@ -701,30 +679,7 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
         UpDateStatus upDateStatus = new UpDateStatus();
         upDateStatus.setStatus(new Status(ACCEPT));
         upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-        newRequestPresenter.upDateStatus(userId, upDateStatus);
-    }
-
-
-    private void showInformationDialog(String title, String messageInfo) {
-        detailsDialog = new AppAlertDialog.AlertDialogBuilder(getActivity(), new
-                AlertDialogCallback() {
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                detailsDialog.dismiss();
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                detailsDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(title).content(messageInfo)
-                .build();
-        detailsDialog.showDialog();
-        detailsDialog.setCancelable(true);
+        newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
     }
 
     private void showLocationDialog() {
@@ -791,19 +746,10 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
 
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
+        dismissDialog(assignDialog);
+        dismissDialog(updateStatusDialog);
 
-        if (assignDialog != null && assignDialog.isShowing()) {
-            assignDialog.dismiss();
-        }
-
-        try {
-            Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
-            if (statusId == ASSIGNED || statusId == ATTENDING) {
-                doRefresh(true);
-            }
-        } catch (Exception e) {
-            //TODO have to handle
-        }
+        doRefresh(true);
 
     }
 
