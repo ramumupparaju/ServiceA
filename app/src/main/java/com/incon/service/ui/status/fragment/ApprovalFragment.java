@@ -1,5 +1,6 @@
 package com.incon.service.ui.status.fragment;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -75,6 +76,19 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.apprvalRecyclerview.setAdapter(approvalAdapter);
         binding.apprvalRecyclerview.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public void loadBottomSheet() {
+        super.loadBottomSheet();
+        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                approvalAdapter.clearSelection();
+
+            }
+        });
+
     }
 
     @Override

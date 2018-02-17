@@ -163,6 +163,7 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
         bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
+                repairAdapter.clearSelection();
             }
         });
 

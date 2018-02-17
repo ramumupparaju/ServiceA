@@ -170,6 +170,8 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
         bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
+                checkUpAdapter.clearSelection();
+
             }
         });
 
