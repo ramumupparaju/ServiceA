@@ -99,16 +99,6 @@
                 android:layout_toRightOf="@id/product_imageview"
                 android:textColor="@color/ebony_clay"
                 android:textSize="12.4sp" />
-            <!--attending date and time-->
-            <TextView
-                android:id="@+id/text_attending_date_time"
-                style="@style/BothWrap"
-                android:text="@={fetchNewRequestResponse.product.modelNo}"
-                android:layout_width="80dp"
-                android:layout_below="@+id/text_waranty_status"
-                android:layout_toRightOf="@id/product_imageview"
-                android:textColor="@color/ebony_clay"
-                android:textSize="12.4sp" />
         </RelativeLayout>
             <!--Dummy view for showing selection-->
             <ImageView

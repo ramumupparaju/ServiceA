@@ -3,44 +3,14 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="activity"
             type="com.incon.service.ui.home.HomeActivity"/>
     </data>
+
     <RelativeLayout
         style="@style/BothMatch">
-       <!-- <RelativeLayout
-            android:id="@+id/relative_scanactivity"
-            android:layout_above="@+id/bottom_navigation_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include layout="@layout/activity_home_scan"/>
-
-        </RelativeLayout>-->
-
-        <RelativeLayout
-            android:id="@+id/relative_toolbarandcontainer"
-            android:layout_above="@+id/bottom_navigation_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <!-- Tool bar Container-->
-            <FrameLayout
-                android:id="@+id/container_toolbar"
-                style="@style/MatchWrap"
-                android:layout_height="?attr/actionBarSize"
-                >
-            </FrameLayout>
-            <!-- Content Container -->
-            <FrameLayout
-                android:id="@+id/container"
-                style="@style/BothMatch"
-                android:background="@color/colorAccent"
-                android:layout_below="@id/container_toolbar">
-            </FrameLayout>
-
-
-        </RelativeLayout>
-
 
         <!-- Bottom Navigation view -->
         <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
@@ -51,9 +21,24 @@
             android:background="@color/white"
             app:itemIconTint="@color/nav_item_selector_color"
             app:itemTextColor="@color/nav_item_selector_color"
-            app:menu="@menu/menu_bottom_navigation" />
+            app:menu="@menu/menu_bottom_navigation"/>
 
-
+        <!-- Tool bar Container-->
+        <FrameLayout
+            android:id="@+id/container_toolbar"
+            style="@style/MatchWrap"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentTop="true"
+            >
+        </FrameLayout>
+        <!-- Content Container -->
+        <FrameLayout
+            android:id="@+id/container"
+            style="@style/BothMatch"
+            android:layout_above="@id/bottom_navigation_view"
+            android:layout_below="@id/container_toolbar"
+            android:background="@color/colorAccent">
+        </FrameLayout>
 
     </RelativeLayout>
 

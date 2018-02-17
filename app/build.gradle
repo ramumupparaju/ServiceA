@@ -50,7 +50,7 @@ android {
         release {
             resValue 'string', 'default_key', "Basic Y29ubmVjdDpzM2NyZXQ="
 
-            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-13-126-102-199.ap-south-1.compute.amazonaws.com:8443/connect/\""
+            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-13-126-102-199.ap-south-1.compute.amazonaws.com/connect/\""
             buildConfigField 'boolean', 'LOG_VALUE', 'true'
             resValue "string", "app_name", "Connect Service"
 
@@ -63,12 +63,12 @@ android {
         connect_staging {
             resValue "string", "app_name", "Connect Service dev"
 
-            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-52-11-96-200.us-west-2.compute.amazonaws.com:9898/connect/\""
+            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://ec2-52-11-96-200.us-west-2.compute.amazonaws.com/connect/\""
         }
         connect_production {
             resValue "string", "app_name", "Connect Service pro"
 
-            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://13.126.102.199:9898/connect/\""
+            buildConfigField 'String', 'SERVICE_ENDPOINT', "\"http://13.126.102.199/connect/\""
         }
 
         /*moonz_dev {

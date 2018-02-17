@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -23,6 +24,7 @@ import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.databinding.FragmentPaymentBinding;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.PaymentAdapter;
@@ -38,24 +40,25 @@ import static com.incon.service.AppUtils.callPhoneNumber;
  * Created by PC on 12/5/2017.
  */
 
-public class PaymentFragment extends BaseTabFragment implements PaymentContract.View {
+public class PaymentFragment extends BaseTabFragment implements ServiceCenterContract.View {
 
     private FragmentPaymentBinding binding;
     private View rootView;
+    private ServiceCenterPresenter paymentPresenter;
     private PaymentAdapter paymentAdapter;
-    private PaymentPresenter paymentPresenter;
-    private List<FetchNewRequestResponse> fetchNewRequestResponses;
-    private AppAlertDialog detailsDialog;
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
-    private List<AddUser> usersList;
-    private AssignDialog assignDialog;
     private AppEditTextDialog terminateDialog;
+
+    private AssignDialog assignDialog;
+    private AppAlertDialog detailsDialog;
+    private ShimmerFrameLayout shimmerFrameLayout;
+
 
 
     @Override
     protected void initializePresenter() {
-        paymentPresenter = new PaymentPresenter();
+        paymentPresenter = new ServiceCenterPresenter();
         paymentPresenter.setView(this);
         setBasePresenter(paymentPresenter);
 
@@ -72,17 +75,22 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
             // handle events from here using android binding
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_payment,
                     container, false);
+            rootView = binding.getRoot();
+            shimmerFrameLayout = rootView.findViewById(R.id
+                    .effect_shimmer);
 
             initViews();
             loadBottomSheet();
 
-            rootView = binding.getRoot();
         }
         setTitle();
         return rootView;
     }
 
     private void initViews() {
+        serviceRequest = new ServiceRequest();
+        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.PAYMENT.name());
+
         paymentAdapter = new PaymentAdapter();
         paymentAdapter.setClickCallback(iClickCallback);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);
@@ -108,7 +116,27 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
             serviceCenterId = tempServiceCenterId;
             userId = tempUserId;
         }
-        paymentPresenter.fetchPaymentRequests(serviceCenterId, userId);
+
+        if (serviceCenterId == -1 || serviceCenterId == DEFAULT_VALUE) {
+            serviceRequest.setServiceIds(null);
+        } else {
+            serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
+        }
+
+        if (userId == -1 || userId == DEFAULT_VALUE) {
+            serviceRequest.setAssignedUser(null);
+        } else {
+            serviceRequest.setAssignedUser(userId);
+        }
+        getServiceRequestApi();
+       // paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+    }
+
+    private void getServiceRequestApi() {
+        binding.paymentRecyclerview.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
+        paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
     private void dismissSwipeRefresh() {
@@ -238,36 +266,6 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
 
 
             }
-            // TODO have to remove commented code
-
-            /*if (tag == 0) { // customer
-                bottomOptions = new String[1];
-                bottomOptions[0] = getString(R.string.bottom_option_call_customer_care);
-                topDrawables = new int[1];
-                topDrawables[0] = R.drawable.ic_option_call;
-
-            } else if (tag == 1) {  // product
-                bottomOptions = new String[2];
-                bottomOptions[0] = getString(R.string.bottom_option_warranty_details);
-                bottomOptions[1] = getString(R.string.bottom_option_past_history);
-                topDrawables = new int[2];
-                topDrawables[0] = R.drawable.ic_options_features;
-                topDrawables[1] = R.drawable.ic_option_pasthistory;
-            } else if (tag == 2) { // service center
-                bottomOptions = new String[1];
-                bottomOptions[0] = getString(R.string.bottom_option_Call);
-                topDrawables = new int[1];
-                topDrawables[0] = R.drawable.ic_option_call;
-            } else {  // status update
-                bottomOptions = new String[2];
-                bottomOptions[0] = getString(R.string.bottom_option_paid);
-                bottomOptions[1] = getString(R.string.bottom_option_terminate);
-                topDrawables = new int[2];
-                topDrawables[0] = R.drawable.ic_option_accept_request;
-                topDrawables[1] = R.drawable.ic_option_accept_request;
-            }
-            */
-
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
@@ -573,7 +571,7 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
 
 
     @Override
-    public void loadingPaymentRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
+    public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
 
         if (fetchNewRequestResponsesList == null) {
             fetchNewRequestResponsesList = new ArrayList<>();
@@ -581,23 +579,21 @@ public class PaymentFragment extends BaseTabFragment implements PaymentContract.
 
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.paymentTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
+            binding.paymentRecyclerview.setVisibility(View.GONE);
         } else {
             binding.paymentTextview.setVisibility(View.GONE);
+            binding.paymentRecyclerview.setVisibility(View.VISIBLE);
             paymentAdapter.setData(fetchNewRequestResponsesList);
-            dismissSwipeRefresh();
+
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
 
-        if (usersList == null) {
-            usersList = new ArrayList<>();
-        }
 
-        this.usersList = usersList;
-        //   showAssignDialog(usersList);
     }
 
     @Override

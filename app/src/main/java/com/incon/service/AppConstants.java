@@ -8,6 +8,7 @@ public interface AppConstants {
     String WEB_IMAGE = "http";
     String MULTIPART_FORM_DATA = "image/*";
     String COMMA_SEPARATOR = ",";
+    String HYPHEN_SEPARATOR = "-";
     int DEFAULT_VALUE = Integer.MIN_VALUE;
     String LABEL_ALL = "ALL";
 
@@ -17,19 +18,18 @@ public interface AppConstants {
     int VALIDATION_ZIPCODE_LENGTH = 5;
     String DELIMITOR = "-";
     int DEFAULT_GOOGLE_MAP_ZOOM_LEVEL = 16;
-    int DEAULT_VALUE = Integer.MAX_VALUE;
     int MINUS_ONE = -1;
 
     interface StatusConstants {
         int ASSIGNED = 3;
         int ATTENDING = 4;
         int ACCEPT = 17;
-        int APPROVAL = 4; //TODO have to change
-        int REPAIR = 4;
+        int APPROVAL = 4;
         int MANUAL_APROVED = 13;
         int WAIT_APPROVE = 15;
         int NEWREQUEST = 2;
         int CHECKUP = 5;
+        int REPAIR_DONE = 7;
         int PAYMENT = 1;
     }
 
@@ -352,6 +352,7 @@ public interface AppConstants {
     }
 
     interface DateFormatterConstants {
+
         String FROM_API_MILLIS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         String FROM_API = "yyyy-MM-dd'T'HH:mm:ss'Z'";
         /* String LOCAL_DATE_DD_MM_YYYY_HH_MM_SS =
@@ -362,7 +363,10 @@ public interface AppConstants {
         String DD_E_MMMM_YYYY = "dd-E-MMMM-yyyy"; //14-Thursday-Jun-1987
         String MM_DD_YYYY = "MM/dd/yyyy"; //14-Thursday-Jun-1987
         String DD_MM_YYYY = "dd-MM-yyyy"; //14-08-1987
-        String MMMM_DD = "MMMM-dd"; //14-08-1987
+        String DD = "dd"; //14
+        String EEE = "EEE";
+        String YYYY = "yyyy";
+        String MMMM_DD = "MMMM dd"; //14-08-1987
         String DD_MMMM = "dd MMMM"; //14 July
         String DD_SLASH_MM_SLASH_YYYY = "dd/MM/yyyy"; //14/07/2017
         //Mon, 10 Jul 2017 10:08:20 GM

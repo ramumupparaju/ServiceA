@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -30,13 +31,14 @@ import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
 import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
+import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.custom.view.EditTimeDialog;
 import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
-import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.home.HomeActivity;
@@ -57,27 +59,29 @@ import static com.incon.service.AppUtils.callPhoneNumber;
 /**
  * Created by PC on 12/5/2017.
  */
-public class NewRequestsFragment extends BaseTabFragment implements NewRequestContract.View {
+public class NewRequestsFragment extends BaseTabFragment implements ServiceCenterContract.View {
     private FragmentNewrequestBinding binding;
     private View rootView;
-    private NewRequestPresenter newRequestPresenter;
+    private ServiceCenterPresenter newRequestPresenter;
     private NewRequestsAdapter newRequestsAdapter;
+    private int serviceCenterId = DEFAULT_VALUE;
+    private int userId = DEFAULT_VALUE;
     private MoveToOptionDialog moveToOptionDialog;
+    private AppEditTextDialog terminateDialog;
+    private AppEditTextDialog holdDialog;
+
+
     private AppAlertDialog detailsDialog;
     private AppEditTextDialog acceptRejectDialog;
     private AssignDialog assignDialog;
     private EditTimeDialog editTimeDialog;
     private TimeSlotAlertDialog timeSlotAlertDialog;
-    private AppEditTextDialog holdDialog;
-    private AppEditTextDialog terminateDialog;
     private PastHistoryDialog pastHistoryDialog;
-    private int serviceCenterId = DEFAULT_VALUE;
-    private int userId = DEFAULT_VALUE;
-    private String moveToComment;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     @Override
     protected void initializePresenter() {
-        newRequestPresenter = new NewRequestPresenter();
+        newRequestPresenter = new ServiceCenterPresenter();
         newRequestPresenter.setView(this);
         setBasePresenter(newRequestPresenter);
     }
@@ -92,16 +96,19 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             // handle events from here using android binding
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
-            initViews();
-            loadBottomSheet();
             rootView = binding.getRoot();
+            shimmerFrameLayout = rootView.findViewById(R.id
+                    .effect_shimmer);
+            loadBottomSheet();
+            initViews();
         }
         setTitle();
         return rootView;
     }
 
     private void initViews() {
-
+        serviceRequest = new ServiceRequest();
+        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.NEW.name());
         newRequestsAdapter = new NewRequestsAdapter();
         newRequestsAdapter.setClickCallback(iClickCallback);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);
@@ -112,21 +119,42 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
     @Override
     public void doRefresh(boolean isForceRefresh) {
+        dismissSwipeRefresh();
         HomeActivity activity = (HomeActivity) getActivity();
         int tempServiceCenterId = activity.getServiceCenterId();
         int tempUserId = activity.getUserId();
 
         if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
-            //no chnages have made, so no need to make api call checks whether pull to refresh or
-            // not
-
+            //no chnages have made, so no need to make api call checks whether pull to refresh or not
             if (!isForceRefresh)
                 return;
         } else {
             serviceCenterId = tempServiceCenterId;
             userId = tempUserId;
         }
-        newRequestPresenter.fetchNewServiceRequests(serviceCenterId, userId);
+
+        if (serviceCenterId == -1 || serviceCenterId == DEFAULT_VALUE) {
+            serviceRequest.setServiceIds(null);
+        } else {
+            serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
+        }
+
+        if (userId == -1 || userId == DEFAULT_VALUE) {
+            serviceRequest.setAssignedUser(null);
+        } else {
+            serviceRequest.setAssignedUser(userId);
+        }
+
+        getServiceRequestApi();
+        //newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+    }
+
+    private void getServiceRequestApi() {
+        binding.requestRecyclerview.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
+        newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+
     }
 
     private void dismissSwipeRefresh() {
@@ -152,7 +180,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.
                     getItemFromPosition(position);
             fetchNewRequestResponse.setSelected(true);
-            newRequestsAdapter.notifyDataSetChanged();
             productSelectedPosition = position;
             createBottomSheetFirstRow();
             bottomSheetDialog.show();
@@ -272,51 +299,11 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
             }
 
-            // TODO have to remove commented code
-           /* if (tag == 0) { // customer
-                textArray = new String[2];
-                textArray[0] = getString(R.string.bottom_option_call_customer_care);
-                textArray[1] = getString(R.string.bottom_option_location);
-                drawablesArray = new int[2];
-                drawablesArray[0] = R.drawable.ic_option_call;
-                drawablesArray[1] = R.drawable.ic_option_location;
-
-            } else if (tag == 1) { // product
-                textArray = new String[2];
-                textArray[0] = getString(R.string.bottom_option_warranty_details);
-                textArray[1] = getString(R.string.bottom_option_past_history);
-                drawablesArray = new int[2];
-                drawablesArray[0] = R.drawable.ic_option_warranty;
-                //TODO have to check
-                drawablesArray[1] = R.drawable.ic_option_pasthistory;
-            } else if (tag == 2) {  // service center
-                textArray = new String[1];
-                textArray[0] = getString(R.string.bottom_option_Call);
-                drawablesArray = new int[1];
-                drawablesArray[0] = R.drawable.ic_option_call;
-            } else { // status update
-                textArray = new String[6];
-                textArray[0] = getString(R.string.bottom_option_accept);
-                textArray[1] = getString(R.string.bottom_option_reject);
-                textArray[2] = getString(R.string.bottom_option_hold);
-                textArray[3] = getString(R.string.bottom_option_terminate);
-                textArray[4] = getString(R.string.bottom_option_move_to);
-                textArray[5] = getString(R.string.bottom_option_edit);
-                drawablesArray = new int[6];
-                drawablesArray[0] = R.drawable.ic_option_accept_request;
-                drawablesArray[1] = R.drawable.ic_option_accept_request;
-                drawablesArray[2] = R.drawable.ic_option_hold;
-                drawablesArray[3] = R.drawable.ic_option_hold;
-                drawablesArray[4] = R.drawable.ic_option_hold;
-                drawablesArray[5] = R.drawable.ic_option_hold;
-            }
-            */
-
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
             bottomSheetPurchasedBinding.secondRow.setWeightSum(textArray.length);
-            setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray,tagsArray, bottomSheetSecondRowClickListener);
+            setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
         }
     };
 
@@ -413,102 +400,18 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
             } else if (tag == R.id.STATUS_UPDATE_EDIT_TIME) {
                 showEditTimeDialog();
-
             }
-            // TODO have to remove commented code
-
-           /*
-            if (firstRowTag == 0) { // customer
-
-                if (secondRowTag == 0) {  //call customer care
-
-                    callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
-                    return;
-                } else if (secondRowTag == 1) { // location
-                    showLocationDialog();
-                    return;
-                }
-
-            } else if (firstRowTag == 1) { // product
-
-                if (secondRowTag == 0) { // warranty details
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                    // TODO have to get details from back end
-                    *//*String purchasedDate = DateUtils.convertMillisToStringFormat(
-                            itemFromPosition.getPurchasedDate(), DateFormatterConstants.DD_MM_YYYY);
-                    String warrantyEndDate = DateUtils.convertMillisToStringFormat(
-                            itemFromPosition.getWarrantyEndDate(), DateFormatterConstants.DD_MM_YYYY);
-                    long noOfDays = DateUtils.convertDifferenceDateIndays(
-                            itemFromPosition.getWarrantyEndDate(), System.currentTimeMillis());
-                    String warrantyConditions = itemFromPosition.getWarrantyConditions();
-                    showInformationDialog(getString(
-                            R.string.bottom_option_warranty), getString(
-                            R.string.purchased_warranty_status_now)
-                            + noOfDays + " Days Left "
-                            + "\n"
-                            + getString(
-                            R.string.purchased_purchased_date)
-                            + purchasedDate
-                            + "\n"
-                            + getString(
-                            R.string.purchased_warranty_covers_date)
-                            + warrantyConditions
-                            + "\n"
-                            + getString(
-                            R.string.purchased_warranty_ends_on) + warrantyEndDate);
-                    return;
-*//*
-                } else if (secondRowTag == 1) { // past history
-                    showPastHisoryDialog();
-                }
-            } else if (firstRowTag == 2) { // service center
-                if (secondRowTag == 0) { // cal
-                    callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
-                }
-            } else if (firstRowTag == 3) {   // status update
-                if (secondRowTag == 0) {  // accept
-                    // todo have to cal in accept api response
-                   // doAcceptApi();
-                    bottomOptions = new String[2];
-                    bottomOptions[0] = getString(R.string.bottom_option_assign);
-                    bottomOptions[1] = getString(R.string.bottom_option_attending);
-                    topDrawables = new int[2];
-                    topDrawables[0] = R.drawable.ic_options_feedback;
-                    topDrawables[1] = R.drawable.ic_option_pasthistory;
-
-                    // showAcceptRejectDialog(true);
-
-                } else if (secondRowTag == 1) { // reject
-                    showAcceptRejectDialog(false);
-
-                } else if (secondRowTag == 2) { // hold
-                    showHoldDialog();
-                } else if (secondRowTag == 3) { // terminate
-                    showTerminateDialog();
-                } else if (secondRowTag == 4) { // move to
-                    showMoveToDialog();
-                } else {
-                    //  edit time
-
-                    showEditTimeDialog();
-                }
-
-
-            }
-
-            */
-
 
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(textArray.length);
-            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, textArray, drawablesArray,tagsArray, bottomSheetThirdRowClickListener);
+            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, textArray, drawablesArray, tagsArray, bottomSheetThirdRowClickListener);
         }
     };
 
     private void showMoveToDialog() {
-        ArrayList<Status> statusList = AppUtils.getSubStatusList(getString(R.string.tab_new_request), ((HomeActivity) getActivity()).getStatusList());
+        ArrayList<Status> statusList = AppUtils.getSubStatusList(StatusConstants.ACCEPT, ((HomeActivity) getActivity()).getStatusList());
         moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
@@ -562,8 +465,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                 .build();
         terminateDialog.showDialog();
         terminateDialog.setCancelable(true);
-
-
     }
 
     private void showEditTimeDialog() {
@@ -649,7 +550,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
                     String dobInDD_MM_YYYY = DateUtils.convertDateToOtherFormat(
                             selectedDateTime.getTime(), DateFormatterConstants.DD_MM_YYYY);
                     editTimeDialog.setDateFromPicker(dobInDD_MM_YYYY);
-
                 }
             };
 
@@ -669,36 +569,6 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
             } else if (tag == R.id.STATUS_UPDATE_ATTENDING) {
                 showAttendingDialog();
             }
-
-            /*int firstRowTag = Integer.parseInt(tagArray[0]);
-            int secondRowTag = Integer.parseInt(tagArray[1]);
-            int thirdRowTag = Integer.parseInt(tagArray[2]);
-
-            // status update
-            if (firstRowTag == 3) {
-
-                if (secondRowTag == 0) { // accept
-
-                    if (thirdRowTag == 0) { // assign
-
-                        // showAssignDialog();
-                        fetchAssignDialogData();
-
-                    } else if (thirdRowTag == 1) {
-                        // attending
-
-                        showAttendingDialog();
-
-                    }
-                } else if (secondRowTag == 1) {
-                    //show diloge
-                } else if (secondRowTag == 2) {
-                    // showAssignDialog();
-                }
-
-            }*/
-
-
         }
 
     };
@@ -892,11 +762,14 @@ public class NewRequestsFragment extends BaseTabFragment implements NewRequestCo
 
         if (fetchNewRequestResponsesList.size() == 0) {
             binding.requestTextview.setVisibility(View.VISIBLE);
-            dismissSwipeRefresh();
+            binding.requestRecyclerview.setVisibility(View.GONE);
         } else {
             binding.requestTextview.setVisibility(View.GONE);
+            binding.requestRecyclerview.setVisibility(View.VISIBLE);
             newRequestsAdapter.setData(fetchNewRequestResponsesList);
-            dismissSwipeRefresh();
+
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.GONE);
         }
     }
 

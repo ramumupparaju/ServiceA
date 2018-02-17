@@ -19,7 +19,6 @@ import com.incon.service.R;
 import com.incon.service.databinding.CustomBottomSheetBinding;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.utils.DeviceUtils;
-import com.incon.service.utils.Logger;
 
 public abstract class BaseProductOptionsFragment extends BaseFragment {
 
@@ -27,6 +26,24 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
     public BottomSheetDialog bottomSheetDialog;
     public CustomBottomSheetBinding bottomSheetPurchasedBinding;
     public int productSelectedPosition = -1;
+    public long fromDate;
+    public long toDate;
+
+    public long getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(long fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public long getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(long toDate) {
+        this.toDate = toDate;
+    }
 
     // load bottom sheet
     public void loadBottomSheet() {
@@ -145,12 +162,12 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
         imageView.setId(R.id.view_logo);
         LinearLayout.LayoutParams imageViewLayoutParams = new LinearLayout.LayoutParams(dp24, dp24);
         imageView.setLayoutParams(imageViewLayoutParams);
-        imageView.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_IN);
+        imageView.setColorFilter(getResources().getColor(R.color.gray_30), PorterDuff.Mode.SRC_IN);
         linearLayout.addView(imageView);
 
         TextView textView = new TextView(context);
         textView.setId(R.id.view_tv);
-        textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
+        textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.gray_30));
         textView.setGravity(Gravity.CENTER_HORIZONTAL);
         textView.setTextSize(DeviceUtils.convertSpToPixels(4, getActivity()));
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

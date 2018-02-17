@@ -28,10 +28,8 @@
     <color name="colorWarningTitle">#424b4d</color>
     <color name="colorWarningMsg">#565656</color>
     <color name="colorTab">#f44446</color>
-    <color name="alizarin_crimson">#eb1c24</color>
-    <color name="alpha_alizarin_crimson">#88eb1c24</color>
-    <!--// TODO hava to change test colore -->
-    <color name="alpha_corn_flower_red">#8842acf0</color>
+    <color name="colorcalendar">#eb1c24</color>
+    <color name="alpha_corn_flower_red">#88eb1c24</color>
 
     <color name="colorRegisterTypeUncheckedBorder">#62717a</color>
     <color name="colorVerifyBackground">#373737</color>
@@ -97,5 +95,6 @@
     <color name="orange">#FFA500</color>
     <color name="green">#00ff00</color>
     <color name="red">#ff0000</color>
+    <color name="gray_30">#4d4d4d</color>
 
 </resources>

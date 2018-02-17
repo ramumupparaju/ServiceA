@@ -19,6 +19,7 @@ import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.login.LoginUserData;
 import com.incon.service.dto.notifications.PushRegistrarBody;
 import com.incon.service.dto.registration.Registration;
+import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.update.UpDateUserProfile;
 import com.incon.service.dto.updateservicecenter.UpDateServiceCenter;
 import com.incon.service.dto.updatestatus.UpDateStatus;
@@ -191,53 +192,10 @@ public class AppApiService implements AppConstants {
         return addNetworkCheck(serviceInstance.deleteUserApi(serviceCenterId));
     }
 
-    // fetch  new service request api
-    public Observable<List<FetchNewRequestResponse>> fetchNewServiceRequestApi(int servicerCenterId) {
-        return addNetworkCheck(serviceInstance.fetchNewServiceRequestApi(servicerCenterId));
+    // fetch  service request api
+    public Observable<List<FetchNewRequestResponse>> serviceRequestApi(ServiceRequest serviceRequest) {
+        return addNetworkCheck(serviceInstance.serviceRequestApi(serviceRequest));
     }
-    // fetch  check up request api
-    public Observable<List<FetchNewRequestResponse>> fetchCheckupRequestApi(int servicerCenterId) {
-        return addNetworkCheck(serviceInstance.fetchCheckupRequestApi(servicerCenterId));
-    }
-
-
-    // fetch  new service request api using userid
-    public Observable<List<FetchNewRequestResponse>> fetchNewAssignedRequestApi(int userId) {
-        return addNetworkCheck(serviceInstance.fetchNewAssignedRequestApi(userId));
-    }
- // fetch  check up assigned request using userid
-    public Observable<List<FetchNewRequestResponse>> fetchCheckUpAssignedRequestApi(int userId) {
-        return addNetworkCheck(serviceInstance.fetchCheckUpAssignedRequestApi(userId));
-    }
-
-    // fetch  check up assigned request using userid
-    public Observable<List<FetchNewRequestResponse>> fetchApprovalAssignedRequestApi(int userId) {
-        return addNetworkCheck(serviceInstance.fetchApprovalAssignedRequestApi(userId));
-    }
-    // fetch  repair assigned request using userid
-    public Observable<List<FetchNewRequestResponse>> fetchRepairAssignedRequestApi(int userId) {
-        return addNetworkCheck(serviceInstance.fetchRepairAssignedRequestApi(userId));
-    }
-
-    // fetch  payment assigned request using userid
-    public Observable<List<FetchNewRequestResponse>> fetchPaymentAssignedRequestApi(int userId) {
-        return addNetworkCheck(serviceInstance.fetchPaymentAssignedRequestApi(userId));
-    }
-
-    // fetch  approval service request api
-    public Observable<List<FetchNewRequestResponse>> fetchApprovalServiceRequestApi(int servicerCenterId) {
-        return addNetworkCheck(serviceInstance.fetchApprovalServiceRequestApi(servicerCenterId));
-    }
-
-    // fetch  repair service request api
-    public Observable<List<FetchNewRequestResponse>> fetchRepairServiceRequestApi(int userId) {
-        return addNetworkCheck(serviceInstance.fetchRepairServiceRequestApi(userId));
-    }   // fetch  repair service request api
-
-    public Observable<List<FetchNewRequestResponse>> fetchPaymentServiceRequestApi(int userId) {
-        return addNetworkCheck(serviceInstance.fetchPaymentServiceRequestApi(userId));
-    }
-
 
     //warranty registration validate otp api
     public Observable<ValidateWarrantyOtpResponse> validateWarrantyOtp(HashMap<String, String>

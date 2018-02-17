@@ -43,4 +43,16 @@ public class Status {
     public void setCode(String code) {
         this.code = code;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+
+
+        if (!(obj instanceof Status)) {
+            return false;
+        }
+
+        Status status = (Status) obj;
+        return status.id.equals(id);
+    }
 }

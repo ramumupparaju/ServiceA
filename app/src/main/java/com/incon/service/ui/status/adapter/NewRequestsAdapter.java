@@ -12,6 +12,7 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.databinding.ItemNewRequestFragmentBinding;
 import com.incon.service.ui.BaseRecyclerViewAdapter;
+import com.incon.service.utils.DeviceUtils;
 
 /**
  * Created by PC on 12/6/2017.
@@ -47,6 +48,20 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
         public void bind(FetchNewRequestResponse fetchNewRequestResponse, int position) {
             binding.setVariable(BR.fetchNewRequestResponse, fetchNewRequestResponse);
             View root = binding.getRoot();
+            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) binding.cardView.getLayoutParams();
+            int leftRightMargin = (int) DeviceUtils.convertPxToDp(8);
+            if (position == 0) {
+                int topMargin = (int) DeviceUtils.convertPxToDp(6);
+                int bottomMargin = (int) DeviceUtils.convertPxToDp(3);
+                layoutParams.setMargins(leftRightMargin, topMargin, leftRightMargin, bottomMargin);
+            } else if (position == filteredList.size()) {
+                int topMargin = (int) DeviceUtils.convertPxToDp(3);
+                int bottomMargin = (int) DeviceUtils.convertPxToDp(6);
+                layoutParams.setMargins(leftRightMargin, topMargin, leftRightMargin, bottomMargin);
+            } else {
+                int topBottomMargin = (int) DeviceUtils.convertPxToDp(3);
+                layoutParams.setMargins(leftRightMargin, topBottomMargin, leftRightMargin, topBottomMargin);
+            }
             AppUtils.loadImageFromApi(binding.brandImageview, fetchNewRequestResponse
                     .getProductLogoUrl());
             AppUtils.loadImageFromApi(binding.productImageview, fetchNewRequestResponse
