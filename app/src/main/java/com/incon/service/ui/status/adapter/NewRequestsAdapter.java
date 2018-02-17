@@ -36,11 +36,11 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
     }
 
     @Override
-    public NewRequestsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         ItemNewRequestFragmentBinding binding = DataBindingUtil.inflate(layoutInflater,
                 R.layout.item_new_request_fragment, parent, false);
-        return new NewRequestsAdapter.ViewHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @Override
@@ -82,9 +82,8 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
             AppUtils.loadImageFromApi(binding.productImageview, fetchNewRequestResponse
                     .getProductImageUrl());
 
-          /*  String[] location = fetchNewRequestResponse.getCustomer().getLocation().split(",");
-            loadLocationDetailsFromGeocoder(new LatLng(Double.parseDouble(location[0]), Double.parseDouble(location[1])), fetchNewRequestResponse);
-*/
+            String[] location = fetchNewRequestResponse.getCustomer().getLocation().split(",");
+           // loadLocationDetailsFromGeocoder(new LatLng(Double.parseDouble(location[0]), Double.parseDouble(location[1])), fetchNewRequestResponse);
 
             if (fetchNewRequestResponse.isSelected()) {
                 binding.viewsLayout.setVisibility(View.VISIBLE);
