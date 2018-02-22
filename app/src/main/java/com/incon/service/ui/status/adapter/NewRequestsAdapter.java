@@ -121,7 +121,6 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
             if (locationAddress != null) {
                 switch (message.what) {
                     case AppConstants.RequestCodes.LOCATION_ADDRESS_FROM_LATLNG:
-                     //   fetchNewRequestResponse.getCustomer().setLocation(locationAddress.getAddressLine(0));
                         fetchNewRequestResponse.getServiceCenter().setAddress(locationAddress.getAddressLine(0));
                         break;
                     default:

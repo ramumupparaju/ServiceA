@@ -43,6 +43,7 @@ import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.CheckUpAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.DateUtils;
+import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -181,7 +182,6 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
     private IClickCallback iClickCallback = new IClickCallback() {
         @Override
         public void onClickPosition(int position) {
-
             checkUpAdapter.clearSelection();
             FetchNewRequestResponse fetchNewRequestResponse = checkUpAdapter.
                     getItemFromPosition(position);
@@ -645,7 +645,7 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
                 FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
                 Request request = requestResponse.getRequest();
                 upDateStatus.setRequestid(request.getId());
-                checkUpPresenter.upDateStatus(userId, upDateStatus);
+                checkUpPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
 
             }
 
