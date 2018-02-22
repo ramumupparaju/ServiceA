@@ -83,7 +83,7 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
                     .getProductImageUrl());
 
             String[] location = fetchNewRequestResponse.getCustomer().getLocation().split(",");
-           // loadLocationDetailsFromGeocoder(new LatLng(Double.parseDouble(location[0]), Double.parseDouble(location[1])), fetchNewRequestResponse);
+            loadLocationDetailsFromGeocoder(new LatLng(Double.parseDouble(location[0]), Double.parseDouble(location[1])), fetchNewRequestResponse);
 
             if (fetchNewRequestResponse.isSelected()) {
                 binding.viewsLayout.setVisibility(View.VISIBLE);
@@ -121,7 +121,8 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
             if (locationAddress != null) {
                 switch (message.what) {
                     case AppConstants.RequestCodes.LOCATION_ADDRESS_FROM_LATLNG:
-                        fetchNewRequestResponse.getCustomer().setLocation(locationAddress.getAddressLine(0));
+                     //   fetchNewRequestResponse.getCustomer().setLocation(locationAddress.getAddressLine(0));
+                        fetchNewRequestResponse.getServiceCenter().setAddress(locationAddress.getAddressLine(0));
                         break;
                     default:
                         //do nothing
