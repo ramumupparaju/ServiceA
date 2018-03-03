@@ -63,6 +63,7 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
         public void bind(FetchNewRequestResponse fetchNewRequestResponse, int position) {
             binding.setVariable(BR.fetchNewRequestResponse, fetchNewRequestResponse);
             View root = binding.getRoot();
+            // todo have to know
             RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) binding.cardView.getLayoutParams();
             int leftRightMargin = (int) DeviceUtils.convertPxToDp(8);
             if (position == 0) {

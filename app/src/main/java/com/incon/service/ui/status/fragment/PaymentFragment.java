@@ -102,6 +102,7 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
 
     @Override
     public void doRefresh(boolean isForceRefresh) {
+        dismissSwipeRefresh();
         HomeActivity activity = (HomeActivity) getActivity();
         int tempServiceCenterId = activity.getServiceCenterId();
         int tempUserId = activity.getUserId();

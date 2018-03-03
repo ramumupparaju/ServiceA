@@ -57,7 +57,6 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
     private MoveToOptionDialog moveToOptionDialog;
     private AppEditTextDialog terminateDialog;
     private AppEditTextDialog holdDialog;
-
     private AppAlertDialog detailsDialog;
     private AssignDialog statusDialog;
     private AppEditTextDialog closeDialog;
@@ -86,10 +85,8 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
 
-            initViews();
             loadBottomSheet();
-
-            rootView = binding.getRoot();
+            initViews();
         }
         setTitle();
         return rootView;
@@ -98,7 +95,6 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
     private void initViews() {
         serviceRequest = new ServiceRequest();
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.REPAIR.name());
-
         repairAdapter = new RepairAdapter();
         repairAdapter.setClickCallback(iClickCallback);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);
@@ -109,6 +105,7 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
 
     @Override
     public void doRefresh(boolean isForceRefresh) {
+        dismissSwipeRefresh();
         HomeActivity activity = (HomeActivity) getActivity();
         int tempServiceCenterId = activity.getServiceCenterId();
         int tempUserId = activity.getUserId();
@@ -693,6 +690,7 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
                 @Override
                 public void onRefresh() {
                     repairAdapter.clearData();
+                    doRefresh(true);
 
                 }
             };

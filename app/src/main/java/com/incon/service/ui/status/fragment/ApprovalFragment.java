@@ -61,7 +61,6 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
             initViews();
-            rootView = binding.getRoot();
         }
         setTitle();
         return rootView;
@@ -70,9 +69,9 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
     private void initViews() {
         serviceRequest = new ServiceRequest();
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.APPROVAL.name());
-
         approvalAdapter = new ApprovalAdapter();
         approvalAdapter.setClickCallback(iClickCallback);
+        binding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         binding.apprvalRecyclerview.setAdapter(approvalAdapter);
         binding.apprvalRecyclerview.setLayoutManager(linearLayoutManager);
@@ -93,6 +92,7 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
 
     @Override
     public void doRefresh(boolean isForceRefresh) {
+        dismissSwipeRefresh();
         HomeActivity activity = (HomeActivity) getActivity();
         int tempServiceCenterId = activity.getServiceCenterId();
         int tempUserId = activity.getUserId();
@@ -157,11 +157,6 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
                 }
             };
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        approvalPresenter.disposeAll();
-    }
 
     @Override
     public void onSearchClickListerner(String searchableText, String searchType) {
@@ -195,5 +190,10 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
     @Override
     public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
 //do nothing
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        approvalPresenter.disposeAll();
     }
 }

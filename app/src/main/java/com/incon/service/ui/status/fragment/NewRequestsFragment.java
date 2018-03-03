@@ -68,8 +68,6 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
     private int serviceCenterId = DEFAULT_VALUE;
     private int userId = DEFAULT_VALUE;
     private MoveToOptionDialog moveToOptionDialog;
-
-
     private AppEditTextDialog updateStatusDialog;
     private AssignDialog assignDialog;
     private EditTimeDialog editTimeDialog;

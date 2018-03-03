@@ -825,7 +825,6 @@ public class CheckUpFragment extends BaseTabFragment implements ServiceCenterCon
 
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
