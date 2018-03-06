@@ -20,6 +20,8 @@ import com.incon.service.databinding.CustomBottomSheetBinding;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.utils.DeviceUtils;
 
+import java.util.ArrayList;
+
 public abstract class BaseProductOptionsFragment extends BaseFragment {
 
 
@@ -86,8 +88,8 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
      * @param imagesArray
      * @param onClickListener
      */
-    public void setBottomViewOptions(LinearLayout parentLayout, String[] namesArray, int[] imagesArray, int[] tagsArray,View.OnClickListener onClickListener) {
-        int length = namesArray.length;
+    public void setBottomViewOptions(LinearLayout parentLayout, ArrayList<String> namesArray, ArrayList<Integer> imagesArray, ArrayList<Integer> tagsArray, View.OnClickListener onClickListener) {
+        int length = namesArray.size();
 
         boolean isScrollAdded = length > 5 ? true : false;
         HorizontalScrollView horizontalScrollView = null;
@@ -103,10 +105,10 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
         for (int i = 0; i < length; i++) {
             LinearLayout customBottomView = getCustomBottomView(isScrollAdded);
 
-            getBottomTextView(customBottomView).setText(namesArray[i]);
-            getBottomImageView(customBottomView).setImageResource(imagesArray[i]);
+            getBottomTextView(customBottomView).setText(namesArray.get(i));
+            getBottomImageView(customBottomView).setImageResource(imagesArray.get(i));
 
-            customBottomView.setTag(tagsArray[i]);
+            customBottomView.setTag(tagsArray.get(i));
             customBottomView.setOnClickListener(onClickListener);
             if (horizontalScrollView != null) {
                 linearLayout.addView(customBottomView);

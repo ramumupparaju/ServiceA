@@ -182,34 +182,32 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
     };
 
     private void createBottomSheetFirstRow() {
-        int length;
-        int[] drawablesArray;
-        String[] textArray;
-        length = 4;
-        int[] tagsArray;
-        textArray = new String[length];
-        textArray[0] = getString(R.string.bottom_option_customer);
-        textArray[1] = getString(R.string.bottom_option_product);
-        textArray[2] = getString(R.string.bottom_option_service_center);
-        textArray[3] = getString(R.string.bottom_option_status_update);
 
-        tagsArray = new int[length];
-        tagsArray[0] = R.id.CUSTOMER;
-        tagsArray[1] = R.id.PRODUCT;
-        tagsArray[2] = R.id.SERVICE_CENTER;
-        tagsArray[3] = R.id.STATUS_UPDATE;
+        ArrayList<Integer> drawablesArray = new ArrayList<>();
+        ArrayList<String> textArray = new ArrayList<>();
+        ArrayList<Integer> tagsArray = new ArrayList<>();
 
-        drawablesArray = new int[length];
-        drawablesArray[0] = R.drawable.ic_option_customer;
-        drawablesArray[1] = R.drawable.ic_option_product;
-        drawablesArray[2] = R.drawable.ic_option_find_service_center;
-        drawablesArray[3] = R.drawable.ic_option_delete;
+        tagsArray.add(R.id.CUSTOMER);
+        textArray.add(getString(R.string.bottom_option_customer));
+        drawablesArray.add(R.drawable.ic_option_customer);
+
+        tagsArray.add(R.id.PRODUCT);
+        textArray.add(getString(R.string.bottom_option_product));
+        drawablesArray.add(R.drawable.ic_option_product);
+
+        tagsArray.add(R.id.SERVICE_CENTER);
+        textArray.add(getString(R.string.bottom_option_service_center));
+        drawablesArray.add(R.drawable.ic_option_find_service_center);
+
+        tagsArray.add(R.id.STATUS_UPDATE);
+        textArray.add(getString(R.string.bottom_option_status_update));
+        drawablesArray.add(R.drawable.ic_option_service_support);
 
         bottomSheetPurchasedBinding.firstRow.setVisibility(View.VISIBLE);
         bottomSheetPurchasedBinding.secondRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.firstRow.removeAllViews();
-        bottomSheetPurchasedBinding.firstRow.setWeightSum(length);
+        bottomSheetPurchasedBinding.firstRow.setWeightSum(tagsArray.size());
         setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, textArray, drawablesArray, tagsArray, bottomSheetFirstRowClickListener);
 
     }
@@ -219,116 +217,72 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
         @Override
         public void onClick(View view) {
             Integer tag = (Integer) view.getTag();
-            String[] textArray = new String[0];
-            int[] drawablesArray = new int[0];
-            int[] tagsArray = new int[0];
+
+            ArrayList<Integer> drawablesArray = new ArrayList<>();
+            ArrayList<String> textArray = new ArrayList<>();
+            ArrayList<Integer> tagsArray = new ArrayList<>();
+
+
 
             changeSelectedViews(bottomSheetPurchasedBinding.firstRow, tag);
 
 
             if (tag == R.id.CUSTOMER) {
-                int length = 1;
-                textArray = new String[length];
-                textArray[0] = getString(R.string.bottom_option_call_customer_care);
 
-                tagsArray = new int[length];
-                tagsArray[0] = R.id.CUSTOMER_CALL_CUSTOMER_CARE;
+                tagsArray.add(R.id.CUSTOMER_CALL_CUSTOMER_CARE);
+                textArray.add(getString(R.string.bottom_option_call_customer_care));
+                drawablesArray.add(R.drawable.ic_option_call);
 
-                drawablesArray = new int[length];
-                drawablesArray[0] = R.drawable.ic_option_call;
             } else if (tag == R.id.PRODUCT) {
-                int length = 2;
-                textArray = new String[length];
-                textArray[0] = getString(R.string.bottom_option_warranty_details);
-                textArray[1] = getString(R.string.bottom_option_past_history);
 
-                tagsArray = new int[length];
-                tagsArray[0] = R.id.PRODUCT_WARRANTY_DETAILS;
-                tagsArray[1] = R.id.PRODUCT_PAST_HISTORY;
+                tagsArray.add(R.id.PRODUCT_WARRANTY_DETAILS);
+                textArray.add(getString(R.string.bottom_option_warranty_details));
+                drawablesArray.add(R.drawable.ic_option_warranty);
 
-                drawablesArray = new int[length];
-                drawablesArray[0] = R.drawable.ic_option_warranty;
-                drawablesArray[1] = R.drawable.ic_option_pasthistory;
+                tagsArray.add(R.id.PRODUCT_PAST_HISTORY);
+                textArray.add(getString(R.string.bottom_option_past_history));
+                drawablesArray.add(R.drawable.ic_option_pasthistory);
+
+
             } else if (tag == R.id.SERVICE_CENTER) {
-                int length = 1;
-                textArray = new String[length];
-                textArray[0] = getString(R.string.bottom_option_Call);
 
-                tagsArray = new int[length];
-                tagsArray[0] = R.id.SERVICE_CENTER_CALL;
+                tagsArray.add(R.id.SERVICE_CENTER_CALL);
+                textArray.add(getString(R.string.bottom_option_Call));
+                drawablesArray.add(R.drawable.ic_option_call);
 
-                drawablesArray = new int[length];
-                drawablesArray[0] = R.drawable.ic_option_call;
+
             } else if (tag == R.id.STATUS_UPDATE) {
-                int length = 6;
-                textArray = new String[length];
-                textArray[0] = getString(R.string.bottom_option_repair_done);
-                textArray[1] = getString(R.string.bottom_option_hold);
-                textArray[2] = getString(R.string.bottom_option_terminate);
-                textArray[3] = getString(R.string.bottom_option_move_to);
-                textArray[4] = getString(R.string.bottom_option_assign);
-                textArray[5] = getString(R.string.bottom_option_close);
 
-                tagsArray = new int[length];
-                tagsArray[0] = R.id.STATUS_UPDATE_REPAIR_DONE;
-                tagsArray[1] = R.id.STATUS_UPDATE_HOLD;
-                tagsArray[2] = R.id.STATUS_UPDATE_TERMINATE;
-                tagsArray[3] = R.id.STATUS_UPDATE_MOVE_TO;
-                tagsArray[4] = R.id.STATUS_UPDATE_ASSIGN;
-                tagsArray[5] = R.id.STATUS_UPDATE_CLOSE;
+                tagsArray.add(R.id.STATUS_UPDATE_REPAIR_DONE);
+                textArray.add(getString(R.string.bottom_option_repair_done));
+                drawablesArray.add(R.drawable.ic_option_accept_request);
 
-                drawablesArray = new int[length];
-                drawablesArray[0] = R.drawable.ic_option_accept_request;
-                drawablesArray[1] = R.drawable.ic_option_accept_request;
-                drawablesArray[2] = R.drawable.ic_option_hold;
-                drawablesArray[3] = R.drawable.ic_option_hold;
-                drawablesArray[4] = R.drawable.ic_option_hold;
-                drawablesArray[5] = R.drawable.ic_option_hold;
+                tagsArray.add(R.id.STATUS_UPDATE_HOLD);
+                textArray.add(getString(R.string.bottom_option_hold));
+                drawablesArray.add(R.drawable.ic_option_accept_request);
+
+                tagsArray.add(R.id.STATUS_UPDATE_TERMINATE);
+                textArray.add(getString(R.string.bottom_option_terminate));
+                drawablesArray.add(R.drawable.ic_option_hold);
+
+                tagsArray.add(R.id.STATUS_UPDATE_MOVE_TO);
+                textArray.add(getString(R.string.bottom_option_move_to));
+                drawablesArray.add(R.drawable.ic_option_hold);
+
+                tagsArray.add(R.id.STATUS_UPDATE_ASSIGN);
+                textArray.add(getString(R.string.bottom_option_assign));
+                drawablesArray.add(R.drawable.ic_option_hold);
+
+                tagsArray.add(R.id.STATUS_UPDATE_CLOSE);
+                textArray.add(getString(R.string.bottom_option_close));
+                drawablesArray.add(R.drawable.ic_option_hold);
 
             }
-
-
-          /*  if (tag == 0) {  // customer
-                textArray = new String[1];
-                textArray[0] = getString(R.string.bottom_option_call_customer_care);
-                drawablesArray = new int[1];
-                drawablesArray[0] = R.drawable.ic_option_call;
-
-            } else if (tag == 1) { // product
-                textArray = new String[2];
-                textArray[0] = getString(R.string.bottom_option_warranty_details);
-                textArray[1] = getString(R.string.bottom_option_past_history);
-                drawablesArray = new int[2];
-                drawablesArray[0] = R.drawable.ic_options_features;
-                drawablesArray[1] = R.drawable.ic_option_pasthistory;
-            } else if (tag == 2) { // service center
-                textArray = new String[1];
-                textArray[0] = getString(R.string.bottom_option_Call);
-                drawablesArray = new int[1];
-                drawablesArray[0] = R.drawable.ic_option_call;
-            } else { // status update
-                textArray = new String[6];
-                textArray[0] = getString(R.string.bottom_option_repair_done);
-                textArray[1] = getString(R.string.bottom_option_hold);
-                textArray[2] = getString(R.string.bottom_option_terminate);
-                textArray[3] = getString(R.string.bottom_option_move_to);
-                textArray[4] = getString(R.string.bottom_option_assign);
-                textArray[5] = getString(R.string.bottom_option_close);
-                drawablesArray = new int[6];
-                drawablesArray[0] = R.drawable.ic_option_repair_done;
-                drawablesArray[1] = R.drawable.ic_option_hold;
-                drawablesArray[2] = R.drawable.ic_option_assign;
-                drawablesArray[3] = R.drawable.ic_option_close;
-                drawablesArray[4] = R.drawable.ic_option_close;
-                drawablesArray[5] = R.drawable.ic_option_close;
-            }
-            */
-
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
-            bottomSheetPurchasedBinding.secondRow.setWeightSum(textArray.length);
+            bottomSheetPurchasedBinding.secondRow.setWeightSum(tagsArray.size());
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
         }
@@ -411,69 +365,6 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
 
             }
 
-
-          /*  // customer
-            if (firstRowTag == 0) {
-                if (secondRowTag == 0) {    //call customer care
-                    callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
-                    return;
-                }
-
-            } else if (firstRowTag == 1) { // product
-
-                if (secondRowTag == 0) { // warrenty details
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                    // TODO have to get details from back end
-                    *//*String purchasedDate = DateUtils.convertMillisToStringFormat(
-                            itemFromPosition.getPurchasedDate(), DateFormatterConstants.DD_MM_YYYY);
-                    String warrantyEndDate = DateUtils.convertMillisToStringFormat(
-                            itemFromPosition.getWarrantyEndDate(), DateFormatterConstants.DD_MM_YYYY);
-                    long noOfDays = DateUtils.convertDifferenceDateIndays(
-                            itemFromPosition.getWarrantyEndDate(), System.currentTimeMillis());
-                    String warrantyConditions = itemFromPosition.getWarrantyConditions();
-                    showInformationDialog(getString(
-                            R.string.bottom_option_warranty), getString(
-                            R.string.purchased_warranty_status_now)
-                            + noOfDays + " Days Left "
-                            + "\n"
-                            + getString(
-                            R.string.purchased_purchased_date)
-                            + purchasedDate
-                            + "\n"
-                            + getString(
-                            R.string.purchased_warranty_covers_date)
-                            + warrantyConditions
-                            + "\n"
-                            + getString(
-                            R.string.purchased_warranty_ends_on) + warrantyEndDate);
-                    return;
-*//*
-                } else if (secondRowTag == 1) { // history
-                    AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                }
-            } else if (firstRowTag == 2) { // service center
-                if (secondRowTag == 0) { // call
-                    callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
-                }
-            } else if (firstRowTag == 3) { // status upadates
-                if (secondRowTag == 0) { // repair done
-                    showRepairDone();
-                } else if (secondRowTag == 1) { // hold
-                    showHoldDialog();
-                } else if (secondRowTag == 2) { // terminate
-                    showTerminateDialog();
-                } else if (secondRowTag == 3) { // move to
-                    showMoveToDialog();
-                } else if (secondRowTag == 4) { // assign
-                    //   showAssignDialog();
-                    fetchAssignDialogData();
-
-                } else { // close
-                    showCloseDialog();
-                }
-            }
-
-            */
 
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);

@@ -271,7 +271,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
             serviceArray.add(serviceCenterResponse.getName());
         }
 
-        ((HomeActivity) getActivity()).setServiceCenterId(serviceCenterList.get(serviceCentersSelectedPosition).getId());
+        //((HomeActivity) getActivity()).setServiceCenterId(serviceCenterList.get(serviceCentersSelectedPosition).getId());
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.view_spinner, serviceArray);

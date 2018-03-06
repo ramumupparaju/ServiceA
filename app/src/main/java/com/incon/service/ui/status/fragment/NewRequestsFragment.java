@@ -40,6 +40,7 @@ import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
+import com.incon.service.ui.BaseNCRPOptionFragment;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
@@ -60,7 +61,7 @@ import static com.incon.service.AppUtils.callPhoneNumber;
 /**
  * Created by PC on 12/5/2017.
  */
-public class NewRequestsFragment extends BaseTabFragment implements ServiceCenterContract.View {
+public class NewRequestsFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
     private FragmentNewrequestBinding binding;
     private View rootView;
     private ServiceCenterPresenter newRequestPresenter;
@@ -81,6 +82,7 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
         newRequestPresenter.setView(this);
         setBasePresenter(newRequestPresenter);
     }
+
 
     @Override
     public void setTitle() {
@@ -185,37 +187,35 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
     };
 
     private void createBottomSheetFirstRow() {
-        int length;
-        int[] drawablesArray;
-        String[] textArray;
-        int[] tagsArray;
-        length = 4;
 
-        textArray = new String[length];
-        textArray[0] = getString(R.string.bottom_option_customer);
-        textArray[1] = getString(R.string.bottom_option_product);
-        textArray[2] = getString(R.string.bottom_option_service_center);
-        textArray[3] = getString(R.string.bottom_option_status_update);
+        ArrayList<Integer> drawablesArray = new ArrayList<>();
+        ArrayList<String> textArray = new ArrayList<>();
+        ArrayList<Integer> tagsArray = new ArrayList<>();
 
-        tagsArray = new int[length];
-        tagsArray[0] = R.id.CUSTOMER;
-        tagsArray[1] = R.id.PRODUCT;
-        tagsArray[2] = R.id.SERVICE_CENTER;
-        tagsArray[3] = R.id.STATUS_UPDATE;
+        tagsArray.add(R.id.CUSTOMER);
+        textArray.add(getString(R.string.bottom_option_customer));
+        drawablesArray.add(R.drawable.ic_option_customer);
 
 
-        drawablesArray = new int[length];
-        drawablesArray[0] = R.drawable.ic_option_customer;
-        drawablesArray[1] = R.drawable.ic_option_product;
-        drawablesArray[2] = R.drawable.ic_option_find_service_center;
-        drawablesArray[3] = R.drawable.ic_option_service_support;
+        tagsArray.add(R.id.PRODUCT);
+        textArray.add(getString(R.string.bottom_option_product));
+        drawablesArray.add(R.drawable.ic_option_product);
+
+        tagsArray.add(R.id.SERVICE_CENTER);
+        textArray.add(getString(R.string.bottom_option_service_center));
+        drawablesArray.add(R.drawable.ic_option_find_service_center);
+
+        tagsArray.add(R.id.STATUS_UPDATE);
+        textArray.add(getString(R.string.bottom_option_status_update));
+        drawablesArray.add(R.drawable.ic_option_service_support);
+
 
         bottomSheetPurchasedBinding.firstRow.setVisibility(View.VISIBLE);
         bottomSheetPurchasedBinding.secondRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.firstRow.removeAllViews();
-        bottomSheetPurchasedBinding.firstRow.setWeightSum(length);
+        bottomSheetPurchasedBinding.firstRow.setWeightSum(tagsArray.size());
         setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, textArray, drawablesArray, tagsArray, bottomSheetFirstRowClickListener);
 
     }
@@ -226,84 +226,87 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
         public void onClick(View view) {
 
             Integer tag = (Integer) view.getTag();
-            String[] textArray = new String[0];
-            int[] drawablesArray = new int[0];
-            int[] tagsArray = new int[0];
+
+            ArrayList<Integer> drawablesArray = new ArrayList<>();
+            ArrayList<String> textArray = new ArrayList<>();
+            ArrayList<Integer> tagsArray = new ArrayList<>();
 
             FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
                     productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.firstRow, tag);
 
             if (tag == R.id.CUSTOMER) {
-                int length = 2;
-                textArray = new String[length];
-                textArray[0] = getString(R.string.bottom_option_call_customer_care);
-                textArray[1] = getString(R.string.bottom_option_location);
 
-                tagsArray = new int[length];
-                tagsArray[0] = R.id.CUSTOMER_CALL_CUSTOMER_CARE;
-                tagsArray[1] = R.id.CUSTOMER_LOCATION;
+                tagsArray.add(R.id.CUSTOMER_CALL_CUSTOMER_CARE);
+                textArray.add(getString(R.string.bottom_option_call_customer_care));
+                drawablesArray.add(R.drawable.ic_option_call);
 
-                drawablesArray = new int[length];
-                drawablesArray[0] = R.drawable.ic_option_call;
-                drawablesArray[1] = R.drawable.ic_option_location;
+                tagsArray.add(R.id.CUSTOMER_LOCATION);
+                textArray.add(getString(R.string.bottom_option_location));
+                drawablesArray.add(R.drawable.ic_option_location);
+
+
             } else if (tag == R.id.PRODUCT) {
-                int length = 2;
-                textArray = new String[length];
-                textArray[0] = getString(R.string.bottom_option_warranty_details);
-                textArray[1] = getString(R.string.bottom_option_past_history);
 
-                tagsArray = new int[length];
-                tagsArray[0] = R.id.PRODUCT_WARRANTY_DETAILS;
-                tagsArray[1] = R.id.PRODUCT_PAST_HISTORY;
+                tagsArray.add(R.id.PRODUCT_WARRANTY_DETAILS);
+                textArray.add(getString(R.string.bottom_option_warranty_details));
+                drawablesArray.add(R.drawable.ic_option_warranty);
 
-                drawablesArray = new int[length];
-                drawablesArray[0] = R.drawable.ic_option_warranty;
+                tagsArray.add(R.id.PRODUCT_PAST_HISTORY);
+                textArray.add(getString(R.string.bottom_option_past_history));
+                drawablesArray.add(R.drawable.ic_option_pasthistory);
+
                 //TODO have to check
-                drawablesArray[1] = R.drawable.ic_option_pasthistory;
             } else if (tag == R.id.SERVICE_CENTER) {
-                int length = 1;
-                textArray = new String[length];
-                textArray[0] = getString(R.string.bottom_option_Call);
 
-                tagsArray = new int[length];
-                tagsArray[0] = R.id.SERVICE_CENTER_CALL;
+                tagsArray.add(R.id.SERVICE_CENTER_CALL);
+                textArray.add(getString(R.string.bottom_option_Call));
+                drawablesArray.add(R.drawable.ic_option_call);
 
-                drawablesArray = new int[length];
-                drawablesArray[0] = R.drawable.ic_option_call;
             } else if (tag == R.id.STATUS_UPDATE) {
 
-                int length = 6;
                 int status = itemFromPosition.getRequest().getStatus();
-                if (status != StatusConstants.COMPLAINT) {
-                    length = 7;
-                }
-                textArray = new String[length];
+
                 if (status == StatusConstants.COMPLAINT) {
-                    textArray[0] = getString(R.string.bottom_option_accept);
-                    textArray[1] = getString(R.string.bottom_option_reject);
-                    textArray[2] = getString(R.string.bottom_option_hold);
-                    textArray[3] = getString(R.string.bottom_option_terminate);
-                    textArray[4] = getString(R.string.bottom_option_move_to);
-                    textArray[5] = getString(R.string.bottom_option_edit);
+                    textArray.add(getString(R.string.bottom_option_accept));
+                    tagsArray.add(R.id.STATUS_UPDATE_ACCEPT);
+                    drawablesArray.add(R.drawable.ic_option_accept_request);
+                } else if (status != StatusConstants.COMPLAINT) {
+                    textArray.add(getString(R.string.bottom_option_assign));
+                    tagsArray.add(R.id.STATUS_UPDATE_ASSIGN);
+                    drawablesArray.add(R.drawable.ic_option_accept_request);
 
-                    tagsArray = new int[length];
-                    tagsArray[0] = R.id.STATUS_UPDATE_ACCEPT;
-                    tagsArray[1] = R.id.STATUS_UPDATE_REJECT;
-                    tagsArray[2] = R.id.STATUS_UPDATE_HOLD;
-                    tagsArray[3] = R.id.STATUS_UPDATE_TERMINATE;
-                    tagsArray[4] = R.id.STATUS_UPDATE_MOVE_TO;
-                    tagsArray[5] = R.id.STATUS_UPDATE_EDIT_TIME;
+                    textArray.add(getString(R.string.bottom_option_attending));
+                    tagsArray.add(R.id.STATUS_UPDATE_ATTENDING);
+                    drawablesArray.add(R.drawable.ic_option_accept_request);
+                }
 
-                    drawablesArray = new int[length];
-                    drawablesArray[0] = R.drawable.ic_option_accept_request;
-                    drawablesArray[1] = R.drawable.ic_option_accept_request;
-                    drawablesArray[2] = R.drawable.ic_option_hold;
-                    drawablesArray[3] = R.drawable.ic_option_hold;
-                    drawablesArray[4] = R.drawable.ic_option_hold;
-                    drawablesArray[5] = R.drawable.ic_option_hold;
 
-                } else {
+                textArray.add(getString(R.string.bottom_option_reject));
+                tagsArray.add(R.id.STATUS_UPDATE_REJECT);
+                drawablesArray.add(R.drawable.ic_option_accept_request);
+
+
+                textArray.add(getString(R.string.bottom_option_hold));
+                tagsArray.add(R.id.STATUS_UPDATE_HOLD);
+                drawablesArray.add(R.drawable.ic_option_hold);
+
+
+                textArray.add(getString(R.string.bottom_option_terminate));
+                tagsArray.add(R.id.STATUS_UPDATE_TERMINATE);
+                drawablesArray.add(R.drawable.ic_option_hold);
+
+
+                textArray.add(getString(R.string.bottom_option_move_to));
+                tagsArray.add(R.id.STATUS_UPDATE_MOVE_TO);
+                drawablesArray.add(R.drawable.ic_option_hold);
+
+
+                textArray.add(getString(R.string.bottom_option_edit));
+                tagsArray.add(R.id.STATUS_UPDATE_EDIT_TIME);
+                drawablesArray.add(R.drawable.ic_option_hold);
+
+               /* else {
 
                     textArray[0] = getString(R.string.bottom_option_assign);
                     textArray[1] = getString(R.string.bottom_option_attending);
@@ -330,13 +333,13 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
                     drawablesArray[4] = R.drawable.ic_option_hold;
                     drawablesArray[5] = R.drawable.ic_option_hold;
                     drawablesArray[6] = R.drawable.ic_option_hold;
-                }
+                }*/
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
-            bottomSheetPurchasedBinding.secondRow.setWeightSum(textArray.length);
+            bottomSheetPurchasedBinding.secondRow.setWeightSum(tagsArray.size());
             setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
         }
     };
@@ -352,9 +355,12 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
             FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
                     productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
-            String[] textArray = new String[0];
-            int[] drawablesArray = new int[0];
-            int[] tagsArray = new int[0];
+
+
+            ArrayList<Integer> drawablesArray = new ArrayList<>();
+            ArrayList<String> textArray = new ArrayList<>();
+            ArrayList<Integer> tagsArray = new ArrayList<>();
+
 
             if (tag == R.id.CUSTOMER_CALL_CUSTOMER_CARE) {
                 callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
@@ -429,12 +435,12 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
-            bottomSheetPurchasedBinding.thirdRow.setWeightSum(textArray.length);
+            bottomSheetPurchasedBinding.thirdRow.setWeightSum(tagsArray.size());
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, textArray, drawablesArray, tagsArray, bottomSheetThirdRowClickListener);
         }
     };
 
-    private void showMoveToDialog() {
+  /*  private void showMoveToDialog() {
         ArrayList<Status> statusList = AppUtils.getSubStatusList(StatusConstants.ACCEPT, ((HomeActivity) getActivity()).getStatusList());
         moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
             @Override
@@ -462,7 +468,7 @@ public class NewRequestsFragment extends BaseTabFragment implements ServiceCente
         moveToOptionDialog.showDialog();
         moveToOptionDialog.setCancelable(true);
 
-    }
+    }*/
 
     private void showEditTimeDialog() {
 

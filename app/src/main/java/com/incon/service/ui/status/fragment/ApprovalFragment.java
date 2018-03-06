@@ -143,6 +143,7 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
             FetchNewRequestResponse fetchNewRequestResponse = approvalAdapter.
                     getItemFromPosition(position);
             fetchNewRequestResponse.setSelected(true);
+            productSelectedPosition = position;
             approvalAdapter.notifyDataSetChanged();
         }
     };
