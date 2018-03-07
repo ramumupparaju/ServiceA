@@ -62,19 +62,11 @@ import static com.incon.service.AppUtils.callPhoneNumber;
  * Created by PC on 12/5/2017.
  */
 public class NewRequestsFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
-    private FragmentNewrequestBinding binding;
     private View rootView;
-    private ServiceCenterPresenter newRequestPresenter;
-    private NewRequestsAdapter newRequestsAdapter;
-    private int serviceCenterId = DEFAULT_VALUE;
-    private int userId = DEFAULT_VALUE;
-    private MoveToOptionDialog moveToOptionDialog;
-    private AppEditTextDialog updateStatusDialog;
-    private AssignDialog assignDialog;
+
     private EditTimeDialog editTimeDialog;
     private TimeSlotAlertDialog timeSlotAlertDialog;
-    private PastHistoryDialog pastHistoryDialog;
-    private ShimmerFrameLayout shimmerFrameLayout;
+
 
     @Override
     protected void initializePresenter() {
@@ -92,9 +84,9 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
+            newRequestBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
-            rootView = binding.getRoot();
+            rootView = newRequestBinding.getRoot();
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
             loadBottomSheet();
@@ -109,10 +101,10 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.NEW.name());
         newRequestsAdapter = new NewRequestsAdapter();
         newRequestsAdapter.setClickCallback(iClickCallback);
-        binding.swiperefresh.setOnRefreshListener(onRefreshListener);
+        newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.requestRecyclerview.setAdapter(newRequestsAdapter);
-        binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
+        newRequestBinding.requestRecyclerview.setAdapter(newRequestsAdapter);
+        newRequestBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
     }
 
     @Override
@@ -148,7 +140,7 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
     }
 
     private void getServiceRequestApi() {
-        binding.requestRecyclerview.setVisibility(View.GONE);
+        newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmerAnimation();
         newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
@@ -156,8 +148,8 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
     }
 
     private void dismissSwipeRefresh() {
-        if (binding.swiperefresh.isRefreshing()) {
-            binding.swiperefresh.setRefreshing(false);
+        if (newRequestBinding.swiperefresh.isRefreshing()) {
+            newRequestBinding.swiperefresh.setRefreshing(false);
         }
     }
 
@@ -372,31 +364,6 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
             } else if (tag == R.id.PRODUCT_WARRANTY_DETAILS) {
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
 
-                // TODO have to get details from back end
-
-                   /* String purchasedDate = DateUtils.convertMillisToStringFormat(
-                itemFromPosition.getPurchasedDate(), DateFormatterConstants.DD_MM_YYYY);
-                String warrantyEndDate = DateUtils.convertMillisToStringFormat(
-                        itemFromPosition.getWarrantyEndDate(), DateFormatterConstants.DD_MM_YYYY);
-                long noOfDays = DateUtils.convertDifferenceDateIndays(
-                        itemFromPosition.getWarrantyEndDate(), System.currentTimeMillis());
-                String warrantyConditions = itemFromPosition.getWarrantyConditions();
-                showInformationDialog(getString(
-                        R.string.bottom_option_warranty), getString(
-                        R.string.purchased_warranty_status_now)
-                        + noOfDays + " Days Left "
-                        + "\n"
-                        + getString(
-                        R.string.purchased_purchased_date)
-                        + purchasedDate
-                        + "\n"
-                        + getString(
-                        R.string.purchased_warranty_covers_date)
-                        + warrantyConditions
-                        + "\n"
-                        + getString(
-                        R.string.purchased_warranty_ends_on) + warrantyEndDate);
-                return;*/
 
             } else if (tag == R.id.PRODUCT_PAST_HISTORY) {
                 showPastHisoryDialog();
@@ -440,35 +407,6 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         }
     };
 
-  /*  private void showMoveToDialog() {
-        ArrayList<Status> statusList = AppUtils.getSubStatusList(StatusConstants.ACCEPT, ((HomeActivity) getActivity()).getStatusList());
-        moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
-            @Override
-            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
-                Request request = requestResponse.getRequest();
-                upDateStatus.setRequestid(request.getId());
-                newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-            }
-
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-                        break;
-                    case AlertDialogCallback.CANCEL:
-                        moveToOptionDialog.dismiss();
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        }).loadStatusList(statusList).build();
-        moveToOptionDialog.showDialog();
-        moveToOptionDialog.setCancelable(true);
-
-    }*/
 
     private void showEditTimeDialog() {
 
@@ -569,108 +507,6 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
 
     };
 
-    private void fetchAssignDialogData() {
-        newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
-    }
-
-    private void showAssignDialog(List<AddUser> userList) {
-        assignDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
-            @Override
-            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
-                Request request = requestResponse.getRequest();
-                upDateStatus.setRequestid(request.getId());
-                newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-            }
-
-
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-                        break;
-                    case AlertDialogCallback.CANCEL:
-                        assignDialog.dismiss();
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
-        assignDialog.showDialog();
-        assignDialog.setCancelable(true);
-    }
-
-
-    private void showPastHisoryDialog() {
-        pastHistoryDialog = new PastHistoryDialog.AlertDialogBuilder(getContext(), new PassHistoryCallback() {
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-
-                        break;
-                    case AlertDialogCallback.CANCEL:
-
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        }).title(getString(R.string.option_past_history))
-                .build();
-        pastHistoryDialog.showDialog();
-        pastHistoryDialog.setCancelable(true);
-    }
-
-    private void showUpdateStatusDialog(final int dialogType) {
-
-        final UpDateStatus upDateStatus = new UpDateStatus();
-        upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-        String dialogTitle = "";
-        if (dialogType == R.id.STATUS_UPDATE_REJECT) {
-            dialogTitle = getString(R.string.bottom_option_reject);
-            upDateStatus.setStatus(new Status(StatusConstants.REJECT));
-        } else if (dialogType == R.id.STATUS_UPDATE_HOLD) {
-            dialogTitle = getString(R.string.bottom_option_hold);
-            upDateStatus.setStatus(new Status(StatusConstants.NEW_REQ_HOLD));
-        } else if (dialogType == R.id.STATUS_UPDATE_TERMINATE) {
-            dialogTitle = getString(R.string.bottom_option_hold);
-            upDateStatus.setStatus(new Status(StatusConstants.TERMINATE));
-        }
-        updateStatusDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                        upDateStatus.setComments(commentString);
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, AppConstants.DEFAULT_VALUE), upDateStatus);
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                updateStatusDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(dialogTitle)
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        updateStatusDialog.showDialog();
-        updateStatusDialog.setCancelable(true);
-    }
-
-
     private void showAttendingDialog() {
         UpDateStatus upDateStatus = new UpDateStatus();
         upDateStatus.setStatus(new Status(ATTENDING));
@@ -720,11 +556,11 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         }
 
         if (fetchNewRequestResponsesList.size() == 0) {
-            binding.requestTextview.setVisibility(View.VISIBLE);
-            binding.requestRecyclerview.setVisibility(View.GONE);
+            newRequestBinding.requestTextview.setVisibility(View.VISIBLE);
+            newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
         } else {
-            binding.requestTextview.setVisibility(View.GONE);
-            binding.requestRecyclerview.setVisibility(View.VISIBLE);
+            newRequestBinding.requestTextview.setVisibility(View.GONE);
+            newRequestBinding.requestRecyclerview.setVisibility(View.VISIBLE);
             newRequestsAdapter.setData(fetchNewRequestResponsesList);
 
             shimmerFrameLayout.stopShimmerAnimation();

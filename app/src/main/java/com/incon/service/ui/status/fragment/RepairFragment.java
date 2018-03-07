@@ -31,6 +31,7 @@ import com.incon.service.databinding.FragmentRepairBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
+import com.incon.service.ui.BaseNCRPOptionFragment;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.RepairAdapter;
@@ -47,21 +48,11 @@ import static com.incon.service.AppUtils.callPhoneNumber;
  * Created by PC on 12/5/2017.
  */
 
-public class RepairFragment extends BaseTabFragment implements ServiceCenterContract.View {
-    private FragmentRepairBinding binding;
+public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
     private View rootView;
-    private ServiceCenterPresenter repairPresenter;
-    private RepairAdapter repairAdapter;
-    private int serviceCenterId = DEFAULT_VALUE;
-    private int userId = DEFAULT_VALUE;
-    private MoveToOptionDialog moveToOptionDialog;
-    private AppEditTextDialog terminateDialog;
-    private AppEditTextDialog holdDialog;
-    private AppAlertDialog detailsDialog;
     private AssignDialog statusDialog;
     private AppEditTextDialog closeDialog;
     private AppEditTextDialog repairDialog;
-    private ShimmerFrameLayout shimmerFrameLayout;
 
     @Override
     protected void initializePresenter() {
@@ -79,9 +70,9 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_repair,
+            repairBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_repair,
                     container, false);
-            rootView = binding.getRoot();
+            rootView = repairBinding.getRoot();
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
 
@@ -97,10 +88,10 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.REPAIR.name());
         repairAdapter = new RepairAdapter();
         repairAdapter.setClickCallback(iClickCallback);
-        binding.swiperefresh.setOnRefreshListener(onRefreshListener);
+        repairBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.requestRecyclerview.setAdapter(repairAdapter);
-        binding.requestRecyclerview.setLayoutManager(linearLayoutManager);
+        repairBinding.requestRecyclerview.setAdapter(repairAdapter);
+        repairBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
     }
 
     @Override
@@ -141,7 +132,7 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
     }
 
     private void getServiceRequestApi() {
-        binding.requestRecyclerview.setVisibility(View.GONE);
+        repairBinding.requestRecyclerview.setVisibility(View.GONE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmerAnimation();
         repairPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
@@ -149,8 +140,8 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
     }
 
     private void dismissSwipeRefresh() {
-        if (binding.swiperefresh.isRefreshing()) {
-            binding.swiperefresh.setRefreshing(false);
+        if (repairBinding.swiperefresh.isRefreshing()) {
+            repairBinding.swiperefresh.setRefreshing(false);
         }
     }
 
@@ -294,13 +285,14 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
         @Override
         public void onClick(View view) {
             Integer tag = (Integer) view.getTag();
+            ArrayList<Integer> drawablesArray = new ArrayList<>();
+            ArrayList<String> textArray = new ArrayList<>();
+            ArrayList<Integer> tagsArray = new ArrayList<>();
+
 
             FetchNewRequestResponse itemFromPosition = repairAdapter.getItemFromPosition(
                     productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
-            String[] textArray = new String[0];
-            int[] drawablesArray = new int[0];
-            int[] tagsArray = new int[0];
 
             if (tag == R.id.CUSTOMER_CALL_CUSTOMER_CARE) {
                 callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
@@ -308,37 +300,12 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
             } else if (tag == R.id.PRODUCT_WARRANTY_DETAILS) {
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
 
-                // TODO have to get details from back end
-
-                   /* String purchasedDate = DateUtils.convertMillisToStringFormat(
-                itemFromPosition.getPurchasedDate(), DateFormatterConstants.DD_MM_YYYY);
-                String warrantyEndDate = DateUtils.convertMillisToStringFormat(
-                        itemFromPosition.getWarrantyEndDate(), DateFormatterConstants.DD_MM_YYYY);
-                long noOfDays = DateUtils.convertDifferenceDateIndays(
-                        itemFromPosition.getWarrantyEndDate(), System.currentTimeMillis());
-                String warrantyConditions = itemFromPosition.getWarrantyConditions();
-                showInformationDialog(getString(
-                        R.string.bottom_option_warranty), getString(
-                        R.string.purchased_warranty_status_now)
-                        + noOfDays + " Days Left "
-                        + "\n"
-                        + getString(
-                        R.string.purchased_purchased_date)
-                        + purchasedDate
-                        + "\n"
-                        + getString(
-                        R.string.purchased_warranty_covers_date)
-                        + warrantyConditions
-                        + "\n"
-                        + getString(
-                        R.string.purchased_warranty_ends_on) + warrantyEndDate);
-                return;*/
 
             } else if (tag == R.id.PRODUCT_PAST_HISTORY) {
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
+              //  showPastHisoryDialog();
+               // return;
 
-                //  showPastHisoryDialog();
-                // return;
 
             } else if (tag == R.id.SERVICE_CENTER_CALL) {
                 callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
@@ -348,16 +315,16 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
                 showRepairDone();
 
             } else if (tag == R.id.STATUS_UPDATE_HOLD) {
-                showHoldDialog();
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_HOLD);
 
             } else if (tag == R.id.STATUS_UPDATE_TERMINATE) {
-                showTerminateDialog();
+
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_TERMINATE);
 
             } else if (tag == R.id.STATUS_UPDATE_MOVE_TO) {
                 showMoveToDialog();
 
             } else if (tag == R.id.STATUS_UPDATE_ASSIGN) {
-                //   showAssignDialog();
                 fetchAssignDialogData();
 
             }else if (tag == R.id.STATUS_UPDATE_CLOSE) {
@@ -370,101 +337,9 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
             bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
-            bottomSheetPurchasedBinding.thirdRow.setWeightSum(textArray.length);
+            bottomSheetPurchasedBinding.thirdRow.setWeightSum(tagsArray.size());
         }
     };
-
-    private void fetchAssignDialogData() {
-        repairPresenter.getUsersListOfServiceCenters(serviceCenterId);
-
-
-    }
-
-    private void showTerminateDialog() {
-        terminateDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                terminateDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_terminate))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        terminateDialog.showDialog();
-        terminateDialog.setCancelable(true);
-
-
-    }
-
-    private void showMoveToDialog() {
-        ArrayList<Status> statusList = AppUtils.getSubStatusList(getString(R.string.tab_repair), ((HomeActivity) getActivity()).getStatusList());
-        moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
-            @Override
-            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
-                Request request = requestResponse.getRequest();
-                upDateStatus.setRequestid(request.getId());
-                repairPresenter.upDateStatus(userId, upDateStatus);
-            }
-
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-                        break;
-                    case AlertDialogCallback.CANCEL:
-                        moveToOptionDialog.dismiss();
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        }).loadStatusList(statusList).build();
-        moveToOptionDialog.showDialog();
-        moveToOptionDialog.setCancelable(true);
-
-    }
-
-    private void showHoldDialog() {
-        holdDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                holdDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_hold))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        holdDialog.showDialog();
-        holdDialog.setCancelable(true);
-    }
 
     private void showRepairDone() {
         repairDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
@@ -521,41 +396,7 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
         closeDialog.setCancelable(true);
     }
 
-    private void showAssignDialog(List<AddUser> userList) {
-        statusDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
-            @Override
-            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-
-                FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
-                Request request = requestResponse.getRequest();
-                upDateStatus.setRequestid(request.getId());
-                repairPresenter.upDateStatus(userId, upDateStatus);
-
-            }
-
-
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-
-                        break;
-                    case AlertDialogCallback.CANCEL:
-                        statusDialog.dismiss();
-
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
-        statusDialog.showDialog();
-        statusDialog.setCancelable(true);
-
-    }
 
     private void showLocationDialog() {
 
@@ -608,11 +449,11 @@ public class RepairFragment extends BaseTabFragment implements ServiceCenterCont
         }
 
         if (fetchNewRequestResponsesList.size() == 0) {
-            binding.repairTextview.setVisibility(View.VISIBLE);
-            binding.requestRecyclerview.setVisibility(View.GONE);
+            repairBinding.repairTextview.setVisibility(View.VISIBLE);
+            repairBinding.requestRecyclerview.setVisibility(View.GONE);
         } else {
-            binding.repairTextview.setVisibility(View.GONE);
-            binding.requestRecyclerview.setVisibility(View.VISIBLE);
+            repairBinding.repairTextview.setVisibility(View.GONE);
+            repairBinding.requestRecyclerview.setVisibility(View.VISIBLE);
             repairAdapter.setData(fetchNewRequestResponsesList);
 
             shimmerFrameLayout.stopShimmerAnimation();

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.incon.service.AppConstants;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -59,24 +60,13 @@ import static com.incon.service.AppUtils.callPhoneNumber;
  * Created by PC on 12/5/2017.
  */
 public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
-    private FragmentCheckupBinding binding;
     private View rootView;
-    private ServiceCenterPresenter checkUpPresenter;
-    private CheckUpAdapter checkUpAdapter;
-    private int serviceCenterId = DEFAULT_VALUE;
-    private int userId = DEFAULT_VALUE;
-    private MoveToOptionDialog moveToOptionDialog;
-    private AppEditTextDialog terminateDialog;
-    private AppEditTextDialog holdDialog;
-
     private EstimationDialog estimationDialog;
     private List<FetchNewRequestResponse> fetchNewRequestResponses;
-    private AppAlertDialog detailsDialog;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
     private AssignDialog assignDialog;
-    private PastHistoryDialog pastHistoryDialog;
-    private ShimmerFrameLayout shimmerFrameLayout;
+
 
 
     @Override
@@ -94,9 +84,9 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_checkup,
+            checkupBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_checkup,
                     container, false);
-            rootView = binding.getRoot();
+            rootView = checkupBinding.getRoot();
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
             initViews();
@@ -111,10 +101,10 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.CHECKUP.name());
         checkUpAdapter = new CheckUpAdapter();
         checkUpAdapter.setClickCallback(iClickCallback);
-        binding.swiperefresh.setOnRefreshListener(onRefreshListener);
+        checkupBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.checkupRecyclerview.setAdapter(checkUpAdapter);
-        binding.checkupRecyclerview.setLayoutManager(linearLayoutManager);
+        checkupBinding.checkupRecyclerview.setAdapter(checkUpAdapter);
+        checkupBinding.checkupRecyclerview.setLayoutManager(linearLayoutManager);
     }
 
     @Override
@@ -152,7 +142,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
     }
 
     private void getServiceRequestApi() {
-        binding.checkupRecyclerview.setVisibility(View.GONE);
+        checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmerAnimation();
         checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
@@ -161,8 +151,8 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
 
     private void dismissSwipeRefresh() {
-        if (binding.swiperefresh.isRefreshing()) {
-            binding.swiperefresh.setRefreshing(false);
+        if (checkupBinding.swiperefresh.isRefreshing()) {
+            checkupBinding.swiperefresh.setRefreshing(false);
         }
     }
 
@@ -335,11 +325,10 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 showEstimationDialog();
 
             } else if (tag == R.id.STATUS_UPDATE_HOLD) {
-                showHoldDialog();
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_HOLD);
 
             } else if (tag == R.id.STATUS_UPDATE_TERMINATE) {
-                showTerminateDialog();
-
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_TERMINATE);
             } else if (tag == R.id.STATUS_UPDATE_MOVE_TO) {
                 showMoveToDialog();
 
@@ -356,99 +345,10 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
         }
     };
 
-    private void fetchAssignDialogData() {
-        checkUpPresenter.getUsersListOfServiceCenters(serviceCenterId);
 
 
-    }
-
-   /* private void showMoveToDialog() {
-        ArrayList<Status> statusList = AppUtils.getSubStatusList(getString(R.string.tab_checkup), ((HomeActivity) getActivity()).getStatusList());
-        moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
-            @Override
-            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
-                Request request = requestResponse.getRequest();
-                upDateStatus.setRequestid(request.getId());
-                checkUpPresenter.upDateStatus(userId, upDateStatus);
-            }
-
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-                        break;
-                    case AlertDialogCallback.CANCEL:
-                        moveToOptionDialog.dismiss();
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        }).loadStatusList(statusList).build();
-        moveToOptionDialog.showDialog();
-        moveToOptionDialog.setCancelable(true);
-
-    }
-*/
-    private void showTerminateDialog() {
-
-        terminateDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                terminateDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_terminate))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        terminateDialog.showDialog();
-        terminateDialog.setCancelable(true);
 
 
-    }
-
-    private void showHoldDialog() {
-        holdDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                holdDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_hold))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        holdDialog.showDialog();
-        holdDialog.setCancelable(true);
-
-    }
 
     private void showEstimationDialog() {
 
@@ -519,63 +419,8 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 }
             };
 
-    private void showPastHisoryDialog() {
-        pastHistoryDialog = new PastHistoryDialog.AlertDialogBuilder(getContext(), new PassHistoryCallback() {
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-
-                        break;
-                    case AlertDialogCallback.CANCEL:
-
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        }).title(getString(R.string.option_past_history))
-                .build();
-        pastHistoryDialog.showDialog();
-        pastHistoryDialog.setCancelable(true);
-    }
 
 
-    private void showAssignDialog(List<AddUser> userList) {
-        assignDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
-
-            @Override
-            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-
-                FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
-                Request request = requestResponse.getRequest();
-                upDateStatus.setRequestid(request.getId());
-                checkUpPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-
-            }
-
-
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-                        break;
-                    case AlertDialogCallback.CANCEL:
-                        assignDialog.dismiss();
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
-        assignDialog.showDialog();
-        assignDialog.setCancelable(true);
-
-    }
 
     private void showCloseDialog() {
         closeDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
@@ -656,9 +501,6 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                     productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, tag);
 
-            String[] textArray = new String[0];
-            int[] drawablesArray = new int[0];
-            int[] tagsArray = new int[0];
 
 
         }
@@ -690,11 +532,11 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
             fetchNewRequestResponsesList = new ArrayList<>();
         }
         if (fetchNewRequestResponsesList.size() == 0) {
-            binding.checkupTextview.setVisibility(View.VISIBLE);
-            binding.checkupRecyclerview.setVisibility(View.GONE);
+            checkupBinding.checkupTextview.setVisibility(View.VISIBLE);
+            checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
         } else {
-            binding.checkupTextview.setVisibility(View.GONE);
-            binding.checkupRecyclerview.setVisibility(View.VISIBLE);
+            checkupBinding.checkupTextview.setVisibility(View.GONE);
+            checkupBinding.checkupRecyclerview.setVisibility(View.VISIBLE);
             checkUpAdapter.setData(fetchNewRequestResponsesList);
 
             shimmerFrameLayout.stopShimmerAnimation();

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
@@ -18,17 +17,13 @@ import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.callbacks.TextAlertDialogCallback;
-import com.incon.service.custom.view.AppAlertDialog;
-import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.AssignDialog;
-import com.incon.service.databinding.FragmentPaymentBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
+import com.incon.service.ui.BaseNCRPOptionFragment;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.PaymentAdapter;
-import com.incon.service.ui.status.base.base.BaseTabFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,20 +35,10 @@ import static com.incon.service.AppUtils.callPhoneNumber;
  * Created by PC on 12/5/2017.
  */
 
-public class PaymentFragment extends BaseTabFragment implements ServiceCenterContract.View {
+public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
 
-    private FragmentPaymentBinding binding;
     private View rootView;
-    private ServiceCenterPresenter paymentPresenter;
-    private PaymentAdapter paymentAdapter;
-    private int serviceCenterId = DEFAULT_VALUE;
-    private int userId = DEFAULT_VALUE;
-    private AppEditTextDialog terminateDialog;
-
     private AssignDialog assignDialog;
-    private AppAlertDialog detailsDialog;
-    private ShimmerFrameLayout shimmerFrameLayout;
-
 
 
     @Override
@@ -73,9 +58,9 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_payment,
+            paymentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_payment,
                     container, false);
-            rootView = binding.getRoot();
+            rootView = paymentBinding.getRoot();
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
 
@@ -93,10 +78,10 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
 
         paymentAdapter = new PaymentAdapter();
         paymentAdapter.setClickCallback(iClickCallback);
-        binding.swiperefresh.setOnRefreshListener(onRefreshListener);
+        paymentBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.paymentRecyclerview.setAdapter(paymentAdapter);
-        binding.paymentRecyclerview.setLayoutManager(linearLayoutManager);
+        paymentBinding.paymentRecyclerview.setAdapter(paymentAdapter);
+        paymentBinding.paymentRecyclerview.setLayoutManager(linearLayoutManager);
     }
 
 
@@ -130,19 +115,19 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
             serviceRequest.setAssignedUser(userId);
         }
         getServiceRequestApi();
-       // paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+        // paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
     private void getServiceRequestApi() {
-        binding.paymentRecyclerview.setVisibility(View.GONE);
+        paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmerAnimation();
         paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
     private void dismissSwipeRefresh() {
-        if (binding.swiperefresh.isRefreshing()) {
-            binding.swiperefresh.setRefreshing(false);
+        if (paymentBinding.swiperefresh.isRefreshing()) {
+            paymentBinding.swiperefresh.setRefreshing(false);
         }
     }
 
@@ -283,7 +268,6 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
 
 
-
             } else if (tag == R.id.PRODUCT_PAST_HISTORY) {
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
 
@@ -305,13 +289,11 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
                 drawablesArray.add(R.drawable.ic_option_pasthistory);
 
 
-
             } else if (tag == R.id.STATUS_UPDATE_TERMINATE) {
-                showTerminateDialog();
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_TERMINATE);
 
             } else if (tag == R.id.STATUS_UPDATE_ASSIGN) {
-                // showAssignDialog();
-               // fetchAssignDialogData();
+                 fetchAssignDialogData();
 
             }
 
@@ -322,71 +304,9 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
         }
     };
 
-    /*private void fetchAssignDialogData() {
-        paymentPresenter.getUsersListOfServiceCenters(serviceCenterId);
 
 
-    }*/
 
-    private void showAssignDialog(List<AddUser> userList) {
-        assignDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
-            @Override
-            public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                FetchNewRequestResponse requestResponse = paymentAdapter.getItemFromPosition(productSelectedPosition);
-                Request request = requestResponse.getRequest();
-                upDateStatus.setRequestid(request.getId());
-                paymentPresenter.upDateStatus(userId, upDateStatus);
-            }
-
-
-            @Override
-            public void alertDialogCallback(byte dialogStatus) {
-
-                switch (dialogStatus) {
-                    case AlertDialogCallback.OK:
-                        break;
-                    case AlertDialogCallback.CANCEL:
-                        assignDialog.dismiss();
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        }).title(getString(R.string.option_assign)).loadUsersList(userList).statusId(ASSIGNED).build();
-        assignDialog.showDialog();
-        assignDialog.setCancelable(true);
-    }
-
-
-    private void showTerminateDialog() {
-        terminateDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                terminateDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_terminate))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        terminateDialog.showDialog();
-        terminateDialog.setCancelable(true);
-
-
-    }
 
     private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
         @Override
@@ -408,24 +328,6 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
 
             }
-
-            // TODO have to remove commented code
-
-           /* if (firstRowTag == 3) { // status update
-
-                if (secondRowTag == 0) { // paid
-
-                    if (thirdRowTag == 0) { // cash
-                        AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                    } else if (thirdRowTag == 1) {
-                        AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                    } else if (thirdRowTag == 2) {
-                        AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-                    }
-
-                }
-
-            }*/
 
 
         }
@@ -464,11 +366,11 @@ public class PaymentFragment extends BaseTabFragment implements ServiceCenterCon
         }
 
         if (fetchNewRequestResponsesList.size() == 0) {
-            binding.paymentTextview.setVisibility(View.VISIBLE);
-            binding.paymentRecyclerview.setVisibility(View.GONE);
+            paymentBinding.paymentTextview.setVisibility(View.VISIBLE);
+            paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
         } else {
-            binding.paymentTextview.setVisibility(View.GONE);
-            binding.paymentRecyclerview.setVisibility(View.VISIBLE);
+            paymentBinding.paymentTextview.setVisibility(View.GONE);
+            paymentBinding.paymentRecyclerview.setVisibility(View.VISIBLE);
             paymentAdapter.setData(fetchNewRequestResponsesList);
 
             shimmerFrameLayout.stopShimmerAnimation();
