@@ -258,7 +258,6 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         fragmentFromPosition.setFromDate(selectedDate.getTimeInMillis());
         fragmentFromPosition.setToDate(selectedDate.getTimeInMillis());
         fragmentFromPosition.doRefresh(false);
-
     }
 
     private void loadServiceCentersSpinner() {

@@ -618,6 +618,7 @@
     <string name="new_password_hint">New Password</string>
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="notification_id_channel">Notification</string>
+    <string name="add_service_engineer_to_assign">Add service engineer first to assign</string>
 
 
 </resources>

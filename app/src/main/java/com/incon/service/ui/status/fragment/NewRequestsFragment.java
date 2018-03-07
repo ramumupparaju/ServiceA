@@ -345,12 +345,9 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
                 return;
 
             } else if (tag == R.id.STATUS_UPDATE_ACCEPT) {
-                // todo have to cal in accept api response
                 doAcceptApi();
-
             } else if (tag == R.id.STATUS_UPDATE_ASSIGN) {
                 fetchAssignDialogData();
-
             } else if (tag == R.id.STATUS_UPDATE_ATTENDING) {
                 showAttendingDialog();
 
@@ -479,9 +476,14 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
     };
 
     private void showAttendingDialog() {
+        FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
+
         UpDateStatus upDateStatus = new UpDateStatus();
+        if (itemFromPosition.getRequest().getStatus() == StatusConstants.ACCEPT) {
+            upDateStatus.setAssignedTo(userId == -1 ? SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE) : userId);
+        }
         upDateStatus.setStatus(new Status(ATTENDING));
-        upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
+        upDateStatus.setRequestid(itemFromPosition.getRequest().getId());
         newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
     }
 
@@ -552,6 +554,10 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
             usersList = new ArrayList<>();
         }
 
+        if (usersList.size() == 0) {
+            showErrorMessage(getString(R.string.add_service_engineer_to_assign));
+            return;
+        }
         showAssignDialog(usersList);
     }
 

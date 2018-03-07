@@ -86,6 +86,7 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     public AssignDialog assignDialog;
 
 
+
     public void showMoveToDialog() {
         String stringToSkip = "";
 

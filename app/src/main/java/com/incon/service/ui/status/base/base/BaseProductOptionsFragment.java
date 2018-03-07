@@ -15,6 +15,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.databinding.CustomBottomSheetBinding;
 import com.incon.service.ui.BaseFragment;
@@ -45,6 +46,15 @@ public abstract class BaseProductOptionsFragment extends BaseFragment {
 
     public void setToDate(long toDate) {
         this.toDate = toDate;
+    }
+
+    @Override
+    public void showErrorMessage(String errorMessage) {
+        if (bottomSheetDialog.isShowing()) {
+            AppUtils.shortToast(getActivity(), errorMessage);
+        } else {
+            super.showErrorMessage(errorMessage);
+        }
     }
 
     // load bottom sheet
