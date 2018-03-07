@@ -62,10 +62,8 @@ import static com.incon.service.AppUtils.callPhoneNumber;
 public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
     private View rootView;
     private EstimationDialog estimationDialog;
-    private List<FetchNewRequestResponse> fetchNewRequestResponses;
     private AppEditTextDialog noteDialog;
     private AppEditTextDialog closeDialog;
-    private AssignDialog assignDialog;
 
 
 
@@ -249,16 +247,11 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
 
             } else if (tag == R.id.SERVICE_CENTER) {
-
                 tagsArray.add(R.id.SERVICE_CENTER_CALL);
                 textArray.add(getString(R.string.bottom_option_Call));
                 drawablesArray.add(R.drawable.ic_option_call);
 
-
-
-
             } else if (tag == R.id.STATUS_UPDATE) {
-
 
                 tagsArray.add(R.id.STATUS_UPDATE_ESTIMATION);
                 textArray.add(getString(R.string.bottom_option_estimation));
@@ -279,7 +272,6 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 tagsArray.add(R.id.STATUS_UPDATE_ACCEPT);
                 textArray.add(getString(R.string.bottom_option_assign));
                 drawablesArray.add(R.drawable.ic_option_hold);
-
 
             }
 
@@ -334,9 +326,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
             } else if (tag == R.id.STATUS_UPDATE_ASSIGN) {
                 fetchAssignDialogData();
-
             }
-
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
@@ -344,11 +334,6 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, textArray, drawablesArray,tagsArray, bottomSheetThirdRowClickListener);
         }
     };
-
-
-
-
-
 
     private void showEstimationDialog() {
 
@@ -418,62 +403,6 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
                 }
             };
-
-
-
-
-    private void showCloseDialog() {
-        closeDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                closeDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_close))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        closeDialog.showDialog();
-    }
-
-    private void showNoteDialog() {
-        noteDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                noteDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_note))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        noteDialog.showDialog();
-
-    }
 
     private void showLocationDialog() {
 

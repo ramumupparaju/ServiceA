@@ -136,7 +136,6 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         }
 
         getServiceRequestApi();
-        //newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
     private void getServiceRequestApi() {
@@ -298,34 +297,6 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
                 tagsArray.add(R.id.STATUS_UPDATE_EDIT_TIME);
                 drawablesArray.add(R.drawable.ic_option_hold);
 
-               /* else {
-
-                    textArray[0] = getString(R.string.bottom_option_assign);
-                    textArray[1] = getString(R.string.bottom_option_attending);
-                    textArray[2] = getString(R.string.bottom_option_reject);
-                    textArray[3] = getString(R.string.bottom_option_hold);
-                    textArray[4] = getString(R.string.bottom_option_terminate);
-                    textArray[5] = getString(R.string.bottom_option_move_to);
-                    textArray[6] = getString(R.string.bottom_option_edit);
-
-                    tagsArray = new int[length];
-                    tagsArray[0] = R.id.STATUS_UPDATE_ASSIGN;
-                    tagsArray[1] = R.id.STATUS_UPDATE_ATTENDING;
-                    tagsArray[2] = R.id.STATUS_UPDATE_REJECT;
-                    tagsArray[3] = R.id.STATUS_UPDATE_HOLD;
-                    tagsArray[4] = R.id.STATUS_UPDATE_TERMINATE;
-                    tagsArray[5] = R.id.STATUS_UPDATE_MOVE_TO;
-                    tagsArray[6] = R.id.STATUS_UPDATE_EDIT_TIME;
-
-                    drawablesArray = new int[length];
-                    drawablesArray[0] = R.drawable.ic_option_accept_request;
-                    drawablesArray[1] = R.drawable.ic_option_accept_request;
-                    drawablesArray[2] = R.drawable.ic_option_accept_request;
-                    drawablesArray[3] = R.drawable.ic_option_accept_request;
-                    drawablesArray[4] = R.drawable.ic_option_hold;
-                    drawablesArray[5] = R.drawable.ic_option_hold;
-                    drawablesArray[6] = R.drawable.ic_option_hold;
-                }*/
             }
 
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);

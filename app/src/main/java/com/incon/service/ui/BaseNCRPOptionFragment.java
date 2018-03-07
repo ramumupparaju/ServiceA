@@ -113,12 +113,14 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                     FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
-                    checkUpPresenter.upDateStatus(userId, upDateStatus);
+                    checkUpPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
+
                 } else {
                     FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
-                    repairPresenter.upDateStatus(userId, upDateStatus);
+                    repairPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
+
                 }
 
             }
@@ -234,15 +236,13 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
         } else if (this instanceof CheckUpFragment) {
             checkUpPresenter.getUsersListOfServiceCenters(serviceCenterId);
-        } else if (this instanceof CheckUpFragment) {
+        } else if (this instanceof RepairFragment) {
             repairPresenter.getUsersListOfServiceCenters(serviceCenterId);
         }
-        paymentPresenter.getUsersListOfServiceCenters(serviceCenterId);
-
+        else if (this instanceof PaymentFragment) {
+            paymentPresenter.getUsersListOfServiceCenters(serviceCenterId);
+        }
     }
-
-
-
 
     public void showAssignDialog(List<AddUser> userList) {
         assignDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
