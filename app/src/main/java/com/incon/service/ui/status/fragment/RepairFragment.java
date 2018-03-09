@@ -11,37 +11,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
-import com.incon.service.apimodel.components.request.Request;
-import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
-import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.callbacks.MoveToOptionCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
-import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
-import com.incon.service.custom.view.AssignDialog;
-import com.incon.service.custom.view.MoveToOptionDialog;
-import com.incon.service.databinding.FragmentRepairBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
-import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BaseNCRPOptionFragment;
 import com.incon.service.ui.RegistrationMapActivity;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.RepairAdapter;
-import com.incon.service.ui.status.base.base.BaseTabFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
-import static com.incon.service.AppConstants.StatusConstants.ATTENDING;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -50,9 +37,7 @@ import static com.incon.service.AppUtils.callPhoneNumber;
 
 public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
     private View rootView;
-    private AssignDialog statusDialog;
     private AppEditTextDialog closeDialog;
-    private AppEditTextDialog repairDialog;
 
     @Override
     protected void initializePresenter() {
@@ -128,7 +113,7 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
         serviceRequest.setToDate(toDate);
 
         getServiceRequestApi();
-       // repairPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+        // repairPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
     private void getServiceRequestApi() {
@@ -212,7 +197,6 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
             ArrayList<Integer> drawablesArray = new ArrayList<>();
             ArrayList<String> textArray = new ArrayList<>();
             ArrayList<Integer> tagsArray = new ArrayList<>();
-
 
 
             changeSelectedViews(bottomSheetPurchasedBinding.firstRow, tag);
@@ -303,8 +287,8 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
 
             } else if (tag == R.id.PRODUCT_PAST_HISTORY) {
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-              //  showPastHisoryDialog();
-               // return;
+                //  showPastHisoryDialog();
+                // return;
 
 
             } else if (tag == R.id.SERVICE_CENTER_CALL) {
@@ -312,8 +296,7 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
                 return;
 
             } else if (tag == R.id.STATUS_UPDATE_REPAIR_DONE) {
-                showRepairDone();
-
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_REPAIR_DONE);
             } else if (tag == R.id.STATUS_UPDATE_HOLD) {
                 showUpdateStatusDialog(R.id.STATUS_UPDATE_HOLD);
 
@@ -327,7 +310,7 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
             } else if (tag == R.id.STATUS_UPDATE_ASSIGN) {
                 fetchAssignDialogData();
 
-            }else if (tag == R.id.STATUS_UPDATE_CLOSE) {
+            } else if (tag == R.id.STATUS_UPDATE_CLOSE) {
                 showCloseDialog();
 
             }
@@ -340,34 +323,6 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(tagsArray.size());
         }
     };
-
-    private void showRepairDone() {
-        repairDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
-                TextAlertDialogCallback() {
-                    @Override
-                    public void enteredText(String commentString) {
-                    }
-
-                    @Override
-                    public void alertDialogCallback(byte dialogStatus) {
-                        switch (dialogStatus) {
-                            case AlertDialogCallback.OK:
-                                break;
-                            case AlertDialogCallback.CANCEL:
-                                repairDialog.dismiss();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }).title(getString(R.string.bottom_option_repair_done))
-                .leftButtonText(getString(R.string.action_cancel))
-                .rightButtonText(getString(R.string.action_submit))
-                .build();
-        repairDialog.showDialog();
-        repairDialog.setCancelable(true);
-
-    }
 
     private void showCloseDialog() {
         closeDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
@@ -395,7 +350,6 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
         closeDialog.showDialog();
         closeDialog.setCancelable(true);
     }
-
 
 
     private void showLocationDialog() {
@@ -473,15 +427,9 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
 
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
-        if (statusDialog != null && statusDialog.isShowing()) {
-            statusDialog.dismiss();
-        }
         // todo have to know
         try {
-            Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
-            if (statusId == ASSIGNED || statusId == ATTENDING) {
-                doRefresh(true);
-            }
+            doRefresh(true);
         } catch (Exception e) {
             //TODO have to handle
         }

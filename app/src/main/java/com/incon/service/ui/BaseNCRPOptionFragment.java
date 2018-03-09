@@ -178,10 +178,11 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             } else if (dialogType == R.id.STATUS_UPDATE_TERMINATE) {
                 dialogTitle = getString(R.string.bottom_option_terminate);
                 upDateStatus.setStatus(new Status(StatusConstants.TERMINATE));
+            } else if (dialogType == R.id.STATUS_UPDATE_REPAIR_DONE) {
+                dialogTitle = getString(R.string.bottom_option_repair_done);
+                upDateStatus.setStatus(new Status(StatusConstants.REPAIR_DONE));
             }
-        }
-
-        else if (this instanceof PaymentFragment) {
+        } else if (this instanceof PaymentFragment) {
             upDateStatus.setRequestid(paymentAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
             if (dialogType == R.id.STATUS_UPDATE_TERMINATE) {
                 dialogTitle = getString(R.string.bottom_option_terminate);
