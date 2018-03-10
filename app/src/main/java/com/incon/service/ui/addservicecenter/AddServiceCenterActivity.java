@@ -26,7 +26,6 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchcategorie.Brand;
 import com.incon.service.apimodel.components.fetchcategorie.Division;
 import com.incon.service.apimodel.components.fetchcategorie.FetchCategories;
-import com.incon.service.apimodel.components.login.LoginResponse;
 import com.incon.service.apimodel.components.updateservicecenter.UpDateServiceCenterResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.custom.view.AppAlertVerticalTwoButtonsDialog;
@@ -458,15 +457,13 @@ public class AddServiceCenterActivity extends BaseActivity implements
     public void onSubmitClick() {
         if (validateFields()) {
             // TODO have to check code
-          /*  if (addServiceCenter != null) {
+            if (addServiceCenter != null) {
                 addServiceCenterPresenter.upDateServiceCenter(SharedPrefsUtils.loginProvider().
                         getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), upDateServiceCenter);
+            } else {
+                addServiceCenterPresenter.addingServiceCenter(SharedPrefsUtils.loginProvider().
+                        getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addServiceCenter);
             }
-            else {*/
-
-            addServiceCenterPresenter.addingServiceCenter(SharedPrefsUtils.loginProvider().
-                    getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addServiceCenter);
-            //}
 
         }
     }
