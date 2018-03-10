@@ -136,7 +136,7 @@
                 android:focusableInTouchMode="@{isEditable ? true : false }"
                 android:hint="@string/register_gender_hint"
                 android:tag="2"
-                android:text="@={upDateUserProfile.gender}"
+                android:text="@={upDateUserProfile.genderType}"
                 app:errorEnabled="true"
                 app:met_floatingLabel="highlight"
                 app:met_textColor="@color/colorForgotPasswordHintText"

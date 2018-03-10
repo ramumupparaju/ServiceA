@@ -106,6 +106,9 @@
     <string name="action_medium">Medium</string>
     <string name="action_low">Low</string>
 
+    <string name="action_male">Male</string>
+    <string name="action_female">Female</string>
+
     <!--service center time-->
     <string name="time_10_12">10-12</string>
     <string name="time_12_15">12-15</string>

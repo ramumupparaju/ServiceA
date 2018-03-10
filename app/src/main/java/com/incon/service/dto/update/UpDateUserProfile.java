@@ -43,6 +43,7 @@ public class UpDateUserProfile  extends BaseObservable {
     private String mobileNumber;
 
     private transient String dateOfBirthToShow;
+    private String genderType;
 
     public UpDateUserProfile() {
     }
@@ -167,13 +168,6 @@ public class UpDateUserProfile  extends BaseObservable {
                 }
                 break;
 
-            case 2:
-                boolean genderEmpty = TextUtils.isEmpty(gender);
-                if (emptyValidation && genderEmpty) {
-                    return AppConstants.RegistrationValidation.GENDER_REQ;
-                }
-                break;
-
             case 3:
                 boolean dobEmpty = TextUtils.isEmpty(dateOfBirthToShow);
                 if (emptyValidation && dobEmpty) {
@@ -200,4 +194,15 @@ public class UpDateUserProfile  extends BaseObservable {
         }
         return AppConstants.VALIDATION_SUCCESS;
     }
+
+    @Bindable
+    public String getGenderType() {
+        return genderType;
+    }
+
+    public void setGenderType(String gender) {
+        this.genderType = gender;
+        notifyChange();
+    }
+
 }
