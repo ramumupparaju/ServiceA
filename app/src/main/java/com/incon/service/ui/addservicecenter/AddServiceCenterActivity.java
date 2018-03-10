@@ -456,7 +456,7 @@ public class AddServiceCenterActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
-            // TODO have to check code
+            // TODO have to check Api
             if (addServiceCenter != null) {
                 addServiceCenterPresenter.upDateServiceCenter(SharedPrefsUtils.loginProvider().
                         getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), upDateServiceCenter);
