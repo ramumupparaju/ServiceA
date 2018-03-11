@@ -108,45 +108,8 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
     }
 
     @Override
-    public void doRefresh(boolean isForceRefresh) {
-        dismissSwipeRefresh();
-        HomeActivity activity = (HomeActivity) getActivity();
-        int tempServiceCenterId = activity.getServiceCenterId();
-        int tempUserId = activity.getUserId();
-
-        if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
-            //no chnages have made, so no need to make api call checks whether pull to refresh or not
-            if (!isForceRefresh)
-                return;
-        } else {
-            serviceCenterId = tempServiceCenterId;
-            userId = tempUserId;
-        }
-
-        if (serviceCenterId == -1 || serviceCenterId == DEFAULT_VALUE) {
-            serviceRequest.setServiceIds(null);
-        } else {
-            serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
-        }
-
-        if (userId == -1 || userId == DEFAULT_VALUE) {
-            serviceRequest.setAssignedUser(null);
-        } else {
-            serviceRequest.setAssignedUser(userId);
-        }
-
-        getServiceRequestApi();
-    }
-
-    private void getServiceRequestApi() {
-        newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
-        shimmerFrameLayout.setVisibility(View.VISIBLE);
-        shimmerFrameLayout.startShimmerAnimation();
-        newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
-
-    }
-
-    private void dismissSwipeRefresh() {
+    public void dismissSwipeRefresh() {
+        super.dismissSwipeRefresh();
         if (newRequestBinding.swiperefresh.isRefreshing()) {
             newRequestBinding.swiperefresh.setRefreshing(false);
         }
@@ -377,13 +340,13 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
 
 
     private void showEditTimeDialog() {
-
         editTimeDialog = new EditTimeDialog.AlertDialogBuilder(getContext(), new EditTimeCallback() {
             @Override
             public void alertDialogCallback(byte dialogStatus) {
 
                 switch (dialogStatus) {
                     case AlertDialogCallback.OK:
+                        //TODO have to make api call
                         break;
                     case AlertDialogCallback.CANCEL:
                         editTimeDialog.dismiss();
@@ -510,36 +473,6 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         startActivity(addressIntent);
     }
 
-    // data re load
-    private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
-            new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    newRequestsAdapter.clearData();
-                    doRefresh(true);
-                }
-            };
-
-
-    @Override
-    public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
-
-        if (fetchNewRequestResponsesList == null) {
-            fetchNewRequestResponsesList = new ArrayList<>();
-        }
-
-        if (fetchNewRequestResponsesList.size() == 0) {
-            newRequestBinding.requestTextview.setVisibility(View.VISIBLE);
-            newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
-        } else {
-            newRequestBinding.requestTextview.setVisibility(View.GONE);
-            newRequestBinding.requestRecyclerview.setVisibility(View.VISIBLE);
-            newRequestsAdapter.setData(fetchNewRequestResponsesList);
-
-            shimmerFrameLayout.stopShimmerAnimation();
-            shimmerFrameLayout.setVisibility(View.GONE);
-        }
-    }
 
     @Override
     public void onSearchClickListerner(String searchableText, String searchType) {
@@ -567,7 +500,6 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         dismissDialog(updateStatusDialog);
 
         doRefresh(true);
-
     }
 
     @Override

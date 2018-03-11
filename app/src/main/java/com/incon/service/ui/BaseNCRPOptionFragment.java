@@ -1,6 +1,7 @@
 package com.incon.service.ui;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,8 +78,7 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
 
 
     public ShimmerFrameLayout shimmerFrameLayout;
-   // public int userId;
-   public int serviceCenterId = DEFAULT_VALUE;
+    public int serviceCenterId = DEFAULT_VALUE;
     public int userId = DEFAULT_VALUE;
     public PastHistoryDialog pastHistoryDialog;
     public AppEditTextDialog updateStatusDialog;
@@ -86,6 +86,111 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     public AssignDialog assignDialog;
 
 
+    public SwipeRefreshLayout.OnRefreshListener onRefreshListener =
+            new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    doRefresh(true);
+                }
+            };
+
+    public void dismissSwipeRefresh() {
+    }
+
+
+    @Override
+    public void doRefresh(boolean isForceRefresh) {
+        dismissDialog(bottomSheetDialog);
+        dismissSwipeRefresh();
+        HomeActivity activity = (HomeActivity) getActivity();
+        int tempServiceCenterId = activity.getServiceCenterId();
+        int tempUserId = activity.getUserId();
+
+        if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
+            //no chnages have made, so no need to make api call checks whether pull to refresh or not
+            if (!isForceRefresh)
+                return;
+        } else {
+            serviceCenterId = tempServiceCenterId;
+            userId = tempUserId;
+        }
+
+        if (serviceCenterId == -1 || serviceCenterId == DEFAULT_VALUE) {
+            serviceRequest.setServiceIds(null);
+        } else {
+            serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
+        }
+
+        if (userId == -1 || userId == DEFAULT_VALUE) {
+            serviceRequest.setAssignedUser(null);
+        } else {
+            serviceRequest.setAssignedUser(userId);
+        }
+
+        getServiceRequestApi();
+    }
+
+    private void getServiceRequestApi() {
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
+
+        if (this instanceof NewRequestsFragment) {
+            newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
+            newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+        } else if (this instanceof CheckUpFragment) {
+            checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
+            checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+        } else if (this instanceof RepairFragment) {
+            repairBinding.requestRecyclerview.setVisibility(View.GONE);
+            repairPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+        } else if (this instanceof PaymentFragment) {
+            paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
+            paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+        }
+    }
+
+
+    public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
+        if (fetchNewRequestResponsesList == null) {
+            fetchNewRequestResponsesList = new ArrayList<>();
+        }
+        if (fetchNewRequestResponsesList.size() == 0) {
+            if (this instanceof NewRequestsFragment) {
+                newRequestBinding.requestTextview.setVisibility(View.VISIBLE);
+                newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
+            } else if (this instanceof CheckUpFragment) {
+                checkupBinding.checkupTextview.setVisibility(View.VISIBLE);
+                checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
+            } else if (this instanceof RepairFragment) {
+                repairBinding.repairTextview.setVisibility(View.VISIBLE);
+                repairBinding.requestRecyclerview.setVisibility(View.GONE);
+            } else if (this instanceof PaymentFragment) {
+                paymentBinding.paymentTextview.setVisibility(View.VISIBLE);
+                paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
+            }
+        } else {
+            if (this instanceof NewRequestsFragment) {
+                newRequestBinding.requestTextview.setVisibility(View.GONE);
+                newRequestBinding.requestRecyclerview.setVisibility(View.VISIBLE);
+                newRequestsAdapter.setData(fetchNewRequestResponsesList);
+            } else if (this instanceof CheckUpFragment) {
+                checkupBinding.checkupTextview.setVisibility(View.GONE);
+                checkupBinding.checkupRecyclerview.setVisibility(View.VISIBLE);
+                checkUpAdapter.setData(fetchNewRequestResponsesList);
+            } else if (this instanceof RepairFragment) {
+                repairBinding.repairTextview.setVisibility(View.GONE);
+                repairBinding.requestRecyclerview.setVisibility(View.VISIBLE);
+                repairAdapter.setData(fetchNewRequestResponsesList);
+            } else if (this instanceof PaymentFragment) {
+                paymentBinding.paymentTextview.setVisibility(View.GONE);
+                paymentBinding.paymentRecyclerview.setVisibility(View.VISIBLE);
+                paymentAdapter.setData(fetchNewRequestResponsesList);
+            }
+        }
+
+        shimmerFrameLayout.stopShimmerAnimation();
+        shimmerFrameLayout.setVisibility(View.GONE);
+    }
 
     public void showMoveToDialog() {
         String stringToSkip = "";
@@ -100,8 +205,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
 
 
         ArrayList<Status> statusList = AppUtils.getSubStatusList(stringToSkip, ((HomeActivity) getActivity()).getStatusList());
-
-
         moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
@@ -240,8 +343,7 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             checkUpPresenter.getUsersListOfServiceCenters(serviceCenterId);
         } else if (this instanceof RepairFragment) {
             repairPresenter.getUsersListOfServiceCenters(serviceCenterId);
-        }
-        else if (this instanceof PaymentFragment) {
+        } else if (this instanceof PaymentFragment) {
             paymentPresenter.getUsersListOfServiceCenters(serviceCenterId);
         }
     }
@@ -256,23 +358,17 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
                     newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-                }
-
-                else if (BaseNCRPOptionFragment.this instanceof CheckUpFragment) {
+                } else if (BaseNCRPOptionFragment.this instanceof CheckUpFragment) {
                     FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
                     checkUpPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-                }
-
-                else if (BaseNCRPOptionFragment.this instanceof RepairFragment) {
+                } else if (BaseNCRPOptionFragment.this instanceof RepairFragment) {
                     FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
                     repairPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-                }
-
-                else  {
+                } else {
                     FetchNewRequestResponse requestResponse = paymentAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
@@ -303,11 +399,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
         assignDialog.setCancelable(true);
 
     }
-
-
-
-
-
 
     public void showPastHisoryDialog() {
         pastHistoryDialog = new PastHistoryDialog.AlertDialogBuilder(getContext(), new PassHistoryCallback() {
@@ -352,8 +443,5 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
         return null;
     }
 
-    @Override
-    public void doRefresh(boolean isForceRefresh) {
 
-    }
 }

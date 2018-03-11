@@ -90,6 +90,10 @@ public interface AppServiceObservable {
     @GET("service/getservicecenters/{userId}")
     Observable<List<AddServiceCenter>> getServiceCentersApi(@Path("userId") int userId);
 
+    // assigned requests api
+    @POST("service/assignedRequests")
+    Observable<List<FetchNewRequestResponse>> fetchAssignedRequestApi(@Body ServiceRequest serviceRequest);
+
     // fetch  service request api
     @POST("service/fetchrequests")
     Observable<List<FetchNewRequestResponse>> serviceRequestApi(@Body ServiceRequest serviceRequest);

@@ -19,6 +19,7 @@ import com.incon.service.utils.ErrorMsgUtil;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -60,7 +61,15 @@ public class ServiceCenterPresenter extends BasePresenter<ServiceCenterContract.
             }
         };
 
-        AppApiService.getInstance().serviceRequestApi(serviceRequest).subscribe(observer);
+        Observable<List<FetchNewRequestResponse>> observable;
+        //checking for api call whehter it is assigned or fetched
+        if (serviceRequest.getAssignedUser() != null) {
+            observable = AppApiService.getInstance().fetchAssignedRequestApi(serviceRequest);
+        } else {
+
+            observable = AppApiService.getInstance().serviceRequestApi(serviceRequest);
+        }
+        observable.subscribe(observer);
         addDisposable(observer);
     }
 

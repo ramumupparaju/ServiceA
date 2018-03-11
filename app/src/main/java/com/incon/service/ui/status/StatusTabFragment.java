@@ -202,7 +202,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
     }
 
-    private void loadUsersSpinner(List<AddUser> usersListOfServiceCenters) {
+    private void loadUsersSpinner(final List<AddUser> usersListOfServiceCenters) {
         binding.spinnerUsers.setVisibility(View.VISIBLE);
 
         List<String> usersArray = new ArrayList<>(usersListOfServiceCenters.size());
@@ -223,8 +223,10 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (usersSelectedPosition != position) {
                         usersSelectedPosition = position;
-                        refreshFragmentByPosition(usersSelectedPosition, false);
+                        Integer userId = usersListOfServiceCenters.get(usersSelectedPosition).getId();
+                        ((HomeActivity) getActivity()).setUserId(userId);
 
+                        refreshFragmentByPosition(usersSelectedPosition, false);
                     }
 
                     //For avoiding double tapping issue
@@ -261,7 +263,6 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     }
 
     private void loadServiceCentersSpinner() {
-        //TODO have to handle service centers empty list
         serviceCentersSelectedPosition = 0;
         // getting service centers list
         serviceCenterList = ConnectApplication.getAppContext().getServiceCenterList();
