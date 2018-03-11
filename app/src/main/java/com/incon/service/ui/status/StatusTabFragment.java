@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -105,6 +106,14 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
             doAllUsersInServiceCenterApi(serviceCenterId);
         } else {
             initViewPager();
+            // we have to refresh after ini of calendar
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshFragmentByPosition(MINUS_ONE, false);
+                }
+            }, 100);
         }
     }
 
@@ -223,9 +232,6 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (usersSelectedPosition != position) {
                         usersSelectedPosition = position;
-                        Integer userId = usersListOfServiceCenters.get(usersSelectedPosition).getId();
-                        ((HomeActivity) getActivity()).setUserId(userId);
-
                         refreshFragmentByPosition(usersSelectedPosition, false);
                     }
 
@@ -249,9 +255,15 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
      * @param isCalendarChanged     based on this we ignore for some fragments new requests and approval (no need of calendar for these fragments)
      */
     private void refreshFragmentByPosition(int usersSelectedPosition, boolean isCalendarChanged) {
-        ((HomeActivity) getActivity()).setUserId(usersSelectedPosition ==
-                MINUS_ONE ? usersSelectedPosition : usersListOfServiceCenters.get
-                (usersSelectedPosition).getId());
+        SharedPrefsUtils sharedPrefsUtils = SharedPrefsUtils.loginProvider();
+        int userType = sharedPrefsUtils.getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
+        if (userType == UserConstants.USER_TYPE) {
+            ((HomeActivity) getActivity()).setUserId(sharedPrefsUtils.getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
+        } else {
+            ((HomeActivity) getActivity()).setUserId(usersSelectedPosition ==
+                    MINUS_ONE ? usersSelectedPosition : usersListOfServiceCenters.get
+                    (usersSelectedPosition).getId());
+        }
         BaseProductOptionsFragment fragmentFromPosition = (BaseProductOptionsFragment) adapter.getFragmentFromPosition(currentTabPosition);
         if (isCalendarChanged && (fragmentFromPosition instanceof NewRequestsFragment || fragmentFromPosition instanceof ApprovalFragment)) {
             return;
