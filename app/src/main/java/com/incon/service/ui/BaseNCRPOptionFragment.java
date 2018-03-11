@@ -70,7 +70,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     public RepairAdapter repairAdapter;
     public FragmentRepairBinding repairBinding;
 
-
     ////// specific to payment fragment
     public ServiceCenterPresenter paymentPresenter;
     public FragmentPaymentBinding paymentBinding;
@@ -349,6 +348,15 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     }
 
     public void showAssignDialog(List<AddUser> userList) {
+        int currentUserId = ((HomeActivity) getActivity()).getUserId();
+        if (currentUserId != MINUS_ONE) {
+            for (int i = 0; i < userList.size(); i++) {
+                if (userList.get(i).getId() == currentUserId) {
+                    userList.remove(i);
+                    break;
+                }
+            }
+        }
         assignDialog = new AssignDialog.AlertDialogBuilder(getContext(), new AssignOptionCallback() {
 
             @Override
