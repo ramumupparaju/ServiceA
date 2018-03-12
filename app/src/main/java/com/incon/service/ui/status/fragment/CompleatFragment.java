@@ -27,12 +27,14 @@ import java.util.List;
 
 public class CompleatFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
     private View rootView;
+
     @Override
     protected void initializePresenter() {
         compleatPresenter = new ServiceCenterPresenter();
         compleatPresenter.setView(this);
         setBasePresenter(compleatPresenter);
     }
+
     @Override
     public void setTitle() {
     }
@@ -71,6 +73,7 @@ public class CompleatFragment extends BaseNCRPOptionFragment implements ServiceC
             compleatBinding.swiperefresh.setRefreshing(false);
         }
     }
+
     @Override
     public void loadBottomSheet() {
         super.loadBottomSheet();
@@ -113,6 +116,7 @@ public class CompleatFragment extends BaseNCRPOptionFragment implements ServiceC
         bottomSheetPurchasedBinding.firstRow.setWeightSum(tagsArray.size());
         setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, textArray, drawablesArray, tagsArray, bottomSheetFirstRowClickListener);
     }
+
     private View.OnClickListener bottomSheetFirstRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -141,7 +145,7 @@ public class CompleatFragment extends BaseNCRPOptionFragment implements ServiceC
 
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
-
+        doRefresh(true);
     }
 
     @Override

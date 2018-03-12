@@ -27,6 +27,7 @@ import java.util.List;
 
 public class TerminateFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
     private View rootView;
+
     @Override
     protected void initializePresenter() {
         terminatePresenter = new ServiceCenterPresenter();
@@ -112,6 +113,7 @@ public class TerminateFragment extends BaseNCRPOptionFragment implements Service
         bottomSheetPurchasedBinding.firstRow.setWeightSum(tagsArray.size());
         setBottomViewOptions(bottomSheetPurchasedBinding.firstRow, textArray, drawablesArray, tagsArray, bottomSheetFirstRowClickListener);
     }
+
     private View.OnClickListener bottomSheetFirstRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -141,6 +143,7 @@ public class TerminateFragment extends BaseNCRPOptionFragment implements Service
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
 
+        doRefresh(true);
     }
 
     @Override

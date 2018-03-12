@@ -107,7 +107,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     public TerminateAdapter terminatetAdapter;
 
 
-
     public ShimmerFrameLayout shimmerFrameLayout;
     public int serviceCenterId = DEFAULT_VALUE;
     public int userId = DEFAULT_VALUE;
@@ -180,18 +179,13 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
         } else if (this instanceof PaymentFragment) {
             paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
             paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
-        }
-        else if (this instanceof HoldFragment) {
+        } else if (this instanceof HoldFragment) {
             holdBinding.holdRecyclerview.setVisibility(View.GONE);
             holdPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_hold_service_request));
-        }
-
-        else if (this instanceof TerminateFragment) {
+        } else if (this instanceof TerminateFragment) {
             terminateBinding.terminateRecyclerview.setVisibility(View.GONE);
             terminatePresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_terminate_service_request));
-        }
-
-        else if (this instanceof CompleatFragment) {
+        } else if (this instanceof CompleatFragment) {
             compleatBinding.compleatRecyclerview.setVisibility(View.GONE);
             compleatPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_compleat_service_request));
         }
@@ -208,32 +202,22 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             } else if (this instanceof CheckUpFragment) {
                 checkupBinding.checkupTextview.setVisibility(View.VISIBLE);
                 checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
-            }
-            else if (this instanceof ApprovalFragment) {
+            } else if (this instanceof ApprovalFragment) {
                 approvalBinding.apprvalTextview.setVisibility(View.VISIBLE);
                 approvalBinding.apprvalRecyclerview.setVisibility(View.GONE);
-            }
-
-            else if (this instanceof RepairFragment) {
+            } else if (this instanceof RepairFragment) {
                 repairBinding.repairTextview.setVisibility(View.VISIBLE);
                 repairBinding.requestRecyclerview.setVisibility(View.GONE);
-            }
-            else if (this instanceof PaymentFragment) {
+            } else if (this instanceof PaymentFragment) {
                 paymentBinding.paymentTextview.setVisibility(View.VISIBLE);
                 paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
-            }
-
-            else if (this instanceof HoldFragment) {
+            } else if (this instanceof HoldFragment) {
                 holdBinding.holdTextview.setVisibility(View.VISIBLE);
                 holdBinding.holdRecyclerview.setVisibility(View.GONE);
-            }
-
-            else if (this instanceof TerminateFragment) {
+            } else if (this instanceof TerminateFragment) {
                 terminateBinding.terminateTextview.setVisibility(View.VISIBLE);
                 terminateBinding.terminateRecyclerview.setVisibility(View.GONE);
-            }
-
-            else if (this instanceof CompleatFragment) {
+            } else if (this instanceof CompleatFragment) {
                 compleatBinding.compleatTextview.setVisibility(View.VISIBLE);
                 compleatBinding.compleatRecyclerview.setVisibility(View.GONE);
             }
@@ -247,13 +231,11 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                 checkupBinding.checkupTextview.setVisibility(View.GONE);
                 checkupBinding.checkupRecyclerview.setVisibility(View.VISIBLE);
                 checkUpAdapter.setData(fetchNewRequestResponsesList);
-            }
-            else if (this instanceof ApprovalFragment) {
+            } else if (this instanceof ApprovalFragment) {
                 approvalBinding.apprvalTextview.setVisibility(View.GONE);
                 approvalBinding.apprvalRecyclerview.setVisibility(View.VISIBLE);
                 approvalAdapter.setData(fetchNewRequestResponsesList);
-            }
-            else if (this instanceof RepairFragment) {
+            } else if (this instanceof RepairFragment) {
                 repairBinding.repairTextview.setVisibility(View.GONE);
                 repairBinding.requestRecyclerview.setVisibility(View.VISIBLE);
                 repairAdapter.setData(fetchNewRequestResponsesList);
@@ -261,19 +243,15 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                 paymentBinding.paymentTextview.setVisibility(View.GONE);
                 paymentBinding.paymentRecyclerview.setVisibility(View.VISIBLE);
                 paymentAdapter.setData(fetchNewRequestResponsesList);
-            }
-            else if (this instanceof HoldFragment) {
+            } else if (this instanceof HoldFragment) {
                 holdBinding.holdTextview.setVisibility(View.GONE);
                 holdBinding.holdRecyclerview.setVisibility(View.VISIBLE);
                 holdAdapter.setData(fetchNewRequestResponsesList);
-            }
-
-            else if (this instanceof TerminateFragment) {
+            } else if (this instanceof TerminateFragment) {
                 terminateBinding.terminateTextview.setVisibility(View.GONE);
                 terminateBinding.terminateRecyclerview.setVisibility(View.VISIBLE);
                 terminatetAdapter.setData(fetchNewRequestResponsesList);
-            }
-            else if (this instanceof CompleatFragment) {
+            } else if (this instanceof CompleatFragment) {
                 compleatBinding.compleatTextview.setVisibility(View.GONE);
                 compleatBinding.compleatRecyclerview.setVisibility(View.VISIBLE);
                 compleatAdapter.setData(fetchNewRequestResponsesList);
@@ -466,8 +444,7 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
                     repairPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-                }
-                else  if (BaseNCRPOptionFragment.this instanceof PaymentFragment) {
+                } else if (BaseNCRPOptionFragment.this instanceof PaymentFragment) {
                     FetchNewRequestResponse requestResponse = paymentAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());

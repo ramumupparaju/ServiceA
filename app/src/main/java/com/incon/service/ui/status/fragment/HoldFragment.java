@@ -36,6 +36,7 @@ public class HoldFragment extends BaseNCRPOptionFragment implements ServiceCente
         holdPresenter.setView(this);
         setBasePresenter(holdPresenter);
     }
+
     @Override
     public void setTitle() {
 
@@ -136,7 +137,7 @@ public class HoldFragment extends BaseNCRPOptionFragment implements ServiceCente
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
             bottomSheetPurchasedBinding.secondRow.setWeightSum(tagsArray.size());
-           // setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
+            // setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
         }
     };
 
