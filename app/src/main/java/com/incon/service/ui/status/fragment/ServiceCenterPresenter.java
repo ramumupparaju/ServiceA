@@ -66,7 +66,6 @@ public class ServiceCenterPresenter extends BasePresenter<ServiceCenterContract.
         if (serviceRequest.getAssignedUser() != null) {
             observable = AppApiService.getInstance().fetchAssignedRequestApi(serviceRequest);
         } else {
-
             observable = AppApiService.getInstance().serviceRequestApi(serviceRequest);
         }
         observable.subscribe(observer);

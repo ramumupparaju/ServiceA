@@ -21,6 +21,7 @@ public interface AppConstants {
     int MINUS_ONE = -1;
 
     interface StatusConstants {
+        int COMPLETED = 1;
         int COMPLAINT = 2;
         int ASSIGNED = 3;
         int ATTENDING = 4;

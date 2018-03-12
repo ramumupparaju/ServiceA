@@ -27,7 +27,10 @@ public class AppUtils {
         CHECKUP,
         APPROVAL,
         REPAIR,
-        PAYMENT;
+        PAYMENT,
+        HOLD,
+        COMPLETED,
+        TERMINATE;
     }
 
     public static void shortToast(Context context, String toastMessage) {

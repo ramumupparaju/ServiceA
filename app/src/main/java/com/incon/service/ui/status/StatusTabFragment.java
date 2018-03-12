@@ -312,7 +312,6 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         });
         doAllUsersInServiceCenterApi(serviceCenterList.get(serviceCentersSelectedPosition).getId());
     }
-
     private void initViewPager() {
         AssetManager assets = getActivity().getAssets();
         defaultTypeFace = Typeface.createFromAsset(assets, "fonts/OpenSans-Regular.ttf");
