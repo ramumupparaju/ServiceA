@@ -2,11 +2,9 @@ package com.incon.service.ui.status.fragment;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,46 +12,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
-import com.incon.service.AppConstants;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.request.Request;
-import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
-import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.EstimationDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.callbacks.MoveToOptionCallback;
-import com.incon.service.callbacks.PassHistoryCallback;
-import com.incon.service.callbacks.TextAlertDialogCallback;
-import com.incon.service.custom.view.AppAlertDialog;
 import com.incon.service.custom.view.AppEditTextDialog;
-import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.custom.view.EstimationDialog;
-import com.incon.service.custom.view.MoveToOptionDialog;
-import com.incon.service.custom.view.PastHistoryDialog;
-import com.incon.service.databinding.FragmentCheckupBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BaseNCRPOptionFragment;
-import com.incon.service.ui.RegistrationMapActivity;
-import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.CheckUpAdapter;
-import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.DateUtils;
-import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
-import static com.incon.service.AppConstants.StatusConstants.MANUAL_APROVED;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
@@ -68,9 +48,9 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
     @Override
     protected void initializePresenter() {
-        checkUpPresenter = new ServiceCenterPresenter();
-        checkUpPresenter.setView(this);
-        setBasePresenter(checkUpPresenter);
+        serviceCenterPresenter = new ServiceCenterPresenter();
+        serviceCenterPresenter.setView(this);
+        setBasePresenter(serviceCenterPresenter);
     }
 
     @Override
@@ -95,7 +75,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
     private void initViews() {
         serviceRequest = new ServiceRequest();
-        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.CHECKUP.name());
+        serviceRequest.setStatus(ServiceRequestTypes.CHECKUP.name());
         checkUpAdapter = new CheckUpAdapter();
         checkUpAdapter.setClickCallback(iClickCallback);
         checkupBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
@@ -304,7 +284,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
                 Request request = requestResponse.getRequest();
                 upDateStatus.setRequestid(request.getId());
-                checkUpPresenter.upDateStatus(userId, upDateStatus);
+                serviceCenterPresenter.upDateStatus(userId, upDateStatus);
             }
 
             @Override
@@ -399,9 +379,4 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        checkUpPresenter.disposeAll();
-    }
 }

@@ -20,6 +20,14 @@ public interface AppConstants {
     int DEFAULT_GOOGLE_MAP_ZOOM_LEVEL = 16;
     int MINUS_ONE = -1;
 
+    enum ServiceRequestTypes {
+        NEW,
+        CHECKUP,
+        APPROVAL,
+        REPAIR,
+        PAYMENT;
+    }
+
     interface StatusConstants {
         int COMPLAINT = 2;
         int ASSIGNED = 3;

@@ -22,14 +22,6 @@ import java.util.ArrayList;
 
 public class AppUtils {
 
-    public enum ServiceRequestTypes {
-        NEW,
-        CHECKUP,
-        APPROVAL,
-        REPAIR,
-        PAYMENT;
-    }
-
     public static void shortToast(Context context, String toastMessage) {
         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
     }

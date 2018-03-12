@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,37 +13,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
-import com.incon.service.AppConstants;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
-import com.incon.service.apimodel.components.request.Request;
 import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
-import com.incon.service.callbacks.AssignOptionCallback;
 import com.incon.service.callbacks.EditTimeCallback;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.callbacks.MoveToOptionCallback;
-import com.incon.service.callbacks.PassHistoryCallback;
-import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
-import com.incon.service.custom.view.AppEditTextDialog;
-import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.custom.view.EditTimeDialog;
-import com.incon.service.custom.view.MoveToOptionDialog;
-import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
-import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BaseNCRPOptionFragment;
 import com.incon.service.ui.RegistrationMapActivity;
-import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
-import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 
@@ -54,7 +39,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static com.incon.service.AppConstants.StatusConstants.ACCEPT;
-import static com.incon.service.AppConstants.StatusConstants.ASSIGNED;
 import static com.incon.service.AppConstants.StatusConstants.ATTENDING;
 import static com.incon.service.AppUtils.callPhoneNumber;
 
@@ -70,9 +54,9 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
 
     @Override
     protected void initializePresenter() {
-        newRequestPresenter = new ServiceCenterPresenter();
-        newRequestPresenter.setView(this);
-        setBasePresenter(newRequestPresenter);
+        serviceCenterPresenter = new ServiceCenterPresenter();
+        serviceCenterPresenter.setView(this);
+        setBasePresenter(serviceCenterPresenter);
     }
 
 
@@ -98,7 +82,7 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
 
     private void initViews() {
         serviceRequest = new ServiceRequest();
-        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.NEW.name());
+        serviceRequest.setStatus(ServiceRequestTypes.NEW.name());
         newRequestsAdapter = new NewRequestsAdapter();
         newRequestsAdapter.setClickCallback(iClickCallback);
         newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
@@ -447,7 +431,7 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         }
         upDateStatus.setStatus(new Status(ATTENDING));
         upDateStatus.setRequestid(itemFromPosition.getRequest().getId());
-        newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
+        serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
     }
 
 
@@ -455,7 +439,7 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         UpDateStatus upDateStatus = new UpDateStatus();
         upDateStatus.setStatus(new Status(ACCEPT));
         upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-        newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
+        serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
     }
 
     private void showLocationDialog() {
@@ -502,9 +486,4 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         doRefresh(true);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        newRequestPresenter.disposeAll();
-    }
 }

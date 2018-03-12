@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
@@ -68,7 +67,7 @@ public class ApprovalFragment extends BaseTabFragment implements ServiceCenterCo
 
     private void initViews() {
         serviceRequest = new ServiceRequest();
-        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.APPROVAL.name());
+        serviceRequest.setStatus(ServiceRequestTypes.APPROVAL.name());
         approvalAdapter = new ApprovalAdapter();
         approvalAdapter.setClickCallback(iClickCallback);
         binding.swiperefresh.setOnRefreshListener(onRefreshListener);
