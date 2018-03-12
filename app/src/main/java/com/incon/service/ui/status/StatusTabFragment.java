@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -105,6 +106,14 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
             doAllUsersInServiceCenterApi(serviceCenterId);
         } else {
             initViewPager();
+            // we have to refresh after ini of calendar
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshFragmentByPosition(MINUS_ONE, false);
+                }
+            }, 100);
         }
     }
 
@@ -202,7 +211,7 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
         newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
     }
 
-    private void loadUsersSpinner(List<AddUser> usersListOfServiceCenters) {
+    private void loadUsersSpinner(final List<AddUser> usersListOfServiceCenters) {
         binding.spinnerUsers.setVisibility(View.VISIBLE);
 
         List<String> usersArray = new ArrayList<>(usersListOfServiceCenters.size());
@@ -224,7 +233,6 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
                     if (usersSelectedPosition != position) {
                         usersSelectedPosition = position;
                         refreshFragmentByPosition(usersSelectedPosition, false);
-
                     }
 
                     //For avoiding double tapping issue
@@ -247,9 +255,15 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
      * @param isCalendarChanged     based on this we ignore for some fragments new requests and approval (no need of calendar for these fragments)
      */
     private void refreshFragmentByPosition(int usersSelectedPosition, boolean isCalendarChanged) {
-        ((HomeActivity) getActivity()).setUserId(usersSelectedPosition ==
-                MINUS_ONE ? usersSelectedPosition : usersListOfServiceCenters.get
-                (usersSelectedPosition).getId());
+        SharedPrefsUtils sharedPrefsUtils = SharedPrefsUtils.loginProvider();
+        int userType = sharedPrefsUtils.getIntegerPreference(LoginPrefs.USER_TYPE, DEFAULT_VALUE);
+        if (userType == UserConstants.USER_TYPE) {
+            ((HomeActivity) getActivity()).setUserId(sharedPrefsUtils.getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE));
+        } else {
+            ((HomeActivity) getActivity()).setUserId(usersSelectedPosition ==
+                    MINUS_ONE ? usersSelectedPosition : usersListOfServiceCenters.get
+                    (usersSelectedPosition).getId());
+        }
         BaseProductOptionsFragment fragmentFromPosition = (BaseProductOptionsFragment) adapter.getFragmentFromPosition(currentTabPosition);
         if (isCalendarChanged && (fragmentFromPosition instanceof NewRequestsFragment || fragmentFromPosition instanceof ApprovalFragment)) {
             return;
@@ -261,7 +275,6 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
     }
 
     private void loadServiceCentersSpinner() {
-        //TODO have to handle service centers empty list
         serviceCentersSelectedPosition = 0;
         // getting service centers list
         serviceCenterList = ConnectApplication.getAppContext().getServiceCenterList();

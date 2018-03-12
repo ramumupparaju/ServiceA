@@ -72,7 +72,7 @@ public class UpDateUserProfileActivity extends BaseActivity implements
 
     public void onSubmitClick() {
         if (validateFields()) {
-            upDateUserProfile.setGender(String.valueOf(upDateUserProfile.getGender().charAt(0)));
+            upDateUserProfile.setGender(String.valueOf(upDateUserProfile.getGenderType().charAt(0)));
             upDateUserProfilePresenter.upDateUserProfile(SharedPrefsUtils.loginProvider().
                     getIntegerPreference(USER_ID, DEFAULT_VALUE), upDateUserProfile);
         }
@@ -152,6 +152,11 @@ public class UpDateUserProfileActivity extends BaseActivity implements
 
         upDateUserProfile.setMobileNumber(sharedPrefsUtils.getStringPreference(
                 USER_PHONE_NUMBER));
+
+        String gender = sharedPrefsUtils.getStringPreference(
+                USER_GENDER);
+        String maleString = getString(R.string.action_male);
+        upDateUserProfile.setGenderType(maleString.startsWith(gender) ? maleString : getString(R.string.action_female));
 
         upDateUserProfile.setGender(sharedPrefsUtils.getStringPreference(
                 USER_GENDER));

@@ -79,52 +79,10 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
         repairBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
     }
 
+
     @Override
-    public void doRefresh(boolean isForceRefresh) {
-        dismissSwipeRefresh();
-        HomeActivity activity = (HomeActivity) getActivity();
-        int tempServiceCenterId = activity.getServiceCenterId();
-        int tempUserId = activity.getUserId();
-
-        if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
-            //no chnages have made, so no need to make api call checks whether pull to refresh or
-            // not
-
-            if (!isForceRefresh)
-                return;
-        } else {
-            serviceCenterId = tempServiceCenterId;
-            userId = tempUserId;
-        }
-
-        if (serviceCenterId == -1 || serviceCenterId == DEFAULT_VALUE) {
-            serviceRequest.setServiceIds(null);
-        } else {
-            serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
-        }
-
-        if (userId == -1 || userId == DEFAULT_VALUE) {
-            serviceRequest.setAssignedUser(null);
-        } else {
-            serviceRequest.setAssignedUser(userId);
-        }
-
-        serviceRequest.setFromDate(fromDate);
-        serviceRequest.setToDate(toDate);
-
-        getServiceRequestApi();
-        // repairPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
-    }
-
-    private void getServiceRequestApi() {
-        repairBinding.requestRecyclerview.setVisibility(View.GONE);
-        shimmerFrameLayout.setVisibility(View.VISIBLE);
-        shimmerFrameLayout.startShimmerAnimation();
-        repairPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
-
-    }
-
-    private void dismissSwipeRefresh() {
+    public void dismissSwipeRefresh() {
+        super.dismissSwipeRefresh();
         if (repairBinding.swiperefresh.isRefreshing()) {
             repairBinding.swiperefresh.setRefreshing(false);
         }
@@ -335,6 +293,7 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
                     public void alertDialogCallback(byte dialogStatus) {
                         switch (dialogStatus) {
                             case AlertDialogCallback.OK:
+                                //TODO have to make api cal
                                 break;
                             case AlertDialogCallback.CANCEL:
                                 closeDialog.dismiss();
@@ -351,73 +310,13 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
         closeDialog.setCancelable(true);
     }
 
-
-    private void showLocationDialog() {
-
-        FetchNewRequestResponse itemFromPosition = repairAdapter.getItemFromPosition(
-                productSelectedPosition);
-
-        if (TextUtils.isEmpty(itemFromPosition.getCustomer().getLocation())) {
-            AppUtils.shortToast(getActivity(), getString(R.string.error_location));
-            return;
-        }
-
-        Intent addressIntent = new Intent(getActivity(), RegistrationMapActivity.class);
-        addressIntent.putExtra(IntentConstants.LOCATION_COMMA, itemFromPosition.getCustomer().getLocation());
-        addressIntent.putExtra(IntentConstants.ADDRESS_COMMA, itemFromPosition.getServiceCenter().getAddress());
-        startActivity(addressIntent);
-
-
-    }
-
-
-    private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
-            new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    repairAdapter.clearData();
-                    doRefresh(true);
-
-                }
-            };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        repairPresenter.disposeAll();
-    }
-
-
     @Override
     public void onSearchClickListerner(String searchableText, String searchType) {
         //TODO have to implement search click listener
     }
 
-
-    @Override
-    public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
-
-
-        if (fetchNewRequestResponsesList == null) {
-            fetchNewRequestResponsesList = new ArrayList<>();
-        }
-
-        if (fetchNewRequestResponsesList.size() == 0) {
-            repairBinding.repairTextview.setVisibility(View.VISIBLE);
-            repairBinding.requestRecyclerview.setVisibility(View.GONE);
-        } else {
-            repairBinding.repairTextview.setVisibility(View.GONE);
-            repairBinding.requestRecyclerview.setVisibility(View.VISIBLE);
-            repairAdapter.setData(fetchNewRequestResponsesList);
-
-            shimmerFrameLayout.stopShimmerAnimation();
-            shimmerFrameLayout.setVisibility(View.GONE);
-        }
-    }
-
     @Override
     public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
-
         if (usersList == null) {
             usersList = new ArrayList<>();
         }
@@ -433,9 +332,13 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
         } catch (Exception e) {
             //TODO have to handle
         }
-
-
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        repairPresenter.disposeAll();
+    }
 
 }

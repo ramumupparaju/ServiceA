@@ -66,7 +66,6 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
     private AppEditTextDialog closeDialog;
 
 
-
     @Override
     protected void initializePresenter() {
         checkUpPresenter = new ServiceCenterPresenter();
@@ -105,50 +104,10 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
         checkupBinding.checkupRecyclerview.setLayoutManager(linearLayoutManager);
     }
 
+
     @Override
-    public void doRefresh(boolean isForceRefresh) {
-        dismissSwipeRefresh();
-        HomeActivity activity = (HomeActivity) getActivity();
-        int tempServiceCenterId = activity.getServiceCenterId();
-        int tempUserId = activity.getUserId();
-
-        if (serviceCenterId == tempServiceCenterId && tempUserId == userId) {
-            //no changes have made, so no need to make api call checks whether pull to refresh or // not
-            if (!isForceRefresh)
-                return;
-        } else {
-            serviceCenterId = tempServiceCenterId;
-            userId = tempUserId;
-        }
-
-        if (serviceCenterId == -1 || serviceCenterId == DEFAULT_VALUE) {
-            serviceRequest.setServiceIds(null);
-        } else {
-            serviceRequest.setServiceIds(String.valueOf(serviceCenterId));
-        }
-
-        if (userId == -1 || userId == DEFAULT_VALUE) {
-            serviceRequest.setAssignedUser(null);
-        } else {
-            serviceRequest.setAssignedUser(userId);
-        }
-
-        serviceRequest.setFromDate(fromDate);
-        serviceRequest.setToDate(toDate);
-        getServiceRequestApi();
-       // checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
-    }
-
-    private void getServiceRequestApi() {
-        checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
-        shimmerFrameLayout.setVisibility(View.VISIBLE);
-        shimmerFrameLayout.startShimmerAnimation();
-        checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
-
-    }
-
-
-    private void dismissSwipeRefresh() {
+    public void dismissSwipeRefresh() {
+        super.dismissSwipeRefresh();
         if (checkupBinding.swiperefresh.isRefreshing()) {
             checkupBinding.swiperefresh.setRefreshing(false);
         }
@@ -161,10 +120,8 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
             @Override
             public void onCancel(DialogInterface dialog) {
                 checkUpAdapter.clearSelection();
-
             }
         });
-
     }
 
 
@@ -232,7 +189,6 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 drawablesArray.add(R.drawable.ic_option_call);
 
 
-
             } else if (tag == R.id.PRODUCT) {
 
                 tagsArray.add(R.id.PRODUCT_WARRANTY_DETAILS);
@@ -243,7 +199,6 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 tagsArray.add(R.id.PRODUCT_PAST_HISTORY);
                 textArray.add(getString(R.string.bottom_option_past_history));
                 drawablesArray.add(R.drawable.ic_option_pasthistory);
-
 
 
             } else if (tag == R.id.SERVICE_CENTER) {
@@ -331,7 +286,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
             bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
             bottomSheetPurchasedBinding.thirdRow.setWeightSum(tagsArray.size());
-            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, textArray, drawablesArray,tagsArray, bottomSheetThirdRowClickListener);
+            setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, textArray, drawablesArray, tagsArray, bottomSheetThirdRowClickListener);
         }
     };
 
@@ -404,75 +359,23 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 }
             };
 
-    private void showLocationDialog() {
-
-        FetchNewRequestResponse itemFromPosition = checkUpAdapter.getItemFromPosition(
-                productSelectedPosition);
-
-        if (TextUtils.isEmpty(itemFromPosition.getCustomer().getLocation())) {
-            AppUtils.shortToast(getActivity(), getString(R.string.error_location));
-            return;
-        }
-
-        Intent addressIntent = new Intent(getActivity(), RegistrationMapActivity.class);
-        addressIntent.putExtra(IntentConstants.LOCATION_COMMA, itemFromPosition.getCustomer().getLocation());
-        addressIntent.putExtra(IntentConstants.ADDRESS_COMMA, itemFromPosition.getServiceCenter().getAddress());
-        startActivity(addressIntent);
-    }
 
     private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Integer tag = (Integer) view.getTag();
-
-
             FetchNewRequestResponse itemFromPosition = checkUpAdapter.getItemFromPosition(
                     productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, tag);
-
-
-
         }
 
     };
-
-
-    private SwipeRefreshLayout.OnRefreshListener onRefreshListener =
-            new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    checkUpAdapter.clearData();
-                    doRefresh(true);
-
-                }
-            };
-
 
     @Override
     public void onSearchClickListerner(String searchableText, String searchType) {
         //TODO have to implement search
     }
 
-
-    @Override
-    public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
-
-        if (fetchNewRequestResponsesList == null) {
-            fetchNewRequestResponsesList = new ArrayList<>();
-        }
-        if (fetchNewRequestResponsesList.size() == 0) {
-            checkupBinding.checkupTextview.setVisibility(View.VISIBLE);
-            checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
-        } else {
-            checkupBinding.checkupTextview.setVisibility(View.GONE);
-            checkupBinding.checkupRecyclerview.setVisibility(View.VISIBLE);
-            checkUpAdapter.setData(fetchNewRequestResponsesList);
-
-            shimmerFrameLayout.stopShimmerAnimation();
-            shimmerFrameLayout.setVisibility(View.GONE);
-        }
-
-    }
 
     @Override
     public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
@@ -487,20 +390,13 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
-
-        if (estimationDialog != null && estimationDialog.isShowing()) {
-            estimationDialog.dismiss();
-        }
+        dismissDialog(estimationDialog);
+        dismissDialog(bottomSheetDialog);
         try {
-            Integer statusId = Integer.valueOf(upDateStatusResponse.getRequest().getStatus());
-            if (statusId == MANUAL_APROVED) {
-                doRefresh(true);
-            }
+            doRefresh(true);
         } catch (Exception e) {
             //TODO have to handle
         }
-
-
     }
 
     @Override
