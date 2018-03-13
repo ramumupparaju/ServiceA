@@ -481,8 +481,14 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
         dismissDialog(assignDialog);
         dismissDialog(updateStatusDialog);
+        dismissDialog(moveToOptionDialog);
+        dismissDialog(bottomSheetDialog);
 
-        doRefresh(true);
+        try {
+            doRefresh(true);
+        } catch (Exception e) {
+            //TODO have to handle
+        }
     }
 
     @Override

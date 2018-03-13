@@ -109,7 +109,7 @@
                 <com.incon.service.custom.view.CustomViewPager
                     android:id="@+id/view_pager"
                     style="@style/BothMatch"
-                    app:swipeable="false"
+                    app:swipeable="true"
                     app:tabGravity="fill"
                     app:tabMode="fixed">
 

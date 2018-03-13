@@ -233,7 +233,6 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 return;
             } else if (tag == R.id.PRODUCT_WARRANTY_DETAILS) {
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-
                 // TODO have to get details from back end
 
             } else if (tag == R.id.PRODUCT_PAST_HISTORY) {
@@ -367,8 +366,10 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
         dismissDialog(estimationDialog);
-        dismissDialog(bottomSheetDialog);
         dismissDialog(updateStatusDialog);
+        dismissDialog(moveToOptionDialog);
+        dismissDialog(assignDialog);
+        dismissDialog(bottomSheetDialog);
         try {
             doRefresh(true);
         } catch (Exception e) {

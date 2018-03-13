@@ -22,7 +22,7 @@
         <RelativeLayout
             android:id="@+id/layout_request_item"
             android:layout_width="match_parent"
-            android:layout_height="160dp">
+            android:layout_height="170dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -66,7 +66,6 @@
                     android:layout_toRightOf="@id/product_imageview"
                     android:maxLines="2"
                     android:text="@={fetchNewRequestResponse.product.modelNo}"
-                    android:textAllCaps="true"
                     android:textColor="@color/ebony_clay"
                     android:textSize="10sp"/>
 
@@ -78,7 +77,6 @@
                     android:layout_toRightOf="@id/product_imageview"
                     android:maxLines="2"
                     android:text="@={fetchNewRequestResponse.product.modelNo}"
-                    android:textAllCaps="true"
                     android:textColor="@color/ebony_clay"
                     android:textSize="10sp"/>
 

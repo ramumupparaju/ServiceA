@@ -72,39 +72,39 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     public FragmentNewrequestBinding newRequestBinding;
 
     ////// specific to check up fragment
-    public ServiceCenterPresenter checkUpPresenter;
     public CheckUpAdapter checkUpAdapter;
+    public ServiceCenterPresenter checkUpPresenter;
     public FragmentCheckupBinding checkupBinding;
 
     ////// specific to approval fragment
-    public FragmentApprovalBinding approvalBinding;
     public ApprovalAdapter approvalAdapter;
     public ServiceCenterPresenter approvalPresenter;
+    public FragmentApprovalBinding approvalBinding;
 
     ////// specific to repair fragment
-    public ServiceCenterPresenter repairPresenter;
     public RepairAdapter repairAdapter;
     public FragmentRepairBinding repairBinding;
+    public ServiceCenterPresenter repairPresenter;
 
     ////// specific to payment fragment
-    public ServiceCenterPresenter paymentPresenter;
-    public FragmentPaymentBinding paymentBinding;
     public PaymentAdapter paymentAdapter;
+    public FragmentPaymentBinding paymentBinding;
+    public ServiceCenterPresenter paymentPresenter;
 
     ////// specific to hold fragment
+    public HoldAdapter holdAdapter;
     public ServiceCenterPresenter holdPresenter;
     public FragmentHoldBinding holdBinding;
-    public HoldAdapter holdAdapter;
 
     ////// specific to compleat fragment
+    public CompleatAdapter compleatAdapter;
     public ServiceCenterPresenter compleatPresenter;
     public FragmentCompleatBinding compleatBinding;
-    public CompleatAdapter compleatAdapter;
 
     ////// specific to terminate fragment
+    public TerminateAdapter terminatetAdapter;
     public ServiceCenterPresenter terminatePresenter;
     public FragmentTerminateBinding terminateBinding;
-    public TerminateAdapter terminatetAdapter;
 
 
     public ShimmerFrameLayout shimmerFrameLayout;
@@ -410,9 +410,12 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             checkUpPresenter.getUsersListOfServiceCenters(serviceCenterId);
         } else if (this instanceof RepairFragment) {
             repairPresenter.getUsersListOfServiceCenters(serviceCenterId);
-        } else if (this instanceof PaymentFragment) {
-            paymentPresenter.getUsersListOfServiceCenters(serviceCenterId);
         }
+
+        // todo have  to know and remove
+        /*else if (this instanceof PaymentFragment) {
+            paymentPresenter.getUsersListOfServiceCenters(serviceCenterId);
+        }*/
     }
 
     public void showAssignDialog(List<AddUser> userList) {
@@ -444,12 +447,14 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
                     repairPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-                } else if (BaseNCRPOptionFragment.this instanceof PaymentFragment) {
+                }
+                // todo have  to know and remove
+             /*   else if (BaseNCRPOptionFragment.this instanceof PaymentFragment) {
                     FetchNewRequestResponse requestResponse = paymentAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
                     paymentPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-                }
+                }*/
 
             }
 
