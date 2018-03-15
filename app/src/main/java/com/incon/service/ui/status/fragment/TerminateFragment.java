@@ -30,9 +30,9 @@ public class TerminateFragment extends BaseNCRPOptionFragment implements Service
 
     @Override
     protected void initializePresenter() {
-        terminatePresenter = new ServiceCenterPresenter();
-        terminatePresenter.setView(this);
-        setBasePresenter(terminatePresenter);
+        serviceCenterPresenter = new ServiceCenterPresenter();
+        serviceCenterPresenter.setView(this);
+        setBasePresenter(serviceCenterPresenter);
     }
 
     @Override
@@ -146,9 +146,4 @@ public class TerminateFragment extends BaseNCRPOptionFragment implements Service
         doRefresh(true);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        terminatePresenter.disposeAll();
-    }
 }

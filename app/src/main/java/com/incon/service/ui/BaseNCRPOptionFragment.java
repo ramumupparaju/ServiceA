@@ -77,7 +77,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
 
     ////// specific to approval fragment
     public ApprovalAdapter approvalAdapter;
-    public ServiceCenterPresenter approvalPresenter;
     public FragmentApprovalBinding approvalBinding;
 
     ////// specific to repair fragment
@@ -90,17 +89,14 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
 
     ////// specific to hold fragment
     public HoldAdapter holdAdapter;
-    public ServiceCenterPresenter holdPresenter;
     public FragmentHoldBinding holdBinding;
 
     ////// specific to compleat fragment
     public CompleatAdapter compleatAdapter;
-    public ServiceCenterPresenter compleatPresenter;
     public FragmentCompleatBinding compleatBinding;
 
     ////// specific to terminate fragment
     public TerminateAdapter terminatetAdapter;
-    public ServiceCenterPresenter terminatePresenter;
     public FragmentTerminateBinding terminateBinding;
 
 
@@ -161,28 +157,29 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmerAnimation();
 
+        String messageForApi = getString(R.string.progress_fetch_new_service_request);
         if (this instanceof NewRequestsFragment) {
             newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
         } else if (this instanceof CheckUpFragment) {
             checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
-            checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+            messageForApi=getString(R.string.progress_fetch_new_service_request);
         } else if (this instanceof ApprovalFragment) {
             approvalBinding.apprvalRecyclerview.setVisibility(View.GONE);
-            approvalPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_approval_service_request));
+            messageForApi=getString(R.string.progress_fetch_approval_service_request);
         } else if (this instanceof RepairFragment) {
             repairBinding.requestRecyclerview.setVisibility(View.GONE);
         } else if (this instanceof PaymentFragment) {
             paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
-            paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+            messageForApi=getString(R.string.progress_fetch_new_service_request);
         } else if (this instanceof HoldFragment) {
             holdBinding.holdRecyclerview.setVisibility(View.GONE);
-            holdPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_hold_service_request));
+            messageForApi=getString(R.string.progress_hold_service_request);
         } else if (this instanceof TerminateFragment) {
             terminateBinding.terminateRecyclerview.setVisibility(View.GONE);
-            terminatePresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_terminate_service_request));
+            messageForApi=getString(R.string.progress_terminate_service_request);
         } else if (this instanceof CompleatFragment) {
             compleatBinding.compleatRecyclerview.setVisibility(View.GONE);
-            compleatPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_compleat_service_request));
+            messageForApi= getString(R.string.progress_compleat_service_request);
         }
         serviceCenterPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }

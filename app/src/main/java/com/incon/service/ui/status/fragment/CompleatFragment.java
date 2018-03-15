@@ -30,9 +30,9 @@ public class CompleatFragment extends BaseNCRPOptionFragment implements ServiceC
 
     @Override
     protected void initializePresenter() {
-        compleatPresenter = new ServiceCenterPresenter();
-        compleatPresenter.setView(this);
-        setBasePresenter(compleatPresenter);
+        serviceCenterPresenter = new ServiceCenterPresenter();
+        serviceCenterPresenter.setView(this);
+        setBasePresenter(serviceCenterPresenter);
     }
 
     @Override
@@ -148,9 +148,5 @@ public class CompleatFragment extends BaseNCRPOptionFragment implements ServiceC
         doRefresh(true);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        compleatPresenter.disposeAll();
-    }
+
 }
