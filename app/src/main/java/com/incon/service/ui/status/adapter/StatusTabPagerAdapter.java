@@ -6,9 +6,12 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.incon.service.ui.status.fragment.ApprovalFragment;
 import com.incon.service.ui.status.fragment.CheckUpFragment;
+import com.incon.service.ui.status.fragment.CompleatFragment;
+import com.incon.service.ui.status.fragment.HoldFragment;
 import com.incon.service.ui.status.fragment.NewRequestsFragment;
 import com.incon.service.ui.status.fragment.PaymentFragment;
 import com.incon.service.ui.status.fragment.RepairFragment;
+import com.incon.service.ui.status.fragment.TerminateFragment;
 
 import java.util.HashMap;
 
@@ -49,7 +52,15 @@ public class StatusTabPagerAdapter extends FragmentStatePagerAdapter {
             case 4:
                 tabFragment = new PaymentFragment();
                 break;
-
+            case 5:
+                tabFragment = new HoldFragment();
+                break;
+            case 6:
+                tabFragment = new TerminateFragment();
+                break;
+            case 7:
+                tabFragment = new CompleatFragment();
+                break;
             default:
                 break;
         }

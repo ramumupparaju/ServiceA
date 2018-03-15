@@ -321,7 +321,10 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
 
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
-        // todo have to know
+        dismissDialog(moveToOptionDialog);
+        dismissDialog(assignDialog);
+        dismissDialog(updateStatusDialog);
+        dismissDialog(bottomSheetDialog);
         try {
             doRefresh(true);
         } catch (Exception e) {

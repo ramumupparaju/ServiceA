@@ -42,9 +42,6 @@ import static com.incon.service.AppUtils.callPhoneNumber;
 public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
     private View rootView;
     private EstimationDialog estimationDialog;
-    private AppEditTextDialog noteDialog;
-    private AppEditTextDialog closeDialog;
-
 
     @Override
     protected void initializePresenter() {
@@ -237,7 +234,6 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 return;
             } else if (tag == R.id.PRODUCT_WARRANTY_DETAILS) {
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
-
                 // TODO have to get details from back end
 
             } else if (tag == R.id.PRODUCT_PAST_HISTORY) {
@@ -371,6 +367,9 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
         dismissDialog(estimationDialog);
+        dismissDialog(updateStatusDialog);
+        dismissDialog(moveToOptionDialog);
+        dismissDialog(assignDialog);
         dismissDialog(bottomSheetDialog);
         try {
             doRefresh(true);

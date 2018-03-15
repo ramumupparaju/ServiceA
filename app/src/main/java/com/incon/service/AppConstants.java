@@ -29,18 +29,21 @@ public interface AppConstants {
     }
 
     interface StatusConstants {
+        int COMPLETED = 1;
         int COMPLAINT = 2;
         int ASSIGNED = 3;
         int ATTENDING = 4;
-        int ACCEPT = 17;
-        int MANUAL_APROVED = 13;
-        int WAIT_APPROVE = 15;
         int CHECKUP = 5;
+        int APPROVED = 6;
         int REPAIR_DONE = 7;
-        int PAYMENT = 1;
+
         int REJECT = 10;
         int TERMINATE = 11;
         int HOLD = 12;
+        int MANUAL_APROVED = 13;
+        int WAIT_APPROVE = 15;
+        int ACCEPT = 17;
+
         int NEW_REQ_HOLD = 28;
         int CHECKUP_HOLD = 29;
         int APPROVAL_HOLD = 30;

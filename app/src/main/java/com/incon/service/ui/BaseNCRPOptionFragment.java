@@ -22,23 +22,35 @@ import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
+import com.incon.service.databinding.FragmentApprovalBinding;
 import com.incon.service.databinding.FragmentCheckupBinding;
+import com.incon.service.databinding.FragmentCompleatBinding;
+import com.incon.service.databinding.FragmentHoldBinding;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.databinding.FragmentPaymentBinding;
 import com.incon.service.databinding.FragmentRepairBinding;
+import com.incon.service.databinding.FragmentTerminateBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.home.HomeActivity;
+import com.incon.service.ui.status.adapter.ApprovalAdapter;
 import com.incon.service.ui.status.adapter.CheckUpAdapter;
+import com.incon.service.ui.status.adapter.CompleatAdapter;
+import com.incon.service.ui.status.adapter.HoldAdapter;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.ui.status.adapter.PaymentAdapter;
 import com.incon.service.ui.status.adapter.RepairAdapter;
+import com.incon.service.ui.status.adapter.TerminateAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
+import com.incon.service.ui.status.fragment.ApprovalFragment;
 import com.incon.service.ui.status.fragment.CheckUpFragment;
+import com.incon.service.ui.status.fragment.CompleatFragment;
+import com.incon.service.ui.status.fragment.HoldFragment;
 import com.incon.service.ui.status.fragment.NewRequestsFragment;
 import com.incon.service.ui.status.fragment.PaymentFragment;
 import com.incon.service.ui.status.fragment.RepairFragment;
 import com.incon.service.ui.status.fragment.ServiceCenterPresenter;
+import com.incon.service.ui.status.fragment.TerminateFragment;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -63,14 +75,33 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     public CheckUpAdapter checkUpAdapter;
     public FragmentCheckupBinding checkupBinding;
 
+    ////// specific to approval fragment
+    public ApprovalAdapter approvalAdapter;
+    public ServiceCenterPresenter approvalPresenter;
+    public FragmentApprovalBinding approvalBinding;
 
     ////// specific to repair fragment
     public RepairAdapter repairAdapter;
     public FragmentRepairBinding repairBinding;
 
     ////// specific to payment fragment
-    public FragmentPaymentBinding paymentBinding;
     public PaymentAdapter paymentAdapter;
+    public FragmentPaymentBinding paymentBinding;
+
+    ////// specific to hold fragment
+    public HoldAdapter holdAdapter;
+    public ServiceCenterPresenter holdPresenter;
+    public FragmentHoldBinding holdBinding;
+
+    ////// specific to compleat fragment
+    public CompleatAdapter compleatAdapter;
+    public ServiceCenterPresenter compleatPresenter;
+    public FragmentCompleatBinding compleatBinding;
+
+    ////// specific to terminate fragment
+    public TerminateAdapter terminatetAdapter;
+    public ServiceCenterPresenter terminatePresenter;
+    public FragmentTerminateBinding terminateBinding;
 
 
     public ShimmerFrameLayout shimmerFrameLayout;
@@ -134,14 +165,27 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
         } else if (this instanceof CheckUpFragment) {
             checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
+            checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+        } else if (this instanceof ApprovalFragment) {
+            approvalBinding.apprvalRecyclerview.setVisibility(View.GONE);
+            approvalPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_approval_service_request));
         } else if (this instanceof RepairFragment) {
             repairBinding.requestRecyclerview.setVisibility(View.GONE);
         } else if (this instanceof PaymentFragment) {
             paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
+            paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+        } else if (this instanceof HoldFragment) {
+            holdBinding.holdRecyclerview.setVisibility(View.GONE);
+            holdPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_hold_service_request));
+        } else if (this instanceof TerminateFragment) {
+            terminateBinding.terminateRecyclerview.setVisibility(View.GONE);
+            terminatePresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_terminate_service_request));
+        } else if (this instanceof CompleatFragment) {
+            compleatBinding.compleatRecyclerview.setVisibility(View.GONE);
+            compleatPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_compleat_service_request));
         }
         serviceCenterPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
-
 
     public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
         if (fetchNewRequestResponsesList == null) {
@@ -154,12 +198,24 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             } else if (this instanceof CheckUpFragment) {
                 checkupBinding.checkupTextview.setVisibility(View.VISIBLE);
                 checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
+            } else if (this instanceof ApprovalFragment) {
+                approvalBinding.apprvalTextview.setVisibility(View.VISIBLE);
+                approvalBinding.apprvalRecyclerview.setVisibility(View.GONE);
             } else if (this instanceof RepairFragment) {
                 repairBinding.repairTextview.setVisibility(View.VISIBLE);
                 repairBinding.requestRecyclerview.setVisibility(View.GONE);
             } else if (this instanceof PaymentFragment) {
                 paymentBinding.paymentTextview.setVisibility(View.VISIBLE);
                 paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
+            } else if (this instanceof HoldFragment) {
+                holdBinding.holdTextview.setVisibility(View.VISIBLE);
+                holdBinding.holdRecyclerview.setVisibility(View.GONE);
+            } else if (this instanceof TerminateFragment) {
+                terminateBinding.terminateTextview.setVisibility(View.VISIBLE);
+                terminateBinding.terminateRecyclerview.setVisibility(View.GONE);
+            } else if (this instanceof CompleatFragment) {
+                compleatBinding.compleatTextview.setVisibility(View.VISIBLE);
+                compleatBinding.compleatRecyclerview.setVisibility(View.GONE);
             }
         } else {
             if (this instanceof NewRequestsFragment) {
@@ -170,6 +226,10 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                 checkupBinding.checkupTextview.setVisibility(View.GONE);
                 checkupBinding.checkupRecyclerview.setVisibility(View.VISIBLE);
                 checkUpAdapter.setData(fetchNewRequestResponsesList);
+            } else if (this instanceof ApprovalFragment) {
+                approvalBinding.apprvalTextview.setVisibility(View.GONE);
+                approvalBinding.apprvalRecyclerview.setVisibility(View.VISIBLE);
+                approvalAdapter.setData(fetchNewRequestResponsesList);
             } else if (this instanceof RepairFragment) {
                 repairBinding.repairTextview.setVisibility(View.GONE);
                 repairBinding.requestRecyclerview.setVisibility(View.VISIBLE);
@@ -178,6 +238,18 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                 paymentBinding.paymentTextview.setVisibility(View.GONE);
                 paymentBinding.paymentRecyclerview.setVisibility(View.VISIBLE);
                 paymentAdapter.setData(fetchNewRequestResponsesList);
+            } else if (this instanceof HoldFragment) {
+                holdBinding.holdTextview.setVisibility(View.GONE);
+                holdBinding.holdRecyclerview.setVisibility(View.VISIBLE);
+                holdAdapter.setData(fetchNewRequestResponsesList);
+            } else if (this instanceof TerminateFragment) {
+                terminateBinding.terminateTextview.setVisibility(View.GONE);
+                terminateBinding.terminateRecyclerview.setVisibility(View.VISIBLE);
+                terminatetAdapter.setData(fetchNewRequestResponsesList);
+            } else if (this instanceof CompleatFragment) {
+                compleatBinding.compleatTextview.setVisibility(View.GONE);
+                compleatBinding.compleatRecyclerview.setVisibility(View.VISIBLE);
+                compleatAdapter.setData(fetchNewRequestResponsesList);
             }
         }
 
@@ -282,7 +354,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             }
         }
 
-
         updateStatusDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
                 TextAlertDialogCallback() {
                     @Override
@@ -314,7 +385,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     public void doUpdateStatusApi() {
         serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, AppConstants.DEFAULT_VALUE), upDateStatus);
     }
-
 
     public void fetchAssignDialogData() {
         serviceCenterPresenter.getUsersListOfServiceCenters(serviceCenterId);

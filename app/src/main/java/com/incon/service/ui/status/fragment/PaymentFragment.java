@@ -185,9 +185,9 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
                 textArray.add(getString(R.string.bottom_option_paid));
                 drawablesArray.add(R.drawable.ic_option_accept_request);
 
-                tagsArray.add(R.id.STATUS_UPDATE_TERMINATE);
+               /* tagsArray.add(R.id.STATUS_UPDATE_TERMINATE);
                 textArray.add(getString(R.string.bottom_option_terminate));
-                drawablesArray.add(R.drawable.ic_option_accept_request);
+                drawablesArray.add(R.drawable.ic_option_accept_request);*/
 
             }
 
@@ -221,7 +221,6 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
             } else if (tag == R.id.PRODUCT_WARRANTY_DETAILS) {
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
 
-
             } else if (tag == R.id.PRODUCT_PAST_HISTORY) {
                 AppUtils.shortToast(getActivity(), getString(R.string.coming_soon));
 
@@ -229,7 +228,6 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
                 callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
                 return;
             } else if (tag == R.id.STATUS_UPDATE_PAID) {
-
                 tagsArray.add(R.id.STATUS_UPDATE_PAID_CASH);
                 textArray.add(getString(R.string.bottom_option_cash));
                 drawablesArray.add(R.drawable.ic_options_features);
@@ -241,15 +239,13 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
                 tagsArray.add(R.id.STATUS_UPDATE_PAID_CARD);
                 textArray.add(getString(R.string.bottom_option_card));
                 drawablesArray.add(R.drawable.ic_option_pasthistory);
+            }
 
-
-            } else if (tag == R.id.STATUS_UPDATE_TERMINATE) {
-                showUpdateStatusDialog(R.id.STATUS_UPDATE_TERMINATE);
-
-            } else if (tag == R.id.STATUS_UPDATE_ASSIGN) {
+            // todo have  to know and remove
+          /*  else if (tag == R.id.STATUS_UPDATE_ASSIGN) {
                  fetchAssignDialogData();
 
-            }
+            }*/
 
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
             bottomSheetPurchasedBinding.thirdRow.removeAllViews();
@@ -257,9 +253,6 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
             setBottomViewOptions(bottomSheetPurchasedBinding.thirdRow, textArray, drawablesArray, tagsArray, bottomSheetThirdRowClickListener);
         }
     };
-
-
-
 
 
     private View.OnClickListener bottomSheetThirdRowClickListener = new View.OnClickListener() {
@@ -303,7 +296,13 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
 
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
-        doRefresh(true);
+        dismissDialog(updateStatusDialog);
+        dismissDialog(assignDialog);
+        try {
+            doRefresh(true);
+        } catch (Exception e) {
+            //TODO have to handle
+        }
     }
 
 }

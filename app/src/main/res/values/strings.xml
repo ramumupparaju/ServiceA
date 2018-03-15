@@ -28,6 +28,7 @@
     <string name="sample_test">Sample test</string>
     <string name="coming_soon">Coming Soon</string>
     <string name="bottom_option_customer">Customer</string>
+    <string name="bottom_option_manual_approach">Manual Approach</string>
     <string name="bottom_option_product">Product</string>
     <string name="bottom_option_service_center">Service center</string>
     <string name="bottom_option_status_update">Status update</string>
@@ -339,6 +340,9 @@
     <string name="progress_interest_history">Loading Interest History...</string>
     <string name="progress_buy_request_">Loading BuyRequest...</string>
     <string name="progress_fetch_new_service_request">Fetching New Service Request...</string>
+    <string name="progress_hold_service_request">Fetching Hold Request...</string>
+    <string name="progress_terminate_service_request">Fetching Terminate Request...</string>
+    <string name="progress_compleat_service_request">Fetching Compleat Request...</string>
     <string name="progress_fetch_checkup_service_request">Fetching Checkup Service Request...
     </string>
     <string name="progress_fetch_repair_service_request">Fetching Repair Service Request...</string>
@@ -538,6 +542,9 @@
     <string name="tab_approval">Approval</string>
     <string name="tab_repair">Repair</string>
     <string name="tab_payment">Payment</string>
+    <string name="tab_hold">Hold</string>
+    <string name="tab_terminate">Terminated</string>
+    <string name="tab_compleat">Compleated</string>
     <string name="title_product_name">Product name</string>
     <string name="title_model_no">Model No</string>
     <string name="title_complaint">Complaint</string>

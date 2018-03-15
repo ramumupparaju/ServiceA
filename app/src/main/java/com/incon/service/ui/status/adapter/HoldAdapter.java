@@ -17,41 +17,42 @@ import com.incon.service.BR;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
-import com.incon.service.databinding.ItemApprovalFragmentBinding;
+import com.incon.service.databinding.ItemCheckupFragmentBinding;
+import com.incon.service.databinding.ItemHoldFragmentBinding;
 import com.incon.service.ui.BaseRecyclerViewAdapter;
 import com.incon.service.utils.AddressFromLatLngAddress;
 
 /**
- * Created by PC on 12/6/2017.
+ * Created by PC on 3/12/2018.
  */
 
-public class ApprovalAdapter extends BaseRecyclerViewAdapter {
+public class HoldAdapter extends BaseRecyclerViewAdapter {
     private AddressFromLatLngAddress addressFromLatLngAddress;
     private ConnectApplication context;
 
-    public ApprovalAdapter() {
+    public HoldAdapter() {
         addressFromLatLngAddress = new AddressFromLatLngAddress();
         context = ConnectApplication.getAppContext();
     }
 
     @Override
-    public ApprovalAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HoldAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        ItemApprovalFragmentBinding binding = DataBindingUtil.inflate(layoutInflater,
-                R.layout.item_approval_fragment, parent, false);
+        ItemHoldFragmentBinding binding = DataBindingUtil.inflate(layoutInflater,
+                R.layout.item_hold_fragment, parent, false);
         return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
-        ((ApprovalAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
+        ((HoldAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final ItemApprovalFragmentBinding binding;
+        private final ItemHoldFragmentBinding binding;
 
-        public ViewHolder(ItemApprovalFragmentBinding binding) {
+        public ViewHolder(ItemHoldFragmentBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             binding.getRoot().setOnClickListener(this);
@@ -64,9 +65,9 @@ public class ApprovalAdapter extends BaseRecyclerViewAdapter {
                     .getProductLogoUrl());
             AppUtils.loadImageFromApi(binding.productImageview, fetchNewRequestResponse
                     .getProductImageUrl());
-
             String[] location = fetchNewRequestResponse.getCustomer().getLocation().split(",");
             loadLocationDetailsFromGeocoder(new LatLng(Double.parseDouble(location[0]), Double.parseDouble(location[1])), fetchNewRequestResponse);
+
             if (fetchNewRequestResponse.isSelected()) {
                 binding.viewsLayout.setVisibility(View.VISIBLE);
             } else {
@@ -112,4 +113,5 @@ public class ApprovalAdapter extends BaseRecyclerViewAdapter {
             }
         }
     }
+
 }

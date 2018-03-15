@@ -220,9 +220,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         binding.bottomNavigationView.setTextVisibility(true);
         setBottomNavigationViewListeners();
         handleBottomViewOnKeyBoardUp();
-
         binding.bottomNavigationView.setCurrentItem(TAB_Status);
-
     }
 
     public void loadedDefaultStatus() {

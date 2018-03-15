@@ -64,6 +64,7 @@
                     android:layout_toRightOf="@id/product_imageview"
                     android:maxLines="2"
                     android:text="@={fetchNewRequestResponse.product.modelNo}"
+                    android:textAllCaps="true"
                     android:textColor="@color/ebony_clay"
                     android:textSize="10sp" />
 
