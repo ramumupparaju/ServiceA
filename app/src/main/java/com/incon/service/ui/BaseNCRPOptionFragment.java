@@ -66,14 +66,13 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
 
     public MoveToOptionDialog moveToOptionDialog;
 
-    ////// specific to new request fragment
+    ////// specific to  new request fragment
     public NewRequestsAdapter newRequestsAdapter;
-    public ServiceCenterPresenter newRequestPresenter;
+    public ServiceCenterPresenter serviceCenterPresenter;
     public FragmentNewrequestBinding newRequestBinding;
 
-    ////// specific to check up fragment
+    ////// specific to  check up fragment
     public CheckUpAdapter checkUpAdapter;
-    public ServiceCenterPresenter checkUpPresenter;
     public FragmentCheckupBinding checkupBinding;
 
     ////// specific to approval fragment
@@ -84,12 +83,10 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     ////// specific to repair fragment
     public RepairAdapter repairAdapter;
     public FragmentRepairBinding repairBinding;
-    public ServiceCenterPresenter repairPresenter;
 
     ////// specific to payment fragment
     public PaymentAdapter paymentAdapter;
     public FragmentPaymentBinding paymentBinding;
-    public ServiceCenterPresenter paymentPresenter;
 
     ////// specific to hold fragment
     public HoldAdapter holdAdapter;
@@ -166,7 +163,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
 
         if (this instanceof NewRequestsFragment) {
             newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
-            newRequestPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
         } else if (this instanceof CheckUpFragment) {
             checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
             checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
@@ -175,7 +171,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             approvalPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_approval_service_request));
         } else if (this instanceof RepairFragment) {
             repairBinding.requestRecyclerview.setVisibility(View.GONE);
-            repairPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
         } else if (this instanceof PaymentFragment) {
             paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
             paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
@@ -189,6 +184,7 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             compleatBinding.compleatRecyclerview.setVisibility(View.GONE);
             compleatPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_compleat_service_request));
         }
+        serviceCenterPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }
 
     public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
@@ -221,7 +217,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                 compleatBinding.compleatTextview.setVisibility(View.VISIBLE);
                 compleatBinding.compleatRecyclerview.setVisibility(View.GONE);
             }
-
         } else {
             if (this instanceof NewRequestsFragment) {
                 newRequestBinding.requestTextview.setVisibility(View.GONE);
@@ -282,20 +277,16 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                     FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
-                    newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
                 } else if (BaseNCRPOptionFragment.this instanceof CheckUpFragment) {
                     FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
-                    checkUpPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-
                 } else {
                     FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
-                    repairPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-
                 }
+                serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
 
             }
 
@@ -392,30 +383,11 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     }
 
     public void doUpdateStatusApi() {
-        if (this instanceof NewRequestsFragment) {
-            newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, AppConstants.DEFAULT_VALUE), upDateStatus);
-        } else if (this instanceof CheckUpFragment) {
-            checkUpPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, AppConstants.DEFAULT_VALUE), upDateStatus);
-        } else if (this instanceof RepairFragment) {
-            repairPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, AppConstants.DEFAULT_VALUE), upDateStatus);
-        } else if (this instanceof PaymentFragment) {
-            paymentPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, AppConstants.DEFAULT_VALUE), upDateStatus);
-        }
+        serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, AppConstants.DEFAULT_VALUE), upDateStatus);
     }
 
     public void fetchAssignDialogData() {
-        if (this instanceof NewRequestsFragment) {
-            newRequestPresenter.getUsersListOfServiceCenters(serviceCenterId);
-        } else if (this instanceof CheckUpFragment) {
-            checkUpPresenter.getUsersListOfServiceCenters(serviceCenterId);
-        } else if (this instanceof RepairFragment) {
-            repairPresenter.getUsersListOfServiceCenters(serviceCenterId);
-        }
-
-        // todo have  to know and remove
-        /*else if (this instanceof PaymentFragment) {
-            paymentPresenter.getUsersListOfServiceCenters(serviceCenterId);
-        }*/
+        serviceCenterPresenter.getUsersListOfServiceCenters(serviceCenterId);
     }
 
     public void showAssignDialog(List<AddUser> userList) {
@@ -436,25 +408,21 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                     FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
-                    newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
                 } else if (BaseNCRPOptionFragment.this instanceof CheckUpFragment) {
                     FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
-                    checkUpPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
                 } else if (BaseNCRPOptionFragment.this instanceof RepairFragment) {
                     FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
-                    repairPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-                }
-                // todo have  to know and remove
-             /*   else if (BaseNCRPOptionFragment.this instanceof PaymentFragment) {
+                } else {
                     FetchNewRequestResponse requestResponse = paymentAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
-                    paymentPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
-                }*/
+                }
+                serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
+
 
             }
 
@@ -523,5 +491,9 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
         return null;
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        serviceCenterPresenter.disposeAll();
+    }
 }

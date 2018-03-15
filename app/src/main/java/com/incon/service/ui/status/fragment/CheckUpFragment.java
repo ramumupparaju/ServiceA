@@ -20,6 +20,7 @@ import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.EstimationDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.EstimationDialog;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
@@ -44,9 +45,9 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
     @Override
     protected void initializePresenter() {
-        checkUpPresenter = new ServiceCenterPresenter();
-        checkUpPresenter.setView(this);
-        setBasePresenter(checkUpPresenter);
+        serviceCenterPresenter = new ServiceCenterPresenter();
+        serviceCenterPresenter.setView(this);
+        setBasePresenter(serviceCenterPresenter);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
     private void initViews() {
         serviceRequest = new ServiceRequest();
-        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.CHECKUP.name());
+        serviceRequest.setStatus(ServiceRequestTypes.CHECKUP.name());
         checkUpAdapter = new CheckUpAdapter();
         checkUpAdapter.setClickCallback(iClickCallback);
         checkupBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
@@ -171,9 +172,11 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 textArray.add(getString(R.string.bottom_option_warranty_details));
                 drawablesArray.add(R.drawable.ic_option_warranty);
 
+
                 tagsArray.add(R.id.PRODUCT_PAST_HISTORY);
                 textArray.add(getString(R.string.bottom_option_past_history));
                 drawablesArray.add(R.drawable.ic_option_pasthistory);
+
 
             } else if (tag == R.id.SERVICE_CENTER) {
                 tagsArray.add(R.id.SERVICE_CENTER_CALL);
@@ -277,7 +280,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
                 Request request = requestResponse.getRequest();
                 upDateStatus.setRequestid(request.getId());
-                checkUpPresenter.upDateStatus(userId, upDateStatus);
+                serviceCenterPresenter.upDateStatus(userId, upDateStatus);
             }
 
             @Override
@@ -375,9 +378,4 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        checkUpPresenter.disposeAll();
-    }
 }
