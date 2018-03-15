@@ -32,9 +32,9 @@ public class HoldFragment extends BaseNCRPOptionFragment implements ServiceCente
 
     @Override
     protected void initializePresenter() {
-        holdPresenter = new ServiceCenterPresenter();
-        holdPresenter.setView(this);
-        setBasePresenter(holdPresenter);
+        serviceCenterPresenter = new ServiceCenterPresenter();
+        serviceCenterPresenter.setView(this);
+        setBasePresenter(serviceCenterPresenter);
     }
 
     @Override
@@ -153,9 +153,4 @@ public class HoldFragment extends BaseNCRPOptionFragment implements ServiceCente
 
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        holdPresenter.disposeAll();
-    }
 }

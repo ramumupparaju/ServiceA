@@ -30,9 +30,9 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
 
     @Override
     protected void initializePresenter() {
-        approvalPresenter = new ServiceCenterPresenter();
-        approvalPresenter.setView(this);
-        setBasePresenter(approvalPresenter);
+        serviceCenterPresenter = new ServiceCenterPresenter();
+        serviceCenterPresenter.setView(this);
+        setBasePresenter(serviceCenterPresenter);
 
     }
 
@@ -80,6 +80,7 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
         });
 
     }
+
     @Override
     public void dismissSwipeRefresh() {
         super.dismissSwipeRefresh();
@@ -178,10 +179,5 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
     @Override
     public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
 //do nothing
-    }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        approvalPresenter.disposeAll();
     }
 }
