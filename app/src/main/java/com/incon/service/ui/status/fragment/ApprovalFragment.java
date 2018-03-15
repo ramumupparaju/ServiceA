@@ -3,25 +3,20 @@ package com.incon.service.ui.status.fragment;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.databinding.FragmentApprovalBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseNCRPOptionFragment;
-import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.ApprovalAdapter;
-import com.incon.service.ui.status.base.base.BaseTabFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +108,18 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
         ArrayList<String> textArray = new ArrayList<>();
         ArrayList<Integer> tagsArray = new ArrayList<>();
 
+        textArray.add(getString(R.string.bottom_option_hold));
+        tagsArray.add(R.id.STATUS_UPDATE_HOLD);
+        drawablesArray.add(R.drawable.ic_option_hold);
+
+        textArray.add(getString(R.string.bottom_option_reject));
+        tagsArray.add(R.id.STATUS_UPDATE_REJECT);
+        drawablesArray.add(R.drawable.ic_option_accept_request);
+
+        textArray.add(getString(R.string.bottom_option_move_to));
+        tagsArray.add(R.id.STATUS_UPDATE_MOVE_TO);
+        drawablesArray.add(R.drawable.ic_option_hold);
+
         tagsArray.add(R.id.MANUAL_APPROACH);
         textArray.add(getString(R.string.bottom_option_manual_approach));
         drawablesArray.add(R.drawable.ic_option_customer);
@@ -145,7 +152,14 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
             bottomSheetPurchasedBinding.secondRow.setWeightSum(tagsArray.size());
-            //setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
+            setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
+        }
+    };
+
+    private View.OnClickListener bottomSheetSecondRowClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
         }
     };
 

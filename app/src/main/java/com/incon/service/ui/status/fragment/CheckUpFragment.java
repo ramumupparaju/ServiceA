@@ -171,11 +171,9 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 textArray.add(getString(R.string.bottom_option_warranty_details));
                 drawablesArray.add(R.drawable.ic_option_warranty);
 
-
                 tagsArray.add(R.id.PRODUCT_PAST_HISTORY);
                 textArray.add(getString(R.string.bottom_option_past_history));
                 drawablesArray.add(R.drawable.ic_option_pasthistory);
-
 
             } else if (tag == R.id.SERVICE_CENTER) {
                 tagsArray.add(R.id.SERVICE_CENTER_CALL);
