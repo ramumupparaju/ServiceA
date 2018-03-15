@@ -259,12 +259,15 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
 
         if (this instanceof NewRequestsFragment) {
             stringToSkip = getString(R.string.tab_new_request);
-        } else if (this instanceof CheckUpFragment) {
+        }
+        else if (this instanceof ApprovalFragment) {
+            stringToSkip = getString(R.string.tab_approval);
+        }
+        else if (this instanceof CheckUpFragment) {
             stringToSkip = getString(R.string.tab_checkup);
         } else if (this instanceof RepairFragment) {
             stringToSkip = getString(R.string.tab_repair);
         }
-
 
         ArrayList<Status> statusList = AppUtils.getSubStatusList(stringToSkip, ((HomeActivity) getActivity()).getStatusList());
         moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
@@ -274,7 +277,13 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                     FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
-                } else if (BaseNCRPOptionFragment.this instanceof CheckUpFragment) {
+                }
+                else if (BaseNCRPOptionFragment.this instanceof ApprovalFragment) {
+                    FetchNewRequestResponse requestResponse = approvalAdapter.getItemFromPosition(productSelectedPosition);
+                    Request request = requestResponse.getRequest();
+                    upDateStatus.setRequestid(request.getId());
+                }
+                else if (BaseNCRPOptionFragment.this instanceof CheckUpFragment) {
                     FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
                     Request request = requestResponse.getRequest();
                     upDateStatus.setRequestid(request.getId());
@@ -322,7 +331,19 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                 dialogTitle = getString(R.string.bottom_option_terminate);
                 upDateStatus.setStatus(new Status(StatusConstants.TERMINATE));
             }
-        } else if (this instanceof CheckUpFragment) {
+        }
+        else if (this instanceof ApprovalFragment) {
+            upDateStatus.setRequestid(approvalAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
+            if (dialogType == R.id.STATUS_UPDATE_HOLD) {
+                dialogTitle = getString(R.string.bottom_option_hold);
+                upDateStatus.setStatus(new Status(StatusConstants.APPROVAL_HOLD));
+            }
+            else if (dialogType == R.id.STATUS_UPDATE_REJECT) {
+                dialogTitle = getString(R.string.bottom_option_reject);
+                upDateStatus.setStatus(new Status(StatusConstants.REJECT));
+            }
+        }
+        else if (this instanceof CheckUpFragment) {
             upDateStatus.setRequestid(checkUpAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
             if (dialogType == R.id.STATUS_UPDATE_HOLD) {
                 dialogTitle = getString(R.string.bottom_option_hold);

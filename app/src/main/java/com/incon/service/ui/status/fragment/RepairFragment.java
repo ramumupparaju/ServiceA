@@ -1,12 +1,9 @@
 package com.incon.service.ui.status.fragment;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +19,6 @@ import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseNCRPOptionFragment;
-import com.incon.service.ui.RegistrationMapActivity;
-import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.RepairAdapter;
 
 import java.util.ArrayList;
@@ -41,9 +36,9 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
 
     @Override
     protected void initializePresenter() {
-        repairPresenter = new ServiceCenterPresenter();
-        repairPresenter.setView(this);
-        setBasePresenter(repairPresenter);
+        serviceCenterPresenter = new ServiceCenterPresenter();
+        serviceCenterPresenter.setView(this);
+        setBasePresenter(serviceCenterPresenter);
     }
 
     @Override
@@ -341,7 +336,7 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        repairPresenter.disposeAll();
+        serviceCenterPresenter.disposeAll();
     }
 
 }

@@ -54,9 +54,9 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
 
     @Override
     protected void initializePresenter() {
-        newRequestPresenter = new ServiceCenterPresenter();
-        newRequestPresenter.setView(this);
-        setBasePresenter(newRequestPresenter);
+        serviceCenterPresenter = new ServiceCenterPresenter();
+        serviceCenterPresenter.setView(this);
+        setBasePresenter(serviceCenterPresenter);
     }
 
     @Override
@@ -203,7 +203,6 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
             } else if (tag == R.id.STATUS_UPDATE) {
 
                 int status = itemFromPosition.getRequest().getStatus();
-
                 if (status == StatusConstants.COMPLAINT) {
                     textArray.add(getString(R.string.bottom_option_accept));
                     tagsArray.add(R.id.STATUS_UPDATE_ACCEPT);
@@ -430,7 +429,7 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         }
         upDateStatus.setStatus(new Status(ATTENDING));
         upDateStatus.setRequestid(itemFromPosition.getRequest().getId());
-        newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
+        serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
     }
 
 
@@ -438,7 +437,7 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         UpDateStatus upDateStatus = new UpDateStatus();
         upDateStatus.setStatus(new Status(ACCEPT));
         upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-        newRequestPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
+        serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
     }
 
     private void showLocationDialog() {
@@ -494,6 +493,6 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        newRequestPresenter.disposeAll();
+        serviceCenterPresenter.disposeAll();
     }
 }

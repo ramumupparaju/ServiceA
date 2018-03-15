@@ -160,6 +160,26 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
     private View.OnClickListener bottomSheetSecondRowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Integer tag = (Integer) view.getTag();
+            FetchNewRequestResponse itemFromPosition = approvalAdapter.getItemFromPosition(
+                    productSelectedPosition);
+            changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
+            ArrayList<Integer> drawablesArray = new ArrayList<>();
+            ArrayList<String> textArray = new ArrayList<>();
+            ArrayList<Integer> tagsArray = new ArrayList<>();
+
+
+            if (tag == R.id.STATUS_UPDATE_HOLD) {
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_HOLD);
+            }
+            else if (tag == R.id.STATUS_UPDATE_REJECT) {
+
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_REJECT);
+            }
+            else if (tag == R.id.STATUS_UPDATE_MOVE_TO) {
+                showMoveToDialog();
+
+            }
 
         }
     };

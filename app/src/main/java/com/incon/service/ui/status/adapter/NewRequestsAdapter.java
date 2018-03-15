@@ -78,6 +78,12 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
                 int topBottomMargin = (int) DeviceUtils.convertPxToDp(3);
                 layoutParams.setMargins(leftRightMargin, topBottomMargin, leftRightMargin, topBottomMargin);
             }
+
+            if (fetchNewRequestResponse.getAssignedUser() != null) {
+                binding.textAssigned.setText(fetchNewRequestResponse.getAssignedUser().getName());
+            } else {
+                binding.textAssigned.setVisibility(View.GONE);
+            }
             AppUtils.loadImageFromApi(binding.brandImageview, fetchNewRequestResponse
                     .getProductLogoUrl());
             AppUtils.loadImageFromApi(binding.productImageview, fetchNewRequestResponse

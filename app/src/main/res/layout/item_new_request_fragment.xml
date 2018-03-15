@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <data>
-
         <variable
             name="fetchNewRequestResponse"
             type="com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse" />
@@ -117,7 +115,6 @@
                     android:layout_marginTop="@dimen/margin_3"
                     android:layout_below="@+id/text_attending_date_time"
                     android:layout_toRightOf="@id/product_imageview"
-                    android:text="Assigned"
                     android:textColor="@color/ebony_clay"
                     android:textSize="10sp" />
 
