@@ -165,24 +165,18 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
         } else if (this instanceof CheckUpFragment) {
             checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
-            checkUpPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
         } else if (this instanceof ApprovalFragment) {
             approvalBinding.apprvalRecyclerview.setVisibility(View.GONE);
-            approvalPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_approval_service_request));
         } else if (this instanceof RepairFragment) {
             repairBinding.requestRecyclerview.setVisibility(View.GONE);
         } else if (this instanceof PaymentFragment) {
             paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
-            paymentPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
         } else if (this instanceof HoldFragment) {
             holdBinding.holdRecyclerview.setVisibility(View.GONE);
-            holdPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_hold_service_request));
         } else if (this instanceof TerminateFragment) {
             terminateBinding.terminateRecyclerview.setVisibility(View.GONE);
-            terminatePresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_terminate_service_request));
         } else if (this instanceof CompleatFragment) {
             compleatBinding.compleatRecyclerview.setVisibility(View.GONE);
-            compleatPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_compleat_service_request));
         }
         serviceCenterPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
     }

@@ -20,7 +20,6 @@ import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.EstimationDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.EstimationDialog;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
@@ -72,7 +71,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
     private void initViews() {
         serviceRequest = new ServiceRequest();
-        serviceRequest.setStatus(ServiceRequestTypes.CHECKUP.name());
+        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.CHECKUP.name());
         checkUpAdapter = new CheckUpAdapter();
         checkUpAdapter.setClickCallback(iClickCallback);
         checkupBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
