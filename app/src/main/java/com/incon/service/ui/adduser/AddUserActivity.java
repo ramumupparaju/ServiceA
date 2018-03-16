@@ -44,6 +44,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+import static com.incon.service.AppConstants.LoginPrefs.USER_ID;
+
 /**
  * Created by MY HOME on 17-Dec-17.
  */
@@ -93,6 +95,8 @@ public class AddUserActivity extends BaseActivity implements
             binding.toolbar.toolbarTitleTv.setText(getString(R.string.title_update_user));
             binding.buttonSubmit.setText(getString(R.string.action_update));
             binding.toolbar.toolbarRightIv.setVisibility(View.VISIBLE);
+            upDateUserProfile = new UpDateUserProfile();
+
         } else {
             binding.toolbar.toolbarTitleTv.setText(getString(R.string.action_add_user));
             binding.toolbar.toolbarRightIv.setVisibility(View.GONE);
@@ -451,10 +455,18 @@ public class AddUserActivity extends BaseActivity implements
         }
 
         if (validateFields()) {
-            addUser.setServiceCenterRoleId(designationDataList.get(designationSelectedPos).getId());
-            addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
-            addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
-                    getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
+            if (addUser != null) {
+                addUserPresenter.upDateUserProfile(SharedPrefsUtils.loginProvider().
+                        getIntegerPreference(USER_ID, DEFAULT_VALUE), upDateUserProfile);
+            } else {
+                addUser.setServiceCenterRoleId(designationDataList.get(designationSelectedPos).getId());
+                addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
+                addUserPresenter.addingUser(SharedPrefsUtils.loginProvider().
+                        getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), addUser);
+            }
+
+
+
         }
     }
 

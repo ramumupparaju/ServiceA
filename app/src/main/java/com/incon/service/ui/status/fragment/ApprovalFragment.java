@@ -12,7 +12,10 @@ import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
+import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.TextAlertDialogCallback;
+import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseNCRPOptionFragment;
@@ -21,12 +24,15 @@ import com.incon.service.ui.status.adapter.ApprovalAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.incon.service.AppUtils.callPhoneNumber;
+
 /**
  * Created by PC on 12/5/2017.
  */
 
 public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceCenterContract.View {
     private View rootView;
+    public AppEditTextDialog manualApproachDialog;
 
     @Override
     protected void initializePresenter() {
@@ -96,8 +102,8 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
             FetchNewRequestResponse fetchNewRequestResponse = approvalAdapter.
                     getItemFromPosition(position);
             fetchNewRequestResponse.setSelected(true);
-            productSelectedPosition = position;
             approvalAdapter.notifyDataSetChanged();
+            productSelectedPosition = position;
             createBottomSheetFirstRow();
             bottomSheetDialog.show();
         }
@@ -109,16 +115,17 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
         ArrayList<String> textArray = new ArrayList<>();
         ArrayList<Integer> tagsArray = new ArrayList<>();
 
+
+        tagsArray.add(R.id.HOLD);
         textArray.add(getString(R.string.bottom_option_hold));
-        tagsArray.add(R.id.STATUS_UPDATE_HOLD);
         drawablesArray.add(R.drawable.ic_option_hold);
 
+        tagsArray.add(R.id.REJECT);
         textArray.add(getString(R.string.bottom_option_reject));
-        tagsArray.add(R.id.STATUS_UPDATE_REJECT);
         drawablesArray.add(R.drawable.ic_option_accept_request);
 
+        tagsArray.add(R.id.MOVE_TO);
         textArray.add(getString(R.string.bottom_option_move_to));
-        tagsArray.add(R.id.STATUS_UPDATE_MOVE_TO);
         drawablesArray.add(R.drawable.ic_option_hold);
 
         tagsArray.add(R.id.MANUAL_APPROACH);
@@ -144,45 +151,54 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
             ArrayList<String> textArray = new ArrayList<>();
             ArrayList<Integer> tagsArray = new ArrayList<>();
 
-            FetchNewRequestResponse itemFromPosition = approvalAdapter.getItemFromPosition(
-                    productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.firstRow, tag);
 
-
+            if (tag == R.id.HOLD) {
+                showUpdateStatusDialog(R.id.HOLD);
+            } else if (tag == R.id.REJECT) {
+                showUpdateStatusDialog(R.id.REJECT);
+            } else if (tag == R.id.MOVE_TO) {
+                showMoveToDialog();
+            } else if (tag == R.id.MANUAL_APPROACH) {
+                showManualApproachDialog();
+            }
             bottomSheetPurchasedBinding.secondRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.secondRowLine.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
             bottomSheetPurchasedBinding.secondRow.setWeightSum(tagsArray.size());
-            setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
+            //setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
         }
     };
 
-    private View.OnClickListener bottomSheetSecondRowClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Integer tag = (Integer) view.getTag();
-            FetchNewRequestResponse itemFromPosition = approvalAdapter.getItemFromPosition(
-                    productSelectedPosition);
-            changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
-            ArrayList<Integer> drawablesArray = new ArrayList<>();
-            ArrayList<String> textArray = new ArrayList<>();
-            ArrayList<Integer> tagsArray = new ArrayList<>();
+    private void showManualApproachDialog() {
+        manualApproachDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String commentString) {
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case AlertDialogCallback.OK:
+                                break;
+                            case AlertDialogCallback.CANCEL:
+                                manualApproachDialog.dismiss();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(getString(R.string.bottom_option_manual_approach))
+                .leftButtonText(getString(R.string.action_cancel))
+                .rightButtonText(getString(R.string.action_submit))
+                .build();
+        manualApproachDialog.showDialog();
+        manualApproachDialog.setCancelable(true);
 
 
-            if (tag == R.id.STATUS_UPDATE_HOLD) {
-                showUpdateStatusDialog(R.id.STATUS_UPDATE_HOLD);
-            }
-            else if (tag == R.id.STATUS_UPDATE_REJECT) {
-
-                showUpdateStatusDialog(R.id.STATUS_UPDATE_REJECT);
-            }
-            else if (tag == R.id.STATUS_UPDATE_MOVE_TO) {
-                showMoveToDialog();
-
-            }
-
-        }
-    };
+    }
 
 
     @Override
@@ -193,11 +209,24 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
 
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
-//do nothing
+        dismissDialog(updateStatusDialog);
+        dismissDialog(moveToOptionDialog);
+        dismissDialog(bottomSheetDialog);
+        try {
+            doRefresh(true);
+        } catch (Exception e) {
+            //TODO have to handle
+        }
     }
 
     @Override
     public void loadUsersListOfServiceCenters(List<AddUser> usersList) {
 //do nothing
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        serviceCenterPresenter.disposeAll();
     }
 }

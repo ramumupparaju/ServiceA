@@ -39,9 +39,9 @@ public class UpDateUserProfilePresenter extends BasePresenter<UpDateUserProfileC
                 DisposableObserver<LoginResponse>() {
                     @Override
                     public void onNext(LoginResponse loginResponse) {
-                        getView().hideProgress();
                         getView().loadUpDateUserProfileResponce(loginResponse);
                         saveUserData(loginResponse);
+                        getView().hideProgress();
                     }
 
                     @Override
@@ -53,6 +53,7 @@ public class UpDateUserProfilePresenter extends BasePresenter<UpDateUserProfileC
 
                     @Override
                     public void onComplete() {
+                        getView().hideProgress();
 
                     }
                 };

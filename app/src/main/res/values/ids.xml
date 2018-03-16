@@ -33,6 +33,10 @@
     <item type="id" name="STATUS_UPDATE_MOVE_TO"/>
     <item type="id" name="STATUS_UPDATE_EDIT_TIME"/>
 
+
+    <item type="id" name="HOLD"/>
+    <item type="id" name="REJECT"/>
+    <item type="id" name="MOVE_TO"/>
     <item type="id" name="MANUAL_APPROACH"/>
 
 

@@ -334,11 +334,11 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
         }
         else if (this instanceof ApprovalFragment) {
             upDateStatus.setRequestid(approvalAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-            if (dialogType == R.id.STATUS_UPDATE_HOLD) {
+            if (dialogType == R.id.HOLD) {
                 dialogTitle = getString(R.string.bottom_option_hold);
                 upDateStatus.setStatus(new Status(StatusConstants.APPROVAL_HOLD));
             }
-            else if (dialogType == R.id.STATUS_UPDATE_REJECT) {
+            else if (dialogType == R.id.REJECT) {
                 dialogTitle = getString(R.string.bottom_option_reject);
                 upDateStatus.setStatus(new Status(StatusConstants.REJECT));
             }
