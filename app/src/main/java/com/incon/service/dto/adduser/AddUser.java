@@ -318,14 +318,14 @@ public class AddUser extends BaseObservable implements Parcelable {
                 }
                 break;
 
-            case 3:
+            /*case 3:
                 boolean dobEmpty = TextUtils.isEmpty(getDob());
                 if (emptyValidation && dobEmpty) {
                     return AppConstants.AddUserValidations.DOB_REQ;
                 } else if (!dobEmpty) {
                     return validateDob();
                 }
-                break;
+                break;*/
 
             case 4:
                 boolean emailEmpty = TextUtils.isEmpty(getEmail());

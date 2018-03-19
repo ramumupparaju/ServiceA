@@ -455,6 +455,7 @@ public class AddUserActivity extends BaseActivity implements
         }
 
         if (validateFields()) {
+
             if (addUser != null) {
                 addUserPresenter.upDateUserProfile(SharedPrefsUtils.loginProvider().
                         getIntegerPreference(USER_ID, DEFAULT_VALUE), upDateUserProfile);

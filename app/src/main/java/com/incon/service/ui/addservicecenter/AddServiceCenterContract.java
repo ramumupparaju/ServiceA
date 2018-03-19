@@ -22,7 +22,6 @@ public interface AddServiceCenterContract {
 
     interface Presenter {
         void defaultsApi();
-
         void addingServiceCenter(int userId, AddServiceCenter addServiceCenter);
         void upDateServiceCenter(int serviceCenterId, UpDateServiceCenter upDateServiceCenter);
         void deleteServiceCenter(int serviceCenterId);

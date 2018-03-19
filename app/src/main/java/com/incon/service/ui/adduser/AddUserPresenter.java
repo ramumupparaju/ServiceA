@@ -99,8 +99,8 @@ public class AddUserPresenter extends BasePresenter<AddUserContract.View>
         upDateUserProfilePresenter.setView(new UpDateUserProfileContract.View() {
             @Override
             public void loadUpDateUserProfileResponce(LoginResponse loginResponse) {
-                getView().loadUpDateUserProfileResponce(loginResponse);
                 getView().hideProgress();
+                getView().loadUpDateUserProfileResponce(loginResponse);
 
             }
 
