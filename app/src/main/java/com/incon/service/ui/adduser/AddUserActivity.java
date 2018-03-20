@@ -458,7 +458,7 @@ public class AddUserActivity extends BaseActivity implements
 
             if (addUser != null) {
                 addUserPresenter.upDateUserProfile(SharedPrefsUtils.loginProvider().
-                        getIntegerPreference(USER_ID, DEFAULT_VALUE), upDateUserProfile);
+                        getIntegerPreference(LoginPrefs.USER_ID, DEFAULT_VALUE), upDateUserProfile);
             } else {
                 addUser.setServiceCenterRoleId(designationDataList.get(designationSelectedPos).getId());
                 addUser.setGender(String.valueOf(addUser.getGenderType().charAt(0)));
