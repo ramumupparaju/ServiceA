@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,6 +123,16 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     public void dismissSwipeRefresh() {
     }
 
+
+
+    @Override
+    public void showErrorMessage(String errorMessage) {
+        if (bottomSheetDialog.isShowing()) {
+            AppUtils.shortToast(getActivity(), errorMessage);
+        } else {
+            super.showErrorMessage(errorMessage);
+        }
+    }
 
     public void showLocationDialog() {
         FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(

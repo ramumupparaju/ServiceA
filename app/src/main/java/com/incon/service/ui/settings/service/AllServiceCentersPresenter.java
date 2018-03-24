@@ -45,6 +45,7 @@ public class AllServiceCentersPresenter extends BasePresenter<AllServiceCentersC
                     @Override
                     public void onNext(List<AddServiceCenter> serviceCenterResponse) {
                         getView().loadServiceCentersList(serviceCenterResponse);
+                        getView().hideProgress();
                     }
 
                     @Override
@@ -56,7 +57,7 @@ public class AllServiceCentersPresenter extends BasePresenter<AllServiceCentersC
 
                     @Override
                     public void onComplete() {
-                        getView().hideProgress();
+
                     }
                 };
         AppApiService.getInstance().getServiceCentersApi(userId).subscribe(observer);
