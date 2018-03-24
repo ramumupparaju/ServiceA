@@ -406,6 +406,13 @@
         <item name="android:layout_marginEnd">42dp</item>
     </style>
 
+    <style name="spinnerItemStyle_zero_width" parent="@style/Zero_wrap">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorForgotPasswordHintText</item>
+        <item name="android:layout_marginStart">2dp</item>
+        <item name="android:layout_marginEnd">2dp</item>
+    </style>
+
     <style name="style_card_view" parent="BothMatch">
         <item name="cardBackgroundColor">@color/white</item>
         <item name="cardCornerRadius">@dimen/margin_3</item>

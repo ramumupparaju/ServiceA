@@ -1,5 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout style="@style/BothMatch">
 
@@ -30,41 +30,49 @@
                             android:layout_height="wrap_content"
                             android:background="@color/white"
                             android:orientation="vertical">
-                            <!-- spinner service centers -->
-                            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                                android:id="@+id/spinner_service_centers"
-                                style="@style/spinnerItemStyle"
-                                android:layout_marginTop="@dimen/margin_10"
-                                android:focusable="true"
-                                app:errorEnabled="true"
-                                app:met_floatingLabel="highlight"
-                                app:met_textColor="@color/colorForgotPasswordHintText"
-                                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
-                            <!--spinner users-->
-                            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                                android:id="@+id/spinner_users"
-                                style="@style/spinnerItemStyle"
-                                android:layout_marginTop="@dimen/margin_10"
-                                android:focusable="true"
-                                app:errorEnabled="true"
-                                app:met_floatingLabel="highlight"
-                                app:met_textColor="@color/colorForgotPasswordHintText"
-                                app:met_textColorHint="@color/colorForgotPasswordHintText"/>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <!-- spinner service centers -->
+                                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                                    android:id="@+id/spinner_service_centers"
+                                    style="@style/spinnerItemStyle_zero_width"
+                                    android:layout_marginTop="@dimen/margin_10"
+                                    android:layout_weight="1"
+                                    android:focusable="true"
+                                    app:errorEnabled="true"
+                                    app:met_floatingLabel="highlight"
+                                    app:met_textColor="@color/colorForgotPasswordHintText"
+                                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
+                                <!--spinner users-->
+                                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                                    android:id="@+id/spinner_users"
+                                    style="@style/spinnerItemStyle_zero_width"
+                                    android:layout_marginTop="@dimen/margin_10"
+                                    android:layout_weight="1"
+                                    android:focusable="true"
+                                    app:errorEnabled="true"
+                                    app:met_floatingLabel="highlight"
+                                    app:met_textColor="@color/colorForgotPasswordHintText"
+                                    app:met_textColorHint="@color/colorForgotPasswordHintText" />
+                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                android:background="@color/red">
+                                android:background="@color/red"
+                                android:orientation="vertical">
+
                                 <TextView
                                     android:id="@+id/view_months"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:layout_margin="@dimen/margin_5"
                                     android:drawableEnd="@drawable/ic_filter"
-                                    android:layout_gravity="center"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/text_size_22"/>
+                                    android:textSize="@dimen/text_size_22" />
 
                                 <devs.mulham.horizontalcalendar.HorizontalCalendarView
                                     android:id="@+id/calendarView"
@@ -72,7 +80,7 @@
                                     app:selectedDateBackground="@drawable/bg_select_calender"
                                     app:selectorColor="@color/red"
                                     app:sizeBottomText="14sp"
-                                    app:sizeMiddleText="20sp"/>
+                                    app:sizeMiddleText="20sp" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -91,7 +99,7 @@
                             app:tabIndicatorHeight="@dimen/margin_5"
                             app:tabMode="scrollable"
                             app:tabSelectedTextColor="@color/white"
-                            app:tabTextColor="@color/white"/>
+                            app:tabTextColor="@color/white" />
 
                     </RelativeLayout>
 
