@@ -1,7 +1,9 @@
 package com.incon.service.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,6 +122,21 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     public void dismissSwipeRefresh() {
     }
 
+
+    public void showLocationDialog() {
+        FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
+                productSelectedPosition);
+
+        if (TextUtils.isEmpty(itemFromPosition.getCustomer().getLocation())) {
+            AppUtils.shortToast(getActivity(), getString(R.string.error_location));
+            return;
+        }
+
+        Intent addressIntent = new Intent(getActivity(), RegistrationMapActivity.class);
+        addressIntent.putExtra(IntentConstants.LOCATION_COMMA, itemFromPosition.getCustomer().getLocation());
+        addressIntent.putExtra(IntentConstants.ADDRESS_COMMA, itemFromPosition.getServiceCenter().getAddress());
+        startActivity(addressIntent);
+    }
 
     @Override
     public void doRefresh(boolean isForceRefresh) {

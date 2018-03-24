@@ -227,7 +227,6 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
                 tagsArray.add(R.id.STATUS_UPDATE_HOLD);
                 drawablesArray.add(R.drawable.ic_option_hold);
 
-
                 textArray.add(getString(R.string.bottom_option_terminate));
                 tagsArray.add(R.id.STATUS_UPDATE_TERMINATE);
                 drawablesArray.add(R.drawable.ic_option_hold);
@@ -440,20 +439,7 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
     }
 
-    private void showLocationDialog() {
-        FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
-                productSelectedPosition);
 
-        if (TextUtils.isEmpty(itemFromPosition.getCustomer().getLocation())) {
-            AppUtils.shortToast(getActivity(), getString(R.string.error_location));
-            return;
-        }
-
-        Intent addressIntent = new Intent(getActivity(), RegistrationMapActivity.class);
-        addressIntent.putExtra(IntentConstants.LOCATION_COMMA, itemFromPosition.getCustomer().getLocation());
-        addressIntent.putExtra(IntentConstants.ADDRESS_COMMA, itemFromPosition.getServiceCenter().getAddress());
-        startActivity(addressIntent);
-    }
 
 
     @Override

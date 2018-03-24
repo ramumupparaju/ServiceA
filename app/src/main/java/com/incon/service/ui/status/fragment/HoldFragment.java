@@ -112,6 +112,10 @@ public class HoldFragment extends BaseNCRPOptionFragment implements ServiceCente
         textArray.add(getString(R.string.bottom_option_customer));
         drawablesArray.add(R.drawable.ic_option_customer);
 
+        tagsArray.add(R.id.STATUS_UPDATE);
+        textArray.add(getString(R.string.bottom_option_status_update));
+        drawablesArray.add(R.drawable.ic_option_service_support);
+
         bottomSheetPurchasedBinding.firstRow.setVisibility(View.VISIBLE);
         bottomSheetPurchasedBinding.secondRow.setVisibility(View.GONE);
         bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
@@ -125,10 +129,41 @@ public class HoldFragment extends BaseNCRPOptionFragment implements ServiceCente
         @Override
         public void onClick(View view) {
             Integer tag = (Integer) view.getTag();
-
             ArrayList<Integer> drawablesArray = new ArrayList<>();
             ArrayList<String> textArray = new ArrayList<>();
             ArrayList<Integer> tagsArray = new ArrayList<>();
+
+
+            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
+                    productSelectedPosition);
+            changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
+
+            if (tag == R.id.CUSTOMER) {
+
+                tagsArray.add(R.id.CUSTOMER_CALL_CUSTOMER_CARE);
+                textArray.add(getString(R.string.bottom_option_call_customer_care));
+                drawablesArray.add(R.drawable.ic_option_call);
+
+                tagsArray.add(R.id.CUSTOMER_LOCATION);
+                textArray.add(getString(R.string.bottom_option_location));
+                drawablesArray.add(R.drawable.ic_option_location);
+
+
+            }  else if (tag == R.id.STATUS_UPDATE) {
+                textArray.add(getString(R.string.bottom_option_assign));
+                tagsArray.add(R.id.STATUS_UPDATE_ASSIGN);
+                drawablesArray.add(R.drawable.ic_option_accept_request);
+
+                textArray.add(getString(R.string.bottom_option_terminate));
+                tagsArray.add(R.id.STATUS_UPDATE_TERMINATE);
+                drawablesArray.add(R.drawable.ic_option_hold);
+
+
+                textArray.add(getString(R.string.bottom_option_move_to));
+                tagsArray.add(R.id.STATUS_UPDATE_MOVE_TO);
+                drawablesArray.add(R.drawable.ic_option_hold);
+
+            }
 
 
             changeSelectedViews(bottomSheetPurchasedBinding.firstRow, tag);
@@ -137,7 +172,48 @@ public class HoldFragment extends BaseNCRPOptionFragment implements ServiceCente
             bottomSheetPurchasedBinding.thirdRow.setVisibility(View.GONE);
             bottomSheetPurchasedBinding.secondRow.removeAllViews();
             bottomSheetPurchasedBinding.secondRow.setWeightSum(tagsArray.size());
-            // setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
+            setBottomViewOptions(bottomSheetPurchasedBinding.secondRow, textArray, drawablesArray, tagsArray, bottomSheetSecondRowClickListener);
+        }
+    };
+
+
+    // bottom sheet top view click event
+    private View.OnClickListener bottomSheetSecondRowClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Integer tag = (Integer) view.getTag();
+
+            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
+                    productSelectedPosition);
+            changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
+
+
+            ArrayList<Integer> drawablesArray = new ArrayList<>();
+            ArrayList<String> textArray = new ArrayList<>();
+            ArrayList<Integer> tagsArray = new ArrayList<>();
+
+
+            if (tag == R.id.CUSTOMER_CALL_CUSTOMER_CARE) {
+                callPhoneNumber(getActivity(), itemFromPosition.getCustomer().getMobileNumber());
+                return;
+            } else if (tag == R.id.CUSTOMER_LOCATION) {
+                showLocationDialog();
+                return;
+
+            } else if (tag == R.id.STATUS_UPDATE_TERMINATE) {
+                showUpdateStatusDialog(R.id.STATUS_UPDATE_TERMINATE);
+
+            } else if (tag == R.id.STATUS_UPDATE_MOVE_TO) {
+                showMoveToDialog();
+
+            } else if (tag == R.id.STATUS_UPDATE_ASSIGN) {
+                fetchAssignDialogData();
+            }
+
+            bottomSheetPurchasedBinding.thirdRow.setVisibility(View.VISIBLE);
+            bottomSheetPurchasedBinding.thirdRowLine.setVisibility(View.GONE);
+            bottomSheetPurchasedBinding.thirdRow.removeAllViews();
+            bottomSheetPurchasedBinding.thirdRow.setWeightSum(tagsArray.size());
         }
     };
 
@@ -150,7 +226,6 @@ public class HoldFragment extends BaseNCRPOptionFragment implements ServiceCente
     @Override
     public void loadUpDateStatus(UpDateStatusResponse upDateStatusResponse) {
         doRefresh(true);
-
     }
 
 }

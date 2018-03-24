@@ -200,7 +200,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
                 textArray.add(getString(R.string.bottom_option_move_to));
                 drawablesArray.add(R.drawable.ic_option_hold);
 
-                tagsArray.add(R.id.STATUS_UPDATE_ACCEPT);
+                tagsArray.add(R.id.STATUS_UPDATE_ASSIGN);
                 textArray.add(getString(R.string.bottom_option_assign));
                 drawablesArray.add(R.drawable.ic_option_hold);
 
