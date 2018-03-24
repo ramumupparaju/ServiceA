@@ -544,7 +544,7 @@
     <string name="tab_payment">Payment</string>
     <string name="tab_hold">Hold</string>
     <string name="tab_terminate">Terminated</string>
-    <string name="tab_compleat">Compleated</string>
+    <string name="tab_completed">Completed</string>
     <string name="title_product_name">Product name</string>
     <string name="title_model_no">Model No</string>
     <string name="title_complaint">Complaint</string>

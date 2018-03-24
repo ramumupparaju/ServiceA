@@ -16,7 +16,7 @@
         <item>@string/tab_payment</item>
         <item>@string/tab_hold</item>
         <item>@string/tab_terminate</item>
-        <item>@string/tab_compleat</item>
+        <item>@string/tab_completed</item>
     </string-array>
 
     <!-- Gender dropdown options -->
