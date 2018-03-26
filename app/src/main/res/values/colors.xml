@@ -33,6 +33,7 @@
 
     <color name="colorRegisterTypeUncheckedBorder">#62717a</color>
     <color name="colorVerifyBackground">#373737</color>
+    <color name="astral_alpha">#222E79A9</color>
 
     <color name="wizard_info_text_color">#565656</color>
     <color name="wizard_info_title_color">#424b4d</color>

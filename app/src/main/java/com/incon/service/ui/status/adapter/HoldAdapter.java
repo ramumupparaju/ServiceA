@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.incon.service.AppConstants;
@@ -17,10 +19,18 @@ import com.incon.service.BR;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
-import com.incon.service.databinding.ItemCheckupFragmentBinding;
+import com.incon.service.apimodel.components.status.StatusList;
 import com.incon.service.databinding.ItemHoldFragmentBinding;
+import com.incon.service.databinding.StatusViewBinding;
+import com.incon.service.dto.addservicecenter.AddServiceCenter;
+import com.incon.service.dto.registration.ServiceCenter;
+import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseRecyclerViewAdapter;
 import com.incon.service.utils.AddressFromLatLngAddress;
+
+import java.util.List;
+
+import static com.incon.service.AppUtils.getStatusName;
 
 /**
  * Created by PC on 3/12/2018.
@@ -46,7 +56,7 @@ public class HoldAdapter extends BaseRecyclerViewAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
-        ((HoldAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
+        ((HoldAdapter.ViewHolder) holder).bind(fetchNewRequestResponse, position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -58,7 +68,7 @@ public class HoldAdapter extends BaseRecyclerViewAdapter {
             binding.getRoot().setOnClickListener(this);
         }
 
-        public void bind(FetchNewRequestResponse fetchNewRequestResponse) {
+        public void bind(FetchNewRequestResponse fetchNewRequestResponse, int position) {
             binding.setVariable(BR.fetchNewRequestResponse, fetchNewRequestResponse);
             View root = binding.getRoot();
             AppUtils.loadImageFromApi(binding.brandImageview, fetchNewRequestResponse
@@ -73,6 +83,10 @@ public class HoldAdapter extends BaseRecyclerViewAdapter {
             } else {
                 binding.viewsLayout.setVisibility(View.GONE);
             }
+
+            List<StatusList> statusList = fetchNewRequestResponse.getStatusList();
+            createStatusView(binding, statusList, position);
+
             binding.executePendingBindings();
 
         }
@@ -83,6 +97,44 @@ public class HoldAdapter extends BaseRecyclerViewAdapter {
         }
 
     }
+
+    private void createStatusView(ItemHoldFragmentBinding binding, List<StatusList> statusList, int position) {
+
+        int size = statusList.size();
+        if (statusList == null || size == 0) {
+            binding.statusLayout.setVisibility(View.GONE);
+        } else {
+            binding.statusLayout.setVisibility(View.VISIBLE);
+            binding.statusLayout.removeAllViews();
+            for (int i = 0; i < size; i++) {
+                StatusList statusData = statusList.get(i);
+                ServiceRequest serviceRequest = statusData.getRequest();
+                LinearLayout linearLayout = new LinearLayout(context);
+                StatusViewBinding statusView = getStatusView(context);
+                statusView.viewTv.setText(getStatusName(Integer.parseInt(serviceRequest.getStatus())));
+                statusView.viewLeftLine.setVisibility(i == 0 ? View.INVISIBLE : View.VISIBLE);
+                statusView.viewRightLine.setVisibility(i == size - 1 ? View.INVISIBLE : View.VISIBLE);
+                View statusRootView = statusView.getRoot();
+                statusRootView.setOnClickListener(onClickListener);
+//                statusRootView.setTag(statusData.getServiceCenter().getContactNo());
+                statusRootView.setTag(String.format("%1$s;%2$s", position, i));
+                linearLayout.addView(statusRootView);
+                binding.statusLayout.addView(linearLayout);
+            }
+        }
+    }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Object tag = view.getTag();
+            if (tag != null) {
+                String[] positionsArray = ((String) tag).split(";");
+                clickCallback.onClickStatus(Integer.parseInt(positionsArray[0]), Integer.parseInt(positionsArray[1]));
+            }
+
+        }
+    };
 
     private void loadLocationDetailsFromGeocoder(LatLng latLng, FetchNewRequestResponse fetchNewRequestResponse) {
 

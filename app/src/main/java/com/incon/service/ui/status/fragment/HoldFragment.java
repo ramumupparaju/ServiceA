@@ -13,6 +13,7 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseNCRPOptionFragment;
@@ -89,7 +90,17 @@ public class HoldFragment extends BaseNCRPOptionFragment implements ServiceCente
     }
 
 
-    private IClickCallback iClickCallback = new IClickCallback() {
+    private IStatusClickCallback iClickCallback = new IStatusClickCallback() {
+        @Override
+        public void onClickStatusButton(int statusType) {
+
+        }
+
+        @Override
+        public void onClickStatus(int productPosition, int statusPosition) {
+
+        }
+
         @Override
         public void onClickPosition(int position) {
             holdAdapter.clearSelection();

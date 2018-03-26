@@ -45,7 +45,7 @@ public class CompleatAdapter extends BaseRecyclerViewAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         FetchNewRequestResponse fetchNewRequestResponse = filteredList.get(position);
-        ((HoldAdapter.ViewHolder) holder).bind(fetchNewRequestResponse);
+        ((HoldAdapter.ViewHolder) holder).bind(fetchNewRequestResponse, position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

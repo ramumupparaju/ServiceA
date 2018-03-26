@@ -41,6 +41,7 @@ public interface AppConstants {
         int APPROVAL_HOLD = 30;
         int REPAIR_HOLD = 31;
         int PAYMENT_HOLD = 32;
+
     }
 
     interface RegistrationConstants {

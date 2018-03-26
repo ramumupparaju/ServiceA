@@ -20,6 +20,7 @@ import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.EstimationDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.custom.view.EstimationDialog;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
@@ -101,7 +102,17 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
     }
 
 
-    private IClickCallback iClickCallback = new IClickCallback() {
+    private IStatusClickCallback iClickCallback = new IStatusClickCallback() {
+        @Override
+        public void onClickStatusButton(int statusType) {
+
+        }
+
+        @Override
+        public void onClickStatus(int productPosition, int statusPosition) {
+
+        }
+
         @Override
         public void onClickPosition(int position) {
             checkUpAdapter.clearSelection();

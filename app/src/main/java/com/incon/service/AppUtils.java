@@ -16,9 +16,11 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.incon.service.apimodel.components.getstatuslist.DefaultStatusData;
 import com.incon.service.apimodel.components.updatestatus.Status;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AppUtils {
 
@@ -31,6 +33,21 @@ public class AppUtils {
         HOLD,
         COMPLETED,
         TERMINATE;
+    }
+
+    //fetching status name basedon request
+    public static String getStatusName(int statusId) {
+        DefaultStatusData statusData = new DefaultStatusData();
+        statusData.setId(statusId);
+
+        List<DefaultStatusData> statusListResponses = ConnectApplication.getAppContext().getDefaultStausData();
+
+        int position = statusListResponses.indexOf(statusData);
+        if (position != -1) {
+            return statusListResponses.get(position).getCode();
+        }
+
+        return "";
     }
 
     public static void shortToast(Context context, String toastMessage) {

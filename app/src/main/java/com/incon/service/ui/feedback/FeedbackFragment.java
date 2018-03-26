@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.databinding.FragmentFeedbackBinding;
 import com.incon.service.ui.BaseFragment;
 import com.incon.service.ui.feedback.adapter.FeedBackAdapter;
@@ -70,7 +71,17 @@ public class FeedbackFragment extends BaseFragment implements FeedBackContract.V
     }
 
 
-    private IClickCallback iClickCallback = new IClickCallback() {
+    private IStatusClickCallback iClickCallback = new IStatusClickCallback() {
+        @Override
+        public void onClickStatusButton(int statusType) {
+            
+        }
+
+        @Override
+        public void onClickStatus(int productPosition, int statusPosition) {
+
+        }
+
         @Override
         public void onClickPosition(int position) {
 

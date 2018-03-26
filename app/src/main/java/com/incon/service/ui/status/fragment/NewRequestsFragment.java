@@ -21,6 +21,7 @@ import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.EditTimeCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
 import com.incon.service.custom.view.EditTimeDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
@@ -110,7 +111,17 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         });
     }
 
-    private IClickCallback iClickCallback = new IClickCallback() {
+    private IStatusClickCallback iClickCallback = new IStatusClickCallback() {
+        @Override
+        public void onClickStatusButton(int statusType) {
+
+        }
+
+        @Override
+        public void onClickStatus(int productPosition, int statusPosition) {
+
+        }
+
         @Override
         public void onClickPosition(int position) {
             newRequestsAdapter.clearSelection();

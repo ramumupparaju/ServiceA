@@ -55,9 +55,21 @@ public class AddServiceCenter extends BaseObservable implements Parcelable {
     private transient String divisionName;
     private transient String brandName;
     private transient boolean categoryEditable;
+    private transient String formattedAddress;
 
     public AddServiceCenter() {
 
+    }
+
+
+    @Bindable
+    public String getFormattedAddress() {
+        return formattedAddress;
+    }
+
+    public void setFormattedAddress(String formattedAddress) {
+        this.formattedAddress = formattedAddress;
+        notifyChange();
     }
 
     public Integer getId() {

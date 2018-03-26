@@ -14,6 +14,7 @@ import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResp
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.dto.adduser.AddUser;
@@ -96,7 +97,17 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
     }
 
 
-    private IClickCallback iClickCallback = new IClickCallback() {
+    private IStatusClickCallback iClickCallback = new IStatusClickCallback() {
+        @Override
+        public void onClickStatusButton(int statusType) {
+
+        }
+
+        @Override
+        public void onClickStatus(int productPosition, int statusPosition) {
+
+        }
+
         @Override
         public void onClickPosition(int position) {
             repairAdapter.clearSelection();

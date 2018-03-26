@@ -6,7 +6,10 @@ import com.incon.service.apimodel.components.assigneduser.AssignedUser;
 import com.incon.service.apimodel.components.customer.Customer;
 import com.incon.service.apimodel.components.productinfo.Product;
 import com.incon.service.apimodel.components.request.Request;
+import com.incon.service.apimodel.components.status.StatusList;
 import com.incon.service.dto.addservicecenter.AddServiceCenter;
+
+import java.util.List;
 
 /**
  * Created by MY HOME on 25-Dec-17.
@@ -37,6 +40,18 @@ public class FetchNewRequestResponse {
     @SerializedName("productImageUrl")
     @Expose
     private String productImageUrl;
+
+    @SerializedName("statusList")
+    @Expose
+    private List<StatusList> statusList = null;
+
+    public List<StatusList> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<StatusList> statusList) {
+        this.statusList = statusList;
+    }
 
     public FetchNewRequestResponse() {
     }

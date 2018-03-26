@@ -22,7 +22,7 @@
         <RelativeLayout
             android:id="@+id/layout_checkup_item"
             android:layout_width="match_parent"
-            android:layout_height="170dp">
+            android:layout_height="270dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -111,8 +111,25 @@
                     android:textColor="@color/ebony_clay"
                     android:textSize="10sp" />
 
-                <!--emp name-->
 
+                <HorizontalScrollView
+                    android:id="@+id/status_scrollview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:scrollbarSize="4dp"
+                    android:scrollbarThumbHorizontal="@drawable/scrollbar"
+                    android:scrollbars="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/status_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
             </RelativeLayout>
             <!--Dummy view for showing selection-->
             <ImageView

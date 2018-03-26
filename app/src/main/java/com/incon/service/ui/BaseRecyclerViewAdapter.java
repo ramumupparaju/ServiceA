@@ -1,9 +1,15 @@
 package com.incon.service.ui;
 
+import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 
+import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.callbacks.IClickCallback;
+import com.incon.service.callbacks.IStatusClickCallback;
+import com.incon.service.databinding.StatusViewBinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +24,7 @@ import java.util.List;
 public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public List<FetchNewRequestResponse> filteredList = new ArrayList<>();
     public List<FetchNewRequestResponse> fetchNewRequestResponseList = new ArrayList<>();
-    public IClickCallback clickCallback;
+    public IStatusClickCallback clickCallback;
 
     public Comparator comparator = new Comparator<FetchNewRequestResponse>() {
         @Override
@@ -37,6 +43,10 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
         }
     };
 
+    public StatusViewBinding getStatusView(Context context) {
+        return DataBindingUtil.inflate(
+                LayoutInflater.from(context), R.layout.status_view, null, false);
+    }
     @Override
     public int getItemCount() {
         return filteredList.size();
@@ -55,7 +65,7 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     }
 
 
-    public void setClickCallback(IClickCallback clickCallback) {
+    public void setClickCallback(IStatusClickCallback clickCallback) {
         this.clickCallback = clickCallback;
     }
 
