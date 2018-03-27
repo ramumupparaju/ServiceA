@@ -151,8 +151,27 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     }
 
     public void initViews() {
+
+        String statusType = "";
+        if (this instanceof NewRequestsFragment) {
+            statusType = AppUtils.ServiceRequestTypes.NEW.name();
+        } else if (this instanceof NewRequestsFragment) {
+            statusType = AppUtils.ServiceRequestTypes.CHECKUP.name();
+        } else if (this instanceof NewRequestsFragment) {
+            statusType = AppUtils.ServiceRequestTypes.APPROVAL.name();
+        } else if (this instanceof NewRequestsFragment) {
+            statusType = AppUtils.ServiceRequestTypes.REPAIR.name();
+        } else if (this instanceof NewRequestsFragment) {
+            statusType = AppUtils.ServiceRequestTypes.PAYMENT.name();
+        } else if (this instanceof NewRequestsFragment) {
+            statusType = AppUtils.ServiceRequestTypes.HOLD.name();
+        } else if (this instanceof NewRequestsFragment) {
+            statusType = AppUtils.ServiceRequestTypes.COMPLETED.name();
+        } else if (this instanceof NewRequestsFragment) {
+            statusType = AppUtils.ServiceRequestTypes.TERMINATE.name();
+        }
         serviceRequest = new ServiceRequest();
-        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.CHECKUP.name());
+        serviceRequest.setStatus(statusType);
         newRequestsAdapter = new NewRequestsAdapter();
         newRequestsAdapter.setClickCallback(iClickCallback);
         newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);

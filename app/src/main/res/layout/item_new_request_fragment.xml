@@ -22,7 +22,7 @@
         <RelativeLayout
             android:id="@+id/layout_request_item"
             android:layout_width="match_parent"
-            android:layout_height="270dp">
+            android:layout_height="240dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
