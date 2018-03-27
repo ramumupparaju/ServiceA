@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="fetchNewRequestResponse"
-            type="com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse" />
+            type="com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -20,7 +22,7 @@
         <RelativeLayout
             android:id="@+id/layout_request_item"
             android:layout_width="match_parent"
-            android:layout_height="170dp">
+            android:layout_height="270dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -38,7 +40,7 @@
                     android:id="@+id/product_imageview"
                     style="@style/image_product_icon"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/brand_imageview" />
+                    android:layout_toRightOf="@id/brand_imageview"/>
                 <!--product name-->
                 <TextView
                     android:id="@+id/product_name"
@@ -50,7 +52,7 @@
                     android:text="@={fetchNewRequestResponse.product.name}"
                     android:textAllCaps="true"
                     android:textColor="@color/ebony_clay"
-                    android:textSize="12.4sp" />
+                    android:textSize="12.4sp"/>
                 <!--model number -->
                 <TextView
                     android:id="@+id/model_number"
@@ -61,7 +63,7 @@
                     android:maxLines="2"
                     android:text="@={fetchNewRequestResponse.product.modelNo}"
                     android:textColor="@color/ebony_clay"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
 
 
                 <!--complaint-->
@@ -74,7 +76,7 @@
                     android:maxLines="2"
                     android:text="@={fetchNewRequestResponse.product.modelNo}"
                     android:textColor="@color/ebony_clay"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
 
 
                 <!--location-->
@@ -86,7 +88,7 @@
                     android:layout_toRightOf="@id/product_imageview"
                     android:text="@{`Location : ` + fetchNewRequestResponse.serviceCenter.address}"
                     android:textColor="@color/ebony_clay"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
 
                 <!--warrenty status-->
                 <TextView
@@ -97,35 +99,54 @@
                     android:layout_toRightOf="@id/product_imageview"
                     android:text="@={fetchNewRequestResponse.product.modelNo}"
                     android:textColor="@color/ebony_clay"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
                 <!--attending date and time-->
                 <TextView
                     android:id="@+id/text_attending_date_time"
                     style="@style/BothWrap"
-                    android:layout_marginTop="@dimen/margin_3"
                     android:layout_below="@+id/text_waranty_status"
+                    android:layout_marginTop="@dimen/margin_3"
                     android:layout_toRightOf="@id/product_imageview"
                     android:text="@={fetchNewRequestResponse.product.modelNo}"
                     android:textColor="@color/ebony_clay"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
 
                 <TextView
                     android:id="@+id/text_assigned"
                     style="@style/BothWrap"
-                    android:layout_marginTop="@dimen/margin_3"
                     android:layout_below="@+id/text_attending_date_time"
+                    android:layout_marginTop="@dimen/margin_3"
                     android:layout_toRightOf="@id/product_imageview"
                     android:textColor="@color/ebony_clay"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
 
-                <!--emp name-->
+                <HorizontalScrollView
+                    android:id="@+id/status_scrollview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/text_assigned"
+                    android:layout_centerHorizontal="true"
+                    android:scrollbarSize="4dp"
+                    android:scrollbarThumbHorizontal="@drawable/scrollbar"
+                    android:scrollbars="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/status_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
 
             </RelativeLayout>
             <!--Dummy view for showing selection-->
             <ImageView
                 android:id="@+id/views_layout"
                 style="@style/BothMatch"
-                android:background="@color/alpha_corn_flower_red" />
+                android:background="@color/alpha_corn_flower_red"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </layout>

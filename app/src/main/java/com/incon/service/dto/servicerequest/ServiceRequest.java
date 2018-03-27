@@ -15,6 +15,15 @@ public class ServiceRequest {
     @Expose
     private String status;
     private Long reqDate;
+    private Long createdDate;
+
+    public Long getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Long createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public Integer getAssignedUser() {
         return assignedUser;

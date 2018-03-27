@@ -1,12 +1,9 @@
 package com.incon.service.ui.status.fragment;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,17 +17,12 @@ import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.EditTimeCallback;
-import com.incon.service.callbacks.IClickCallback;
-import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.callbacks.TimeSlotAlertDialogCallback;
 import com.incon.service.custom.view.EditTimeDialog;
 import com.incon.service.custom.view.TimeSlotAlertDialog;
 import com.incon.service.dto.adduser.AddUser;
-import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BaseNCRPOptionFragment;
-import com.incon.service.ui.RegistrationMapActivity;
-import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 
@@ -80,61 +72,8 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         return rootView;
     }
 
-    private void initViews() {
-        serviceRequest = new ServiceRequest();
-        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.NEW.name());
-        newRequestsAdapter = new NewRequestsAdapter();
-        newRequestsAdapter.setClickCallback(iClickCallback);
-        newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        newRequestBinding.requestRecyclerview.setAdapter(newRequestsAdapter);
-        newRequestBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
-    }
-
     @Override
-    public void dismissSwipeRefresh() {
-        super.dismissSwipeRefresh();
-        if (newRequestBinding.swiperefresh.isRefreshing()) {
-            newRequestBinding.swiperefresh.setRefreshing(false);
-        }
-    }
-
-    @Override
-    public void loadBottomSheet() {
-        super.loadBottomSheet();
-        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                newRequestsAdapter.clearSelection();
-
-            }
-        });
-    }
-
-    private IStatusClickCallback iClickCallback = new IStatusClickCallback() {
-        @Override
-        public void onClickStatusButton(int statusType) {
-
-        }
-
-        @Override
-        public void onClickStatus(int productPosition, int statusPosition) {
-
-        }
-
-        @Override
-        public void onClickPosition(int position) {
-            newRequestsAdapter.clearSelection();
-            FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.
-                    getItemFromPosition(position);
-            fetchNewRequestResponse.setSelected(true);
-            productSelectedPosition = position;
-            createBottomSheetFirstRow();
-            bottomSheetDialog.show();
-        }
-    };
-
-    private void createBottomSheetFirstRow() {
+    public void createBottomSheetFirstRow() {
 
         ArrayList<Integer> drawablesArray = new ArrayList<>();
         ArrayList<String> textArray = new ArrayList<>();
@@ -487,9 +426,4 @@ public class NewRequestsFragment extends BaseNCRPOptionFragment implements Servi
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        serviceCenterPresenter.disposeAll();
-    }
 }

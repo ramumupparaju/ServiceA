@@ -19,6 +19,8 @@ public interface AppConstants {
     String DELIMITOR = "-";
     int DEFAULT_GOOGLE_MAP_ZOOM_LEVEL = 16;
     int MINUS_ONE = -1;
+    String NEW_LINE= "\n";
+
 
     interface StatusConstants {
         int COMPLETED = 1;

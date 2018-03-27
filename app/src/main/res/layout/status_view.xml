@@ -1,5 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         style="@style/BothMatch"
@@ -12,26 +12,26 @@
             android:orientation="horizontal">
 
             <View
-                android:layout_marginTop="@dimen/margin_20"
                 android:id="@+id/view_left_line"
                 android:layout_width="40dp"
                 android:layout_height="3dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_20"
                 android:background="@color/astral_alpha"/>
 
             <ImageView
-                android:layout_marginTop="@dimen/margin_40"
                 android:id="@+id/view_logo"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
-                app:srcCompat="@drawable/circle_shape"/>
+                android:layout_marginTop="@dimen/margin_40"
+                android:src="@drawable/circle_shape"/>
 
             <View
-                android:layout_marginTop="@dimen/margin_20"
                 android:id="@+id/view_right_line"
                 android:layout_width="40dp"
                 android:layout_height="3dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_20"
                 android:background="@color/astral_alpha"/>
 
         </LinearLayout>

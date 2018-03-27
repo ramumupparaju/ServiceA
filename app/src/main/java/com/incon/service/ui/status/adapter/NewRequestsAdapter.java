@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.incon.service.AppConstants;
@@ -17,10 +19,17 @@ import com.incon.service.BR;
 import com.incon.service.ConnectApplication;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
+import com.incon.service.apimodel.components.status.StatusList;
 import com.incon.service.databinding.ItemNewRequestFragmentBinding;
+import com.incon.service.databinding.StatusViewBinding;
+import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseRecyclerViewAdapter;
 import com.incon.service.utils.AddressFromLatLngAddress;
 import com.incon.service.utils.DeviceUtils;
+
+import java.util.List;
+
+import static com.incon.service.AppUtils.getStatusName;
 
 /**
  * Created by PC on 12/6/2017.
@@ -62,7 +71,6 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
 
         public void bind(FetchNewRequestResponse fetchNewRequestResponse, int position) {
             binding.setVariable(BR.fetchNewRequestResponse, fetchNewRequestResponse);
-            View root = binding.getRoot();
             // todo have to know
             RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) binding.cardView.getLayoutParams();
             int leftRightMargin = (int) DeviceUtils.convertPxToDp(8);
@@ -97,6 +105,16 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
             } else {
                 binding.viewsLayout.setVisibility(View.GONE);
             }
+
+            binding.statusScrollview.post(new Runnable() {
+                public void run() {
+                    binding.statusScrollview.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                }
+            });
+
+            List<StatusList> statusList = fetchNewRequestResponse.getStatusList();
+            createStatusView(binding, statusList, position);
+
             binding.executePendingBindings();
         }
 
@@ -106,6 +124,45 @@ public class NewRequestsAdapter extends BaseRecyclerViewAdapter {
         }
 
     }
+
+    private void createStatusView(ItemNewRequestFragmentBinding binding, List<StatusList> statusList, int position) {
+
+        int size = statusList.size();
+        if (statusList == null || size == 0) {
+            binding.statusLayout.setVisibility(View.GONE);
+        } else {
+            binding.statusLayout.setVisibility(View.VISIBLE);
+            binding.statusLayout.removeAllViews();
+            for (int i = 0; i < size; i++) {
+                StatusList statusData = statusList.get(i);
+                ServiceRequest serviceRequest = statusData.getRequest();
+                LinearLayout linearLayout = new LinearLayout(context);
+                StatusViewBinding statusView = getStatusView(context);
+                statusView.viewTv.setText(getStatusName(Integer.parseInt(serviceRequest.getStatus())));
+                statusView.viewLeftLine.setVisibility(i == 0 ? View.INVISIBLE : View.VISIBLE);
+                statusView.viewRightLine.setVisibility(i == size - 1 ? View.INVISIBLE : View.VISIBLE);
+                View statusRootView = statusView.getRoot();
+                statusRootView.setOnClickListener(onClickListener);
+                statusRootView.setTag(String.format("%1$s;%2$s", position, i));
+                linearLayout.addView(statusRootView);
+                binding.statusLayout.addView(linearLayout);
+            }
+        }
+    }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Object tag = view.getTag();
+            if (tag != null) {
+                String[] positionsArray = ((String) tag).split(";");
+                clickCallback.onClickStatus(Integer.parseInt(positionsArray[0]), Integer.parseInt(positionsArray[1]));
+            }
+
+        }
+    };
+
+
 
     private void loadLocationDetailsFromGeocoder(LatLng latLng, FetchNewRequestResponse fetchNewRequestResponse) {
 

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,33 +14,39 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.incon.service.AppConstants;
 import com.incon.service.AppUtils;
 import com.incon.service.R;
+import com.incon.service.apimodel.components.assigneduser.AssignedUser;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.request.Request;
+import com.incon.service.apimodel.components.status.StatusList;
 import com.incon.service.apimodel.components.updatestatus.Status;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.AssignOptionCallback;
+import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.callbacks.MoveToOptionCallback;
 import com.incon.service.callbacks.PassHistoryCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppEditTextDialog;
+import com.incon.service.custom.view.AppStatusDialog;
 import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
 import com.incon.service.databinding.FragmentNewrequestBinding;
 import com.incon.service.dto.adduser.AddUser;
+import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.home.HomeActivity;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.ui.status.fragment.ApprovalFragment;
 import com.incon.service.ui.status.fragment.CheckUpFragment;
-import com.incon.service.ui.status.fragment.CompleatFragment;
+import com.incon.service.ui.status.fragment.CompleteFragment;
 import com.incon.service.ui.status.fragment.HoldFragment;
 import com.incon.service.ui.status.fragment.NewRequestsFragment;
 import com.incon.service.ui.status.fragment.PaymentFragment;
 import com.incon.service.ui.status.fragment.RepairFragment;
 import com.incon.service.ui.status.fragment.ServiceCenterPresenter;
 import com.incon.service.ui.status.fragment.TerminateFragment;
+import com.incon.service.utils.DateUtils;
 import com.incon.service.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
@@ -67,7 +74,92 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
     public AppEditTextDialog updateStatusDialog;
     public UpDateStatus upDateStatus;
     public AssignDialog assignDialog;
+    private AppStatusDialog statusDialog;
 
+
+    public IStatusClickCallback iClickCallback = new IStatusClickCallback() {
+        @Override
+        public void onClickStatusButton(int statusType) {
+
+        }
+
+        @Override
+        public void onClickStatus(int productPosition, int statusPosition) {
+            FetchNewRequestResponse serviceStatus = newRequestsAdapter.getItemFromPosition(productPosition);
+            List<StatusList> statusList = serviceStatus.getStatusList();
+            StatusList status = statusList.get(statusPosition);
+            ServiceRequest serviceRequest = status.getRequest();
+            String phoneNumber = TextUtils.isEmpty(status.getAssignedUser().getMobileNumber()) ? status.getServiceCenter().getContactNo() : status.getAssignedUser().getMobileNumber();
+            showStatusDialog(AppUtils.getStatusName(Integer.parseInt(serviceRequest.getStatus())), formattedDescription(status), phoneNumber);
+        }
+
+        @Override
+        public void onClickPosition(int position) {
+            newRequestsAdapter.clearSelection();
+            FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.
+                    getItemFromPosition(position);
+            fetchNewRequestResponse.setSelected(true);
+            productSelectedPosition = position;
+            createBottomSheetFirstRow();
+            bottomSheetDialog.show();
+        }
+    };
+
+    private String formattedDescription(StatusList status) {
+        StringBuilder stringBuilder = new StringBuilder();
+        AssignedUser assignedUser = status.getAssignedUser();
+        if (assignedUser != null) {
+            if (!TextUtils.isEmpty(assignedUser.getName()))
+                stringBuilder.append("Name : ").append(assignedUser.getName()).append(NEW_LINE);
+            if (!TextUtils.isEmpty(assignedUser.getMobileNumber()))
+                stringBuilder.append("Mobile num : ").append(assignedUser.getMobileNumber()).append(NEW_LINE);
+            if (!TextUtils.isEmpty(assignedUser.getDesignation())) {
+                stringBuilder.append("Desig : ").append(assignedUser.getDesignation()).append(NEW_LINE);
+            }
+
+            stringBuilder.append("Date : ").append(DateUtils.convertMillisToStringFormat(status.getRequest().getCreatedDate(), DateFormatterConstants.LOCAL_DATE_DD_MM_YYYY_HH_MM));
+        }
+        return stringBuilder.toString();
+    }
+
+    public void createBottomSheetFirstRow() {
+//overrided in each sub class
+    }
+
+    private void showStatusDialog(String title, String messageInfo, String phoneNumber) {
+        statusDialog = new AppStatusDialog.AlertDialogBuilder(getActivity(), new
+                TextAlertDialogCallback() {
+                    @Override
+                    public void enteredText(String phoneNumber) {
+                        AppUtils.callPhoneNumber(getActivity(), phoneNumber);
+                        statusDialog.dismiss();
+                    }
+
+                    @Override
+                    public void alertDialogCallback(byte dialogStatus) {
+                        switch (dialogStatus) {
+                            case TextAlertDialogCallback.OK:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).title(title).description(messageInfo).phoneNumber(phoneNumber)
+                .build();
+        statusDialog.showDialog();
+        statusDialog.setCancelable(true);
+    }
+
+    public void initViews() {
+        serviceRequest = new ServiceRequest();
+        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.CHECKUP.name());
+        newRequestsAdapter = new NewRequestsAdapter();
+        newRequestsAdapter.setClickCallback(iClickCallback);
+        newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        newRequestBinding.requestRecyclerview.setAdapter(newRequestsAdapter);
+        newRequestBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
+    }
 
     public SwipeRefreshLayout.OnRefreshListener onRefreshListener =
             new SwipeRefreshLayout.OnRefreshListener() {
@@ -171,7 +263,7 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             messageForApi = getString(R.string.progress_hold_service_request);
         } else if (this instanceof TerminateFragment) {
             messageForApi = getString(R.string.progress_terminate_service_request);
-        } else if (this instanceof CompleatFragment) {
+        } else if (this instanceof CompleteFragment) {
             messageForApi = getString(R.string.progress_compleat_service_request);
         }
         newRequestBinding.requestRecyclerview.setVisibility(View.GONE);

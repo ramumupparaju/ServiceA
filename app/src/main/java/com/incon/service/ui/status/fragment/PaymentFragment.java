@@ -2,7 +2,6 @@ package com.incon.service.ui.status.fragment;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,9 @@ import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
-import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.dto.adduser.AddUser;
-import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseNCRPOptionFragment;
-import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,42 +60,8 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
         return rootView;
     }
 
-    private void initViews() {
-        serviceRequest = new ServiceRequest();
-        serviceRequest.setStatus(AppUtils.ServiceRequestTypes.PAYMENT.name());
-
-        newRequestsAdapter = new NewRequestsAdapter();
-        newRequestsAdapter.setClickCallback(iClickCallback);
-        newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        newRequestBinding.requestRecyclerview.setAdapter(newRequestsAdapter);
-        newRequestBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
-    }
-
-    private IStatusClickCallback iClickCallback = new IStatusClickCallback() {
-        @Override
-        public void onClickStatusButton(int statusType) {
-
-        }
-
-        @Override
-        public void onClickStatus(int productPosition, int statusPosition) {
-
-        }
-
-        @Override
-        public void onClickPosition(int position) {
-            newRequestsAdapter.clearSelection();
-            FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.getItemFromPosition(position);
-            fetchNewRequestResponse.setSelected(true);
-            newRequestsAdapter.notifyDataSetChanged();
-            productSelectedPosition = position;
-            createBottomSheetFirstRow();
-            bottomSheetDialog.show();
-        }
-    };
-
-    private void createBottomSheetFirstRow() {
+    @Override
+    public void createBottomSheetFirstRow() {
 
         ArrayList<Integer> drawablesArray = new ArrayList<>();
         ArrayList<String> textArray = new ArrayList<>();
