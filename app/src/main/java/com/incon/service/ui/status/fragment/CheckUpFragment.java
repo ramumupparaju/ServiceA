@@ -1,7 +1,6 @@
 package com.incon.service.ui.status.fragment;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,14 +18,13 @@ import com.incon.service.apimodel.components.request.Request;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
 import com.incon.service.callbacks.EstimationDialogCallback;
-import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.custom.view.EstimationDialog;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.BaseNCRPOptionFragment;
-import com.incon.service.ui.status.adapter.CheckUpAdapter;
+import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 import com.incon.service.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -58,9 +56,9 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            checkupBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_checkup,
+            newRequestBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
-            rootView = checkupBinding.getRoot();
+            rootView = newRequestBinding.getRoot();
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
             initViews();
@@ -73,32 +71,12 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
     private void initViews() {
         serviceRequest = new ServiceRequest();
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.CHECKUP.name());
-        checkUpAdapter = new CheckUpAdapter();
-        checkUpAdapter.setClickCallback(iClickCallback);
-        checkupBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
+        newRequestsAdapter = new NewRequestsAdapter();
+        newRequestsAdapter.setClickCallback(iClickCallback);
+        newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        checkupBinding.checkupRecyclerview.setAdapter(checkUpAdapter);
-        checkupBinding.checkupRecyclerview.setLayoutManager(linearLayoutManager);
-    }
-
-
-    @Override
-    public void dismissSwipeRefresh() {
-        super.dismissSwipeRefresh();
-        if (checkupBinding.swiperefresh.isRefreshing()) {
-            checkupBinding.swiperefresh.setRefreshing(false);
-        }
-    }
-
-    @Override
-    public void loadBottomSheet() {
-        super.loadBottomSheet();
-        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                checkUpAdapter.clearSelection();
-            }
-        });
+        newRequestBinding.requestRecyclerview.setAdapter(newRequestsAdapter);
+        newRequestBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
     }
 
 
@@ -115,11 +93,10 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
         @Override
         public void onClickPosition(int position) {
-            checkUpAdapter.clearSelection();
-            FetchNewRequestResponse fetchNewRequestResponse = checkUpAdapter.
-                    getItemFromPosition(position);
+            newRequestsAdapter.clearSelection();
+            FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.getItemFromPosition(position);
             fetchNewRequestResponse.setSelected(true);
-            checkUpAdapter.notifyDataSetChanged();
+            newRequestsAdapter.notifyDataSetChanged();
             productSelectedPosition = position;
             createBottomSheetFirstRow();
             bottomSheetDialog.show();
@@ -234,7 +211,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
             ArrayList<Integer> drawablesArray = new ArrayList<>();
             ArrayList<String> textArray = new ArrayList<>();
             ArrayList<Integer> tagsArray = new ArrayList<>();
-            FetchNewRequestResponse itemFromPosition = checkUpAdapter.getItemFromPosition(
+            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
                     productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
 
@@ -287,7 +264,7 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
+                FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
                 Request request = requestResponse.getRequest();
                 upDateStatus.setRequestid(request.getId());
                 serviceCenterPresenter.upDateStatus(userId, upDateStatus);
@@ -350,8 +327,6 @@ public class CheckUpFragment extends BaseNCRPOptionFragment implements ServiceCe
         @Override
         public void onClick(View view) {
             Integer tag = (Integer) view.getTag();
-            FetchNewRequestResponse itemFromPosition = checkUpAdapter.getItemFromPosition(
-                    productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, tag);
         }
 

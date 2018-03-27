@@ -1,6 +1,5 @@
 package com.incon.service.ui.status.fragment;
 
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,12 +11,11 @@ import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
-import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseNCRPOptionFragment;
-import com.incon.service.ui.status.adapter.TerminateAdapter;
+import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +38,9 @@ public class TerminateFragment extends BaseNCRPOptionFragment implements Service
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            terminateBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_terminate,
+            newRequestBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
-            rootView = terminateBinding.getRoot();
+            rootView = newRequestBinding.getRoot();
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
             initViews();
@@ -55,34 +53,17 @@ public class TerminateFragment extends BaseNCRPOptionFragment implements Service
     private void initViews() {
         serviceRequest = new ServiceRequest();
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.CHECKUP.name());
-        terminatetAdapter = new TerminateAdapter();
-        terminatetAdapter.setClickCallback(iClickCallback);
-        terminateBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
+        newRequestsAdapter = new NewRequestsAdapter();
+        newRequestsAdapter.setClickCallback(iClickCallback);
+        newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        terminateBinding.terminateRecyclerview.setAdapter(terminatetAdapter);
-        terminateBinding.terminateRecyclerview.setLayoutManager(linearLayoutManager);
+        newRequestBinding.requestRecyclerview.setAdapter(newRequestsAdapter);
+        newRequestBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
 
     }
 
 
-    @Override
-    public void dismissSwipeRefresh() {
-        super.dismissSwipeRefresh();
-        if (terminateBinding.swiperefresh.isRefreshing()) {
-            terminateBinding.swiperefresh.setRefreshing(false);
-        }
-    }
 
-    @Override
-    public void loadBottomSheet() {
-        super.loadBottomSheet();
-        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                terminatetAdapter.clearSelection();
-            }
-        });
-    }
 
     private IStatusClickCallback iClickCallback = new IStatusClickCallback() {
         @Override
@@ -97,11 +78,10 @@ public class TerminateFragment extends BaseNCRPOptionFragment implements Service
 
         @Override
         public void onClickPosition(int position) {
-            terminatetAdapter.clearSelection();
-            FetchNewRequestResponse fetchNewRequestResponse = terminatetAdapter.
-                    getItemFromPosition(position);
+            newRequestsAdapter.clearSelection();
+            FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.getItemFromPosition(position);
             fetchNewRequestResponse.setSelected(true);
-            terminatetAdapter.notifyDataSetChanged();
+            newRequestsAdapter.notifyDataSetChanged();
             productSelectedPosition = position;
             createBottomSheetFirstRow();
             bottomSheetDialog.show();

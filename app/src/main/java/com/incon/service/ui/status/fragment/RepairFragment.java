@@ -1,6 +1,5 @@
 package com.incon.service.ui.status.fragment;
 
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,14 +12,13 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
-import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseNCRPOptionFragment;
-import com.incon.service.ui.status.adapter.RepairAdapter;
+import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +49,9 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            repairBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_repair,
+            newRequestBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
-            rootView = repairBinding.getRoot();
+            rootView = newRequestBinding.getRoot();
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
 
@@ -67,33 +65,12 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
     private void initViews() {
         serviceRequest = new ServiceRequest();
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.REPAIR.name());
-        repairAdapter = new RepairAdapter();
-        repairAdapter.setClickCallback(iClickCallback);
-        repairBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
+        newRequestsAdapter = new NewRequestsAdapter();
+        newRequestsAdapter.setClickCallback(iClickCallback);
+        newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        repairBinding.requestRecyclerview.setAdapter(repairAdapter);
-        repairBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
-    }
-
-
-    @Override
-    public void dismissSwipeRefresh() {
-        super.dismissSwipeRefresh();
-        if (repairBinding.swiperefresh.isRefreshing()) {
-            repairBinding.swiperefresh.setRefreshing(false);
-        }
-    }
-
-    @Override
-    public void loadBottomSheet() {
-        super.loadBottomSheet();
-        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                repairAdapter.clearSelection();
-            }
-        });
-
+        newRequestBinding.requestRecyclerview.setAdapter(newRequestsAdapter);
+        newRequestBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
     }
 
 
@@ -110,11 +87,10 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
 
         @Override
         public void onClickPosition(int position) {
-            repairAdapter.clearSelection();
-            FetchNewRequestResponse fetchNewRequestResponse = repairAdapter.
-                    getItemFromPosition(position);
+            newRequestsAdapter.clearSelection();
+            FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.getItemFromPosition(position);
             fetchNewRequestResponse.setSelected(true);
-            repairAdapter.notifyDataSetChanged();
+            newRequestsAdapter.notifyDataSetChanged();
             productSelectedPosition = position;
             createBottomSheetFirstRow();
             bottomSheetDialog.show();
@@ -238,8 +214,7 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
             ArrayList<Integer> tagsArray = new ArrayList<>();
 
 
-            FetchNewRequestResponse itemFromPosition = repairAdapter.getItemFromPosition(
-                    productSelectedPosition);
+            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
 
             if (tag == R.id.CUSTOMER_CALL_CUSTOMER_CARE) {
@@ -342,12 +317,4 @@ public class RepairFragment extends BaseNCRPOptionFragment implements ServiceCen
             //TODO have to handle
         }
     }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        serviceCenterPresenter.disposeAll();
-    }
-
 }

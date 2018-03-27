@@ -1,6 +1,5 @@
 package com.incon.service.ui.status.fragment;
 
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,19 +12,16 @@ import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
 import com.incon.service.callbacks.AlertDialogCallback;
-import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.callbacks.TextAlertDialogCallback;
 import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseNCRPOptionFragment;
-import com.incon.service.ui.status.adapter.ApprovalAdapter;
+import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.incon.service.AppUtils.callPhoneNumber;
 
 /**
  * Created by PC on 12/5/2017.
@@ -52,9 +48,9 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            approvalBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_approval,
+            newRequestBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
-            rootView = approvalBinding.getRoot();
+            rootView = newRequestBinding.getRoot();
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
             initViews();
@@ -67,33 +63,12 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
     private void initViews() {
         serviceRequest = new ServiceRequest();
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.APPROVAL.name());
-        approvalAdapter = new ApprovalAdapter();
-        approvalAdapter.setClickCallback(iClickCallback);
-        approvalBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
+        newRequestsAdapter = new NewRequestsAdapter();
+        newRequestsAdapter.setClickCallback(iClickCallback);
+        newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        approvalBinding.apprvalRecyclerview.setAdapter(approvalAdapter);
-        approvalBinding.apprvalRecyclerview.setLayoutManager(linearLayoutManager);
-    }
-
-    @Override
-    public void loadBottomSheet() {
-        super.loadBottomSheet();
-        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                approvalAdapter.clearSelection();
-
-            }
-        });
-
-    }
-
-    @Override
-    public void dismissSwipeRefresh() {
-        super.dismissSwipeRefresh();
-        if (approvalBinding.swiperefresh.isRefreshing()) {
-            approvalBinding.swiperefresh.setRefreshing(false);
-        }
+        newRequestBinding.requestRecyclerview.setAdapter(newRequestsAdapter);
+        newRequestBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
     }
 
     private IStatusClickCallback iClickCallback = new IStatusClickCallback() {
@@ -109,11 +84,10 @@ public class ApprovalFragment extends BaseNCRPOptionFragment implements ServiceC
 
         @Override
         public void onClickPosition(int position) {
-            approvalAdapter.clearSelection();
-            FetchNewRequestResponse fetchNewRequestResponse = approvalAdapter.
-                    getItemFromPosition(position);
+            newRequestsAdapter.clearSelection();
+            FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.getItemFromPosition(position);
             fetchNewRequestResponse.setSelected(true);
-            approvalAdapter.notifyDataSetChanged();
+            newRequestsAdapter.notifyDataSetChanged();
             productSelectedPosition = position;
             createBottomSheetFirstRow();
             bottomSheetDialog.show();

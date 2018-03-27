@@ -1,6 +1,5 @@
 package com.incon.service.ui.status.fragment;
 
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,13 +11,12 @@ import com.incon.service.AppUtils;
 import com.incon.service.R;
 import com.incon.service.apimodel.components.fetchnewrequest.FetchNewRequestResponse;
 import com.incon.service.apimodel.components.updatestatus.UpDateStatusResponse;
-import com.incon.service.callbacks.IClickCallback;
 import com.incon.service.callbacks.IStatusClickCallback;
 import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.servicerequest.ServiceRequest;
 import com.incon.service.ui.BaseNCRPOptionFragment;
-import com.incon.service.ui.status.adapter.PaymentAdapter;
+import com.incon.service.ui.status.adapter.NewRequestsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +50,9 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
     protected View onPrepareView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             // handle events from here using android binding
-            paymentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_payment,
+            newRequestBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_newrequest,
                     container, false);
-            rootView = paymentBinding.getRoot();
+            rootView = newRequestBinding.getRoot();
             shimmerFrameLayout = rootView.findViewById(R.id
                     .effect_shimmer);
 
@@ -70,35 +68,13 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
         serviceRequest = new ServiceRequest();
         serviceRequest.setStatus(AppUtils.ServiceRequestTypes.PAYMENT.name());
 
-        paymentAdapter = new PaymentAdapter();
-        paymentAdapter.setClickCallback(iClickCallback);
-        paymentBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
+        newRequestsAdapter = new NewRequestsAdapter();
+        newRequestsAdapter.setClickCallback(iClickCallback);
+        newRequestBinding.swiperefresh.setOnRefreshListener(onRefreshListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        paymentBinding.paymentRecyclerview.setAdapter(paymentAdapter);
-        paymentBinding.paymentRecyclerview.setLayoutManager(linearLayoutManager);
+        newRequestBinding.requestRecyclerview.setAdapter(newRequestsAdapter);
+        newRequestBinding.requestRecyclerview.setLayoutManager(linearLayoutManager);
     }
-
-    @Override
-    public void dismissSwipeRefresh() {
-        super.dismissSwipeRefresh();
-        if (paymentBinding.swiperefresh.isRefreshing()) {
-            paymentBinding.swiperefresh.setRefreshing(false);
-        }
-    }
-
-    @Override
-    public void loadBottomSheet() {
-        super.loadBottomSheet();
-        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                paymentAdapter.clearSelection();
-
-            }
-        });
-
-    }
-
 
     private IStatusClickCallback iClickCallback = new IStatusClickCallback() {
         @Override
@@ -113,11 +89,10 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
 
         @Override
         public void onClickPosition(int position) {
-            paymentAdapter.clearSelection();
-            FetchNewRequestResponse fetchNewRequestResponse = paymentAdapter.
-                    getItemFromPosition(position);
+            newRequestsAdapter.clearSelection();
+            FetchNewRequestResponse fetchNewRequestResponse = newRequestsAdapter.getItemFromPosition(position);
             fetchNewRequestResponse.setSelected(true);
-            paymentAdapter.notifyDataSetChanged();
+            newRequestsAdapter.notifyDataSetChanged();
             productSelectedPosition = position;
             createBottomSheetFirstRow();
             bottomSheetDialog.show();
@@ -221,7 +196,7 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
             ArrayList<String> textArray = new ArrayList<>();
             ArrayList<Integer> tagsArray = new ArrayList<>();
 
-            FetchNewRequestResponse itemFromPosition = paymentAdapter.getItemFromPosition(
+            FetchNewRequestResponse itemFromPosition = newRequestsAdapter.getItemFromPosition(
                     productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.secondRow, tag);
 
@@ -271,9 +246,6 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
         public void onClick(View view) {
             Integer tag = (Integer) view.getTag();
 
-
-            FetchNewRequestResponse itemFromPosition = paymentAdapter.getItemFromPosition(
-                    productSelectedPosition);
             changeSelectedViews(bottomSheetPurchasedBinding.thirdRow, tag);
 
             if (tag == R.id.STATUS_UPDATE_PAID_CASH) {
@@ -314,11 +286,5 @@ public class PaymentFragment extends BaseNCRPOptionFragment implements ServiceCe
         } catch (Exception e) {
             //TODO have to handle
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        serviceCenterPresenter.disposeAll();
     }
 }

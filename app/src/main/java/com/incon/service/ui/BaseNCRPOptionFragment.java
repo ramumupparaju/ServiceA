@@ -1,10 +1,10 @@
 package com.incon.service.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,25 +25,11 @@ import com.incon.service.custom.view.AppEditTextDialog;
 import com.incon.service.custom.view.AssignDialog;
 import com.incon.service.custom.view.MoveToOptionDialog;
 import com.incon.service.custom.view.PastHistoryDialog;
-import com.incon.service.databinding.FragmentApprovalBinding;
-import com.incon.service.databinding.FragmentCheckupBinding;
-import com.incon.service.databinding.FragmentCompleatBinding;
-import com.incon.service.databinding.FragmentHoldBinding;
 import com.incon.service.databinding.FragmentNewrequestBinding;
-import com.incon.service.databinding.FragmentPaymentBinding;
-import com.incon.service.databinding.FragmentRepairBinding;
-import com.incon.service.databinding.FragmentTerminateBinding;
 import com.incon.service.dto.adduser.AddUser;
 import com.incon.service.dto.updatestatus.UpDateStatus;
 import com.incon.service.ui.home.HomeActivity;
-import com.incon.service.ui.status.adapter.ApprovalAdapter;
-import com.incon.service.ui.status.adapter.CheckUpAdapter;
-import com.incon.service.ui.status.adapter.CompleatAdapter;
-import com.incon.service.ui.status.adapter.HoldAdapter;
 import com.incon.service.ui.status.adapter.NewRequestsAdapter;
-import com.incon.service.ui.status.adapter.PaymentAdapter;
-import com.incon.service.ui.status.adapter.RepairAdapter;
-import com.incon.service.ui.status.adapter.TerminateAdapter;
 import com.incon.service.ui.status.base.base.BaseTabFragment;
 import com.incon.service.ui.status.fragment.ApprovalFragment;
 import com.incon.service.ui.status.fragment.CheckUpFragment;
@@ -69,38 +55,9 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
 
     public MoveToOptionDialog moveToOptionDialog;
 
-    ////// specific to  new request fragment
-    public NewRequestsAdapter newRequestsAdapter;
     public ServiceCenterPresenter serviceCenterPresenter;
     public FragmentNewrequestBinding newRequestBinding;
-
-    ////// specific to  check up fragment
-    public CheckUpAdapter checkUpAdapter;
-    public FragmentCheckupBinding checkupBinding;
-
-    ////// specific to approval fragment
-    public ApprovalAdapter approvalAdapter;
-    public FragmentApprovalBinding approvalBinding;
-
-    ////// specific to repair fragment
-    public RepairAdapter repairAdapter;
-    public FragmentRepairBinding repairBinding;
-
-    ////// specific to payment fragment
-    public PaymentAdapter paymentAdapter;
-    public FragmentPaymentBinding paymentBinding;
-
-    ////// specific to hold fragment
-    public HoldAdapter holdAdapter;
-    public FragmentHoldBinding holdBinding;
-
-    ////// specific to compleat fragment
-    public CompleatAdapter compleatAdapter;
-    public FragmentCompleatBinding compleatBinding;
-
-    ////// specific to terminate fragment
-    public TerminateAdapter terminatetAdapter;
-    public FragmentTerminateBinding terminateBinding;
+    public NewRequestsAdapter newRequestsAdapter;
 
 
     public ShimmerFrameLayout shimmerFrameLayout;
@@ -120,11 +77,6 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
                 }
             };
 
-    public void dismissSwipeRefresh() {
-    }
-
-
-
     @Override
     public void showErrorMessage(String errorMessage) {
         if (bottomSheetDialog.isShowing()) {
@@ -132,6 +84,23 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
         } else {
             super.showErrorMessage(errorMessage);
         }
+    }
+
+    public void dismissSwipeRefresh() {
+        if (newRequestBinding.swiperefresh.isRefreshing()) {
+            newRequestBinding.swiperefresh.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void loadBottomSheet() {
+        super.loadBottomSheet();
+        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                newRequestsAdapter.clearSelection();
+            }
+        });
     }
 
     public void showLocationDialog() {
@@ -185,31 +154,25 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmerAnimation();
 
-        String messageForApi = getString(R.string.progress_fetch_new_service_request);
+        String messageForApi = "";
         if (this instanceof NewRequestsFragment) {
-            newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
+            messageForApi = getString(R.string.progress_fetch_new_service_request);
         } else if (this instanceof CheckUpFragment) {
-            checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
-            messageForApi=getString(R.string.progress_fetch_new_service_request);
+            messageForApi = getString(R.string.progress_fetch_new_service_request);
         } else if (this instanceof ApprovalFragment) {
-            approvalBinding.apprvalRecyclerview.setVisibility(View.GONE);
-            messageForApi=getString(R.string.progress_fetch_approval_service_request);
+            messageForApi = getString(R.string.progress_fetch_approval_service_request);
         } else if (this instanceof RepairFragment) {
-            repairBinding.requestRecyclerview.setVisibility(View.GONE);
         } else if (this instanceof PaymentFragment) {
-            paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
-            messageForApi=getString(R.string.progress_fetch_new_service_request);
+            messageForApi = getString(R.string.progress_fetch_new_service_request);
         } else if (this instanceof HoldFragment) {
-            holdBinding.holdRecyclerview.setVisibility(View.GONE);
-            messageForApi=getString(R.string.progress_hold_service_request);
+            messageForApi = getString(R.string.progress_hold_service_request);
         } else if (this instanceof TerminateFragment) {
-            terminateBinding.terminateRecyclerview.setVisibility(View.GONE);
-            messageForApi=getString(R.string.progress_terminate_service_request);
+            messageForApi = getString(R.string.progress_terminate_service_request);
         } else if (this instanceof CompleatFragment) {
-            compleatBinding.compleatRecyclerview.setVisibility(View.GONE);
-            messageForApi= getString(R.string.progress_compleat_service_request);
+            messageForApi = getString(R.string.progress_compleat_service_request);
         }
-        serviceCenterPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, getString(R.string.progress_fetch_new_service_request));
+        newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
+        serviceCenterPresenter.fetchServiceRequestsUsingRequestType(serviceRequest, messageForApi);
     }
 
     public void loadingNewServiceRequests(List<FetchNewRequestResponse> fetchNewRequestResponsesList) {
@@ -217,65 +180,12 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             fetchNewRequestResponsesList = new ArrayList<>();
         }
         if (fetchNewRequestResponsesList.size() == 0) {
-            if (this instanceof NewRequestsFragment) {
-                newRequestBinding.requestTextview.setVisibility(View.VISIBLE);
-                newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
-            } else if (this instanceof CheckUpFragment) {
-                checkupBinding.checkupTextview.setVisibility(View.VISIBLE);
-                checkupBinding.checkupRecyclerview.setVisibility(View.GONE);
-            } else if (this instanceof ApprovalFragment) {
-                approvalBinding.apprvalTextview.setVisibility(View.VISIBLE);
-                approvalBinding.apprvalRecyclerview.setVisibility(View.GONE);
-            } else if (this instanceof RepairFragment) {
-                repairBinding.repairTextview.setVisibility(View.VISIBLE);
-                repairBinding.requestRecyclerview.setVisibility(View.GONE);
-            } else if (this instanceof PaymentFragment) {
-                paymentBinding.paymentTextview.setVisibility(View.VISIBLE);
-                paymentBinding.paymentRecyclerview.setVisibility(View.GONE);
-            } else if (this instanceof HoldFragment) {
-                holdBinding.holdTextview.setVisibility(View.VISIBLE);
-                holdBinding.holdRecyclerview.setVisibility(View.GONE);
-            } else if (this instanceof TerminateFragment) {
-                terminateBinding.terminateTextview.setVisibility(View.VISIBLE);
-                terminateBinding.terminateRecyclerview.setVisibility(View.GONE);
-            } else if (this instanceof CompleatFragment) {
-                compleatBinding.compleatTextview.setVisibility(View.VISIBLE);
-                compleatBinding.compleatRecyclerview.setVisibility(View.GONE);
-            }
+            newRequestBinding.requestTextview.setVisibility(View.VISIBLE);
+            newRequestBinding.requestRecyclerview.setVisibility(View.GONE);
         } else {
-            if (this instanceof NewRequestsFragment) {
-                newRequestBinding.requestTextview.setVisibility(View.GONE);
-                newRequestBinding.requestRecyclerview.setVisibility(View.VISIBLE);
-                newRequestsAdapter.setData(fetchNewRequestResponsesList);
-            } else if (this instanceof CheckUpFragment) {
-                checkupBinding.checkupTextview.setVisibility(View.GONE);
-                checkupBinding.checkupRecyclerview.setVisibility(View.VISIBLE);
-                checkUpAdapter.setData(fetchNewRequestResponsesList);
-            } else if (this instanceof ApprovalFragment) {
-                approvalBinding.apprvalTextview.setVisibility(View.GONE);
-                approvalBinding.apprvalRecyclerview.setVisibility(View.VISIBLE);
-                approvalAdapter.setData(fetchNewRequestResponsesList);
-            } else if (this instanceof RepairFragment) {
-                repairBinding.repairTextview.setVisibility(View.GONE);
-                repairBinding.requestRecyclerview.setVisibility(View.VISIBLE);
-                repairAdapter.setData(fetchNewRequestResponsesList);
-            } else if (this instanceof PaymentFragment) {
-                paymentBinding.paymentTextview.setVisibility(View.GONE);
-                paymentBinding.paymentRecyclerview.setVisibility(View.VISIBLE);
-                paymentAdapter.setData(fetchNewRequestResponsesList);
-            } else if (this instanceof HoldFragment) {
-                holdBinding.holdTextview.setVisibility(View.GONE);
-                holdBinding.holdRecyclerview.setVisibility(View.VISIBLE);
-                holdAdapter.setData(fetchNewRequestResponsesList);
-            } else if (this instanceof TerminateFragment) {
-                terminateBinding.terminateTextview.setVisibility(View.GONE);
-                terminateBinding.terminateRecyclerview.setVisibility(View.VISIBLE);
-                terminatetAdapter.setData(fetchNewRequestResponsesList);
-            } else if (this instanceof CompleatFragment) {
-                compleatBinding.compleatTextview.setVisibility(View.GONE);
-                compleatBinding.compleatRecyclerview.setVisibility(View.VISIBLE);
-                compleatAdapter.setData(fetchNewRequestResponsesList);
-            }
+            newRequestBinding.requestTextview.setVisibility(View.GONE);
+            newRequestBinding.requestRecyclerview.setVisibility(View.VISIBLE);
+            newRequestsAdapter.setData(fetchNewRequestResponsesList);
         }
 
         shimmerFrameLayout.stopShimmerAnimation();
@@ -287,11 +197,9 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
 
         if (this instanceof NewRequestsFragment) {
             stringToSkip = getString(R.string.tab_new_request);
-        }
-        else if (this instanceof ApprovalFragment) {
+        } else if (this instanceof ApprovalFragment) {
             stringToSkip = getString(R.string.tab_approval);
-        }
-        else if (this instanceof CheckUpFragment) {
+        } else if (this instanceof CheckUpFragment) {
             stringToSkip = getString(R.string.tab_checkup);
         } else if (this instanceof RepairFragment) {
             stringToSkip = getString(R.string.tab_repair);
@@ -301,25 +209,9 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
         moveToOptionDialog = new MoveToOptionDialog.AlertDialogBuilder(getContext(), new MoveToOptionCallback() {
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                if (BaseNCRPOptionFragment.this instanceof NewRequestsFragment) {
-                    FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
-                    Request request = requestResponse.getRequest();
-                    upDateStatus.setRequestid(request.getId());
-                }
-                else if (BaseNCRPOptionFragment.this instanceof ApprovalFragment) {
-                    FetchNewRequestResponse requestResponse = approvalAdapter.getItemFromPosition(productSelectedPosition);
-                    Request request = requestResponse.getRequest();
-                    upDateStatus.setRequestid(request.getId());
-                }
-                else if (BaseNCRPOptionFragment.this instanceof CheckUpFragment) {
-                    FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
-                    Request request = requestResponse.getRequest();
-                    upDateStatus.setRequestid(request.getId());
-                } else {
-                    FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
-                    Request request = requestResponse.getRequest();
-                    upDateStatus.setRequestid(request.getId());
-                }
+                FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
                 serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
 
             }
@@ -347,59 +239,17 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
         String dialogTitle = "";
         upDateStatus = new UpDateStatus();
 
-        if (this instanceof NewRequestsFragment) {
-            upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-            if (dialogType == R.id.STATUS_UPDATE_REJECT) {
-                dialogTitle = getString(R.string.bottom_option_reject);
-                upDateStatus.setStatus(new Status(StatusConstants.REJECT));
-            } else if (dialogType == R.id.STATUS_UPDATE_HOLD) {
-                dialogTitle = getString(R.string.bottom_option_hold);
-                upDateStatus.setStatus(new Status(StatusConstants.NEW_REQ_HOLD));
-            } else if (dialogType == R.id.STATUS_UPDATE_TERMINATE) {
-                dialogTitle = getString(R.string.bottom_option_terminate);
-                upDateStatus.setStatus(new Status(StatusConstants.TERMINATE));
-            }
+        upDateStatus.setRequestid(newRequestsAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
+        if (dialogType == R.id.STATUS_UPDATE_REJECT) {
+            dialogTitle = getString(R.string.bottom_option_reject);
+            upDateStatus.setStatus(new Status(StatusConstants.REJECT));
+        } else if (dialogType == R.id.STATUS_UPDATE_HOLD) {
+            dialogTitle = getString(R.string.bottom_option_hold);
+            upDateStatus.setStatus(new Status(StatusConstants.NEW_REQ_HOLD));
+        } else if (dialogType == R.id.STATUS_UPDATE_TERMINATE) {
+            dialogTitle = getString(R.string.bottom_option_terminate);
+            upDateStatus.setStatus(new Status(StatusConstants.TERMINATE));
         }
-        else if (this instanceof ApprovalFragment) {
-            upDateStatus.setRequestid(approvalAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-            if (dialogType == R.id.HOLD) {
-                dialogTitle = getString(R.string.bottom_option_hold);
-                upDateStatus.setStatus(new Status(StatusConstants.APPROVAL_HOLD));
-            }
-            else if (dialogType == R.id.REJECT) {
-                dialogTitle = getString(R.string.bottom_option_reject);
-                upDateStatus.setStatus(new Status(StatusConstants.REJECT));
-            }
-        }
-        else if (this instanceof CheckUpFragment) {
-            upDateStatus.setRequestid(checkUpAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-            if (dialogType == R.id.STATUS_UPDATE_HOLD) {
-                dialogTitle = getString(R.string.bottom_option_hold);
-                upDateStatus.setStatus(new Status(StatusConstants.CHECKUP_HOLD));
-            } else if (dialogType == R.id.STATUS_UPDATE_TERMINATE) {
-                dialogTitle = getString(R.string.bottom_option_terminate);
-                upDateStatus.setStatus(new Status(StatusConstants.TERMINATE));
-            }
-        } else if (this instanceof RepairFragment) {
-            upDateStatus.setRequestid(repairAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-            if (dialogType == R.id.STATUS_UPDATE_HOLD) {
-                dialogTitle = getString(R.string.bottom_option_hold);
-                upDateStatus.setStatus(new Status(StatusConstants.REPAIR_HOLD));
-            } else if (dialogType == R.id.STATUS_UPDATE_TERMINATE) {
-                dialogTitle = getString(R.string.bottom_option_terminate);
-                upDateStatus.setStatus(new Status(StatusConstants.TERMINATE));
-            } else if (dialogType == R.id.STATUS_UPDATE_REPAIR_DONE) {
-                dialogTitle = getString(R.string.bottom_option_repair_done);
-                upDateStatus.setStatus(new Status(StatusConstants.REPAIR_DONE));
-            }
-        } else if (this instanceof PaymentFragment) {
-            upDateStatus.setRequestid(paymentAdapter.getItemFromPosition(productSelectedPosition).getRequest().getId());
-            if (dialogType == R.id.STATUS_UPDATE_TERMINATE) {
-                dialogTitle = getString(R.string.bottom_option_terminate);
-                upDateStatus.setStatus(new Status(StatusConstants.TERMINATE));
-            }
-        }
-
         updateStatusDialog = new AppEditTextDialog.AlertDialogBuilder(getActivity(), new
                 TextAlertDialogCallback() {
                     @Override
@@ -450,23 +300,9 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
 
             @Override
             public void doUpDateStatusApi(UpDateStatus upDateStatus) {
-                if (BaseNCRPOptionFragment.this instanceof NewRequestsFragment) {
-                    FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
-                    Request request = requestResponse.getRequest();
-                    upDateStatus.setRequestid(request.getId());
-                } else if (BaseNCRPOptionFragment.this instanceof CheckUpFragment) {
-                    FetchNewRequestResponse requestResponse = checkUpAdapter.getItemFromPosition(productSelectedPosition);
-                    Request request = requestResponse.getRequest();
-                    upDateStatus.setRequestid(request.getId());
-                } else if (BaseNCRPOptionFragment.this instanceof RepairFragment) {
-                    FetchNewRequestResponse requestResponse = repairAdapter.getItemFromPosition(productSelectedPosition);
-                    Request request = requestResponse.getRequest();
-                    upDateStatus.setRequestid(request.getId());
-                } else {
-                    FetchNewRequestResponse requestResponse = paymentAdapter.getItemFromPosition(productSelectedPosition);
-                    Request request = requestResponse.getRequest();
-                    upDateStatus.setRequestid(request.getId());
-                }
+                FetchNewRequestResponse requestResponse = newRequestsAdapter.getItemFromPosition(productSelectedPosition);
+                Request request = requestResponse.getRequest();
+                upDateStatus.setRequestid(request.getId());
                 serviceCenterPresenter.upDateStatus(SharedPrefsUtils.loginProvider().getIntegerPreference(LoginPrefs.USER_ID, -1), upDateStatus);
 
 
