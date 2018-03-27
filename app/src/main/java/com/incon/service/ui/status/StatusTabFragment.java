@@ -269,9 +269,9 @@ public class StatusTabFragment extends BaseFragment implements StatusTabContract
             return;
         }
         Calendar selectedDate = horizontalCalendar.getSelectedDate();
-        fragmentFromPosition.setFromDate(selectedDate.getTimeInMillis());
+        selectedDate.add(Calendar.DAY_OF_MONTH, 1);
         fragmentFromPosition.setToDate(selectedDate.getTimeInMillis());
-        fragmentFromPosition.doRefresh(false);
+        fragmentFromPosition.doRefresh(isCalendarChanged);
     }
 
     private void loadServiceCentersSpinner() {

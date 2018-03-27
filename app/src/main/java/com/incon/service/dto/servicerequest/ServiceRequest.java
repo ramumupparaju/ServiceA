@@ -14,12 +14,7 @@ public class ServiceRequest {
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("fromDate")
-    @Expose
-    private Long fromDate;
-    @SerializedName("toDate")
-    @Expose
-    private Long toDate;
+    private Long reqDate;
 
     public Integer getAssignedUser() {
         return assignedUser;
@@ -45,19 +40,11 @@ public class ServiceRequest {
         this.status = status;
     }
 
-    public Long getFromDate() {
-        return fromDate;
+    public Long getReqDate() {
+        return reqDate;
     }
 
-    public void setFromDate(Long fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public Long getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(Long toDate) {
-        this.toDate = toDate;
+    public void setReqDate(Long reqDate) {
+        this.reqDate = reqDate;
     }
 }

@@ -147,6 +147,9 @@ public class BaseNCRPOptionFragment extends BaseTabFragment {
             serviceRequest.setAssignedUser(userId);
         }
 
+        if (!(BaseNCRPOptionFragment.this instanceof NewRequestsFragment)) { //for new requests to have to fetch all dates else have to show only based  on dates
+            serviceRequest.setReqDate(toDate);
+        }
         getServiceRequestApi();
     }
 

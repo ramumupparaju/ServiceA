@@ -72,7 +72,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
       // LoginUserData loginUserData = new LoginUserData("9949795253", "qwerty123"); //stage
       // LoginUserData loginUserData = new LoginUserData("9985394889", "qwerty123"); // pro
       // LoginUserData loginUserData = new LoginUserData("9160314171", "qwerty123"); // pro
-       LoginUserData loginUserData = new LoginUserData("3234567890", "qwerty123"); // pro
+//       LoginUserData loginUserData = new LoginUserData("3234567890", "qwerty123"); // stage
+       LoginUserData loginUserData = new LoginUserData("9160314171", "qwerty123"); // stage
         String phoneNumberPreference = SharedPrefsUtils.loginProvider().
                 getStringPreference(LoginPrefs.USER_PHONE_NUMBER);
         if (!TextUtils.isEmpty(phoneNumberPreference)) {
